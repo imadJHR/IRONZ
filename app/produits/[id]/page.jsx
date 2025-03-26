@@ -21,9 +21,9 @@ import {
 import Navbar from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { products } from "@/data/products"
-import { useCart } from "@/context/cart-context"
-import { useFavorites } from "@/context/favorites-context"
+import { products } from "@/data/product"
+import { useCart } from "@/context/CartContext"
+import { useFavorites } from "@/context/FavoritesContext"
 import ProductCard from "@/components/product-card"
 
 // Fonction pour générer des images supplémentaires pour un produit
