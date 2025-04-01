@@ -1,31 +1,41 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { ArrowLeft, ShoppingCart, Trash2, Plus, Minus, RefreshCw, Truck, ShieldCheck } from "lucide-react"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  ArrowLeft,
+  ShoppingCart,
+  Trash2,
+  Plus,
+  Minus,
+  RefreshCw,
+  Truck,
+  ShieldCheck,
+} from "lucide-react";
 
-import Navbar from "@/components/navbar"
-import { Button } from "@/components/ui/button"
-import { useCart } from "@/context/CartContext"
+import Navbar from "@/components/navbar";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/cart-context";
 
 export default function CartPageClient() {
-  const router = useRouter()
-  const { cart, updateQuantity, removeFromCart, clearCart, cartTotal } = useCart()
-  const [mounted, setMounted] = useState(false)
+  const router = useRouter();
+  const { cart, updateQuantity, removeFromCart, clearCart, cartTotal } =
+    useCart();
+  const [mounted, setMounted] = useState(false);
 
   // Éviter les erreurs d'hydratation
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   // Calculer les frais de livraison
-  const shippingCost = cartTotal > 50 ? 0 : 5.99
-  const totalWithShipping = cartTotal + shippingCost
+  const shippingCost = cartTotal > 50 ? 0 : 5.99;
+  const totalWithShipping = cartTotal + shippingCost;
 
   // Vérifier si le panier est vide
-  const isCartEmpty = !mounted || cart.length === 0
+  const isCartEmpty = !mounted || cart.length === 0;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -42,14 +52,18 @@ export default function CartPageClient() {
           </Link>
         </div>
 
-        <h1 className="text-3xl md:text-4xl font-heading font-bold mb-6">Mon Panier</h1>
+        <h1 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+          Mon Panier
+        </h1>
 
         {isCartEmpty ? (
           <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-8 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
               <ShoppingCart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
             </div>
-            <h2 className="text-xl font-heading font-semibold mb-2">Votre panier est vide</h2>
+            <h2 className="text-xl font-heading font-semibold mb-2">
+              Votre panier est vide
+            </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               Explorez notre catalogue et ajoutez des produits à votre panier
             </p>
@@ -67,7 +81,8 @@ export default function CartPageClient() {
                 <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex justify-between items-center">
                     <h2 className="text-xl font-heading font-semibold">
-                      Articles ({cart.reduce((total, item) => total + item.quantity, 0)})
+                      Articles (
+                      {cart.reduce((total, item) => total + item.quantity, 0)})
                     </h2>
                     <Button
                       variant="ghost"
@@ -83,7 +98,10 @@ export default function CartPageClient() {
 
                 <div className="divide-y divide-gray-200 dark:divide-gray-700">
                   {cart.map((item) => (
-                    <div key={item.id} className="p-6 flex flex-col sm:flex-row items-start sm:items-center">
+                    <div
+                      key={item.id}
+                      className="p-6 flex flex-col sm:flex-row items-start sm:items-center"
+                    >
                       <div className="relative h-24 w-24 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden mb-4 sm:mb-0">
                         <Image
                           src={item.image || "/placeholder.svg"}
@@ -106,19 +124,25 @@ export default function CartPageClient() {
                               </Link>
                             </h3>
                             {item.category && (
-                              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{item.category}</p>
+                              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                                {item.category}
+                              </p>
                             )}
                           </div>
 
                           <div className="flex items-center mt-2 sm:mt-0">
-                            <span className="font-medium text-gray-900 dark:text-white">{item.price.toFixed(2)} €</span>
+                            <span className="font-medium text-gray-900 dark:text-white">
+                              {item.price.toFixed(2)} MAD
+                            </span>
                           </div>
                         </div>
 
                         <div className="flex items-center justify-between mt-4">
                           <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-md">
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
                               disabled={item.quantity <= 1}
                               className="px-3 py-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 disabled:opacity-50"
                             >
@@ -128,7 +152,9 @@ export default function CartPageClient() {
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
                               className="px-3 py-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                             >
                               <Plus className="h-4 w-4" />
@@ -155,25 +181,37 @@ export default function CartPageClient() {
             {/* Order Summary */}
             <div className="lg:col-span-1">
               <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 sticky top-24">
-                <h2 className="text-xl font-heading font-semibold mb-6">Récapitulatif de commande</h2>
+                <h2 className="text-xl font-heading font-semibold mb-6">
+                  Récapitulatif de commande
+                </h2>
 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Sous-total</span>
-                    <span className="font-medium text-gray-900 dark:text-white">{cartTotal.toFixed(2)} €</span>
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Sous-total
+                    </span>
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      {cartTotal.toFixed(2)} MAD
+                    </span>
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Frais de livraison</span>
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Frais de livraison
+                    </span>
                     <span className="font-medium text-gray-900 dark:text-white">
-                      {shippingCost === 0 ? "Gratuit" : `${shippingCost.toFixed(2)} €`}
+                      {shippingCost === 0
+                        ? "Gratuit"
+                        : `${shippingCost.toFixed(2)} €`}
                     </span>
                   </div>
 
                   <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between">
-                    <span className="font-medium text-gray-900 dark:text-white">Total</span>
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      Total
+                    </span>
                     <span className="font-bold text-xl text-gray-900 dark:text-white">
-                      {totalWithShipping.toFixed(2)} €
+                      {totalWithShipping.toFixed(2)} MAD
                     </span>
                   </div>
                 </div>
@@ -188,17 +226,7 @@ export default function CartPageClient() {
                 <div className="mt-6 space-y-4">
                   <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                     <Truck className="h-4 w-4 mr-2 flex-shrink-0" />
-                    <span>Livraison gratuite à partir de 50€ d'achat</span>
-                  </div>
-
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <RefreshCw className="h-4 w-4 mr-2 flex-shrink-0" />
-                    <span>Retours gratuits sous 30 jours</span>
-                  </div>
-
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <ShieldCheck className="h-4 w-4 mr-2 flex-shrink-0" />
-                    <span>Paiement 100% sécurisé</span>
+                    <span>Livraison gratuite à partir de 500 MAD d'achat</span>
                   </div>
                 </div>
               </div>
@@ -207,6 +235,5 @@ export default function CartPageClient() {
         )}
       </div>
     </div>
-  )
+  );
 }
-

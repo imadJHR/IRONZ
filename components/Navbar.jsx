@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter, usePathname } from "next/navigation"
@@ -12,43 +12,39 @@ import {
   Minus,
   Trash2,
   Heart,
-  Search,
   ChevronDown,
-  User,
   Phone,
   Info,
   Home,
-  Dumbbell,
-  Pill,
   ShoppingBag,
   Sun,
   Moon,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { useCart } from "@/context/CartContext"
-import { useFavorites } from "@/context/FavoritesContext"
+import { useCart } from "@/context/cart-context"
+import { useFavorites } from "@/context/favorites-context"
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
+
 import { Button } from "@/components/ui/button"
-import FavoritesDropdown from "@/components/FavoritesDropDown"
+import { Input } from "@/components/ui/input"
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import FavoritesDropdown from "@/components/favorites-dropdown"
 import { categories } from "@/data/product"
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [categoryMenuOpen, setCategoryMenuOpen] = useState(false)
-  const [promotionsMenuOpen, setPromotionsMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
-
-  const categoryMenuRef = useRef(null)
-  const promotionsMenuRef = useRef(null)
+  const [isHoveringLogo, setIsHoveringLogo] = useState(false)
 
   const router = useRouter()
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
-
   const { cart, cartOpen, itemCount, cartTotal, toggleCart, updateQuantity, removeFromCart } = useCart()
   const { favorites, favoritesOpen, itemCount: favoritesCount, toggleFavorites } = useFavorites()
 
@@ -60,35 +56,9 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10)
     }
-
-    const handleClickOutside = (event) => {
-      if (categoryMenuRef.current && !categoryMenuRef.current.contains(event.target)) {
-        setCategoryMenuOpen(false)
-      }
-      if (promotionsMenuRef.current && !promotionsMenuRef.current.contains(event.target)) {
-        setPromotionsMenuOpen(false)
-      }
-    }
-
     window.addEventListener("scroll", handleScroll)
-    document.addEventListener("mousedown", handleClickOutside)
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
-
-  useEffect(() => {
-    setIsMenuOpen(false)
-    setCategoryMenuOpen(false)
-    setPromotionsMenuOpen(false)
-    setSearchOpen(false)
-  }, [pathname])
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -99,351 +69,652 @@ export default function Navbar() {
     }
   }
 
-  const navigateToCategory = (categoryPath) => {
-    router.push(categoryPath)
-    setCategoryMenuOpen(false)
+  const isActive = (path) => {
+    if (path === "/") return pathname === "/"
+    return pathname.startsWith(path)
   }
 
   const promotionLinks = [
-    { name: "Offres du moment", path: "/promotions?type=current", icon: <ShoppingBag className="h-4 w-4 mr-2" /> },
-    { name: "Soldes d'été", path: "/promotions?type=summer", icon: <ShoppingBag className="h-4 w-4 mr-2" /> },
-    { name: "Packs économiques", path: "/promotions?type=bundle", icon: <ShoppingBag className="h-4 w-4 mr-2" /> },
-    { name: "Déstockage", path: "/promotions?type=clearance", icon: <ShoppingBag className="h-4 w-4 mr-2" /> },
+    { name: "Offres du moment", path: "/promotions?type=current" },
+    { name: "Soldes d'été", path: "/promotions?type=summer" },
+    { name: "Packs économiques", path: "/promotions?type=bundle" },
+    { name: "Déstockage", path: "/promotions?type=clearance" },
   ]
 
   const dropdownVariants = {
-    hidden: { opacity: 0, y: -5 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
-    exit: { opacity: 0, y: -5, transition: { duration: 0.15 } },
+    hidden: { opacity: 0, y: -10, scale: 0.98 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 25,
+      }
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      transition: {
+        duration: 0.15,
+      }
+    }
   }
 
-  const mobileMenuVariants = {
-    hidden: { opacity: 0, height: 0 },
-    visible: { opacity: 1, height: "auto", transition: { duration: 0.3, ease: "easeInOut" } },
-    exit: { opacity: 0, height: 0, transition: { duration: 0.3, ease: "easeInOut" } },
+  const logoVariants = {
+    initial: { rotate: 0 },
+    hover: { rotate: 10, transition: { type: "spring", stiffness: 300 } }
   }
 
   return (
-    <nav
-      className={cn(
-        "fixed top-0 w-full z-50 transition-all duration-300 border-b",
-        scrolled
-          ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-gray-100 dark:border-gray-800 py-2"
-          : "bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-transparent py-3"
-      )}
-    >
+    <nav className={cn(
+      "fixed top-0 w-full z-50 transition-all duration-300",
+      scrolled 
+        ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm py-2 border-b border-gray-100 dark:border-gray-800"
+        : "bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm py-3"
+    )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-12">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <span className="font-sans font-medium text-xl text-gray-900 dark:text-white tracking-tight">
-              IRONZ
-            </span>
-            <span className="font-sans font-light text-xl text-gray-500 ml-1">PRO</span>
-          </Link>
+        <div className="flex items-center justify-between h-16">
+          {/* Logo with animation */}
+          <motion.div
+            onHoverStart={() => setIsHoveringLogo(true)}
+            onHoverEnd={() => setIsHoveringLogo(false)}
+            animate={isHoveringLogo ? "hover" : "initial"}
+            variants={logoVariants}
+            className="flex-shrink-0"
+          >
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="IRONZ PRO Logo"
+                width={160}
+                height={50}
+                className="h-10 w-auto object-contain dark:invert"
+                priority
+              />
+              <motion.span 
+                className="ml-2 text-xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent"
+                animate={isHoveringLogo ? { scale: 1.05 } : { scale: 1 }}
+              >
+                IRONZ PRO
+              </motion.span>
+            </Link>
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <NavLink href="/">
+          <div className="hidden lg:flex items-center space-x-1">
+            <NavLink href="/" active={isActive("/")}>
               Accueil
             </NavLink>
 
-            {/* Categories dropdown */}
-            <div className="relative" ref={categoryMenuRef}>
-              <button
-                onClick={() => setCategoryMenuOpen(!categoryMenuOpen)}
-                className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+            {/* Animated dropdown menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                    isActive("/categories") || isActive("/produits")
+                      ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
+                  )}
+                >
+                  Produits
+                  <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                </motion.button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="start" 
+                className="w-64 rounded-xl p-2 shadow-xl border border-gray-100 dark:border-gray-700"
               >
-                Produits
-                <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${categoryMenuOpen ? "rotate-180" : ""}`} />
-              </button>
-
-              <AnimatePresence>
-                {categoryMenuOpen && (
-                  <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    variants={dropdownVariants}
-                    className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-20 border border-gray-100 dark:border-gray-700"
-                  >
-                    {categories.map((category) => (
-                      <button
-                        key={category.id}
-                        onClick={() => navigateToCategory(category.href)}
-                        className="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors first:rounded-t-xl last:rounded-b-xl"
+                {categories.map((category) => (
+                  <DropdownMenuItem key={category.id} asChild>
+                    <motion.div whileHover={{ x: 5 }} whileTap={{ scale: 0.98 }}>
+                      <Link 
+                        href={category.href} 
+                        className="flex items-center px-3 py-2 text-sm rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                       >
                         {category.name}
-                      </button>
-                    ))}
+                      </Link>
+                    </motion.div>
+                  </DropdownMenuItem>
+                ))}
+                <Separator className="my-1" />
+                <DropdownMenuItem asChild>
+                  <motion.div whileHover={{ x: 5 }} whileTap={{ scale: 0.98 }}>
+                    <Link
+                      href="/produits"
+                      className="flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-600 dark:text-yellow-400 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
+                    >
+                      Voir tous les produits
+                    </Link>
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
 
-            {/* Promotions dropdown */}
-            <div className="relative" ref={promotionsMenuRef}>
-              <button
-                onClick={() => setPromotionsMenuOpen(!promotionsMenuOpen)}
-                className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
+                    isActive("/promotions")
+                      ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
+                  )}
+                >
+                  Promotions
+                  <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                </motion.button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="start" 
+                className="w-64 rounded-xl p-2 shadow-xl border border-gray-100 dark:border-gray-700"
               >
-                Promotions
-                <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${promotionsMenuOpen ? "rotate-180" : ""}`} />
-              </button>
-
-              <AnimatePresence>
-                {promotionsMenuOpen && (
-                  <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    variants={dropdownVariants}
-                    className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-lg z-20 border border-gray-100 dark:border-gray-700"
-                  >
-                    {promotionLinks.map((link, index) => (
-                      <Link
-                        key={index}
-                        href={link.path}
-                        className="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors first:rounded-t-xl last:rounded-b-xl"
+                {promotionLinks.map((link, index) => (
+                  <DropdownMenuItem key={index} asChild>
+                    <motion.div whileHover={{ x: 5 }} whileTap={{ scale: 0.98 }}>
+                      <Link 
+                        href={link.path} 
+                        className="flex items-center px-3 py-2 text-sm rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                       >
+                        <ShoppingBag className="h-4 w-4 mr-2 text-yellow-500" />
                         {link.name}
                       </Link>
-                    ))}
+                    </motion.div>
+                  </DropdownMenuItem>
+                ))}
+                <Separator className="my-1" />
+                <DropdownMenuItem asChild>
+                  <motion.div whileHover={{ x: 5 }} whileTap={{ scale: 0.98 }}>
+                    <Link
+                      href="/promotions"
+                      className="flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-600 dark:text-yellow-400 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
+                    >
+                      Toutes les promotions
+                    </Link>
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-            <NavLink href="/services">
-              Services
+            {/* Services dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className={cn(
+                    "flex items-center text-sm font-medium transition-colors",
+                    isActive("/services")
+                      ? "text-gray-900 dark:text-white"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white",
+                  )}
+                >
+                  Services
+                  <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56 rounded-xl p-1">
+                <DropdownMenuItem asChild>
+                  <Link href="/services/amenagement-salle" className="flex items-center px-3 py-2 text-sm rounded-lg">
+                    Aménagement de salle
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/services/conception-produits" className="flex items-center px-3 py-2 text-sm rounded-lg">
+                    Conception de produits
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/services/espace-enfance" className="flex items-center px-3 py-2 text-sm rounded-lg">
+                    Espace enfance
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/services/revetement-sol-mur" className="flex items-center px-3 py-2 text-sm rounded-lg">
+                    Revêtement sol & mur
+                  </Link>
+                </DropdownMenuItem>
+                <Separator className="my-1" />
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/services"
+                    className="flex items-center justify-center px-3 py-2 text-sm text-yellow-600 dark:text-yellow-400 rounded-lg"
+                  >
+                    Tous nos services
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <NavLink href="/a-propos" active={isActive("/a-propos")}>
+              À propos
             </NavLink>
 
-            <NavLink href="/a-propos">
-              À propos
+            <NavLink href="/contact" active={isActive("/contact")}>
+              Contact
             </NavLink>
           </div>
 
           {/* Right side icons */}
-          <div className="flex items-center space-x-4">
-            {/* Search button */}
-            <button
-              onClick={() => setSearchOpen(!searchOpen)}
-              className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-              aria-label="Rechercher"
-            >
-              <Search className="h-5 w-5" />
-            </button>
+          <div className="flex items-center space-x-3">
+           
 
-            {/* Theme toggle */}
+            {/* Theme toggle with animation */}
             {mounted && (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
                 aria-label="Toggle theme"
               >
                 {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </button>
+              </motion.button>
             )}
 
-            {/* Favorites button */}
-            <button
+            {/* Favorites button with animation */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={toggleFavorites}
-              className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors relative"
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors relative"
               aria-label="Favoris"
             >
-              <Heart className="h-5 w-5" />
+              <Heart className={cn("h-5 w-5", favoritesCount > 0 ? "text-red-500 fill-red-500" : "")} />
               {favoritesCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-yellow-500 text-white text-xs font-medium rounded-full h-4 w-4 flex items-center justify-center">
-                  {favoritesCount}
-                </span>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1 -right-1"
+                >
+                  <Badge className="h-5 w-5 p-0 flex items-center justify-center rounded-full bg-red-500 text-white">
+                    {favoritesCount}
+                  </Badge>
+                </motion.div>
               )}
-            </button>
+            </motion.button>
 
-            {/* Cart button */}
-            <button
+            {/* Cart button with animation */}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={toggleCart}
-              className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors relative"
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors relative"
               aria-label="Panier"
             >
               <ShoppingCart className="h-5 w-5" />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-yellow-500 text-white text-xs font-medium rounded-full h-4 w-4 flex items-center justify-center">
-                  {itemCount}
-                </span>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1 -right-1"
+                >
+                  <Badge className="h-5 w-5 p-0 flex items-center justify-center rounded-full bg-yellow-500 text-white">
+                    {itemCount}
+                  </Badge>
+                </motion.div>
               )}
-            </button>
+            </motion.button>
 
             {/* Mobile menu button */}
-            <button
-              onClick={toggleMenu}
-              className="md:hidden p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-              aria-label="Menu"
-            >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="lg:hidden p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                  aria-label="Menu"
+                >
+                  <Menu className="h-5 w-5" />
+                </motion.button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-full sm:w-96 p-0 bg-white dark:bg-gray-900">
+                <div className="flex flex-col h-full">
+                  <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                    <Link href="/" className="flex items-center">
+                      <Image
+                        src="/logo.png"
+                        alt="IRONZ PRO Logo"
+                        width={120}
+                        height={38}
+                        className="h-8 w-auto object-contain dark:invert"
+                      />
+                      <span className="ml-2 text-xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">
+                        IRONZ 
+                      </span>
+                    </Link>
+                    <SheetClose asChild>
+                      <button className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <X className="h-5 w-5" />
+                      </button>
+                    </SheetClose>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto py-6 px-6">
+                    
+
+                    <div className="space-y-1">
+                      <SheetClose asChild>
+                        <MobileNavLink href="/" active={isActive("/")}>
+                          <Home className="h-5 w-5" />
+                          Accueil
+                        </MobileNavLink>
+                      </SheetClose>
+                    </div>
+
+                    <Separator className="my-4" />
+
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 px-3 mb-2">Produits</h3>
+                      <div className="space-y-1">
+                        {categories.map((category) => (
+                          <SheetClose key={category.id} asChild>
+                            <MobileNavLink href={category.href}>
+                              {category.name}
+                            </MobileNavLink>
+                          </SheetClose>
+                        ))}
+                        <SheetClose asChild>
+                          <MobileNavLink href="/produits" highlight>
+                            Voir tous les produits
+                          </MobileNavLink>
+                        </SheetClose>
+                      </div>
+                    </div>
+
+                    <Separator className="my-4" />
+
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 px-3 mb-2">Promotions</h3>
+                      <div className="space-y-1">
+                        {promotionLinks.map((link, index) => (
+                          <SheetClose key={index} asChild>
+                            <MobileNavLink href={link.path}>
+                              <ShoppingBag className="h-5 w-5" />
+                              {link.name}
+                            </MobileNavLink>
+                          </SheetClose>
+                        ))}
+                        <SheetClose asChild>
+                          <MobileNavLink href="/promotions" highlight>
+                            Toutes les promotions
+                          </MobileNavLink>
+                        </SheetClose>
+                      </div>
+                    </div>
+
+                    <Separator className="my-4" />
+
+                    <div className="space-y-1">
+                      <SheetClose asChild>
+                        <MobileNavLink href="/services" active={isActive("/services")}>
+                          Services
+                        </MobileNavLink>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <MobileNavLink href="/a-propos" active={isActive("/a-propos")}>
+                          À propos
+                        </MobileNavLink>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <MobileNavLink href="/contact" active={isActive("/contact")}>
+                          Contact
+                        </MobileNavLink>
+                      </SheetClose>
+                    </div>
+
+                    <Separator className="my-4" />
+
+                    <div className="space-y-1">
+                      
+                      <SheetClose asChild>
+                        <MobileNavLink href="/favoris">
+                          <Heart className="h-5 w-5" />
+                          Mes favoris
+                          {favoritesCount > 0 && (
+                            <Badge variant="destructive" className="ml-auto">
+                              {favoritesCount}
+                            </Badge>
+                          )}
+                        </MobileNavLink>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <MobileNavLink href="/panier">
+                          <ShoppingCart className="h-5 w-5" />
+                          Mon panier
+                          {itemCount > 0 && (
+                            <Badge className="ml-auto bg-yellow-500">
+                              {itemCount}
+                            </Badge>
+                          )}
+                        </MobileNavLink>
+                      </SheetClose>
+                    </div>
+                  </div>
+
+                  <div className="p-6 border-t border-gray-100 dark:border-gray-800">
+                    <div className="flex items-center justify-center space-x-4 mb-4">
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        className="rounded-full"
+                      >
+                        {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                      </Button>
+                      <Button variant="ghost" size="icon" className="rounded-full">
+                        <Phone className="h-5 w-5" />
+                      </Button>
+                    </div>
+                    <SheetClose asChild>
+                      <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600">
+                        Nous contacter
+                      </Button>
+                    </SheetClose>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-
-        {/* Mobile search bar */}
-        <AnimatePresence>
-          {searchOpen && (
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              variants={mobileMenuVariants}
-              className="md:hidden mt-2"
-            >
-              <form onSubmit={handleSearch} className="relative">
-                <input
-                  type="text"
-                  placeholder="Rechercher..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full py-2 px-4 pr-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-600 transition-all"
-                  autoFocus
-                />
-                <button
-                  type="submit"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
-                >
-                  <Search className="h-4 w-4" />
-                </button>
-              </form>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
-      {/* Mobile menu */}
+      {/* Search modal */}
       <AnimatePresence>
-        {isMenuOpen && (
+        {searchOpen && (
           <motion.div
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={mobileMenuVariants}
-            className="md:hidden bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start justify-center pt-20"
+            onClick={() => setSearchOpen(false)}
           >
-            <div className="px-4 pt-2 pb-4 space-y-1">
-              <MobileNavLink href="/">
-                Accueil
-              </MobileNavLink>
-
-              <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 py-2">
-                Catégories
-              </div>
-              
-              {categories.slice(0, 4).map((category) => (
-                <MobileNavLink key={category.id} href={category.href}>
-                  {category.name}
-                </MobileNavLink>
-              ))}
-
-              <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider px-3 py-2">
-                Promotions
-              </div>
-              
-              {promotionLinks.map((link, index) => (
-                <MobileNavLink key={index} href={link.path}>
-                  {link.name}
-                </MobileNavLink>
-              ))}
-
-              <MobileNavLink href="/services">
-                Services
-              </MobileNavLink>
-
-              <MobileNavLink href="/a-propos">
-                À propos
-              </MobileNavLink>
-
-              <div className="border-t border-gray-100 dark:border-gray-700 mt-2 pt-2">
-                <MobileNavLink href="/mon-compte">
-                  Mon compte
-                </MobileNavLink>
-                <MobileNavLink href="/contact">
-                  Contact
-                </MobileNavLink>
-              </div>
-            </div>
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              className="w-full max-w-2xl bg-white dark:bg-gray-900 rounded-xl shadow-xl mx-4 p-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <form onSubmit={handleSearch} className="relative">
+                <Input
+                  type="text"
+                  placeholder="Rechercher des produits..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-12 pr-16 py-6 text-lg border-none bg-gray-100 dark:bg-gray-800"
+                  autoFocus
+                />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
+                <Button
+                  type="submit"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 h-10 px-4 bg-yellow-500 hover:bg-yellow-600 text-black"
+                >
+                  Rechercher
+                </Button>
+              </form>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Mobile cart dropdown */}
+      {/* Cart dropdown */}
       <AnimatePresence>
         {cartOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden fixed inset-x-4 top-20 bg-white dark:bg-gray-800 rounded-xl shadow-xl z-50 border border-gray-100 dark:border-gray-700 overflow-hidden"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={dropdownVariants}
+            className="fixed right-4 top-20 w-full max-w-md bg-white dark:bg-gray-900 rounded-xl shadow-xl z-50 border border-gray-200 dark:border-gray-800 overflow-hidden"
           >
-            <div className="p-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-              <h3 className="font-medium text-gray-900 dark:text-white">Votre Panier</h3>
+            <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+              <h3 className="font-medium text-lg text-gray-900 dark:text-white flex items-center">
+                <ShoppingCart className="h-6 w-6 mr-2 text-yellow-500" />
+                Votre Panier
+                {itemCount > 0 && (
+                  <Badge className="ml-2 bg-yellow-500 text-white">
+                    {itemCount}
+                  </Badge>
+                )}
+              </h3>
               <button
                 onClick={toggleCart}
-                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
               </button>
             </div>
 
             {cart.length === 0 ? (
-              <div className="p-4 text-center text-gray-500 dark:text-gray-400">Votre panier est vide</div>
+              <div className="p-8 text-center">
+                <div className="mx-auto w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                  <ShoppingCart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
+                </div>
+                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  Votre panier est vide
+                </h4>
+                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                  Commencez à ajouter des produits
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={toggleCart}
+                  className="border-gray-200 dark:border-gray-700"
+                >
+                  Continuer vos achats
+                </Button>
+              </div>
             ) : (
               <>
-                <div className="max-h-[60vh] overflow-y-auto divide-y divide-gray-100 dark:divide-gray-700">
+                <div className="max-h-[60vh] overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800">
                   {cart.map((item) => (
-                    <div key={item.id} className="p-4 flex items-center">
-                      <div className="w-12 h-12 relative flex-shrink-0 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className="p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                    >
+                      <div className="w-16 h-16 relative flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
                         <Image
                           src={item.image || "/placeholder.svg"}
                           alt={item.name}
                           fill
                           className="object-cover"
-                          sizes="48px"
+                          sizes="64px"
                         />
                       </div>
                       <div className="ml-3 flex-1 min-w-0">
-                        <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">{item.name}</h4>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{item.price.toFixed(2)} €</p>
-                        <div className="flex items-center mt-1">
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white p-1"
-                            disabled={item.quantity <= 1}
-                          >
-                            <Minus className="h-3 w-3" />
-                          </button>
-                          <span className="mx-1 text-sm w-6 text-center">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white p-1"
-                          >
-                            <Plus className="h-3 w-3" />
-                          </button>
+                        <Link 
+                          href={`/produits/${item.slug}`} 
+                          onClick={toggleCart}
+                          className="text-sm font-medium text-gray-900 dark:text-white hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-1"
+                        >
+                          {item.name}
+                        </Link>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          {item.price.toFixed(2)} MAD × {item.quantity}
+                        </p>
+                        <div className="flex items-center mt-2">
+                          <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-full">
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-l-full hover:bg-gray-100 dark:hover:bg-gray-800"
+                              disabled={item.quantity <= 1}
+                            >
+                              <Minus className="h-3 w-3" />
+                            </button>
+                            <span className="mx-2 text-xs font-medium w-5 text-center">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-r-full hover:bg-gray-100 dark:hover:bg-gray-800"
+                            >
+                              <Plus className="h-3 w-3" />
+                            </button>
+                          </div>
                         </div>
                       </div>
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 p-1 ml-2"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
+                      <div className="ml-2 text-right">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                          {(item.price * item.quantity).toFixed(2)} MAD
+                        </p>
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="mt-1 p-1 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </motion.div>
                   ))}
                 </div>
-                <div className="p-4 border-t border-gray-100 dark:border-gray-700">
-                  <div className="flex justify-between mb-3">
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Total:</span>
-                    <span className="text-sm font-medium">{cartTotal.toFixed(2)} €</span>
+                <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
+                  <div className="space-y-3 mb-4">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Sous-total:</span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {cartTotal.toFixed(2)} MAD
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Livraison:</span>
+                      <span className="text-gray-900 dark:text-white">
+                        Calculé à la commande
+                      </span>
+                    </div>
+                    <Separator />
+                    <div className="flex justify-between text-lg font-medium">
+                      <span className="text-gray-900 dark:text-white">Total:</span>
+                      <span className="text-gray-900 dark:text-white">
+                        {cartTotal.toFixed(2)} MAD
+                      </span>
+                    </div>
                   </div>
-                  <Button className="w-full bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 dark:text-gray-900">
-                    Commander
-                  </Button>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button 
+                      variant="outline" 
+                      onClick={toggleCart}
+                      className="border-gray-200 dark:border-gray-700"
+                    >
+                      Continuer
+                    </Button>
+                    <Button 
+                      asChild
+                      className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white"
+                    >
+                      <Link href="/checkout" onClick={toggleCart}>
+                        Commander
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </>
             )}
@@ -451,24 +722,21 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Mobile favorites dropdown */}
-      <FavoritesDropdown isMobile={true} isOpen={favoritesOpen} />
+      {/* Favorites dropdown */}
+      <FavoritesDropdown />
     </nav>
   )
 }
 
-function NavLink({ href, children }) {
-  const pathname = usePathname()
-  const isActive = pathname === href
-
+function NavLink({ href, children, active }) {
   return (
     <Link
       href={href}
       className={cn(
-        "text-sm font-medium transition-colors",
-        isActive
-          ? "text-gray-900 dark:text-white"
-          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+        "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+        active
+          ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
+          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
       )}
     >
       {children}
@@ -476,18 +744,17 @@ function NavLink({ href, children }) {
   )
 }
 
-function MobileNavLink({ href, children }) {
-  const pathname = usePathname()
-  const isActive = pathname === href
-
+function MobileNavLink({ href, children, active, highlight, icon }) {
   return (
     <Link
       href={href}
       className={cn(
-        "block px-3 py-2 rounded-lg text-base font-medium transition-colors",
-        isActive
-          ? "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
-          : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+        "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors",
+        active
+          ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
+          : highlight
+          ? "text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
+          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
       )}
     >
       {children}

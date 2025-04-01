@@ -1,625 +1,533 @@
-// Main product data file for IRONZ PRO
+// Catégories de produits
+export const categories = [
+  {
+    id: "1",
+    name: "home gym",
+    href: "/categories/home-gym",
+    icon: "Dumbbell", // Nom d'icône Lucide
+    description: "Matériel et équipements pour l'entraînement à domicile",
+  },
+  {
+    id: "2",
+    name: "équipements",
+    href: "/categories/equipements",
+    icon: "Settings", // Nom d'icône Lucide
+    description: "Matériel professionnel pour le sport et la remise en forme",
+  },
+  {
+    id: "3",
+    name: "supplément",
+    href: "/categories/supplement",
+    icon: "Pill", // Nom d'icône Lucide
+    description: "Compléments alimentaires pour optimiser la nutrition et la performance",
+  },
+  {
+    id: "4",
+    name: "accessoires",
+    href: "/categories/accessoires",
+    icon: "Package", // Nom d'icône Lucide
+    description: "Accessoires indispensables pour le sport et le bien-être",
+    subCategories: [
+      {
+        id: "4-1",
+        name: "gants",
+        href: "/categories/accessoires/gants",
+        description: "Gants de protection pour tous types d'entraînements",
+      },
+      {
+        id: "4-2",
+        name: "ceintures",
+        href: "/categories/accessoires/ceintures",
+        description: "Ceintures de maintien pour la musculation et l'haltérophilie",
+      },
+      {
+        id: "4-3",
+        name: "sacs",
+        href: "/categories/accessoires/sacs",
+        description: "Sacs de sport et de rangement pour vos équipements",
+      },
+      {
+        id: "4-4",
+        name: "autres",
+        href: "/categories/accessoires/autres",
+        description: "Autres accessoires pour compléter votre équipement sportif",
+      },
+    ],
+  },
+]
 
-export const products = {
-  homeGym: [
-    {
-      id: "hg-001",
-      name: "Station de Musculation Multifonction Pro",
-      description: "Station complète avec presse à cuisses, poulie haute et basse, et banc intégré",
-      price: 1299.99,
-      oldPrice: 1499.99,
-      discount: 13,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Home Gym",
-      rating: 5,
-      reviews: 87,
-      inStock: true,
-      isNew: false,
-      isBestseller: true,
-      features: [
-        "Structure en acier renforcé",
-        "Charge maximale: 150kg",
-        "Plus de 30 exercices possibles",
-        "Dimensions: 180 x 210 x 110 cm",
-      ],
+// Produits
+export const products = [
+  {
+    id: "1",
+    name: "Banc de musculation multifonction",
+    slug: "banc-musculation-multifonction",
+    description:
+      "Banc de musculation réglable avec support pour haltères et accessoires d'entraînement intégrés. Idéal pour les exercices de musculation à domicile.",
+    features: [
+      "Réglable en hauteur et inclinaison",
+      "Supporte jusqu'à 200kg",
+      "Dimensions: 120 x 60 x 50 cm",
+      "Livré avec support pour haltères",
+      "Matériaux haute résistance",
+    ],
+    price: 349.99,
+    oldPrice: 399.99,
+    discount: 12,
+    image: "/placeholder.svg?height=300&width=300&text=Banc+Musculation",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Banc+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Banc+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Banc+Vue+3",
+    ],
+    category: "home gym",
+    categoryId: "1",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 45,
+    sku: "BM-MF-001",
+    date: "2023-10-15",
+    tags: ["musculation", "fitness", "entraînement", "banc"],
+    dimensions: {
+      width: 120,
+      height: 50,
+      depth: 60,
+      weight: 25,
     },
-    {
-      id: "hg-002",
-      name: "Banc de Musculation Réglable",
-      description: "Banc multifonctionnel pour exercices variés, réglable en 7 positions",
-      price: 249.99,
-      oldPrice: 299.99,
-      discount: 15,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Home Gym",
-      rating: 4,
-      reviews: 42,
-      inStock: true,
-      isNew: false,
-      isBestseller: true,
-      features: [
-        "7 positions d'inclinaison",
-        "Charge maximale: 300kg",
-        "Rembourrage haute densité",
-        "Dimensions: 120 x 45 x 45 cm",
-      ],
+    colors: ["Noir", "Rouge", "Gris"],
+    materials: ["Acier", "Mousse haute densité", "Similicuir"],
+    warranty: "2 ans",
+    shipping: {
+      dimensions: "130 x 70 x 20 cm",
+      weight: 28,
+      method: "Standard",
+      estimatedDelivery: "3-5 jours ouvrés",
     },
-    {
-      id: "hg-003",
-      name: "Rack à Squat Professionnel",
-      description: "Rack à squat robuste avec barre de traction et supports de sécurité",
-      price: 399.99,
-      oldPrice: 449.99,
-      discount: 10,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Home Gym",
-      rating: 5,
-      reviews: 36,
-      inStock: true,
-      isNew: true,
-      isBestseller: false,
-      features: [
-        "Structure en acier renforcé",
-        "Charge maximale: 350kg",
-        "Barre de traction multiprises",
-        "Dimensions: 120 x 110 x 210 cm",
-      ],
+    relatedProducts: ["3", "7", "9"],
+  },
+  {
+    id: "2",
+    name: "Tapis de yoga premium",
+    slug: "tapis-yoga-premium",
+    description:
+      "Tapis de yoga antidérapant en matériaux écologiques pour un confort optimal pendant vos séances. Surface texturée pour une meilleure adhérence.",
+    features: [
+      "Épaisseur: 6mm",
+      "Dimensions: 183 x 61 cm",
+      "Matériaux écologiques sans PVC",
+      "Antidérapant des deux côtés",
+      "Facile à nettoyer",
+    ],
+    price: 59.99,
+    oldPrice: null,
+    discount: 0,
+    image: "/placeholder.svg?height=300&width=300&text=Tapis+Yoga",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Tapis+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Tapis+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Tapis+Vue+3",
+    ],
+    category: "équipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 120,
+    sku: "TY-PR-002",
+    date: "2023-11-20",
+    tags: ["yoga", "fitness", "méditation", "tapis"],
+    dimensions: {
+      width: 61,
+      height: 0.6,
+      depth: 183,
+      weight: 1.2,
     },
-    {
-      id: "hg-004",
-      name: "Tapis Roulant Pliable T-800",
-      description: "Tapis roulant motorisé avec inclinaison automatique et programmes d'entraînement",
-      price: 899.99,
-      oldPrice: 999.99,
-      discount: 10,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Home Gym",
-      rating: 4,
-      reviews: 58,
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      features: [
-        "Vitesse max: 20 km/h",
-        "Inclinaison max: 15%",
-        "20 programmes d'entraînement",
-        "Surface de course: 140 x 50 cm",
-      ],
+    colors: ["Bleu", "Violet", "Vert", "Noir"],
+    materials: ["TPE écologique", "Caoutchouc naturel"],
+    warranty: "1 an",
+    shipping: {
+      dimensions: "62 x 15 x 15 cm",
+      weight: 1.5,
+      method: "Express",
+      estimatedDelivery: "1-2 jours ouvrés",
     },
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "3",
+    name: "Haltères ajustables 2-20kg",
+    slug: "halteres-ajustables",
+    description:
+      "Paire d'haltères avec poids ajustables de 2 à 20kg, idéale pour l'entraînement à domicile. Système de verrouillage sécurisé.",
+    features: [
+      "Poids ajustable de 2 à 20kg par haltère",
+      "Système de verrouillage rapide",
+      "Poignée ergonomique antidérapante",
+      "Disques en fonte recouverts de caoutchouc",
+      "Rangement compact",
+    ],
+    price: 199.99,
+    oldPrice: 249.99,
+    discount: 20,
+    image: "/placeholder.svg?height=300&width=300&text=Haltères",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Haltères+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Haltères+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Haltères+Vue+3",
+    ],
+    category: "supplément",
+    categoryId: "3",
+    rating: 4.5,
+    reviewCount: 76,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 35,
+    sku: "HA-AJ-003",
+    date: "2023-09-05",
+    tags: ["musculation", "fitness", "haltères", "poids"],
+    dimensions: {
+      width: 40,
+      height: 20,
+      depth: 20,
+      weight: 40,
+    },
+    colors: ["Noir/Rouge", "Noir/Gris"],
+    materials: ["Fonte", "Caoutchouc", "Acier chromé"],
+    warranty: "3 ans",
+    shipping: {
+      dimensions: "45 x 25 x 25 cm",
+      weight: 42,
+      method: "Standard",
+      estimatedDelivery: "3-5 jours ouvrés",
+    },
+    relatedProducts: ["1", "7", "9"],
+  },
+  {
+    id: "4",
+    name: "Lampe de relaxation LED",
+    slug: "lampe-relaxation-led",
+    description:
+      "Lampe LED avec variations de couleurs et minuterie pour créer une ambiance relaxante dans votre espace. Contrôle tactile et télécommande incluse.",
+    features: [
+      "16 couleurs différentes",
+      "Intensité réglable",
+      "Minuterie programmable",
+      "Contrôle tactile et télécommande",
+      "Port USB intégré",
+    ],
+    price: 79.99,
+    oldPrice: null,
+    discount: 0,
+    image: "/placeholder.svg?height=300&width=300&text=Lampe+LED",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Lampe+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Lampe+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Lampe+Vue+3",
+    ],
+    category: "accessoires",
+    categoryId: "4",
+    subCategoryId: "4-4",
+    rating: 4.2,
+    reviewCount: 53,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 68,
+    sku: "LL-RL-004",
+    date: "2023-12-01",
+    tags: ["luminaire", "relaxation", "LED", "ambiance"],
+    dimensions: {
+      width: 15,
+      height: 30,
+      depth: 15,
+      weight: 0.8,
+    },
+    colors: ["Blanc", "Noir"],
+    materials: ["Plastique ABS", "Silicone"],
+    warranty: "1 an",
+    shipping: {
+      dimensions: "20 x 20 x 35 cm",
+      weight: 1.2,
+      method: "Express",
+      estimatedDelivery: "1-2 jours ouvrés",
+    },
+    relatedProducts: ["10"],
+  },
+  {
+    id: "5",
+    name: "Gants de musculation premium",
+    slug: "gants-musculation-premium",
+    description:
+      "Gants de musculation en cuir véritable avec rembourrage ergonomique pour un confort optimal et une protection maximale pendant vos séances d'entraînement.",
+    features: [
+      "Cuir véritable de haute qualité",
+      "Rembourrage ergonomique",
+      "Poignets ajustables avec velcro",
+      "Respirants et anti-transpiration",
+      "Disponibles en plusieurs tailles",
+    ],
+    price: 29.99,
+    oldPrice: 39.99,
+    discount: 25,
+    image: "/placeholder.svg?height=300&width=300&text=Gants+Musculation",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Gants+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Gants+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Gants+Vue+3",
+    ],
+    category: "accessoires",
+    categoryId: "4",
+    subCategoryId: "4-1",
+    rating: 4.6,
+    reviewCount: 87,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 150,
+    sku: "GM-PR-005",
+    date: "2023-08-15",
+    tags: ["gants", "musculation", "protection", "fitness"],
+    dimensions: {
+      width: 12,
+      height: 2,
+      depth: 20,
+      weight: 0.2,
+    },
+    colors: ["Noir", "Rouge", "Bleu"],
+    materials: ["Cuir véritable", "Néoprène", "Mesh respirant"],
+    warranty: "1 an",
+    shipping: {
+      dimensions: "15 x 10 x 5 cm",
+      weight: 0.3,
+      method: "Standard",
+      estimatedDelivery: "2-3 jours ouvrés",
+    },
+    relatedProducts: ["6", "7"],
+  },
+  {
+    id: "6",
+    name: "Ceinture de musculation en cuir",
+    slug: "ceinture-musculation-cuir",
+    description:
+      "Ceinture de musculation en cuir véritable pour un soutien lombaire optimal pendant les exercices de force. Idéale pour les soulevés de terre et les squats.",
+    features: [
+      "Cuir véritable de 4mm d'épaisseur",
+      "Boucle à double ardillon",
+      "Largeur: 10cm à l'arrière, 6cm à l'avant",
+      "Soutien lombaire renforcé",
+      "Conçue pour durer des années",
+    ],
+    price: 49.99,
+    oldPrice: 59.99,
+    discount: 16,
+    image: "/placeholder.svg?height=300&width=300&text=Ceinture+Musculation",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Ceinture+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Ceinture+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Ceinture+Vue+3",
+    ],
+    category: "accessoires",
+    categoryId: "4",
+    subCategoryId: "4-2",
+    rating: 4.8,
+    reviewCount: 112,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 75,
+    sku: "CM-CU-006",
+    date: "2023-07-10",
+    tags: ["ceinture", "musculation", "protection", "soutien lombaire"],
+    dimensions: {
+      width: 10,
+      height: 0.4,
+      depth: 110,
+      weight: 0.5,
+    },
+    colors: ["Noir", "Marron"],
+    materials: ["Cuir véritable", "Métal"],
+    warranty: "2 ans",
+    shipping: {
+      dimensions: "30 x 15 x 5 cm",
+      weight: 0.6,
+      method: "Standard",
+      estimatedDelivery: "2-3 jours ouvrés",
+    },
+    relatedProducts: ["5", "7"],
+  },
+  {
+    id: "7",
+    name: "Sac de sport professionnel",
+    slug: "sac-sport-professionnel",
+    description:
+      "Sac de sport spacieux et résistant avec compartiments spécialisés pour vos chaussures, vêtements et accessoires. Parfait pour la salle de sport ou les déplacements.",
+    features: [
+      "Capacité: 45L",
+      "Compartiment séparé pour chaussures",
+      "Poche imperméable pour vêtements humides",
+      "Bandoulière rembourrée ajustable",
+      "Matériaux résistants à l'eau",
+    ],
+    price: 69.99,
+    oldPrice: 89.99,
+    discount: 22,
+    image: "/placeholder.svg?height=300&width=300&text=Sac+Sport",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Sac+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Sac+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Sac+Vue+3",
+    ],
+    category: "accessoires",
+    categoryId: "4",
+    subCategoryId: "4-3",
+    rating: 4.7,
+    reviewCount: 95,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 60,
+    sku: "SS-PR-007",
+    date: "2023-11-05",
+    tags: ["sac", "sport", "rangement", "voyage"],
+    dimensions: {
+      width: 60,
+      height: 30,
+      depth: 30,
+      weight: 1.2,
+    },
+    colors: ["Noir", "Bleu marine", "Gris"],
+    materials: ["Polyester 1200D", "Nylon", "Mesh respirant"],
+    warranty: "2 ans",
+    shipping: {
+      dimensions: "65 x 35 x 35 cm",
+      weight: 1.5,
+      method: "Standard",
+      estimatedDelivery: "2-4 jours ouvrés",
+    },
+    relatedProducts: ["5", "6"],
+  },
+]
+
+// Marques partenaires
+export const brands = [
+  {
+    id: "1",
+    name: "SportElite",
+    logo: "/placeholder.svg?height=80&width=160&text=SportElite",
+    description: "Équipements de fitness haut de gamme",
+  },
+  {
+    id: "2",
+    name: "EcoFit",
+    logo: "/placeholder.svg?height=80&width=160&text=EcoFit",
+    description: "Produits écologiques pour le fitness",
+  },
+  {
+    id: "3",
+    name: "LuxLight",
+    logo: "/placeholder.svg?height=80&width=160&text=LuxLight",
+    description: "Solutions d'éclairage innovantes",
+  },
+  {
+    id: "4",
+    name: "ComfortZone",
+    logo: "/placeholder.svg?height=80&width=160&text=ComfortZone",
+    description: "Textiles et accessoires de confort",
+  },
+  {
+    id: "5",
+    name: "OrganizeIt",
+    logo: "/placeholder.svg?height=80&width=160&text=OrganizeIt",
+    description: "Solutions de rangement intelligentes",
+  },
+]
+
+// Filtres disponibles
+export const filters = {
+  price: {
+    min: 0,
+    max: 1000,
+    step: 10,
+  },
+  ratings: [
+    { value: 4, label: "4 étoiles et plus" },
+    { value: 3, label: "3 étoiles et plus" },
+    { value: 2, label: "2 étoiles et plus" },
+    { value: 1, label: "1 étoile et plus" },
   ],
-
-  equipmentPro: [
-    {
-      id: "ep-001",
-      name: "Haltères Hexagonaux 5kg (Paire)",
-      description: "Haltères professionnels avec revêtement antidérapant",
-      price: 89.99,
-      oldPrice: 99.99,
-      discount: 10,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Équipement Pro",
-      rating: 4,
-      reviews: 56,
-      inStock: true,
-      isNew: false,
-      isBestseller: true,
-      features: [
-        "Acier de haute qualité",
-        "Revêtement caoutchouc antidérapant",
-        "Design hexagonal anti-roulement",
-        "Poignée chromée ergonomique",
-      ],
-    },
-    {
-      id: "ep-002",
-      name: "Barre Olympique 20kg",
-      description: "Barre olympique professionnelle en acier trempé avec roulements à aiguilles",
-      price: 249.99,
-      oldPrice: null,
-      discount: null,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Équipement Pro",
-      rating: 5,
-      reviews: 32,
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      features: ["Longueur: 220 cm", "Poids: 20 kg", "Charge maximale: 700 kg", "Roulements à aiguilles"],
-    },
-    {
-      id: "ep-003",
-      name: "Kettlebell Competition 16kg",
-      description: "Kettlebell de compétition en acier avec poignée ergonomique",
-      price: 79.99,
-      oldPrice: 89.99,
-      discount: 10,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Équipement Pro",
-      rating: 5,
-      reviews: 28,
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      features: [
-        "Acier de haute qualité",
-        "Dimensions standardisées",
-        "Poignée ergonomique",
-        "Base plate anti-roulement",
-      ],
-    },
-    {
-      id: "ep-004",
-      name: "Disques Bumper 5kg (Paire)",
-      description: "Disques bumper en caoutchouc haute densité pour haltérophilie",
-      price: 119.99,
-      oldPrice: null,
-      discount: null,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Équipement Pro",
-      rating: 4,
-      reviews: 42,
-      inStock: true,
-      isNew: true,
-      isBestseller: false,
-      features: [
-        "Caoutchouc haute densité",
-        "Bague en acier inoxydable",
-        "Diamètre olympique: 45 cm",
-        "Rebond minimal",
-      ],
-    },
-  ],
-
-  supplements: [
-    {
-      id: "sp-001",
-      name: "Protéine Whey Isolate Premium",
-      description: "Protéine de haute qualité pour la récupération musculaire",
-      price: 59.99,
-      oldPrice: null,
-      discount: null,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Suppléments",
-      rating: 5,
-      reviews: 128,
-      inStock: true,
-      isNew: false,
-      isBestseller: true,
-      features: ["90% de protéines", "Faible en glucides et lipides", "25g de protéines par dose", "Saveur: Chocolat"],
-    },
-    {
-      id: "sp-002",
-      name: "BCAA 8:1:1 Formula",
-      description: "Acides aminés branchés pour la récupération et la croissance musculaire",
-      price: 34.99,
-      oldPrice: 39.99,
-      discount: 12,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Suppléments",
-      rating: 4,
-      reviews: 76,
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      features: [
-        "Ratio 8:1:1 (Leucine, Isoleucine, Valine)",
-        "Sans sucre ni calories",
-        "7g de BCAA par dose",
-        "Saveur: Fruits rouges",
-      ],
-    },
-    {
-      id: "sp-003",
-      name: "Créatine Monohydrate Micronisée",
-      description: "Créatine pure pour augmenter la force et la performance",
-      price: 29.99,
-      oldPrice: null,
-      discount: null,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Suppléments",
-      rating: 5,
-      reviews: 94,
-      inStock: true,
-      isNew: false,
-      isBestseller: true,
-      features: [
-        "Créatine monohydrate 100% pure",
-        "5g par dose",
-        "Micronisée pour une meilleure absorption",
-        "Sans additifs",
-      ],
-    },
-    {
-      id: "sp-004",
-      name: "Pre-Workout Extreme",
-      description: "Formule pré-entraînement pour maximiser l'énergie et la concentration",
-      price: 44.99,
-      oldPrice: 49.99,
-      discount: 10,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Suppléments",
-      rating: 4,
-      reviews: 68,
-      inStock: true,
-      isNew: true,
-      isBestseller: false,
-      features: [
-        "300mg de caféine par dose",
-        "Avec bêta-alanine et citrulline",
-        "Sans sucre ajouté",
-        "Saveur: Fruit du dragon",
-      ],
-    },
-  ],
-
-  fitnessAccessories: [
-    {
-      id: "fa-001",
-      name: "Bandes de Résistance Pro (Set de 5)",
-      description: "Set de bandes élastiques de différentes résistances pour un entraînement complet",
-      price: 29.99,
-      oldPrice: 34.99,
-      discount: 15,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Musculation",
-      rating: 4,
-      reviews: 112,
-      inStock: true,
-      isNew: false,
-      isBestseller: true,
-      features: [
-        "5 niveaux de résistance (5-40kg)",
-        "Latex naturel haute qualité",
-        "Poignées ergonomiques incluses",
-        "Sac de transport inclus",
-      ],
-    },
-    {
-      id: "fa-002",
-      name: "Corde à Sauter Pro Speed",
-      description: "Corde à sauter professionnelle avec roulements à billes pour CrossFit et boxe",
-      price: 19.99,
-      oldPrice: null,
-      discount: null,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Musculation",
-      rating: 5,
-      reviews: 87,
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      features: [
-        "Roulements à billes haute vitesse",
-        "Câble ajustable jusqu'à 3m",
-        "Poignées en aluminium légères",
-        "Idéale pour double-unders",
-      ],
-    },
-    {
-      id: "fa-003",
-      name: "Roue Abdominale Double",
-      description: "Roue abdominale à double roue pour plus de stabilité et d'efficacité",
-      price: 24.99,
-      oldPrice: 29.99,
-      discount: 15,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Musculation",
-      rating: 4,
-      reviews: 64,
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      features: [
-        "Double roue pour plus de stabilité",
-        "Poignées ergonomiques antidérapantes",
-        "Tapis de genoux inclus",
-        "Supporte jusqu'à 150kg",
-      ],
-    },
-    {
-      id: "fa-004",
-      name: "Gants de Musculation Premium",
-      description: "Gants de musculation avec protection des paumes et soutien des poignets",
-      price: 24.99,
-      oldPrice: null,
-      discount: null,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Musculation",
-      rating: 4,
-      reviews: 93,
-      inStock: true,
-      isNew: true,
-      isBestseller: false,
-      features: [
-        "Cuir synthétique respirant",
-        "Rembourrage en gel anti-ampoules",
-        "Soutien des poignets intégré",
-        "Disponible en tailles S à XL",
-      ],
-    },
-  ],
-
-  martialArts: [
-    {
-      id: "ma-001",
-      name: "Gants de Boxe Pro Series",
-      description: "Gants de boxe professionnels avec rembourrage optimal",
-      price: 79.99,
-      oldPrice: null,
-      discount: null,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Arts Martiaux",
-      rating: 4,
-      reviews: 37,
-      inStock: true,
-      isNew: false,
-      isBestseller: true,
-      features: [
-        "Cuir véritable haute qualité",
-        "Rembourrage multicouche",
-        "Fermeture par velcro renforcé",
-        "Disponible en 10oz, 12oz, 14oz et 16oz",
-      ],
-    },
-    {
-      id: "ma-002",
-      name: "Sac de Frappe Heavy Duty 150cm",
-      description: "Sac de frappe professionnel rempli pour boxe et arts martiaux",
-      price: 149.99,
-      oldPrice: 179.99,
-      discount: 15,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Arts Martiaux",
-      rating: 5,
-      reviews: 28,
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      features: [
-        "Cuir synthétique ultra-résistant",
-        "Remplissage textile compressé",
-        "Chaînes et crochet renforcés",
-        "Poids: 45kg",
-      ],
-    },
-    {
-      id: "ma-003",
-      name: "Kimono Jiu-Jitsu Brésilien Elite",
-      description: "Kimono de JJB de qualité compétition avec veste renforcée",
-      price: 129.99,
-      oldPrice: null,
-      discount: null,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Arts Martiaux",
-      rating: 5,
-      reviews: 19,
-      inStock: true,
-      isNew: true,
-      isBestseller: false,
-      features: [
-        "Coton perlé 550g",
-        "Veste renforcée aux points de tension",
-        "Pantalon ripstop",
-        "Disponible en blanc, bleu et noir",
-      ],
-    },
-    {
-      id: "ma-004",
-      name: "Protège-Dents Double Protection",
-      description: "Protège-dents professionnel avec étui de rangement",
-      price: 19.99,
-      oldPrice: 24.99,
-      discount: 20,
-      image: "/placeholder.svg?height=600&width=600",
-      category: "Arts Martiaux",
-      rating: 4,
-      reviews: 45,
-      inStock: true,
-      isNew: false,
-      isBestseller: false,
-      features: [
-        "Silicone médical thermoformable",
-        "Double protection (supérieure et inférieure)",
-        "Respirabilité optimale",
-        "Étui de rangement inclus",
-      ],
-    },
+  sortOptions: [
+    { value: "featured", label: "Recommandés" },
+    { value: "price-asc", label: "Prix croissant" },
+    { value: "price-desc", label: "Prix décroissant" },
+    { value: "newest", label: "Nouveautés" },
+    { value: "rating", label: "Meilleures notes" },
+    { value: "discount", label: "Promotions" },
   ],
 }
 
-// Featured products from all categories
-export const featuredProducts = [
-  products.homeGym[1], // Banc de Musculation Réglable
-  products.supplements[0], // Protéine Whey Isolate Premium
-  products.equipmentPro[0], // Haltères Hexagonaux 5kg
-  products.martialArts[0], // Gants de Boxe Pro Series
-  products.fitnessAccessories[0], // Bandes de Résistance Pro
-  products.supplements[2], // Créatine Monohydrate
-]
+// Fonctions utilitaires pour les produits
+export const productUtils = {
+  // Obtenir les produits en promotion
+  getDiscountedProducts: () => products.filter((product) => product.discount > 0),
 
-// New arrivals
-export const newArrivals = [
-  products.homeGym[2], // Rack à Squat Professionnel
-  products.equipmentPro[3], // Disques Bumper 5kg
-  products.supplements[3], // Pre-Workout Extreme
-  products.fitnessAccessories[3], // Gants de Musculation Premium
-  products.martialArts[2], // Kimono Jiu-Jitsu Brésilien Elite
-]
+  // Obtenir les nouveaux produits
+  getNewProducts: () => products.filter((product) => product.isNew),
 
-// Best sellers
-export const bestSellers = [
-  products.homeGym[0], // Station de Musculation Multifonction Pro
-  products.homeGym[1], // Banc de Musculation Réglable
-  products.equipmentPro[0], // Haltères Hexagonaux 5kg
-  products.supplements[0], // Protéine Whey Isolate Premium
-  products.supplements[2], // Créatine Monohydrate Micronisée
-  products.fitnessAccessories[0], // Bandes de Résistance Pro
-  products.martialArts[0], // Gants de Boxe Pro Series
-]
+  // Obtenir les produits mis en avant
+  getFeaturedProducts: () => products.filter((product) => product.isFeatured),
 
-// Special offers
-export const specialOffers = [
-  {
-    ...products.homeGym[1],
-    specialPrice: 229.99,
-    offerText: "Offre limitée - 20€ de réduction supplémentaire",
-  },
-  {
-    ...products.supplements[1],
-    specialPrice: 29.99,
-    offerText: "Pack économique - 5€ de réduction",
-  },
-  {
-    ...products.martialArts[1],
-    specialPrice: 129.99,
-    offerText: "Promo flash - 20€ de réduction",
-  },
-]
+  // Obtenir les produits par catégorie
+  getProductsByCategory: (categoryId) => products.filter((product) => product.categoryId === categoryId),
 
-// Categories data
-export const categories = [
-  {
-    id: "cat-1",
-    name: "Home Gym",
-    description: "Équipez votre espace d'entraînement personnel avec notre gamme complète",
-    image: "/placeholder.svg?height=600&width=600",
-    href: "/categories/home-gym",
-    productCount: products.homeGym.length,
-  },
-  {
-    id: "cat-2",
-    name: "Équipement Professionnel",
-    description: "Matériel de qualité professionnelle pour les salles et athlètes exigeants",
-    image: "/placeholder.svg?height=600&width=600",
-    href: "/categories/equipement-professionnel",
-    productCount: products.equipmentPro.length,
-  },
-  {
-    id: "cat-3",
-    name: "Suppléments Alimentaires",
-    description: "Optimisez vos performances et votre récupération avec nos suppléments",
-    image: "/placeholder.svg?height=600&width=600",
-    href: "/categories/supplements",
-    productCount: products.supplements.length,
-  },
-  {
-    id: "cat-4",
-    name: "Accessoires de Musculation",
-    description: "Tous les accessoires essentiels pour compléter votre entraînement",
-    image: "/placeholder.svg?height=600&width=600",
-    href: "/categories/musculation",
-    productCount: products.fitnessAccessories.length,
-  },
-  {
-    id: "cat-5",
-    name: "Arts Martiaux",
-    description: "Équipement spécialisé pour tous les arts martiaux et sports de combat",
-    image: "/placeholder.svg?height=600&width=600",
-    href: "/categories/arts-martiaux",
-    productCount: products.martialArts.length,
-  },
-]
+  // Obtenir les produits par sous-catégorie
+  getProductsBySubCategory: (subCategoryId) => products.filter((product) => product.subCategoryId === subCategoryId),
 
-// Brands data
-export const brands = [
-  {
-    id: "brand-1",
-    name: "PowerFlex",
-    logo: "/placeholder.svg?height=200&width=200",
-    description: "Équipement de musculation haut de gamme",
+  // Obtenir les produits similaires
+  getRelatedProducts: (productId) => {
+    const product = products.find((p) => p.id === productId)
+    if (!product) return []
+    return products
+      .filter(
+        (p) =>
+          product.relatedProducts?.includes(p.id) ||
+          (p.categoryId === product.categoryId && p.id !== productId) ||
+          (product.subCategoryId && p.subCategoryId === product.subCategoryId && p.id !== productId),
+      )
+      .slice(0, 4)
   },
-  {
-    id: "brand-2",
-    name: "NutriPro",
-    logo: "/placeholder.svg?height=200&width=200",
-    description: "Suppléments nutritionnels de qualité supérieure",
-  },
-  {
-    id: "brand-3",
-    name: "FightMaster",
-    logo: "/placeholder.svg?height=200&width=200",
-    description: "Spécialiste des équipements d'arts martiaux",
-  },
-  {
-    id: "brand-4",
-    name: "FitLife",
-    logo: "/placeholder.svg?height=200&width=200",
-    description: "Accessoires de fitness innovants",
-  },
-  {
-    id: "brand-5",
-    name: "IronForce",
-    logo: "/placeholder.svg?height=200&width=200",
-    description: "Équipement d'haltérophilie professionnel",
-  },
-  {
-    id: "brand-6",
-    name: "VitaMax",
-    logo: "/placeholder.svg?height=200&width=200",
-    description: "Vitamines et compléments alimentaires",
-  },
-]
 
-// Blog posts
-export const blogPosts = [
-  {
-    id: "blog-1",
-    title: "Comment optimiser votre récupération musculaire",
-    excerpt: "Découvrez les meilleures stratégies pour accélérer votre récupération et maximiser vos gains.",
-    image: "/placeholder.svg?height=600&width=800",
-    date: "2023-05-15",
-    author: "Thomas Martin",
-    category: "Nutrition",
-    url: "/blog/optimiser-recuperation-musculaire",
+  // Rechercher des produits
+  searchProducts: (query) => {
+    const searchTerm = query.toLowerCase()
+    return products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchTerm) ||
+        product.description.toLowerCase().includes(searchTerm) ||
+        product.tags.some((tag) => tag.toLowerCase().includes(searchTerm)),
+    )
   },
-  {
-    id: "blog-2",
-    title: "Guide complet pour créer votre home gym",
-    excerpt: "Tout ce que vous devez savoir pour aménager un espace d'entraînement efficace chez vous.",
-    image: "/placeholder.svg?height=600&width=800",
-    date: "2023-06-02",
-    author: "Sophie Dubois",
-    category: "Équipement",
-    url: "/blog/guide-home-gym",
-  },
-  {
-    id: "blog-3",
-    title: "Les bases du Jiu-Jitsu Brésilien pour débutants",
-    excerpt: "Apprenez les fondamentaux de cet art martial complet qui révolutionne les sports de combat.",
-    image: "/placeholder.svg?height=600&width=800",
-    date: "2023-06-18",
-    author: "Karim Benali",
-    category: "Arts Martiaux",
-    url: "/blog/bases-jiu-jitsu-bresilien",
-  },
-]
 
-// FAQ data
-export const faqs = [
-  {
-    question: "Quels sont les délais de livraison ?",
-    answer:
-      "Nous livrons partout en France métropolitaine sous 2 à 5 jours ouvrés. Pour les DOM-TOM et l'international, comptez 5 à 10 jours ouvrés.",
+  // Obtenir une sous-catégorie par ID
+  getSubCategoryById: (subCategoryId) => {
+    for (const category of categories) {
+      if (category.subCategories) {
+        const subCategory = category.subCategories.find((sub) => sub.id === subCategoryId)
+        if (subCategory) return subCategory
+      }
+    }
+    return null
   },
-  {
-    question: "Comment retourner un produit ?",
-    answer:
-      "Vous disposez de 30 jours pour retourner un produit. Il doit être dans son état d'origine, non utilisé et dans son emballage d'origine. Contactez notre service client pour initier un retour.",
+
+  // Obtenir toutes les sous-catégories d'une catégorie
+  getSubCategoriesByCategoryId: (categoryId) => {
+    const category = categories.find((cat) => cat.id === categoryId)
+    return category?.subCategories || []
   },
-  {
-    question: "Les suppléments sont-ils testés pour les substances interdites ?",
-    answer:
-      "Oui, tous nos suppléments sont testés en laboratoire et certifiés sans substances interdites par les fédérations sportives internationales.",
-  },
-  {
-    question: "Proposez-vous un service d'installation pour les équipements lourds ?",
-    answer:
-      "Oui, nous proposons un service d'installation pour les équipements lourds comme les stations de musculation. Ce service est disponible en option lors de votre commande.",
-  },
-  {
-    question: "Puis-je modifier ma commande après l'avoir passée ?",
-    answer:
-      "Vous pouvez modifier votre commande dans les 2 heures suivant sa validation. Au-delà, contactez notre service client qui fera son possible pour répondre à votre demande.",
-  },
-]
+}
 

@@ -1,37 +1,20 @@
-import { Inter, Poppins } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
-import { CartProvider } from "@/context/CartContext"
-import { FavoritesProvider } from "@/context/FavoritesContext"
-import { ThemeProvider } from "@/components/ThemeProvider"
-import { cn } from "@/lib/utils"
+import { ThemeProvider } from "@/components/theme-provider"
+import { CartProvider } from "@/context/cart-context"
+import { FavoritesProvider } from "@/context/favorites-context"
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-})
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-poppins",
-  display: "swap",
-})
-
-export const metadata = {
-  title: "IRONZ PRO | Équipement de Fitness et Suppléments",
-  description:
-    "Découvrez notre gamme d'équipements de fitness, suppléments alimentaires et accessoires de musculation et d'arts martiaux de qualité professionnelle.",
-  keywords: "home gym, équipement fitness, suppléments, musculation, arts martiaux, protéine, BCAA",
-}
+const inter = Inter({ subsets: ["latin"] })
 
 export default function RootLayout({ children }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable, poppins.variable)}>
+      <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <CartProvider>
-            <FavoritesProvider>{children}</FavoritesProvider>
+            <FavoritesProvider>
+              <main>{children}</main>
+            </FavoritesProvider>
           </CartProvider>
         </ThemeProvider>
       </body>

@@ -4,33 +4,24 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import {
-  ArrowLeft,
-  Truck,
-  ShieldCheck,
-  Check,
-  ChevronRight,
-  Phone,
-  Mail,
-  User,
-  Home,
-  ChevronsRight,
-  AlertCircle,
-  CurrencyIcon as Cash,
-} from "lucide-react"
-
+import { ChevronLeft, CreditCard, Truck, ShieldCheck, Check, Plus, Minus, Trash2, Info } from "lucide-react"
+import { useCart } from "@/context/cart-context"
+import { cn } from "@/lib/utils"
 import Navbar from "@/components/navbar"
+import Footer from "@/components/footer"
+
 import { Button } from "@/components/ui/button"
-import { useCart } from "@/context/CartContext"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const { cart, cartTotal, clearCart } = useCart()
-  const [mounted, setMounted] = useState(false)
-  const [currentStep, setCurrentStep] = useState(1)
+  const { cart, updateQuantity, removeFromCart, cartTotal, clearCart } = useCart()
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -40,32 +31,43 @@ export default function CheckoutPage() {
     city: "",
     postalCode: "",
     country: "France",
-    saveInfo: true,
-    notes: "",
+    paymentMethod: "card",
+    shippingMethod: "standard",
+    saveInfo: false,
   })
-  const [errors, setErrors] = useState({})
+
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState({})
   const [orderComplete, setOrderComplete] = useState(false)
   const [orderNumber, setOrderNumber] = useState("")
 
-  // Éviter les erreurs d'hydratation
+  // Redirect if cart is empty
   useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  // Calculer les frais de livraison
-  const shippingCost = cartTotal > 50 ? 0 : 5.99
-  const totalWithShipping = cartTotal + shippingCost
-
-  // Vérifier si le panier est vide
-  const isCartEmpty = !mounted || cart.length === 0
-
-  // Rediriger vers le panier si vide
-  useEffect(() => {
-    if (mounted && cart.length === 0 && !orderComplete) {
-      router.push("/panier")
+    if (cart.length === 0 && !orderComplete) {
+      router.push("/produits")
     }
-  }, [mounted, cart, router, orderComplete])
+  }, [cart, router, orderComplete])
+
+  // Shipping costs
+  const shippingCosts = {
+    standard: 5.99,
+    express: 12.99,
+    free: 0,
+  }
+
+  // Calculate totals
+  const subtotal = cartTotal
+  const shipping = shippingCosts[formData.shippingMethod]
+  const tax = subtotal * 0.2 // 20% VAT
+  const total = subtotal + shipping + tax
+
+  // Format price
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+    }).format(price)
+  }
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -74,7 +76,7 @@ export default function CheckoutPage() {
       [name]: type === "checkbox" ? checked : value,
     })
 
-    // Effacer l'erreur lorsque l'utilisateur commence à taper
+    // Clear error when field is edited
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -86,569 +88,536 @@ export default function CheckoutPage() {
   const validateForm = () => {
     const newErrors = {}
 
-    // Validation des champs obligatoires
-    if (!formData.firstName.trim()) newErrors.firstName = "Le prénom est requis"
-    if (!formData.lastName.trim()) newErrors.lastName = "Le nom est requis"
-    if (!formData.email.trim()) newErrors.email = "L'email est requis"
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "L'email n'est pas valide"
-    if (!formData.phone.trim()) newErrors.phone = "Le téléphone est requis"
-    if (!formData.address.trim()) newErrors.address = "L'adresse est requise"
-    if (!formData.city.trim()) newErrors.city = "La ville est requise"
-    if (!formData.postalCode.trim()) newErrors.postalCode = "Le code postal est requis"
-    else if (!/^\d{5}$/.test(formData.postalCode)) newErrors.postalCode = "Le code postal doit contenir 5 chiffres"
+    // Required fields
+    const requiredFields = ["firstName", "lastName", "email", "phone", "address", "city", "postalCode", "country"]
+    requiredFields.forEach((field) => {
+      if (!formData[field]) {
+        newErrors[field] = "Ce champ est requis"
+      }
+    })
+
+    // Email validation
+    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Adresse email invalide"
+    }
+
+    // Phone validation
+    if (formData.phone && !/^[0-9+\s()-]{8,15}$/.test(formData.phone)) {
+      newErrors.phone = "Numéro de téléphone invalide"
+    }
+
+    // Postal code validation for France
+    if (formData.country === "France" && formData.postalCode && !/^[0-9]{5}$/.test(formData.postalCode)) {
+      newErrors.postalCode = "Code postal invalide (5 chiffres)"
+    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const handleNextStep = () => {
-    if (currentStep === 1) {
-      if (validateForm()) {
-        setCurrentStep(2)
-      }
-    }
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault()
 
-  const handlePrevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
-    }
-  }
-
-  const formatPhoneForWhatsApp = (phone) => {
-    // Supprimer tous les caractères non numériques
-    let cleaned = phone.replace(/\D/g, "")
-
-    // S'assurer que le numéro commence par le code pays
-    if (!cleaned.startsWith("33") && cleaned.startsWith("0")) {
-      cleaned = "33" + cleaned.substring(1)
-    } else if (!cleaned.startsWith("33")) {
-      cleaned = "33" + cleaned
+    if (!validateForm()) {
+      return
     }
 
-    return cleaned
-  }
-
-  const handleSubmitOrder = async () => {
     setIsSubmitting(true)
 
-    try {
-      // Simuler un délai de traitement
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // Générer un numéro de commande aléatoire
-      const randomOrderNumber = `ORD-${Math.floor(Math.random() * 1000000)
-        .toString()
-        .padStart(6, "0")}`
+    // Simulate API call
+    setTimeout(() => {
+      // Generate random order number
+      const randomOrderNumber =
+        "ORD-" +
+        Math.floor(Math.random() * 1000000)
+          .toString()
+          .padStart(6, "0")
       setOrderNumber(randomOrderNumber)
-
-      // Préparer le message WhatsApp
-      const whatsappPhone = formatPhoneForWhatsApp(formData.phone)
-      const orderItems = cart.map((item) => `${item.quantity}x ${item.name} (${item.price.toFixed(2)}€)`).join("\n")
-
-      const whatsappMessage = encodeURIComponent(
-        `*Nouvelle commande: ${randomOrderNumber}*\n\n` +
-          `*Client:* ${formData.firstName} ${formData.lastName}\n` +
-          `*Email:* ${formData.email}\n` +
-          `*Téléphone:* ${formData.phone}\n\n` +
-          `*Adresse de livraison:*\n` +
-          `${formData.address}\n` +
-          `${formData.postalCode} ${formData.city}\n` +
-          `${formData.country}\n\n` +
-          `*Articles commandés:*\n${orderItems}\n\n` +
-          `*Sous-total:* ${cartTotal.toFixed(2)}€\n` +
-          `*Frais de livraison:* ${shippingCost === 0 ? "Gratuit" : `${shippingCost.toFixed(2)}€`}\n` +
-          `*Total:* ${totalWithShipping.toFixed(2)}€\n\n` +
-          `*Mode de paiement:* Espèces à la livraison\n\n` +
-          `${formData.notes ? `*Notes:* ${formData.notes}\n\n` : ""}` +
-          `Merci pour votre commande!`,
-      )
-
-      // Marquer la commande comme complète
       setOrderComplete(true)
-
-      // Vider le panier
       clearCart()
-
-      // Ouvrir WhatsApp dans un nouvel onglet
-      window.open(`https://wa.me/${whatsappPhone}?text=${whatsappMessage}`, "_blank")
-    } catch (error) {
-      console.error("Erreur lors de la soumission de la commande:", error)
-    } finally {
       setIsSubmitting(false)
-    }
+    }, 1500)
   }
 
   if (orderComplete) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <>
         <Navbar />
+        <main className="bg-gray-50 dark:bg-gray-900 py-16">
+          <div className="container mx-auto px-4 max-w-3xl">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8 text-center">
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
+              </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
-          <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 rounded-lg shadow-md p-8 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 mb-6">
-              <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
-            </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Commande confirmée !</h1>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                Merci pour votre commande. Votre numéro de commande est{" "}
+                <span className="font-medium text-gray-900 dark:text-white">{orderNumber}</span>. Vous recevrez un email
+                de confirmation avec les détails de votre commande.
+              </p>
 
-            <h1 className="text-3xl font-heading font-bold mb-4">Commande confirmée!</h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-2">
-              Votre commande #{orderNumber} a été enregistrée avec succès.
-            </p>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Un message WhatsApp a été envoyé avec les détails de votre commande.
-            </p>
-
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6 text-left">
-              <div className="flex">
-                <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-medium text-yellow-800 dark:text-yellow-300 mb-1">Paiement à la livraison</h3>
-                  <p className="text-sm text-yellow-700 dark:text-yellow-400">
-                    Veuillez préparer le montant exact de {totalWithShipping.toFixed(2)}€ en espèces pour le livreur.
-                  </p>
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 mb-8">
+                <h2 className="font-medium text-gray-900 dark:text-white mb-2">Récapitulatif</h2>
+                <div className="flex justify-between mb-1">
+                  <span className="text-gray-600 dark:text-gray-400">Total</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{formatPrice(total)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Date</span>
+                  <span className="font-medium text-gray-900 dark:text-white">
+                    {new Date().toLocaleDateString("fr-FR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
                 </div>
               </div>
-            </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/">
-                <Button className="bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-white dark:text-gray-900">
-                  Retour à l'accueil
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild variant="outline">
+                  <Link href="/mon-compte/commandes">Voir mes commandes</Link>
                 </Button>
-              </Link>
-
-              <Link href="/produits">
-                <Button variant="outline" className="border-gray-300 dark:border-gray-600">
-                  Continuer mes achats
+                <Button asChild>
+                  <Link href="/produits">Continuer mes achats</Link>
                 </Button>
-              </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (isCartEmpty) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-        <Navbar />
-        <div className="flex items-center justify-center h-[calc(100vh-64px)]">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-400">Chargement...</p>
-          </div>
-        </div>
-      </div>
+        </main>
+        <Footer />
+      </>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <>
       <Navbar />
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
-        <div className="flex items-center mb-8">
-          <Link
-            href="/panier"
-            className="inline-flex items-center text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour au panier
-          </Link>
-        </div>
-
-        <h1 className="text-3xl md:text-4xl font-heading font-bold mb-8">Finaliser ma commande</h1>
-
-        {/* Checkout Steps */}
-        <div className="mb-8">
-          <div className="flex items-center">
-            <div
-              className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep >= 1
-                  ? "bg-yellow-500 dark:bg-yellow-400 text-white dark:text-gray-900"
-                  : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
-              }`}
-            >
-              <span className="text-sm font-medium">1</span>
-            </div>
-            <div
-              className={`flex-1 h-1 mx-2 ${
-                currentStep >= 2 ? "bg-yellow-500 dark:bg-yellow-400" : "bg-gray-200 dark:bg-gray-700"
-              }`}
-            ></div>
-            <div
-              className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                currentStep >= 2
-                  ? "bg-yellow-500 dark:bg-yellow-400 text-white dark:text-gray-900"
-                  : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
-              }`}
-            >
-              <span className="text-sm font-medium">2</span>
-            </div>
+      <main className="bg-gray-50 dark:bg-gray-900 py-8 md:py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center mb-8">
+            <Button variant="ghost" asChild className="mr-4">
+              <Link href="/produits">
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Retour
+              </Link>
+            </Button>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Finaliser votre commande</h1>
           </div>
-          <div className="flex justify-between mt-2">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Informations</span>
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Paiement</span>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Checkout Form */}
-          <div className="lg:col-span-2">
-            {currentStep === 1 && (
-              <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-heading font-semibold mb-6">Informations de livraison</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Checkout Form */}
+            <div className="lg:col-span-2">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+                <form onSubmit={handleSubmit}>
+                  {/* Shipping Information */}
+                  <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                      Informations de livraison
+                    </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <Label htmlFor="firstName" className="mb-1">
-                      Prénom <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="firstName"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      className={errors.firstName ? "border-red-500" : ""}
-                    />
-                    {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
-                  </div>
-
-                  <div>
-                    <Label htmlFor="lastName" className="mb-1">
-                      Nom <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="lastName"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      className={errors.lastName ? "border-red-500" : ""}
-                    />
-                    {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <Label htmlFor="email" className="mb-1">
-                      Email <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className={errors.email ? "border-red-500" : ""}
-                    />
-                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-                  </div>
-
-                  <div>
-                    <Label htmlFor="phone" className="mb-1">
-                      Téléphone <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className={errors.phone ? "border-red-500" : ""}
-                    />
-                    {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      Utilisé pour les notifications WhatsApp
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <Label htmlFor="address" className="mb-1">
-                    Adresse <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    id="address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                    className={errors.address ? "border-red-500" : ""}
-                  />
-                  {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div>
-                    <Label htmlFor="postalCode" className="mb-1">
-                      Code postal <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="postalCode"
-                      name="postalCode"
-                      value={formData.postalCode}
-                      onChange={handleInputChange}
-                      className={errors.postalCode ? "border-red-500" : ""}
-                    />
-                    {errors.postalCode && <p className="text-red-500 text-sm mt-1">{errors.postalCode}</p>}
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <Label htmlFor="city" className="mb-1">
-                      Ville <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="city"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleInputChange}
-                      className={errors.city ? "border-red-500" : ""}
-                    />
-                    {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <Label htmlFor="country" className="mb-1">
-                    Pays <span className="text-red-500">*</span>
-                  </Label>
-                  <select
-                    id="country"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  >
-                    <option value="France">France</option>
-                    <option value="Belgique">Belgique</option>
-                    <option value="Suisse">Suisse</option>
-                    <option value="Luxembourg">Luxembourg</option>
-                  </select>
-                </div>
-
-                <div className="mb-6">
-                  <Label htmlFor="notes" className="mb-1">
-                    Notes de commande (optionnel)
-                  </Label>
-                  <textarea
-                    id="notes"
-                    name="notes"
-                    value={formData.notes}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                    placeholder="Instructions spéciales pour la livraison..."
-                  ></textarea>
-                </div>
-
-                <div className="flex items-center mb-6">
-                  <Checkbox
-                    id="saveInfo"
-                    name="saveInfo"
-                    checked={formData.saveInfo}
-                    onCheckedChange={(checked) => setFormData({ ...formData, saveInfo: checked })}
-                  />
-                  <Label htmlFor="saveInfo" className="ml-2 cursor-pointer">
-                    Sauvegarder ces informations pour la prochaine fois
-                  </Label>
-                </div>
-
-                <Button
-                  onClick={handleNextStep}
-                  className="w-full bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-white dark:text-gray-900 py-6"
-                >
-                  Continuer vers le paiement
-                  <ChevronRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-            )}
-
-            {currentStep === 2 && (
-              <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-heading font-semibold mb-6">Mode de paiement</h2>
-
-                <div className="mb-6">
-                  <div className="border border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4">
-                    <div className="flex items-center">
-                      <Cash className="h-6 w-6 text-yellow-600 dark:text-yellow-400 mr-3 flex-shrink-0" />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <h3 className="font-medium text-gray-900 dark:text-white">Paiement à la livraison</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          Payez en espèces à la réception de votre commande
-                        </p>
+                        <Label htmlFor="firstName" className={cn(errors.firstName && "text-red-500")}>
+                          Prénom *
+                        </Label>
+                        <Input
+                          id="firstName"
+                          name="firstName"
+                          value={formData.firstName}
+                          onChange={handleInputChange}
+                          className={cn(errors.firstName && "border-red-500")}
+                        />
+                        {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
+                      </div>
+
+                      <div>
+                        <Label htmlFor="lastName" className={cn(errors.lastName && "text-red-500")}>
+                          Nom *
+                        </Label>
+                        <Input
+                          id="lastName"
+                          name="lastName"
+                          value={formData.lastName}
+                          onChange={handleInputChange}
+                          className={cn(errors.lastName && "border-red-500")}
+                        />
+                        {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
+                      </div>
+
+                      <div>
+                        <Label htmlFor="email" className={cn(errors.email && "text-red-500")}>
+                          Email *
+                        </Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          className={cn(errors.email && "border-red-500")}
+                        />
+                        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                      </div>
+
+                      <div>
+                        <Label htmlFor="phone" className={cn(errors.phone && "text-red-500")}>
+                          Téléphone *
+                        </Label>
+                        <Input
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          className={cn(errors.phone && "border-red-500")}
+                        />
+                        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <Label htmlFor="address" className={cn(errors.address && "text-red-500")}>
+                          Adresse *
+                        </Label>
+                        <Input
+                          id="address"
+                          name="address"
+                          value={formData.address}
+                          onChange={handleInputChange}
+                          className={cn(errors.address && "border-red-500")}
+                        />
+                        {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+                      </div>
+
+                      <div>
+                        <Label htmlFor="city" className={cn(errors.city && "text-red-500")}>
+                          Ville *
+                        </Label>
+                        <Input
+                          id="city"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleInputChange}
+                          className={cn(errors.city && "border-red-500")}
+                        />
+                        {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
+                      </div>
+
+                      <div>
+                        <Label htmlFor="postalCode" className={cn(errors.postalCode && "text-red-500")}>
+                          Code postal *
+                        </Label>
+                        <Input
+                          id="postalCode"
+                          name="postalCode"
+                          value={formData.postalCode}
+                          onChange={handleInputChange}
+                          className={cn(errors.postalCode && "border-red-500")}
+                        />
+                        {errors.postalCode && <p className="text-red-500 text-xs mt-1">{errors.postalCode}</p>}
+                      </div>
+
+                      <div>
+                        <Label htmlFor="country" className={cn(errors.country && "text-red-500")}>
+                          Pays *
+                        </Label>
+                        <select
+                          id="country"
+                          name="country"
+                          value={formData.country}
+                          onChange={handleInputChange}
+                          className={cn(
+                            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                            errors.country && "border-red-500",
+                          )}
+                        >
+                          <option value="France">France</option>
+                          <option value="Belgique">Belgique</option>
+                          <option value="Suisse">Suisse</option>
+                          <option value="Luxembourg">Luxembourg</option>
+                          <option value="Allemagne">Allemagne</option>
+                          <option value="Espagne">Espagne</option>
+                          <option value="Italie">Italie</option>
+                        </select>
+                        {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country}</p>}
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
-                  <h3 className="font-medium text-lg mb-4">Récapitulatif de la commande</h3>
+                  {/* Shipping Method */}
+                  <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Méthode de livraison</h2>
 
-                  <div className="space-y-4 mb-4">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Sous-total</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{cartTotal.toFixed(2)} €</span>
-                    </div>
-
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Frais de livraison</span>
-                      <span className="font-medium text-gray-900 dark:text-white">
-                        {shippingCost === 0 ? "Gratuit" : `${shippingCost.toFixed(2)} €`}
-                      </span>
-                    </div>
-
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between">
-                      <span className="font-medium text-gray-900 dark:text-white">Total</span>
-                      <span className="font-bold text-xl text-gray-900 dark:text-white">
-                        {totalWithShipping.toFixed(2)} €
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-start">
-                      <User className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          {formData.firstName} {formData.lastName}
-                        </span>
+                    <RadioGroup
+                      value={formData.shippingMethod}
+                      onValueChange={(value) => setFormData({ ...formData, shippingMethod: value })}
+                      className="space-y-3"
+                    >
+                      <div className="flex items-center justify-between space-x-2 p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="standard" id="shipping-standard" />
+                          <Label htmlFor="shipping-standard" className="font-medium cursor-pointer">
+                            Livraison standard
+                          </Label>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="text-sm text-gray-500 dark:text-gray-400 mr-3">2-5 jours ouvrés</span>
+                          <span className="font-medium">{formatPrice(shippingCosts.standard)}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-start">
-                      <Mail className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">{formData.email}</span>
+                      <div className="flex items-center justify-between space-x-2 p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="express" id="shipping-express" />
+                          <Label htmlFor="shipping-express" className="font-medium cursor-pointer">
+                            Livraison express
+                          </Label>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="text-sm text-gray-500 dark:text-gray-400 mr-3">1-2 jours ouvrés</span>
+                          <span className="font-medium">{formatPrice(shippingCosts.express)}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-start">
-                      <Phone className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">{formData.phone}</span>
-                      </div>
-                    </div>
+                      {subtotal >= 100 && (
+                        <div className="flex items-center justify-between space-x-2 p-3 border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="free" id="shipping-free" />
+                            <Label htmlFor="shipping-free" className="font-medium cursor-pointer">
+                              Livraison gratuite
+                            </Label>
+                          </div>
+                          <div className="flex items-center">
+                            <span className="text-sm text-gray-500 dark:text-gray-400 mr-3">3-7 jours ouvrés</span>
+                            <span className="font-medium text-green-600 dark:text-green-400">Gratuit</span>
+                          </div>
+                        </div>
+                      )}
+                    </RadioGroup>
 
-                    <div className="flex items-start">
-                      <Home className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          {formData.address}, {formData.postalCode} {formData.city}, {formData.country}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    variant="outline"
-                    onClick={handlePrevStep}
-                    className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300"
-                  >
-                    <ArrowLeft className="mr-2 h-5 w-5" />
-                    Retour
-                  </Button>
-
-                  <Button
-                    onClick={handleSubmitOrder}
-                    disabled={isSubmitting}
-                    className="flex-1 bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-white dark:text-gray-900 py-6"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                        Traitement en cours...
-                      </>
-                    ) : (
-                      <>
-                        Confirmer la commande
-                        <ChevronsRight className="ml-2 h-5 w-5" />
-                      </>
+                    {subtotal < 100 && (
+                      <Alert className="mt-4 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800">
+                        <Info className="h-4 w-4" />
+                        <AlertDescription>
+                          Ajoutez {formatPrice(100 - subtotal)} d'articles supplémentaires pour bénéficier de la
+                          livraison gratuite !
+                        </AlertDescription>
+                      </Alert>
                     )}
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
+                  </div>
 
-          {/* Order Summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6 sticky top-24">
-              <h2 className="text-xl font-heading font-semibold mb-6">Récapitulatif de commande</h2>
+                  {/* Payment Method */}
+                  <div className="p-6">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Méthode de paiement</h2>
 
-              <div className="max-h-[300px] overflow-y-auto mb-6">
-                {cart.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center py-3 border-b border-gray-200 dark:border-gray-700 last:border-0"
-                  >
-                    <div className="relative h-16 w-16 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden">
-                      <Image
-                        src={item.image || "/placeholder.svg"}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                        sizes="64px"
+                    <Tabs
+                      defaultValue="card"
+                      onValueChange={(value) => setFormData({ ...formData, paymentMethod: value })}
+                    >
+                      <TabsList className="grid w-full grid-cols-3 mb-6">
+                        <TabsTrigger value="card" className="flex items-center justify-center">
+                          <CreditCard className="h-4 w-4 mr-2" />
+                          Carte
+                        </TabsTrigger>
+                        <TabsTrigger value="paypal">PayPal</TabsTrigger>
+                        <TabsTrigger value="bank">Virement</TabsTrigger>
+                      </TabsList>
+
+                      <TabsContent value="card" className="space-y-4">
+                        <div>
+                          <Label htmlFor="cardNumber">Numéro de carte</Label>
+                          <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor="expiryDate">Date d'expiration</Label>
+                            <Input id="expiryDate" placeholder="MM/AA" />
+                          </div>
+                          <div>
+                            <Label htmlFor="cvv">CVV</Label>
+                            <Input id="cvv" placeholder="123" />
+                          </div>
+                        </div>
+
+                        <div>
+                          <Label htmlFor="cardName">Nom sur la carte</Label>
+                          <Input id="cardName" placeholder="John Doe" />
+                        </div>
+                      </TabsContent>
+
+                      <TabsContent value="paypal" className="text-center py-6">
+                        <div className="mb-4">
+                          <Image
+                            src="/placeholder.svg?height=60&width=120&text=PayPal"
+                            alt="PayPal"
+                            width={120}
+                            height={60}
+                            className="mx-auto"
+                          />
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-300 mb-4">
+                          Vous serez redirigé vers PayPal pour effectuer votre paiement en toute sécurité.
+                        </p>
+                        <Button variant="outline" type="button">
+                          Continuer avec PayPal
+                        </Button>
+                      </TabsContent>
+
+                      <TabsContent value="bank" className="space-y-4 py-2">
+                        <Alert className="bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800">
+                          <Info className="h-4 w-4" />
+                          <AlertDescription>
+                            Votre commande sera traitée une fois le paiement reçu. Les détails du virement bancaire vous
+                            seront envoyés par email.
+                          </AlertDescription>
+                        </Alert>
+
+                        <div>
+                          <Label htmlFor="bankName">Nom de votre banque</Label>
+                          <Input id="bankName" />
+                        </div>
+
+                        <div>
+                          <Label htmlFor="accountName">Nom du titulaire du compte</Label>
+                          <Input id="accountName" />
+                        </div>
+                      </TabsContent>
+                    </Tabs>
+
+                    <div className="flex items-center mt-6">
+                      <input
+                        type="checkbox"
+                        id="saveInfo"
+                        name="saveInfo"
+                        checked={formData.saveInfo}
+                        onChange={handleInputChange}
+                        className="h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500"
                       />
-                      <div className="absolute top-0 right-0 bg-yellow-500 dark:bg-yellow-400 text-white dark:text-gray-900 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
-                        {item.quantity}
-                      </div>
-                    </div>
-
-                    <div className="ml-4 flex-1">
-                      <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">{item.name}</h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {item.price.toFixed(2)} € x {item.quantity}
-                      </p>
-                    </div>
-
-                    <div className="text-right">
-                      <span className="font-medium text-gray-900 dark:text-white">
-                        {(item.price * item.quantity).toFixed(2)} €
-                      </span>
+                      <Label htmlFor="saveInfo" className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                        Sauvegarder ces informations pour la prochaine fois
+                      </Label>
                     </div>
                   </div>
-                ))}
+
+                  <div className="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700">
+                    <Button
+                      type="submit"
+                      className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Traitement en cours..." : "Confirmer la commande"}
+                    </Button>
+
+                    <div className="flex items-center justify-center mt-4 text-sm text-gray-500 dark:text-gray-400">
+                      <ShieldCheck className="h-4 w-4 mr-2" />
+                      <span>Paiement sécurisé</span>
+                    </div>
+                  </div>
+                </form>
               </div>
+            </div>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Sous-total</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{cartTotal.toFixed(2)} €</span>
+            {/* Order Summary */}
+            <div>
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden sticky top-24">
+                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                  <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Récapitulatif de commande</h2>
+
+                  <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-2">
+                    {cart.map((item) => (
+                      <div key={item.id} className="flex items-start">
+                        <div className="relative h-16 w-16 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
+                          <Image
+                            src={item.image || "/placeholder.svg?height=64&width=64"}
+                            alt={item.name}
+                            fill
+                            className="object-cover"
+                            sizes="64px"
+                          />
+                        </div>
+                        <div className="ml-4 flex-1">
+                          <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">{item.name}</h3>
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                            {formatPrice(item.price)} × {item.quantity}
+                          </p>
+                          <div className="flex items-center mt-1">
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                              disabled={item.quantity <= 1}
+                            >
+                              <Minus className="h-3 w-3" />
+                            </button>
+                            <span className="mx-1 text-xs w-5 text-center">{item.quantity}</span>
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                            >
+                              <Plus className="h-3 w-3" />
+                            </button>
+                          </div>
+                        </div>
+                        <div className="ml-2">
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">
+                            {formatPrice(item.price * item.quantity)}
+                          </p>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 p-1 mt-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Frais de livraison</span>
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    {shippingCost === 0 ? "Gratuit" : `${shippingCost.toFixed(2)} €`}
-                  </span>
+                <div className="p-6 space-y-4">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">Sous-total</span>
+                    <span className="font-medium text-gray-900 dark:text-white">{formatPrice(subtotal)}</span>
+                  </div>
+
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">Livraison</span>
+                    <span className="font-medium text-gray-900 dark:text-white">
+                      {formData.shippingMethod === "free" ? "Gratuit" : formatPrice(shipping)}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">TVA (20%)</span>
+                    <span className="font-medium text-gray-900 dark:text-white">{formatPrice(tax)}</span>
+                  </div>
+
+                  <Separator />
+
+                  <div className="flex justify-between">
+                    <span className="font-medium text-gray-900 dark:text-white">Total</span>
+                    <span className="font-bold text-lg text-gray-900 dark:text-white">{formatPrice(total)}</span>
+                  </div>
                 </div>
 
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between">
-                  <span className="font-medium text-gray-900 dark:text-white">Total</span>
-                  <span className="font-bold text-xl text-gray-900 dark:text-white">
-                    {totalWithShipping.toFixed(2)} €
-                  </span>
-                </div>
-              </div>
+                <div className="p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300 mb-2">
+                    <Truck className="h-4 w-4 text-gray-500" />
+                    <span>Livraison estimée: 2-5 jours ouvrés</span>
+                  </div>
 
-              <div className="mt-6 space-y-4">
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                  <Truck className="h-4 w-4 mr-2 flex-shrink-0" />
-                  <span>Livraison gratuite à partir de 50€ d'achat</span>
-                </div>
-
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                  <ShieldCheck className="h-4 w-4 mr-2 flex-shrink-0" />
-                  <span>Paiement 100% sécurisé</span>
+                  <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
+                    <ShieldCheck className="h-4 w-4 text-gray-500" />
+                    <span>Garantie de remboursement 30 jours</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </main>
+      <Footer />
+    </>
   )
 }
 
