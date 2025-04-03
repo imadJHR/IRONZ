@@ -1,31 +1,39 @@
-// Catégories de produits
+import img1 from "../public/homeGym.jpg";
+import img2 from "../public/equipement.jpg";
+import img3 from "../public/complement.jpg";
+import img4 from "../public/accessoire.jpg";
 export const categories = [
   {
     id: "1",
+    image: img1,
     name: "home gym",
     href: "/categories/home-gym",
-    icon: "Dumbbell", // Nom d'icône Lucide
+    icon: "Dumbbell",
     description: "Matériel et équipements pour l'entraînement à domicile",
   },
   {
     id: "2",
+    image: img2,
     name: "équipements",
     href: "/categories/equipements",
-    icon: "Settings", // Nom d'icône Lucide
+    icon: "Settings",
     description: "Matériel professionnel pour le sport et la remise en forme",
   },
   {
     id: "3",
+    image: img3,
     name: "supplément",
     href: "/categories/supplement",
-    icon: "Pill", // Nom d'icône Lucide
-    description: "Compléments alimentaires pour optimiser la nutrition et la performance",
+    icon: "Pill",
+    description:
+      "Compléments alimentaires pour optimiser la nutrition et la performance",
   },
   {
     id: "4",
+    image: img4,
     name: "accessoires",
     href: "/categories/accessoires",
-    icon: "Package", // Nom d'icône Lucide
+    icon: "Package",
     description: "Accessoires indispensables pour le sport et le bien-être",
     subCategories: [
       {
@@ -38,7 +46,8 @@ export const categories = [
         id: "4-2",
         name: "ceintures",
         href: "/categories/accessoires/ceintures",
-        description: "Ceintures de maintien pour la musculation et l'haltérophilie",
+        description:
+          "Ceintures de maintien pour la musculation et l'haltérophilie",
       },
       {
         id: "4-3",
@@ -50,11 +59,12 @@ export const categories = [
         id: "4-4",
         name: "autres",
         href: "/categories/accessoires/autres",
-        description: "Autres accessoires pour compléter votre équipement sportif",
+        description:
+          "Autres accessoires pour compléter votre équipement sportif",
       },
     ],
   },
-]
+];
 
 // Produits
 export const products = [
@@ -72,8 +82,8 @@ export const products = [
       "Matériaux haute résistance",
     ],
     price: 349.99,
-    oldPrice: 399.99,
-    discount: 12,
+    oldPrice: "",
+    discount: "",
     image: "/placeholder.svg?height=300&width=300&text=Banc+Musculation",
     gallery: [
       "/placeholder.svg?height=600&width=600&text=Banc+Vue+1",
@@ -90,7 +100,7 @@ export const products = [
     stockQuantity: 45,
     sku: "BM-MF-001",
     date: "2023-10-15",
-    tags: ["musculation", "fitness", "entraînement", "banc"],
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
     dimensions: {
       width: 120,
       height: 50,
@@ -122,8 +132,8 @@ export const products = [
       "Facile à nettoyer",
     ],
     price: 59.99,
-    oldPrice: null,
-    discount: 0,
+    oldPrice: 79.99,
+    discount: 25,
     image: "/placeholder.svg?height=300&width=300&text=Tapis+Yoga",
     gallery: [
       "/placeholder.svg?height=600&width=600&text=Tapis+Vue+1",
@@ -140,7 +150,7 @@ export const products = [
     stockQuantity: 120,
     sku: "TY-PR-002",
     date: "2023-11-20",
-    tags: ["yoga", "fitness", "méditation", "tapis"],
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
     dimensions: {
       width: 61,
       height: 0.6,
@@ -172,8 +182,8 @@ export const products = [
       "Rangement compact",
     ],
     price: 199.99,
-    oldPrice: 249.99,
-    discount: 20,
+    oldPrice: "",
+    discount: "",
     image: "/placeholder.svg?height=300&width=300&text=Haltères",
     gallery: [
       "/placeholder.svg?height=600&width=600&text=Haltères+Vue+1",
@@ -190,7 +200,7 @@ export const products = [
     stockQuantity: 35,
     sku: "HA-AJ-003",
     date: "2023-09-05",
-    tags: ["musculation", "fitness", "haltères", "poids"],
+    tags: ["musculation", "fitness", "haltères", "poids", "current"],
     dimensions: {
       width: 40,
       height: 20,
@@ -222,8 +232,8 @@ export const products = [
       "Port USB intégré",
     ],
     price: 79.99,
-    oldPrice: null,
-    discount: 0,
+    oldPrice: 99.99,
+    discount: 20,
     image: "/placeholder.svg?height=300&width=300&text=Lampe+LED",
     gallery: [
       "/placeholder.svg?height=600&width=600&text=Lampe+Vue+1",
@@ -241,7 +251,7 @@ export const products = [
     stockQuantity: 68,
     sku: "LL-RL-004",
     date: "2023-12-01",
-    tags: ["luminaire", "relaxation", "LED", "ambiance"],
+    tags: ["luminaire", "relaxation", "LED", "ambiance", "summer"],
     dimensions: {
       width: 15,
       height: 30,
@@ -292,7 +302,14 @@ export const products = [
     stockQuantity: 150,
     sku: "GM-PR-005",
     date: "2023-08-15",
-    tags: ["gants", "musculation", "protection", "fitness"],
+    tags: [
+      "gants",
+      "musculation",
+      "protection",
+      "fitness",
+      "summer",
+      "current",
+    ],
     dimensions: {
       width: 12,
       height: 2,
@@ -343,7 +360,13 @@ export const products = [
     stockQuantity: 75,
     sku: "CM-CU-006",
     date: "2023-07-10",
-    tags: ["ceinture", "musculation", "protection", "soutien lombaire"],
+    tags: [
+      "ceinture",
+      "musculation",
+      "protection",
+      "soutien lombaire",
+      "current",
+    ],
     dimensions: {
       width: 10,
       height: 0.4,
@@ -394,7 +417,7 @@ export const products = [
     stockQuantity: 60,
     sku: "SS-PR-007",
     date: "2023-11-05",
-    tags: ["sac", "sport", "rangement", "voyage"],
+    tags: ["sac", "sport", "rangement", "voyage", "summer", "current"],
     dimensions: {
       width: 60,
       height: 30,
@@ -412,7 +435,274 @@ export const products = [
     },
     relatedProducts: ["5", "6"],
   },
-]
+  {
+    id: "8",
+    name: "Pack été fitness complet",
+    slug: "pack-ete-fitness",
+    description:
+      "Ensemble complet pour vos activités fitness d'été comprenant un tapis de yoga, une gourde isotherme et une serviette microfibre. Idéal pour les entraînements en extérieur.",
+    features: [
+      "Tapis de yoga antidérapant 6mm",
+      "Gourde isotherme 750ml",
+      "Serviette microfibre ultra-absorbante",
+      "Sac de transport inclus",
+      "Matériaux résistants aux UV",
+    ],
+    price: 79.99,
+    oldPrice: 119.99,
+    discount: 33,
+    image: "/placeholder.svg?height=300&width=300&text=Pack+Été+Fitness",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Pack+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Pack+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Pack+Vue+3",
+    ],
+    category: "équipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 42,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 30,
+    sku: "PEF-001",
+    date: "2024-05-15",
+    tags: ["été", "fitness", "pack", "bundle", "summer", "current"],
+    dimensions: {
+      width: 65,
+      height: 10,
+      depth: 20,
+      weight: 1.8,
+    },
+    colors: ["Bleu", "Turquoise"],
+    materials: ["TPE écologique", "Acier inoxydable", "Microfibre"],
+    warranty: "1 an",
+    shipping: {
+      dimensions: "70 x 15 x 25 cm",
+      weight: 2.0,
+      method: "Standard",
+      estimatedDelivery: "2-3 jours ouvrés",
+    },
+    relatedProducts: ["2", "4", "7"],
+  },
+  {
+    id: "9",
+    name: "Ensemble d'haltères et kettlebells",
+    slug: "ensemble-halteres-kettlebells",
+    description:
+      "Pack économique comprenant une paire d'haltères ajustables (2-10kg) et deux kettlebells (8kg et 12kg). Parfait pour diversifier vos entraînements à domicile.",
+    features: [
+      "Haltères ajustables 2-10kg",
+      "Kettlebells 8kg et 12kg",
+      "Poignées ergonomiques",
+      "Revêtement antidérapant",
+      "Support de rangement inclus",
+    ],
+    price: 149.99,
+    oldPrice: 199.99,
+    discount: 25,
+    image: "/placeholder.svg?height=300&width=300&text=Ensemble+Haltères",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Ensemble+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Ensemble+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Ensemble+Vue+3",
+    ],
+    category: "home gym",
+    categoryId: "1",
+    rating: 4.6,
+    reviewCount: 38,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 25,
+    sku: "EHK-001",
+    date: "2023-12-10",
+    tags: [
+      "musculation",
+      "haltères",
+      "kettlebells",
+      "pack",
+      "bundle",
+      "clearance",
+    ],
+    dimensions: {
+      width: 50,
+      height: 30,
+      depth: 40,
+      weight: 32,
+    },
+    colors: ["Noir/Rouge"],
+    materials: ["Fonte", "Caoutchouc", "Acier"],
+    warranty: "2 ans",
+    shipping: {
+      dimensions: "55 x 35 x 45 cm",
+      weight: 34,
+      method: "Standard",
+      estimatedDelivery: "3-5 jours ouvrés",
+    },
+    relatedProducts: ["1", "3", "6"],
+  },
+  {
+    id: "10",
+    name: "Lot de 3 bandes élastiques de résistance",
+    slug: "lot-bandes-elastiques",
+    description:
+      "Ensemble de 3 bandes élastiques de résistance différente (légère, moyenne, forte) pour la musculation, la rééducation ou le stretching. Polyvalentes et faciles à transporter.",
+    features: [
+      "3 niveaux de résistance",
+      "Longueur: 150cm",
+      "Matériau latex haute qualité",
+      "Poignées confortables",
+      "Pochette de rangement incluse",
+    ],
+    price: 19.99,
+    oldPrice: 29.99,
+    discount: 33,
+    image: "/placeholder.svg?height=300&width=300&text=Bandes+Élastiques",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Bandes+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Bandes+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Bandes+Vue+3",
+    ],
+    category: "accessoires",
+    categoryId: "4",
+    subCategoryId: "4-4",
+    rating: 4.8,
+    reviewCount: 120,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 200,
+    sku: "LBE-001",
+    date: "2023-10-20",
+    tags: [
+      "élastiques",
+      "résistance",
+      "fitness",
+      "pack",
+      "bundle",
+      "summer",
+      "clearance",
+    ],
+    dimensions: {
+      width: 15,
+      height: 5,
+      depth: 15,
+      weight: 0.5,
+    },
+    colors: ["Multicolore"],
+    materials: ["Latex naturel", "Nylon"],
+    warranty: "6 mois",
+    shipping: {
+      dimensions: "20 x 10 x 5 cm",
+      weight: 0.6,
+      method: "Standard",
+      estimatedDelivery: "1-3 jours ouvrés",
+    },
+    relatedProducts: ["2", "5", "8"],
+  },
+  {
+    id: "11",
+    name: "Ensemble d'accessoires de fitness déstockage",
+    slug: "ensemble-accessoires-destockage",
+    description:
+      "Lot économique comprenant une corde à sauter, un ab wheel, deux push-up bars et un grip de musculation. Idéal pour compléter votre équipement à petit prix.",
+    features: [
+      "Corde à sauter réglable avec compteur",
+      "Ab wheel avec tapis pour genoux",
+      "Push-up bars ergonomiques",
+      "Grip de musculation réglable",
+      "Guide d'exercices inclus",
+    ],
+    price: 39.99,
+    oldPrice: 69.99,
+    discount: 43,
+    image: "/placeholder.svg?height=300&width=300&text=Ensemble+Accessoires",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Ensemble+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Ensemble+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Ensemble+Vue+3",
+    ],
+    category: "accessoires",
+    categoryId: "4",
+    subCategoryId: "4-4",
+    rating: 4.3,
+    reviewCount: 65,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 15,
+    sku: "EAD-001",
+    date: "2023-08-05",
+    tags: ["accessoires", "fitness", "pack", "bundle", "clearance"],
+    dimensions: {
+      width: 40,
+      height: 20,
+      depth: 30,
+      weight: 3.5,
+    },
+    colors: ["Noir"],
+    materials: ["Acier", "Mousse", "PVC"],
+    warranty: "1 an",
+    shipping: {
+      dimensions: "45 x 25 x 35 cm",
+      weight: 4.0,
+      method: "Standard",
+      estimatedDelivery: "2-4 jours ouvrés",
+    },
+    relatedProducts: ["5", "6", "10"],
+  },
+  {
+    id: "12",
+    name: "Maillot de bain sport été 2024",
+    slug: "maillot-bain-sport-ete",
+    description:
+      "Maillot de bain spécial sport aquatique, résistant au chlore et aux UV. Coupe ergonomique pour une liberté de mouvement maximale pendant vos activités nautiques.",
+    features: [
+      "Tissu résistant au chlore et aux UV",
+      "Séchage rapide",
+      "Doublure intégrée",
+      "Cordon de serrage ajustable",
+      "Disponible en plusieurs tailles",
+    ],
+    price: 34.99,
+    oldPrice: 49.99,
+    discount: 30,
+    image: "/placeholder.svg?height=300&width=300&text=Maillot+Bain+Sport",
+    gallery: [
+      "/placeholder.svg?height=600&width=600&text=Maillot+Vue+1",
+      "/placeholder.svg?height=600&width=600&text=Maillot+Vue+2",
+      "/placeholder.svg?height=600&width=600&text=Maillot+Vue+3",
+    ],
+    category: "Textiles",
+    categoryId: "4",
+    rating: 4.7,
+    reviewCount: 28,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 50,
+    sku: "MBS-001",
+    date: "2024-04-20",
+    tags: ["maillot", "bain", "sport", "été", "summer", "current"],
+    dimensions: {
+      width: 30,
+      height: 5,
+      depth: 20,
+      weight: 0.2,
+    },
+    colors: ["Bleu marine", "Noir", "Rouge"],
+    materials: ["Polyamide", "Élasthanne"],
+    warranty: "30 jours",
+    shipping: {
+      dimensions: "25 x 15 x 5 cm",
+      weight: 0.3,
+      method: "Standard",
+      estimatedDelivery: "1-3 jours ouvrés",
+    },
+    relatedProducts: ["8", "10"],
+  },
+];
 
 // Marques partenaires
 export const brands = [
@@ -446,7 +736,7 @@ export const brands = [
     logo: "/placeholder.svg?height=80&width=160&text=OrganizeIt",
     description: "Solutions de rangement intelligentes",
   },
-]
+];
 
 // Filtres disponibles
 export const filters = {
@@ -469,12 +759,13 @@ export const filters = {
     { value: "rating", label: "Meilleures notes" },
     { value: "discount", label: "Promotions" },
   ],
-}
+};
 
 // Fonctions utilitaires pour les produits
 export const productUtils = {
   // Obtenir les produits en promotion
-  getDiscountedProducts: () => products.filter((product) => product.discount > 0),
+  getDiscountedProducts: () =>
+    products.filter((product) => product.discount > 0),
 
   // Obtenir les nouveaux produits
   getNewProducts: () => products.filter((product) => product.isNew),
@@ -483,51 +774,56 @@ export const productUtils = {
   getFeaturedProducts: () => products.filter((product) => product.isFeatured),
 
   // Obtenir les produits par catégorie
-  getProductsByCategory: (categoryId) => products.filter((product) => product.categoryId === categoryId),
+  getProductsByCategory: (categoryId) =>
+    products.filter((product) => product.categoryId === categoryId),
 
   // Obtenir les produits par sous-catégorie
-  getProductsBySubCategory: (subCategoryId) => products.filter((product) => product.subCategoryId === subCategoryId),
+  getProductsBySubCategory: (subCategoryId) =>
+    products.filter((product) => product.subCategoryId === subCategoryId),
 
   // Obtenir les produits similaires
   getRelatedProducts: (productId) => {
-    const product = products.find((p) => p.id === productId)
-    if (!product) return []
+    const product = products.find((p) => p.id === productId);
+    if (!product) return [];
     return products
       .filter(
         (p) =>
           product.relatedProducts?.includes(p.id) ||
           (p.categoryId === product.categoryId && p.id !== productId) ||
-          (product.subCategoryId && p.subCategoryId === product.subCategoryId && p.id !== productId),
+          (product.subCategoryId &&
+            p.subCategoryId === product.subCategoryId &&
+            p.id !== productId)
       )
-      .slice(0, 4)
+      .slice(0, 4);
   },
 
   // Rechercher des produits
   searchProducts: (query) => {
-    const searchTerm = query.toLowerCase()
+    const searchTerm = query.toLowerCase();
     return products.filter(
       (product) =>
         product.name.toLowerCase().includes(searchTerm) ||
         product.description.toLowerCase().includes(searchTerm) ||
-        product.tags.some((tag) => tag.toLowerCase().includes(searchTerm)),
-    )
+        product.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
+    );
   },
 
   // Obtenir une sous-catégorie par ID
   getSubCategoryById: (subCategoryId) => {
     for (const category of categories) {
       if (category.subCategories) {
-        const subCategory = category.subCategories.find((sub) => sub.id === subCategoryId)
-        if (subCategory) return subCategory
+        const subCategory = category.subCategories.find(
+          (sub) => sub.id === subCategoryId
+        );
+        if (subCategory) return subCategory;
       }
     }
-    return null
+    return null;
   },
 
   // Obtenir toutes les sous-catégories d'une catégorie
   getSubCategoriesByCategoryId: (categoryId) => {
-    const category = categories.find((cat) => cat.id === categoryId)
-    return category?.subCategories || []
+    const category = categories.find((cat) => cat.id === categoryId);
+    return category?.subCategories || [];
   },
-}
-
+};

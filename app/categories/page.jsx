@@ -3,7 +3,7 @@ import Image from "next/image"
 import { ArrowLeft } from "lucide-react"
 
 import Navbar from "@/components/navbar"
-import { categories } from "@/data/products"
+import { categories } from "@/data/product"
 
 export const metadata = {
   title: "Toutes les catégories | IRONZ PRO",

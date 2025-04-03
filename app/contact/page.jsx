@@ -1,331 +1,541 @@
 "use client";
-import React, { useState } from "react";
+
+import { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Send,
+  ArrowRight,
+  CheckCircle,
+  Loader2,
+  AlertCircle,
+} from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
-const ContactPage = () => {
-  const [formData, setFormData] = useState({
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+export default function ContactPage() {
+  const [formState, setFormState] = useState({
     name: "",
     email: "",
+    phone: "",
     subject: "",
     message: "",
+    contactReason: "question",
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [formStatus, setFormStatus] = useState({
+    isSubmitting: false,
+    isSubmitted: false,
+    error: null,
+  });
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormState((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
-    setTimeout(() => setSubmitted(false), 5000);
+    setFormStatus({ isSubmitting: true, isSubmitted: false, error: null });
+
+    // Simulate API call
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      setFormStatus({ isSubmitting: false, isSubmitted: true, error: null });
+      // Reset form
+      setFormState({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+        contactReason: "question",
+      });
+    } catch (error) {
+      setFormStatus({
+        isSubmitting: false,
+        isSubmitted: false,
+        error: "Une erreur est survenue. Veuillez réessayer.",
+      });
+    }
+  };
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      },
+    },
   };
 
   return (
     <>
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="bg-gray-50 dark:bg-gray-900 pt-32 pb-16">
         {/* Hero Section */}
-        <div className="bg-yellow-50 rounded-xl p-8 md:p-12 text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-yellow-800 mb-4">
-            Contactez-Nous
-          </h1>
-          <p className="text-lg text-amber-900 max-w-2xl mx-auto">
-            Des questions sur nos accessoires, compléments alimentaires ou home
-            gym ? Notre équipe est à votre disposition pour vous conseiller.
-          </p>
+        <div className="container mx-auto px-4 mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Contactez-nous
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+              Notre équipe est à votre disposition pour répondre à toutes vos
+              questions et vous accompagner dans vos projets.
+            </p>
+          </motion.div>
         </div>
 
-        {/* Main Content */}
-        <div className="flex flex-col lg:flex-row gap-8 mb-16">
-          {/* Contact Form */}
-          <div className="w-full lg:w-1/2 bg-white rounded-xl shadow-md p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-yellow-700 mb-6">
-              Envoyez-nous un message
-            </h2>
-
-            {submitted && (
-              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                Merci pour votre message ! Nous vous répondrons dans les plus
-                brefs délais.
+        {/* Contact Info Cards */}
+        <div className="container mx-auto px-4 mb-16">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            <motion.div
+              variants={itemVariants}
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700"
+            >
+              <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-4">
+                <Phone className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
               </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-amber-900 mb-1"
-                >
-                  Nom complet
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-amber-900 mb-1"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="subject"
-                  className="block text-sm font-medium text-amber-900 mb-1"
-                >
-                  Sujet
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-amber-900 mb-1"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows="5"
-                  required
-                  className="w-full px-4 py-2 border border-yellow-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 transform hover:scale-105"
+              <h3 className="text-lg font-medium mb-2">Téléphone</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Notre équipe est disponible du lundi au vendredi de 9h à 18h.
+              </p>
+              <a
+                href="tel:+33123456789"
+                className="text-yellow-600 dark:text-yellow-400 font-medium hover:underline flex items-center"
               >
-                Envoyer le message
-              </button>
-            </form>
-          </div>
+                +212 669510042
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </a>
+            </motion.div>
 
-          {/* Contact Info */}
-          <div className="w-full lg:w-1/2 space-y-6">
-            {/* Info Card 1 */}
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300">
-              <div className="flex items-start space-x-4">
-                <div className="bg-yellow-100 p-3 rounded-full text-yellow-700">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-yellow-700 mb-2">
-                    Notre adresse
-                  </h3>
-                  <p className="text-amber-900">123 Rue du Fitness</p>
-                  <p className="text-amber-900">75000 Paris, France</p>
+            <motion.div
+              variants={itemVariants}
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700"
+            >
+              <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-4">
+                <Mail className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">Email</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Envoyez-nous un email, nous vous répondrons dans les plus brefs
+                délais.
+              </p>
+              <a
+                href="mailto:contact@ironzpro.com"
+                className="text-yellow-600 dark:text-yellow-400 font-medium hover:underline flex items-center"
+              >
+              muscleironz2019@gmail.com
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </a>
+            </motion.div>
+
+            <motion.div
+              variants={itemVariants}
+              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700"
+            >
+              <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-4">
+                <MapPin className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">Adresse</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Venez nous rencontrer dans notre showroom.
+              </p>
+              <address className="not-italic text-yellow-600 dark:text-yellow-400 font-medium hover:underline flex items-start">
+                <span>SAHARA MALL 1 ÈRE ÉTAGE C169 & C120</span>
+                <ArrowRight className="ml-1 h-4 w-4 mt-1 flex-shrink-0" />
+              </address>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Map and Form Section */}
+        <div className="container mx-auto px-4">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden border border-gray-100 dark:border-gray-700">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              {/* Map Section */}
+              <div className="relative h-[300px] lg:h-auto">
+                <Image
+                  src="/placeholder.svg?height=600&width=800&text=Google+Map"
+                  alt="Carte"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
+                  <div className="text-white">
+                    <h3 className="font-medium text-lg mb-1">IRONZ PRO</h3>
+                    <p className="text-sm text-white/90">
+                      123 Rue du Fitness, 75001 Paris
+                    </p>
+                    <div className="flex items-center mt-2 text-sm text-white/80">
+                      <Clock className="h-4 w-4 mr-1" />
+                      <span>Lun-Ven: 9h-18h | Sam: 10h-16h | Dim: Fermé</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Info Card 2 */}
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300">
-              <div className="flex items-start space-x-4">
-                <div className="bg-yellow-100 p-3 rounded-full text-yellow-700">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-yellow-700 mb-2">
-                    Téléphone
-                  </h3>
-                  <p className="text-amber-900">+33 1 23 45 67 89</p>
-                  <p className="text-amber-900">Lundi-Vendredi: 9h-18h</p>
-                </div>
-              </div>
-            </div>
+              {/* Contact Form */}
+              <div className="p-6 lg:p-8">
+                <h2 className="text-2xl font-bold mb-6">
+                  Envoyez-nous un message
+                </h2>
 
-            {/* Info Card 3 */}
-            <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300">
-              <div className="flex items-start space-x-4">
-                <div className="bg-yellow-100 p-3 rounded-full text-yellow-700">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-yellow-700 mb-2">
-                    Email
-                  </h3>
-                  <p className="text-amber-900">
-                    contact@fitnessaccessoires.com
-                  </p>
-                  <p className="text-amber-900">
-                    support@fitnessaccessoires.com
-                  </p>
-                </div>
-              </div>
-            </div>
+                {formStatus.isSubmitted ? (
+                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 text-center">
+                    <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h3 className="text-lg font-medium text-green-800 dark:text-green-300 mb-2">
+                      Message envoyé !
+                    </h3>
+                    <p className="text-green-700 dark:text-green-400 mb-4">
+                      Merci de nous avoir contacté. Nous vous répondrons dans
+                      les plus brefs délais.
+                    </p>
+                    <Button
+                      onClick={() =>
+                        setFormStatus((prev) => ({
+                          ...prev,
+                          isSubmitted: false,
+                        }))
+                      }
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      Envoyer un autre message
+                    </Button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    {formStatus.error && (
+                      <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>{formStatus.error}</AlertDescription>
+                      </Alert>
+                    )}
 
-            {/* Social Links */}
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="text-xl font-bold text-yellow-700 mb-4">
-                Suivez-nous
-              </h3>
-              <div className="flex space-x-4">
-                <a
-                  href="#"
-                  className="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 p-3 rounded-full transition duration-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
-                  </svg>
-                </a>
-                <a
-                  href="#"
-                  className="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 p-3 rounded-full transition duration-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                  </svg>
-                </a>
-                <a
-                  href="#"
-                  className="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 p-3 rounded-full transition duration-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                  </svg>
-                </a>
-                <a
-                  href="#"
-                  className="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 p-3 rounded-full transition duration-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
-                  </svg>
-                </a>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="name">Nom complet *</Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          value={formState.name}
+                          onChange={handleInputChange}
+                          required
+                          placeholder="Votre nom"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="email">Email *</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={formState.email}
+                          onChange={handleInputChange}
+                          required
+                          placeholder="votre@email.com"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="phone">Téléphone</Label>
+                        <Input
+                          id="phone"
+                          name="phone"
+                          value={formState.phone}
+                          onChange={handleInputChange}
+                          placeholder="Votre numéro de téléphone"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="subject">Sujet *</Label>
+                        <Input
+                          id="subject"
+                          name="subject"
+                          value={formState.subject}
+                          onChange={handleInputChange}
+                          required
+                          placeholder="Sujet de votre message"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="contactReason">Raison du contact</Label>
+                      <RadioGroup
+                        id="contactReason"
+                        name="contactReason"
+                        value={formState.contactReason}
+                        onValueChange={(value) =>
+                          setFormState((prev) => ({
+                            ...prev,
+                            contactReason: value,
+                          }))
+                        }
+                        className="flex flex-wrap gap-4 mt-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="question" id="question" />
+                          <Label htmlFor="question" className="cursor-pointer">
+                            Question
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="devis" id="devis" />
+                          <Label htmlFor="devis" className="cursor-pointer">
+                            Demande de devis
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="support" id="support" />
+                          <Label htmlFor="support" className="cursor-pointer">
+                            Support technique
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="autre" id="autre" />
+                          <Label htmlFor="autre" className="cursor-pointer">
+                            Autre
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="message">Message *</Label>
+                      <Textarea
+                        id="message"
+                        name="message"
+                        value={formState.message}
+                        onChange={handleInputChange}
+                        required
+                        placeholder="Votre message"
+                        className="min-h-[120px]"
+                      />
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
+                      disabled={formStatus.isSubmitting}
+                    >
+                      {formStatus.isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Envoi en cours...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="mr-2 h-4 w-4" />
+                          Envoyer le message
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Map Section */}
-        <div className="rounded-xl overflow-hidden shadow-lg">
-          <iframe
-            title="Our Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937595!2d2.292292615509614!3d48.85837007928746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!2m2!1d2.294481!2d48.85837!5e0!3m2!1sen!2sfr!4v1620000000000!5m2!1sen!2sfr"
-            width="100%"
-            height="450"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
-            className="rounded-xl"
-          ></iframe>
+        {/* FAQ Section */}
+        <div className="container mx-auto px-4 mt-16">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              Questions fréquentes
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Consultez nos réponses aux questions les plus fréquemment posées.
+              Si vous ne trouvez pas votre réponse, n'hésitez pas à nous
+              contacter.
+            </p>
+          </div>
+
+          <Tabs defaultValue="general" className="max-w-3xl mx-auto">
+            <TabsList className="grid w-full grid-cols-3 mb-8">
+              <TabsTrigger value="general">Général</TabsTrigger>
+              <TabsTrigger value="orders">Commandes</TabsTrigger>
+              <TabsTrigger value="shipping">Livraison</TabsTrigger>
+            </TabsList>
+            <TabsContent value="general" className="space-y-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 className="font-medium text-lg mb-2">
+                  Comment puis-je contacter le service client ?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Vous pouvez nous contacter par téléphone au +33 1 23 45 67 89,
+                  par email à muscleironz2019@gmail.com, ou en utilisant le
+                  formulaire de contact sur cette page.
+                </p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 className="font-medium text-lg mb-2">
+                  Quels sont vos horaires d'ouverture ?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Notre showroom est ouvert du lundi au vendredi de 9h à 18h et
+                  le samedi de 10h à 16h. Notre service client est disponible
+                  par téléphone et email du lundi au vendredi de 9h à 18h.
+                </p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 className="font-medium text-lg mb-2">
+                  Proposez-vous des services d'installation ?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Oui, nous proposons des services d'installation pour la
+                  plupart de nos équipements. Les frais d'installation varient
+                  selon le produit et votre localisation. Contactez-nous pour
+                  obtenir un devis personnalisé.
+                </p>
+              </div>
+            </TabsContent>
+            <TabsContent value="orders" className="space-y-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 className="font-medium text-lg mb-2">
+                  Comment puis-je suivre ma commande ?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Vous recevrez un email de confirmation avec un numéro de suivi
+                  dès que votre commande sera expédiée. Vous pouvez également
+                  suivre votre commande en vous connectant à votre compte sur
+                  notre site.
+                </p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 className="font-medium text-lg mb-2">
+                  Puis-je modifier ou annuler ma commande ?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Vous pouvez modifier ou annuler votre commande dans les 24
+                  heures suivant votre achat. Passé ce délai, veuillez contacter
+                  notre service client pour vérifier si des modifications sont
+                  encore possibles.
+                </p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 className="font-medium text-lg mb-2">
+                  Quels modes de paiement acceptez-vous ?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Nous acceptons les cartes de crédit (Visa, Mastercard,
+                  American Express), PayPal, et les virements bancaires. Pour
+                  les commandes importantes, nous proposons également des
+                  solutions de financement.
+                </p>
+              </div>
+            </TabsContent>
+            <TabsContent value="shipping" className="space-y-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 className="font-medium text-lg mb-2">
+                  Quels sont les délais de livraison ?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Les délais de livraison varient selon votre localisation et
+                  les produits commandés. En général, comptez 2-5 jours ouvrés
+                  pour la France métropolitaine, 5-10 jours pour l'Europe, et
+                  10-15 jours pour le reste du monde.
+                </p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 className="font-medium text-lg mb-2">
+                  La livraison est-elle gratuite ?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  La livraison est gratuite pour toutes les commandes
+                  supérieures à 100€ en France métropolitaine. Pour les
+                  commandes inférieures à ce montant, des frais de livraison
+                  s'appliquent en fonction du poids et de la destination.
+                </p>
+              </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <h3 className="font-medium text-lg mb-2">
+                  Quelle est votre politique de retour ?
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Vous disposez de 30 jours à compter de la réception de votre
+                  commande pour retourner un article. Les produits doivent être
+                  dans leur état d'origine, non utilisés et dans leur emballage
+                  d'origine. Les frais de retour sont à la charge du client,
+                  sauf en cas de produit défectueux.
+                </p>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
-      </div>
+
+        {/* CTA Section */}
+        <div className="container mx-auto px-4 mt-16">
+          <div className="bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-xl p-8 md:p-12 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-black mb-4">
+              Besoin d'une assistance personnalisée ?
+            </h2>
+            <p className="text-black/80 text-lg mb-6 max-w-2xl mx-auto">
+              Notre équipe d'experts est à votre disposition pour vous
+              accompagner dans tous vos projets fitness et bien-être.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button className="bg-black hover:bg-gray-800 text-white">
+                <Phone className="mr-2 h-4 w-4" />
+                Nous appeler
+              </Button>
+              <Button
+                variant="outline"
+                className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-black border border-black/20"
+              >
+                <Mail className="mr-2 h-4 w-4" />
+                Envoyer un email
+              </Button>
+            </div>
+          </div>
+        </div>
+      </main>
       <Footer />
     </>
   );
-};
-
-export default ContactPage;
+}

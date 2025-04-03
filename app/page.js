@@ -1,6 +1,6 @@
-"use client"
-import Image from "next/image"
-import Link from "next/link"
+"use client";
+import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   CheckCircle,
@@ -11,21 +11,26 @@ import {
   ChevronRight,
   Star,
   ShoppingCart,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
-import BrandsMarquee from "@/components/brands-marquee"
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import BrandsMarquee from "@/components/brands-marquee";
 
 // Import des données de produits
-import { categories, brands, productUtils } from "@/data/product"
-import { useCart } from "@/context/cart-context"
-import { useFavorites } from "@/context/favorites-context"
-import { cn } from "@/lib/utils"
-import { Heart } from "lucide-react"
+import { categories, brands, productUtils } from "@/data/product";
+import { useCart } from "@/context/cart-context";
+import { useFavorites } from "@/context/favorites-context";
+import { cn } from "@/lib/utils";
+import { Heart } from "lucide-react";
 
 // Ajouter ces constantes pour les articles de blog et FAQ (car ils ne sont pas dans product.js)
 const blogPosts = [
@@ -33,7 +38,8 @@ const blogPosts = [
     id: "1",
     slug: "optimiser-entrainement-musculation",
     title: "Comment optimiser votre entraînement de musculation",
-    excerpt: "Découvrez les meilleures techniques pour maximiser vos résultats en musculation.",
+    excerpt:
+      "Découvrez les meilleures techniques pour maximiser vos résultats en musculation.",
     image: "/placeholder.svg?height=400&width=600&text=Blog+Post+1",
     category: "Musculation",
     author: "Thomas Dubois",
@@ -43,7 +49,8 @@ const blogPosts = [
     id: "2",
     slug: "nutrition-sportive-guide",
     title: "Guide complet de la nutrition sportive",
-    excerpt: "Tout ce que vous devez savoir sur l'alimentation pour améliorer vos performances.",
+    excerpt:
+      "Tout ce que vous devez savoir sur l'alimentation pour améliorer vos performances.",
     image: "/placeholder.svg?height=400&width=600&text=Blog+Post+2",
     category: "Nutrition",
     author: "Sophie Martin",
@@ -53,17 +60,19 @@ const blogPosts = [
     id: "3",
     slug: "equipement-essentiel-home-gym",
     title: "L'équipement essentiel pour votre home gym",
-    excerpt: "Les indispensables pour créer un espace d'entraînement efficace chez vous.",
+    excerpt:
+      "Les indispensables pour créer un espace d'entraînement efficace chez vous.",
     image: "/placeholder.svg?height=400&width=600&text=Blog+Post+3",
     category: "Équipement",
     author: "Marc Leroy",
     date: "2023-10-10",
   },
-]
+];
 
 const faqs = [
   {
-    question: "Comment choisir le bon équipement pour ma salle de sport à domicile ?",
+    question:
+      "Comment choisir le bon équipement pour ma salle de sport à domicile ?",
     answer:
       "Pour choisir le bon équipement, considérez d'abord vos objectifs fitness, l'espace disponible et votre budget. Nous recommandons de commencer par des équipements polyvalents comme un banc réglable, des haltères ajustables et un tapis de sol. N'hésitez pas à contacter notre équipe pour des conseils personnalisés.",
   },
@@ -83,48 +92,50 @@ const faqs = [
       "Nous offrons une garantie de satisfaction de 30 jours. Si vous n'êtes pas satisfait de votre achat, vous pouvez retourner le produit dans son emballage d'origine pour un remboursement complet ou un échange. Les frais de retour sont à la charge du client, sauf en cas de produit défectueux.",
   },
   {
-    question: "Vos suppléments sont-ils testés pour les substances interdites ?",
+    question:
+      "Vos suppléments sont-ils testés pour les substances interdites ?",
     answer:
       "Absolument. Tous nos suppléments nutritionnels sont fabriqués dans des installations certifiées et sont testés par des laboratoires indépendants pour garantir leur pureté et l'absence de substances interdites. Nous fournissons des certificats d'analyse sur demande.",
   },
-]
+];
 
 export default function Home() {
-  const { addToCart } = useCart()
-  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites()
+  const { addToCart } = useCart();
+  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
   // Utiliser productUtils pour obtenir différentes catégories de produits
-  const featuredProducts = productUtils.getFeaturedProducts().slice(0, 8)
-  const newArrivals = productUtils.getNewProducts().slice(0, 8)
-  const bestSellers = productUtils.getFeaturedProducts().slice(0, 8) // Exemple, à remplacer par une vraie fonction si disponible
-  const specialOffers = productUtils.getDiscountedProducts().slice(0, 6)
+  const featuredProducts = productUtils.getFeaturedProducts().slice(0, 8);
+  const newArrivals = productUtils.getNewProducts().slice(0, 8);
+  const bestSellers = productUtils.getFeaturedProducts().slice(0, 8); // Exemple, à remplacer par une vraie fonction si disponible
+  const specialOffers = productUtils.getDiscountedProducts().slice(0, 6);
 
   // Fonction pour formater les prix
   const formatPrice = (price) => {
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
       currency: "MAD",
-    }).format(price)
-  }
+    }).format(price);
+  };
 
   // Fonction pour gérer les favoris
   const toggleFavorite = (product) => {
     if (isInFavorites(product.id)) {
-      removeFromFavorites(product.id)
+      removeFromFavorites(product.id);
     } else {
-      addToFavorites(product)
+      addToFavorites(product);
     }
-  }
+  };
 
   // Trouver un produit vedette (par exemple, le premier produit avec une réduction)
-  const featuredProduct = specialOffers.length > 0 ? specialOffers[0] : featuredProducts[0]
+  const featuredProduct =
+    specialOffers.length > 0 ? specialOffers[0] : featuredProducts[0];
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <section className="relative pt-16 pb-20 md:pt-24 md:pb-32 bg-black text-white overflow-hidden">
+        <section className="relative  pt-16 pb-20 md:pt-24 md:pb-32 bg-black text-white overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image
               src="/placeholder.svg?height=1200&width=2000"
@@ -139,14 +150,19 @@ export default function Home() {
           <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
-                Équipement de Fitness <span className="text-yellow-400">Professionnel</span> pour Tous
+                Équipement de Fitness{" "}
+                <span className="text-yellow-400">Professionnel</span> pour Tous
               </h1>
               <p className="text-xl text-gray-300 mb-8">
-                Découvrez notre gamme complète d'équipements de fitness, suppléments alimentaires et accessoires de
-                musculation et d'arts martiaux de qualité professionnelle.
+                Découvrez notre gamme complète d'équipements de fitness,
+                suppléments alimentaires et accessoires de musculation et d'arts
+                martiaux de qualité professionnelle.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button asChild className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
+                <Button
+                  asChild
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6"
+                >
                   <Link href="/produits">Découvrir nos produits</Link>
                 </Button>
                 <Button
@@ -170,12 +186,18 @@ export default function Home() {
                   <TrendingUp className="h-6 w-6 text-yellow-500" />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-black text-xl">Offres Spéciales</h3>
-                  <p className="text-black/80">Jusqu'à 30% de réduction sur une sélection de produits</p>
+                  <h3 className="font-heading font-bold text-black text-xl">
+                    Offres Spéciales
+                  </h3>
+                  <p className="text-black/80">
+                    Jusqu'à 30% de réduction sur une sélection de produits
+                  </p>
                 </div>
               </div>
               <Button asChild className="bg-black hover:bg-gray-800 text-white">
-                <Link href="/produits?sort=discount">Voir toutes les offres</Link>
+                <Link href="/produits?sort=discount">
+                  Voir toutes les offres
+                </Link>
               </Button>
             </div>
           </div>
@@ -185,9 +207,12 @@ export default function Home() {
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Nos Catégories</h2>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                Nos Catégories
+              </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Explorez notre large sélection de produits pour tous vos besoins en fitness et arts martiaux
+                Explorez notre large sélection de produits pour tous vos besoins
+                en fitness et arts martiaux
               </p>
             </div>
 
@@ -199,16 +224,19 @@ export default function Home() {
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
                   <Image
-                    src={`/placeholder.svg?height=240&width=400&text=${category.name}`}
+                    src={category.image}
                     alt={category.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                     priority={index < 2}
                   />
                   <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                    <h3 className="text-white font-medium text-xl mb-2">{category.name}</h3>
+                    <h3 className="text-white font-medium text-xl mb-2">
+                      {category.name}
+                    </h3>
                     <p className="text-white/80 text-sm mb-4 line-clamp-2">
-                      {category.description || "Découvrez notre sélection de produits"}
+                      {category.description ||
+                        "Découvrez notre sélection de produits"}
                     </p>
                     <Link
                       href={category.href}
@@ -228,7 +256,9 @@ export default function Home() {
         <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Nos Produits</h2>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                Nos Produits
+              </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                 Découvrez notre sélection de produits de qualité professionnelle
               </p>
@@ -237,16 +267,28 @@ export default function Home() {
             <Tabs defaultValue="featured" className="w-full">
               <div className="flex justify-center mb-8 overflow-x-auto pb-2">
                 <TabsList className="bg-gray-100 dark:bg-gray-800 flex-nowrap">
-                  <TabsTrigger value="featured" className="text-sm md:text-base whitespace-nowrap">
+                  <TabsTrigger
+                    value="featured"
+                    className="text-sm md:text-base whitespace-nowrap"
+                  >
                     Populaires
                   </TabsTrigger>
-                  <TabsTrigger value="new" className="text-sm md:text-base whitespace-nowrap">
+                  <TabsTrigger
+                    value="new"
+                    className="text-sm md:text-base whitespace-nowrap"
+                  >
                     Nouveautés
                   </TabsTrigger>
-                  <TabsTrigger value="bestsellers" className="text-sm md:text-base whitespace-nowrap">
+                  <TabsTrigger
+                    value="bestsellers"
+                    className="text-sm md:text-base whitespace-nowrap"
+                  >
                     Meilleures Ventes
                   </TabsTrigger>
-                  <TabsTrigger value="offers" className="text-sm md:text-base whitespace-nowrap">
+                  <TabsTrigger
+                    value="offers"
+                    className="text-sm md:text-base whitespace-nowrap"
+                  >
                     Offres Spéciales
                   </TabsTrigger>
                 </TabsList>
@@ -261,7 +303,10 @@ export default function Home() {
                     >
                       <div className="relative h-48 overflow-hidden group">
                         <Image
-                          src={product.image || "/placeholder.svg?height=192&width=256"}
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=256"
+                          }
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -274,11 +319,20 @@ export default function Home() {
                               "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                             )}
-                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            aria-label={
+                              isInFavorites(product.id)
+                                ? "Retirer des favoris"
+                                : "Ajouter aux favoris"
+                            }
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </button>
                         </div>
                         {product.isNew && (
@@ -293,7 +347,9 @@ export default function Home() {
                         )}
                       </div>
                       <div className="p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          {product.category}
+                        </div>
                         <Link href={`/produits/${product.slug}`}>
                           <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                             {product.name}
@@ -305,11 +361,15 @@ export default function Home() {
                               key={i}
                               className={cn(
                                 "h-4 w-4",
-                                i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300",
+                                i < Math.floor(product.rating)
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300"
                               )}
                             />
                           ))}
-                          <span className="text-xs text-gray-500 ml-1">({product.reviewCount || 0})</span>
+                          <span className="text-xs text-gray-500 ml-1">
+                            ({product.reviewCount || 0})
+                          </span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
@@ -328,7 +388,11 @@ export default function Home() {
                               </span>
                             )}
                           </div>
-                          <Button size="sm" onClick={() => addToCart(product)} className="h-8 bg-yellow-500 w-8 p-0 rounded-full">
+                          <Button
+                            size="sm"
+                            onClick={() => addToCart(product)}
+                            className="h-8 bg-yellow-500 w-8 p-0 rounded-full"
+                          >
                             <ShoppingCart className="h-4 w-4" />
                           </Button>
                         </div>
@@ -347,7 +411,10 @@ export default function Home() {
                     >
                       <div className="relative h-48 overflow-hidden group">
                         <Image
-                          src={product.image || "/placeholder.svg?height=192&width=256"}
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=256"
+                          }
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -360,11 +427,20 @@ export default function Home() {
                               "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                             )}
-                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            aria-label={
+                              isInFavorites(product.id)
+                                ? "Retirer des favoris"
+                                : "Ajouter aux favoris"
+                            }
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </button>
                         </div>
                         <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -377,7 +453,9 @@ export default function Home() {
                         )}
                       </div>
                       <div className="p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          {product.category}
+                        </div>
                         <Link href={`/produits/${product.slug}`}>
                           <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                             {product.name}
@@ -389,11 +467,15 @@ export default function Home() {
                               key={i}
                               className={cn(
                                 "h-4 w-4",
-                                i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300",
+                                i < Math.floor(product.rating)
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300"
                               )}
                             />
                           ))}
-                          <span className="text-xs text-gray-500 ml-1">({product.reviewCount || 0})</span>
+                          <span className="text-xs text-gray-500 ml-1">
+                            ({product.reviewCount || 0})
+                          </span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
@@ -412,7 +494,11 @@ export default function Home() {
                               </span>
                             )}
                           </div>
-                          <Button size="sm" onClick={() => addToCart(product)} className="h-8 bg-yellow-500 w-8 p-0 rounded-full">
+                          <Button
+                            size="sm"
+                            onClick={() => addToCart(product)}
+                            className="h-8 bg-yellow-500 w-8 p-0 rounded-full"
+                          >
                             <ShoppingCart className="h-4 w-4" />
                           </Button>
                         </div>
@@ -431,7 +517,10 @@ export default function Home() {
                     >
                       <div className="relative h-48 overflow-hidden group">
                         <Image
-                          src={product.image || "/placeholder.svg?height=192&width=256"}
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=256"
+                          }
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -444,11 +533,20 @@ export default function Home() {
                               "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                             )}
-                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            aria-label={
+                              isInFavorites(product.id)
+                                ? "Retirer des favoris"
+                                : "Ajouter aux favoris"
+                            }
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </button>
                         </div>
                         {product.isNew && (
@@ -463,7 +561,9 @@ export default function Home() {
                         )}
                       </div>
                       <div className="p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          {product.category}
+                        </div>
                         <Link href={`/produits/${product.slug}`}>
                           <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                             {product.name}
@@ -475,11 +575,15 @@ export default function Home() {
                               key={i}
                               className={cn(
                                 "h-4 w-4",
-                                i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300",
+                                i < Math.floor(product.rating)
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300"
                               )}
                             />
                           ))}
-                          <span className="text-xs text-gray-500 ml-1">({product.reviewCount || 0})</span>
+                          <span className="text-xs text-gray-500 ml-1">
+                            ({product.reviewCount || 0})
+                          </span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
@@ -498,7 +602,11 @@ export default function Home() {
                               </span>
                             )}
                           </div>
-                          <Button size="sm" onClick={() => addToCart(product)} className="h-8 bg-yellow-500 w-8 p-0 rounded-full">
+                          <Button
+                            size="sm"
+                            onClick={() => addToCart(product)}
+                            className="h-8 bg-yellow-500 w-8 p-0 rounded-full"
+                          >
                             <ShoppingCart className="h-4 w-4" />
                           </Button>
                         </div>
@@ -517,7 +625,10 @@ export default function Home() {
                     >
                       <div className="relative h-48 overflow-hidden group">
                         <Image
-                          src={product.image || "/placeholder.svg?height=192&width=256"}
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=256"
+                          }
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -530,11 +641,20 @@ export default function Home() {
                               "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                             )}
-                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            aria-label={
+                              isInFavorites(product.id)
+                                ? "Retirer des favoris"
+                                : "Ajouter aux favoris"
+                            }
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </button>
                         </div>
                         {product.isNew && (
@@ -547,7 +667,9 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          {product.category}
+                        </div>
                         <Link href={`/produits/${product.slug}`}>
                           <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                             {product.name}
@@ -559,11 +681,15 @@ export default function Home() {
                               key={i}
                               className={cn(
                                 "h-4 w-4",
-                                i < Math.floor(product.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300",
+                                i < Math.floor(product.rating)
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300"
                               )}
                             />
                           ))}
-                          <span className="text-xs text-gray-500 ml-1">({product.reviewCount || 0})</span>
+                          <span className="text-xs text-gray-500 ml-1">
+                            ({product.reviewCount || 0})
+                          </span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
@@ -576,10 +702,15 @@ export default function Home() {
                               </span>
                             </div>
                             <div className="text-xs text-green-600 font-medium">
-                              Économisez {formatPrice(product.oldPrice - product.price)}
+                              Économisez{" "}
+                              {formatPrice(product.oldPrice - product.price)}
                             </div>
                           </div>
-                          <Button size="sm" onClick={() => addToCart(product)} className="h-8 bg-yellow-500 w-8 p-0 rounded-full">
+                          <Button
+                            size="sm"
+                            onClick={() => addToCart(product)}
+                            className="h-8 bg-yellow-500 w-8 p-0 rounded-full"
+                          >
                             <ShoppingCart className="h-4 w-4" />
                           </Button>
                         </div>
@@ -591,7 +722,10 @@ export default function Home() {
             </Tabs>
 
             <div className="text-center mt-10">
-              <Button asChild className="bg-yellow-400 hover:bg-yellow-500 text-black">
+              <Button
+                asChild
+                className="bg-yellow-400 hover:bg-yellow-500 text-black"
+              >
                 <Link href="/produits">
                   Voir tous les produits
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -607,7 +741,10 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden">
                 <Image
-                  src={featuredProduct.image || "/placeholder.svg?height=1000&width=800"}
+                  src={
+                    featuredProduct.image ||
+                    "/placeholder.svg?height=1000&width=800"
+                  }
                   alt={featuredProduct.name}
                   fill
                   className="object-cover"
@@ -617,7 +754,9 @@ export default function Home() {
                 <span className="inline-block bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium mb-4">
                   Produit Vedette
                 </span>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">{featuredProduct.name}</h2>
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                  {featuredProduct.name}
+                </h2>
                 <div className="flex items-center mb-4">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
@@ -625,22 +764,30 @@ export default function Home() {
                         key={i}
                         className={cn(
                           "h-5 w-5",
-                          i < Math.floor(featuredProduct.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-600",
+                          i < Math.floor(featuredProduct.rating)
+                            ? "text-yellow-400 fill-yellow-400"
+                            : "text-gray-600"
                         )}
                       />
                     ))}
                   </div>
-                  <span className="text-gray-400 ml-2">({featuredProduct.reviewCount || 0} avis)</span>
+                  <span className="text-gray-400 ml-2">
+                    ({featuredProduct.reviewCount || 0} avis)
+                  </span>
                 </div>
-                <p className="text-gray-300 mb-6">{featuredProduct.description}</p>
+                <p className="text-gray-300 mb-6">
+                  {featuredProduct.description}
+                </p>
                 <ul className="space-y-2 mb-6">
                   {featuredProduct.features &&
-                    featuredProduct.features.slice(0, 4).map((feature, index) => (
-                      <li key={index} className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
+                    featuredProduct.features
+                      .slice(0, 4)
+                      .map((feature, index) => (
+                        <li key={index} className="flex items-start">
+                          <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
                 </ul>
                 <div className="flex items-center mb-6">
                   {featuredProduct.oldPrice && (
@@ -648,7 +795,9 @@ export default function Home() {
                       {formatPrice(featuredProduct.oldPrice)}
                     </span>
                   )}
-                  <span className="text-3xl font-bold text-white">{formatPrice(featuredProduct.price)}</span>
+                  <span className="text-3xl font-bold text-white">
+                    {formatPrice(featuredProduct.price)}
+                  </span>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
@@ -663,7 +812,7 @@ export default function Home() {
                     asChild
                     className="border-white text-white hover:bg-white/10 font-medium text-lg px-8 py-6"
                   >
-                    <Link href={`/produits/${featuredProduct.slug}`}>En savoir plus</Link>
+                   
                   </Button>
                 </div>
               </div>
@@ -675,9 +824,12 @@ export default function Home() {
         <section className="py-16 md:py-20 bg-gray-100">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Nos Marques Partenaires</h2>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                Nos Marques Partenaires
+              </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Nous collaborons avec les meilleures marques du marché pour vous offrir des produits d'exception
+                Nous collaborons avec les meilleures marques du marché pour vous
+                offrir des produits d'exception
               </p>
             </div>
 
@@ -690,9 +842,12 @@ export default function Home() {
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Pourquoi Choisir IRONZ PRO</h2>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                Pourquoi Choisir <span className="text-yellow-500">IRONZ</span>
+              </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Nous nous engageons à vous offrir les meilleurs produits et services pour atteindre vos objectifs
+                Nous nous engageons à vous offrir les meilleurs produits et
+                services pour atteindre vos objectifs
               </p>
             </div>
 
@@ -701,9 +856,12 @@ export default function Home() {
                 <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
                   <CheckCircle className="h-6 w-6 text-yellow-600" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">Qualité Garantie</h3>
+                <h3 className="text-xl font-heading font-bold mb-2">
+                  Qualité Garantie
+                </h3>
                 <p className="text-gray-600">
-                  Tous nos produits sont sélectionnés avec soin et testés pour garantir une qualité professionnelle.
+                  Tous nos produits sont sélectionnés avec soin et testés pour
+                  garantir une qualité professionnelle.
                 </p>
               </div>
 
@@ -711,10 +869,12 @@ export default function Home() {
                 <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
                   <TrendingUp className="h-6 w-6 text-yellow-600" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">Expertise Fitness</h3>
+                <h3 className="text-xl font-heading font-bold mb-2">
+                  Expertise Fitness
+                </h3>
                 <p className="text-gray-600">
-                  Notre équipe d'experts est là pour vous conseiller et vous aider à choisir les produits adaptés à vos
-                  besoins.
+                  Notre équipe d'experts est là pour vous conseiller et vous
+                  aider à choisir les produits adaptés à vos besoins.
                 </p>
               </div>
 
@@ -722,9 +882,12 @@ export default function Home() {
                 <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
                   <Award className="h-6 w-6 text-yellow-600" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">Marques Premium</h3>
+                <h3 className="text-xl font-heading font-bold mb-2">
+                  Marques Premium
+                </h3>
                 <p className="text-gray-600">
-                  Nous collaborons avec les meilleures marques du marché pour vous offrir des produits d'exception.
+                  Nous collaborons avec les meilleures marques du marché pour
+                  vous offrir des produits d'exception.
                 </p>
               </div>
 
@@ -732,19 +895,12 @@ export default function Home() {
                 <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
                   <Truck className="h-6 w-6 text-yellow-600" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">Livraison Rapide</h3>
+                <h3 className="text-xl font-heading font-bold mb-2">
+                  Livraison Rapide
+                </h3>
                 <p className="text-gray-600">
-                  Livraison rapide et sécurisée partout en France et en Europe, avec suivi en temps réel.
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-                  <ShieldCheck className="h-6 w-6 text-yellow-600" />
-                </div>
-                <h3 className="text-xl font-heading font-bold mb-2">Paiement Sécurisé</h3>
-                <p className="text-gray-600">
-                  Vos transactions sont 100% sécurisées grâce à notre système de paiement crypté.
+                  Livraison rapide et sécurisée partout en France et en Europe,
+                  avec suivi en temps réel.
                 </p>
               </div>
 
@@ -752,9 +908,12 @@ export default function Home() {
                 <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
                   <CheckCircle className="h-6 w-6 text-yellow-600" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">Satisfaction Client</h3>
+                <h3 className="text-xl font-heading font-bold mb-2">
+                  Satisfaction Client
+                </h3>
                 <p className="text-gray-600">
-                  Votre satisfaction est notre priorité, avec un service client disponible 7j/7.
+                  Votre satisfaction est notre priorité, avec un service client
+                  disponible 7j/7.
                 </p>
               </div>
             </div>
@@ -766,9 +925,12 @@ export default function Home() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
               <div>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Conseils & Actualités</h2>
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                  Conseils & Actualités
+                </h2>
                 <p className="text-gray-600 max-w-2xl">
-                  Découvrez nos derniers articles, conseils et guides pour optimiser votre entraînement
+                  Découvrez nos derniers articles, conseils et guides pour
+                  optimiser votre entraînement
                 </p>
               </div>
               <Link
@@ -782,7 +944,11 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {blogPosts.map((post) => (
-                <Link key={post.id} href={`/blog/${post.slug}`} className="group">
+                <Link
+                  key={post.id}
+                  href={`/blog/${post.slug}`}
+                  className="group"
+                >
                   <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
                     <div className="relative h-48 overflow-hidden">
                       <Image
@@ -810,7 +976,9 @@ export default function Home() {
                       <h3 className="font-heading font-bold text-xl mb-2 group-hover:text-yellow-600 transition-colors">
                         {post.title}
                       </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-2">{post.excerpt}</p>
+                      <p className="text-gray-600 mb-4 line-clamp-2">
+                        {post.excerpt}
+                      </p>
                       <div className="flex items-center text-yellow-600 font-medium group-hover:underline">
                         Lire l'article
                         <ChevronRight className="ml-1 h-4 w-4" />
@@ -827,8 +995,12 @@ export default function Home() {
         <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Questions Fréquentes</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">Trouvez rapidement des réponses à vos questions</p>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                Questions Fréquentes
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Trouvez rapidement des réponses à vos questions
+              </p>
             </div>
 
             <div className="max-w-3xl mx-auto">
@@ -838,14 +1010,21 @@ export default function Home() {
                     <AccordionTrigger className="text-left font-heading font-medium text-lg">
                       {faq.question}
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-600">{faq.answer}</AccordionContent>
+                    <AccordionContent className="text-gray-600">
+                      {faq.answer}
+                    </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
 
               <div className="mt-8 text-center">
-                <p className="text-gray-600 mb-4">Vous ne trouvez pas la réponse à votre question ?</p>
-                <Button asChild className="bg-yellow-400 hover:bg-yellow-500 text-black">
+                <p className="text-gray-600 mb-4">
+                  Vous ne trouvez pas la réponse à votre question ?
+                </p>
+                <Button
+                  asChild
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black"
+                >
                   <Link href="/contact">Contactez-nous</Link>
                 </Button>
               </div>
@@ -857,9 +1036,12 @@ export default function Home() {
         <section className="py-16 md:py-24 bg-gradient-to-r from-yellow-500 to-yellow-400 text-black">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Restez informé</h2>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                Restez informé
+              </h2>
               <p className="text-gray-800 mb-8">
-                Inscrivez-vous à notre newsletter pour recevoir nos offres exclusives et nos conseils fitness
+                Inscrivez-vous à notre newsletter pour recevoir nos offres
+                exclusives et nos conseils fitness
               </p>
 
               <form className="flex flex-col sm:flex-row gap-4">
@@ -869,11 +1051,13 @@ export default function Home() {
                   className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                   required
                 />
-                <Button className="bg-black hover:bg-gray-800 text-white font-medium px-6 py-3">S'inscrire</Button>
+                <Button className="bg-black hover:bg-gray-800 text-white font-medium px-6 py-3">
+                  S'inscrire
+                </Button>
               </form>
               <p className="text-sm text-gray-700 mt-4">
-                En vous inscrivant, vous acceptez de recevoir nos emails marketing. Vous pouvez vous désinscrire à tout
-                moment.
+                En vous inscrivant, vous acceptez de recevoir nos emails
+                marketing. Vous pouvez vous désinscrire à tout moment.
               </p>
             </div>
           </div>
@@ -881,6 +1065,5 @@ export default function Home() {
       </main>
       <Footer />
     </>
-  )
+  );
 }
-

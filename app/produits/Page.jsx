@@ -1,22 +1,38 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Search, Filter, ChevronDown, Heart, ShoppingCart, X, Check, ArrowUpDown, Star, StarHalf } from "lucide-react"
-import { motion } from "framer-motion"
-import { useCart } from "@/context/cart-context"
-import { useFavorites } from "@/context/favorites-context"
-import { cn } from "@/lib/utils"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Search,
+  Filter,
+  ChevronDown,
+  Heart,
+  ShoppingCart,
+  X,
+  Check,
+  ArrowUpDown,
+  Star,
+  StarHalf,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { useCart } from "@/context/cart-context";
+import { useFavorites } from "@/context/favorites-context";
+import { cn } from "@/lib/utils";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Slider } from "@/components/ui/slider"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -25,110 +41,119 @@ import {
   SheetTrigger,
   SheetClose,
   SheetFooter,
-} from "@/components/ui/sheet"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 
 // Import product data
-import { products, categories, filters, productUtils } from "@/data/product"
+import { products, categories, filters, productUtils } from "@/data/product";
 
 export default function ProductsPage() {
-  const [filteredProducts, setFilteredProducts] = useState([])
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategories, setSelectedCategories] = useState([])
-  const [priceRange, setPriceRange] = useState([filters.price.min, filters.price.max])
-  const [sortOption, setSortOption] = useState("featured")
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [viewMode, setViewMode] = useState("grid") // grid or list
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [priceRange, setPriceRange] = useState([
+    filters.price.min,
+    filters.price.max,
+  ]);
+  const [sortOption, setSortOption] = useState("featured");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [viewMode, setViewMode] = useState("grid"); // grid or list
 
-  const { addToCart } = useCart()
-  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites()
+  const { addToCart } = useCart();
+  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
-  // Utilisez productUtils pour obtenir des produits spécifiques si nécessaire
-  const featuredProducts = productUtils.getFeaturedProducts()
-  const newProducts = productUtils.getNewProducts()
-  const discountedProducts = productUtils.getDiscountedProducts()
+  const featuredProducts = productUtils.getFeaturedProducts();
+  const newProducts = productUtils.getNewProducts();
+  const discountedProducts = productUtils.getDiscountedProducts();
 
   // Simulate loading
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [])
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Filter and sort products
   useEffect(() => {
-    let result = [...products]
+    let result = [...products];
 
     // Apply search filter
     if (searchQuery) {
-      const query = searchQuery.toLowerCase()
+      const query = searchQuery.toLowerCase();
       result = result.filter(
         (product) =>
           product.name.toLowerCase().includes(query) ||
           product.description.toLowerCase().includes(query) ||
-          (product.category && product.category.toLowerCase().includes(query)),
-      )
+          (product.category && product.category.toLowerCase().includes(query))
+      );
     }
 
     // Apply category filter
     if (selectedCategories.length > 0) {
-      result = result.filter((product) => selectedCategories.includes(product.category))
+      result = result.filter((product) =>
+        selectedCategories.includes(product.category)
+      );
     }
 
     // Apply price filter
-    result = result.filter((product) => product.price >= priceRange[0] && product.price <= priceRange[1])
+    result = result.filter(
+      (product) =>
+        product.price >= priceRange[0] && product.price <= priceRange[1]
+    );
 
     // Apply sorting
     switch (sortOption) {
       case "price-asc":
-        result.sort((a, b) => a.price - b.price)
-        break
+        result.sort((a, b) => a.price - b.price);
+        break;
       case "price-desc":
-        result.sort((a, b) => b.price - a.price)
-        break
+        result.sort((a, b) => b.price - a.price);
+        break;
       case "newest":
-        result.sort((a, b) => new Date(b.date) - new Date(a.date))
-        break
+        result.sort((a, b) => new Date(b.date) - new Date(a.date));
+        break;
       case "rating":
-        result.sort((a, b) => b.rating - a.rating)
-        break
+        result.sort((a, b) => b.rating - a.rating);
+        break;
       case "discount":
-        result.sort((a, b) => (b.discount || 0) - (a.discount || 0))
-        break
+        result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
+        break;
       // featured is default, no sorting needed
       default:
-        break
+        break;
     }
 
-    setFilteredProducts(result)
-  }, [searchQuery, selectedCategories, priceRange, sortOption])
+    setFilteredProducts(result);
+  }, [searchQuery, selectedCategories, priceRange, sortOption]);
 
   const handleCategoryToggle = (category) => {
     setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
-    )
-  }
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
 
   const handlePriceChange = (value) => {
-    setPriceRange(value)
-  }
+    setPriceRange(value);
+  };
 
   const clearFilters = () => {
-    setSearchQuery("")
-    setSelectedCategories([])
-    setPriceRange([filters.price.min, filters.price.max])
-    setSortOption("featured")
-  }
+    setSearchQuery("");
+    setSelectedCategories([]);
+    setPriceRange([filters.price.min, filters.price.max]);
+    setSortOption("featured");
+  };
 
   const toggleFavorite = (product) => {
     if (isInFavorites(product.id)) {
-      removeFromFavorites(product.id)
+      removeFromFavorites(product.id);
     } else {
-      addToFavorites(product)
+      addToFavorites(product);
     }
-  }
+  };
 
   // Animation variants
   const containerVariants = {
@@ -139,7 +164,7 @@ export default function ProductsPage() {
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -152,45 +177,50 @@ export default function ProductsPage() {
         damping: 15,
       },
     },
-  }
+  };
 
   // Format price
   const formatPrice = (price) => {
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
-      currency: "EUR",
-    }).format(price)
-  }
+      currency: "MAD",
+    }).format(price);
+  };
 
   // Render star rating
   const renderRating = (rating) => {
-    const fullStars = Math.floor(rating)
-    const hasHalfStar = rating % 1 >= 0.5
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
 
     return (
       <div className="flex items-center">
         {[...Array(fullStars)].map((_, i) => (
-          <Star key={`star-${i}`} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+          <Star
+            key={`star-${i}`}
+            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+          />
         ))}
-        {hasHalfStar && <StarHalf className="w-4 h-4 fill-yellow-400 text-yellow-400" />}
+        {hasHalfStar && (
+          <StarHalf className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+        )}
         {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
           <Star key={`empty-star-${i}`} className="w-4 h-4 text-gray-300" />
         ))}
         <span className="ml-1 text-xs text-gray-500">({rating})</span>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-28">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Tous nos produits</h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-3xl">
-            Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de
-            loisirs.
+            Découvrez notre gamme complète de produits pour l'aménagement et
+            l'équipement de vos espaces sportifs et de loisirs.
           </p>
         </div>
 
@@ -200,12 +230,18 @@ export default function ProductsPage() {
             {/* Mobile Filter Button */}
             <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" className="md:hidden flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  className="md:hidden flex items-center gap-2"
+                >
                   <Filter className="h-4 w-4" />
                   Filtres
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] sm:w-[350px] overflow-y-auto">
+              <SheetContent
+                side="left"
+                className="w-[300px] sm:w-[350px] overflow-y-auto"
+              >
                 <SheetHeader>
                   <SheetTitle>Filtres</SheetTitle>
                 </SheetHeader>
@@ -218,7 +254,9 @@ export default function ProductsPage() {
                           <Checkbox
                             id={`mobile-category-${category.id}`}
                             checked={selectedCategories.includes(category.name)}
-                            onCheckedChange={() => handleCategoryToggle(category.name)}
+                            onCheckedChange={() =>
+                              handleCategoryToggle(category.name)
+                            }
                           />
                           <label
                             htmlFor={`mobile-category-${category.id}`}
@@ -244,8 +282,12 @@ export default function ProductsPage() {
                         className="mb-6"
                       />
                       <div className="flex items-center justify-between">
-                        <span className="text-sm">{formatPrice(priceRange[0])}</span>
-                        <span className="text-sm">{formatPrice(priceRange[1])}</span>
+                        <span className="text-sm">
+                          {formatPrice(priceRange[0])}
+                        </span>
+                        <span className="text-sm">
+                          {formatPrice(priceRange[1])}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -296,10 +338,15 @@ export default function ProductsPage() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[200px]">
                 {filters.sortOptions.map((option) => (
-                  <DropdownMenuItem key={option.value} onClick={() => setSortOption(option.value)}>
+                  <DropdownMenuItem
+                    key={option.value}
+                    onClick={() => setSortOption(option.value)}
+                  >
                     <span className="flex items-center w-full">
                       {option.label}
-                      {sortOption === option.value && <Check className="ml-auto h-4 w-4" />}
+                      {sortOption === option.value && (
+                        <Check className="ml-auto h-4 w-4" />
+                      )}
                     </span>
                   </DropdownMenuItem>
                 ))}
@@ -314,7 +361,7 @@ export default function ProductsPage() {
                   "p-2 transition-colors",
                   viewMode === "grid"
                     ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200",
+                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 )}
                 aria-label="Grid view"
               >
@@ -331,7 +378,7 @@ export default function ProductsPage() {
                   "p-2 transition-colors",
                   viewMode === "list"
                     ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200",
+                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 )}
                 aria-label="List view"
               >
@@ -351,7 +398,9 @@ export default function ProductsPage() {
           priceRange[1] < filters.price.max ||
           searchQuery) && (
           <div className="flex flex-wrap items-center gap-2 mb-6">
-            <span className="text-sm text-gray-500 dark:text-gray-400">Filtres actifs:</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              Filtres actifs:
+            </span>
 
             {searchQuery && (
               <Badge variant="outline" className="flex items-center gap-1">
@@ -363,7 +412,11 @@ export default function ProductsPage() {
             )}
 
             {selectedCategories.map((category) => (
-              <Badge key={category} variant="outline" className="flex items-center gap-1">
+              <Badge
+                key={category}
+                variant="outline"
+                className="flex items-center gap-1"
+              >
                 {category}
                 <button onClick={() => handleCategoryToggle(category)}>
                   <X className="h-3 w-3" />
@@ -371,16 +424,27 @@ export default function ProductsPage() {
               </Badge>
             ))}
 
-            {(priceRange[0] > filters.price.min || priceRange[1] < filters.price.max) && (
+            {(priceRange[0] > filters.price.min ||
+              priceRange[1] < filters.price.max) && (
               <Badge variant="outline" className="flex items-center gap-1">
-                Prix: {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
-                <button onClick={() => setPriceRange([filters.price.min, filters.price.max])}>
+                Prix: {formatPrice(priceRange[0])} -{" "}
+                {formatPrice(priceRange[1])}
+                <button
+                  onClick={() =>
+                    setPriceRange([filters.price.min, filters.price.max])
+                  }
+                >
                   <X className="h-3 w-3" />
                 </button>
               </Badge>
             )}
 
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-xs">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearFilters}
+              className="text-xs"
+            >
               Effacer tous les filtres
             </Button>
           </div>
@@ -398,7 +462,9 @@ export default function ProductsPage() {
                       <Checkbox
                         id={`category-${category.id}`}
                         checked={selectedCategories.includes(category.name)}
-                        onCheckedChange={() => handleCategoryToggle(category.name)}
+                        onCheckedChange={() =>
+                          handleCategoryToggle(category.name)
+                        }
                       />
                       <label
                         htmlFor={`category-${category.id}`}
@@ -426,15 +492,23 @@ export default function ProductsPage() {
                     className="mb-6"
                   />
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">{formatPrice(priceRange[0])}</span>
-                    <span className="text-sm">{formatPrice(priceRange[1])}</span>
+                    <span className="text-sm">
+                      {formatPrice(priceRange[0])}
+                    </span>
+                    <span className="text-sm">
+                      {formatPrice(priceRange[1])}
+                    </span>
                   </div>
                 </div>
               </div>
 
               <Separator />
 
-              <Button variant="outline" onClick={clearFilters} className="w-full">
+              <Button
+                variant="outline"
+                onClick={clearFilters}
+                className="w-full"
+              >
                 Réinitialiser les filtres
               </Button>
             </div>
@@ -445,7 +519,10 @@ export default function ProductsPage() {
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {[...Array(8)].map((_, index) => (
-                  <div key={index} className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden animate-pulse">
+                  <div
+                    key={index}
+                    className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden animate-pulse"
+                  >
                     <div className="h-48 bg-gray-200 dark:bg-gray-700"></div>
                     <div className="p-4 space-y-3">
                       <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
@@ -460,11 +537,15 @@ export default function ProductsPage() {
                 <div className="mb-4 text-gray-400">
                   <Search className="h-12 w-12 mx-auto" />
                 </div>
-                <h3 className="text-lg font-medium mb-2">Aucun produit trouvé</h3>
+                <h3 className="text-lg font-medium mb-2">
+                  Aucun produit trouvé
+                </h3>
                 <p className="text-gray-500 dark:text-gray-400 mb-4">
                   Essayez de modifier vos filtres ou votre recherche.
                 </p>
-                <Button onClick={clearFilters}>Réinitialiser les filtres</Button>
+                <Button onClick={clearFilters}>
+                  Réinitialiser les filtres
+                </Button>
               </div>
             ) : viewMode === "grid" ? (
               <motion.div
@@ -481,7 +562,10 @@ export default function ProductsPage() {
                   >
                     <div className="relative h-48 overflow-hidden group">
                       <Image
-                        src={product.image || "/placeholder.svg?height=192&width=256"}
+                        src={
+                          product.image ||
+                          "/placeholder.svg?height=192&width=256"
+                        }
                         alt={product.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -494,15 +578,26 @@ export default function ProductsPage() {
                             "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
                             isInFavorites(product.id)
                               ? "bg-red-50 text-red-500 hover:bg-red-100"
-                              : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                              : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                           )}
-                          aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                          aria-label={
+                            isInFavorites(product.id)
+                              ? "Retirer des favoris"
+                              : "Ajouter aux favoris"
+                          }
                         >
-                          <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                          <Heart
+                            className={cn(
+                              "h-4 w-4",
+                              isInFavorites(product.id) && "fill-red-500"
+                            )}
+                          />
                         </button>
                       </div>
                       {product.isNew && (
-                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">Nouveau</Badge>
+                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">
+                          Nouveau
+                        </Badge>
                       )}
                       {product.discount > 0 && (
                         <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600">
@@ -511,7 +606,9 @@ export default function ProductsPage() {
                       )}
                     </div>
                     <div className="p-4">
-                      <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">{product.category}</div>
+                      <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
+                        {product.category}
+                      </div>
                       <Link href={`/produits/${product.slug || product.id}`}>
                         <h3 className="font-medium text-gray-900 dark:text-white mb-1 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                           {product.name}
@@ -535,7 +632,11 @@ export default function ProductsPage() {
                             </span>
                           )}
                         </div>
-                        <Button size="sm" onClick={() => addToCart(product)} className="h-8 w-8 p-0">
+                        <Button
+                          size="sm"
+                          onClick={() => addToCart(product)}
+                          className="h-8 w-8 p-0"
+                        >
                           <ShoppingCart className="h-4 w-4" />
                         </Button>
                       </div>
@@ -544,7 +645,12 @@ export default function ProductsPage() {
                 ))}
               </motion.div>
             ) : (
-              <motion.div className="space-y-4" variants={containerVariants} initial="hidden" animate="visible">
+              <motion.div
+                className="space-y-4"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
                 {filteredProducts.map((product) => (
                   <motion.div
                     key={product.id}
@@ -553,14 +659,19 @@ export default function ProductsPage() {
                   >
                     <div className="relative h-48 sm:h-auto sm:w-48 overflow-hidden">
                       <Image
-                        src={product.image || "/placeholder.svg?height=192&width=192"}
+                        src={
+                          product.image ||
+                          "/placeholder.svg?height=192&width=192"
+                        }
                         alt={product.name}
                         fill
                         className="object-cover"
                         sizes="(max-width: 640px) 100vw, 192px"
                       />
                       {product.isNew && (
-                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">Nouveau</Badge>
+                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">
+                          Nouveau
+                        </Badge>
                       )}
                       {product.discount > 0 && (
                         <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600">
@@ -569,7 +680,9 @@ export default function ProductsPage() {
                       )}
                     </div>
                     <div className="flex-1 p-4 flex flex-col">
-                      <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">{product.category}</div>
+                      <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
+                        {product.category}
+                      </div>
                       <Link href={`/produits/${product.slug || product.id}`}>
                         <h3 className="font-medium text-gray-900 dark:text-white mb-1 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                           {product.name}
@@ -604,10 +717,15 @@ export default function ProductsPage() {
                             className={cn(
                               "h-8 w-8 p-0",
                               isInFavorites(product.id) &&
-                                "text-red-500 border-red-200 hover:text-red-600 hover:border-red-300",
+                                "text-red-500 border-red-200 hover:text-red-600 hover:border-red-300"
                             )}
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </Button>
                           <Button size="sm" onClick={() => addToCart(product)}>
                             <ShoppingCart className="h-4 w-4 mr-2" />
@@ -624,7 +742,8 @@ export default function ProductsPage() {
             {/* Results count */}
             {!isLoading && filteredProducts.length > 0 && (
               <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
-                Affichage de {filteredProducts.length} produit{filteredProducts.length > 1 ? "s" : ""}
+                Affichage de {filteredProducts.length} produit
+                {filteredProducts.length > 1 ? "s" : ""}
               </div>
             )}
           </div>
@@ -632,6 +751,5 @@ export default function ProductsPage() {
       </div>
       <Footer />
     </>
-  )
+  );
 }
-
