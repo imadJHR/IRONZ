@@ -25,14 +25,12 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import BrandsMarquee from "@/components/brands-marquee";
 
-// Import des données de produits
 import { categories, brands, productUtils } from "@/data/product";
 import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 
-// Ajouter ces constantes pour les articles de blog et FAQ (car ils ne sont pas dans product.js)
 const blogPosts = [
   {
     id: "1",
@@ -103,13 +101,11 @@ export default function Home() {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
-  // Utiliser productUtils pour obtenir différentes catégories de produits
   const featuredProducts = productUtils.getFeaturedProducts().slice(0, 8);
   const newArrivals = productUtils.getNewProducts().slice(0, 8);
-  const bestSellers = productUtils.getFeaturedProducts().slice(0, 8); // Exemple, à remplacer par une vraie fonction si disponible
+  const bestSellers = productUtils.getFeaturedProducts().slice(0, 8);
   const specialOffers = productUtils.getDiscountedProducts().slice(0, 6);
 
-  // Fonction pour formater les prix
   const formatPrice = (price) => {
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
@@ -117,7 +113,6 @@ export default function Home() {
     }).format(price);
   };
 
-  // Fonction pour gérer les favoris
   const toggleFavorite = (product) => {
     if (isInFavorites(product.id)) {
       removeFromFavorites(product.id);
@@ -126,15 +121,13 @@ export default function Home() {
     }
   };
 
-  // Trouver un produit vedette (par exemple, le premier produit avec une réduction)
   const featuredProduct =
     specialOffers.length > 0 ? specialOffers[0] : featuredProducts[0];
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gray-50">
-        {/* Hero Section */}
+      <main className="min-h-screen py-18 bg-gray-50">
         <section className="relative  pt-16 pb-20 md:pt-24 md:pb-32 bg-black text-white overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image
@@ -177,7 +170,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Special Offers Banner */}
         <section className="py-6 bg-gradient-to-r from-yellow-500 to-yellow-400">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between">
@@ -203,7 +195,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Categories Section */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -252,7 +243,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Featured Products Tabs Section */}
         <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -735,7 +725,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Featured Product Highlight */}
         <section className="py-16 md:py-24 bg-gray-900 text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -811,16 +800,13 @@ export default function Home() {
                     variant="outline"
                     asChild
                     className="border-white text-white hover:bg-white/10 font-medium text-lg px-8 py-6"
-                  >
-                   
-                  </Button>
+                  ></Button>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Brands Section with Marquee */}
         <section className="py-16 md:py-20 bg-gray-100">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -838,7 +824,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Benefits Section */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -920,7 +905,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Blog Section */}
         <section className="py-16 md:py-24 bg-gray-100">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
@@ -991,7 +975,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FAQ Section */}
         <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -1032,7 +1015,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Newsletter Section */}
         <section className="py-16 md:py-24 bg-gradient-to-r from-yellow-500 to-yellow-400 text-black">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center">

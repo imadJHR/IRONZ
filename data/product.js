@@ -2,6 +2,8 @@ import img1 from "../public/homeGym.jpg";
 import img2 from "../public/equipement.jpg";
 import img3 from "../public/complement.jpg";
 import img4 from "../public/accessoire.jpg";
+import img5 from "../public/matrix.png"
+import img6 from "../public/lifefitness.png"
 export const categories = [
   {
     id: "1",
@@ -708,14 +710,14 @@ export const products = [
 export const brands = [
   {
     id: "1",
-    name: "SportElite",
-    logo: "/placeholder.svg?height=80&width=160&text=SportElite",
+    name: "MATRIX",
+    logo: img5,
     description: "Équipements de fitness haut de gamme",
   },
   {
     id: "2",
-    name: "EcoFit",
-    logo: "/placeholder.svg?height=80&width=160&text=EcoFit",
+    name: "LIFE FITNESS",
+    logo: img6,
     description: "Produits écologiques pour le fitness",
   },
   {
