@@ -10,6 +10,7 @@ import {
 
 import Navbar from "@/components/navbar";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const metadata = {
   title: "Nos Services | IRONZ PRO",
@@ -114,8 +115,6 @@ export default function ServicesPage() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Navbar />
-
-      {/* Hero Section */}
       <section className="relative pt-28 pb-20 md:pt-36 md:pb-32 bg-black text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
@@ -140,15 +139,11 @@ export default function ServicesPage() {
               votre équipement.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
-                Demander un devis
-              </Button>
-              <Button
-                variant="outline"
-                className="border-yellow-400 text-yellow-400 hover:bg-yellow-400/10 font-medium text-lg px-8 py-6"
-              >
-                Nos garanties
-              </Button>
+              <Link href="/demande-devis">
+                <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
+                  Demander un devis
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -196,8 +191,6 @@ export default function ServicesPage() {
                   </ul>
 
                   <div className="flex items-center justify-between mb-6"></div>
-
-                 
                 </div>
               </div>
             ))}
@@ -281,92 +274,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Ce que disent nos clients
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Découvrez les témoignages de nos clients satisfaits
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image
-                    src="/placeholder.svg?height=100&width=100"
-                    alt="Client"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Jean Dupont</h4>
-                  <p className="text-yellow-500 text-sm">
-                    Service d'installation
-                  </p>
-                </div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 italic">
-                "L'équipe d'installation a été très professionnelle et efficace.
-                Mon home gym a été installé en moins de 2 heures, avec des
-                conseils d'utilisation très utiles."
-              </p>
-            </div>
-
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image
-                    src="/placeholder.svg?height=100&width=100"
-                    alt="Client"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Marie Laurent</h4>
-                  <p className="text-yellow-500 text-sm">
-                    Coaching personnalisé
-                  </p>
-                </div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 italic">
-                "Le coaching personnalisé m'a permis de tirer le meilleur parti
-                de mon équipement. Mon coach a su adapter les exercices à mes
-                objectifs et mes contraintes."
-              </p>
-            </div>
-
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image
-                    src="/placeholder.svg?height=100&width=100"
-                    alt="Client"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Thomas Moreau</h4>
-                  <p className="text-yellow-500 text-sm">Maintenance</p>
-                </div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 italic">
-                "Le service de maintenance est impeccable. Intervention rapide
-                et efficace, mon tapis de course fonctionne à nouveau
-                parfaitement."
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-yellow-400">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -379,15 +286,20 @@ export default function ServicesPage() {
               obtenir un devis personnalisé.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6">
-                Demander un devis
-              </Button>
-              <Button
-                variant="outline"
-                className="border-black text-black hover:bg-black/10 font-medium text-lg px-8 py-6"
-              >
-                Nous contacter
-              </Button>
+              <Link href="/demande-devis">
+                <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6">
+                  Demander un devis
+                </Button>
+              </Link>
+
+              <Link href="/contact">
+                <Button
+                  variant="outline"
+                  className="border-black text-black hover:bg-black/10 font-medium text-lg px-8 py-6"
+                >
+                  Nous contacter
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,14 +1,9 @@
-"use client";
+"use client"
 
-import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
+import { useState, useRef, useEffect } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import {
   ArrowLeft,
   ArrowRight,
@@ -20,47 +15,48 @@ import {
   Play,
   Pause,
   X,
-} from "lucide-react";
+} from "lucide-react"
 
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar"
+import ServicePageCTA from "@/components/service-page-cta"
 
 export default function PersonnalisationAccessoiresPage() {
-  const [activeTab, setActiveTab] = useState("gants");
-  const [videoPlaying, setVideoPlaying] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const videoRef = useRef(null);
+  const [activeTab, setActiveTab] = useState("gants")
+  const [videoPlaying, setVideoPlaying] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [selectedVideo, setSelectedVideo] = useState(null)
+  const videoRef = useRef(null)
 
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
+  const { scrollYProgress } = useScroll()
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9])
 
   const handlePlayVideo = (videoSrc) => {
-    setSelectedVideo(videoSrc);
-    setShowModal(true);
-  };
+    setSelectedVideo(videoSrc)
+    setShowModal(true)
+  }
 
   useEffect(() => {
     if (videoRef.current) {
       if (videoPlaying) {
-        videoRef.current.play();
+        videoRef.current.play()
       } else {
-        videoRef.current.pause();
+        videoRef.current.pause()
       }
     }
-  }, [videoPlaying]);
+  }, [videoPlaying])
 
   useEffect(() => {
     if (showModal) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "unset"
     }
 
     return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [showModal]);
+      document.body.style.overflow = "unset"
+    }
+  }, [showModal])
 
   const accessoryTypes = [
     { id: "gants", name: "Gants d'entraînement" },
@@ -68,7 +64,7 @@ export default function PersonnalisationAccessoiresPage() {
     { id: "sangles", name: "Sangles de levage" },
     { id: "genouilleres", name: "Genouillères" },
     { id: "accessoires", name: "Autres accessoires" },
-  ];
+  ]
 
   const customizationOptions = [
     {
@@ -89,7 +85,7 @@ export default function PersonnalisationAccessoiresPage() {
         "Adaptez parfaitement l'accessoire à votre morphologie pour un confort et des performances optimales.",
       image: "/placeholder.svg?height=400&width=600&text=Ajustement+Sur+Mesure",
     },
-  ];
+  ]
 
   const testimonials = [
     {
@@ -110,7 +106,7 @@ export default function PersonnalisationAccessoiresPage() {
       image: "/placeholder.svg?height=100&width=100",
       text: "Nous avons équipé toute notre équipe avec des accessoires personnalisés. L'impact sur notre image de marque est considérable, et nos membres adorent!",
     },
-  ];
+  ]
 
   return (
     <main className="min-h-screen bg-black text-white overflow-x-hidden">
@@ -120,17 +116,8 @@ export default function PersonnalisationAccessoiresPage() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-black/60 z-10" />
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source
-              src="/placeholder.svg?height=1080&width=1920"
-              type="video/mp4"
-            />
+          <video autoPlay muted loop playsInline className="w-full h-full object-cover">
+            <source src="/placeholder.svg?height=1080&width=1920" type="video/mp4" />
           </video>
         </div>
 
@@ -151,25 +138,19 @@ export default function PersonnalisationAccessoiresPage() {
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
-            Créez des accessoires fitness uniques qui reflètent votre identité
-            et répondent parfaitement à vos besoins spécifiques.
+            Créez des accessoires fitness uniques qui reflètent votre identité et répondent parfaitement à vos besoins
+            spécifiques.
           </p>
 
           <div className="flex flex-wrap gap-4 justify-center">
             <button
-              onClick={() =>
-                document
-                  .getElementById("explorer")
-                  .scrollIntoView({ behavior: "smooth" })
-              }
+              onClick={() => document.getElementById("explorer").scrollIntoView({ behavior: "smooth" })}
               className="px-8 py-4 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-full transition-all transform hover:scale-105 shadow-lg"
             >
               Explorer nos options
             </button>
             <button
-              onClick={() =>
-                handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-              }
+              onClick={() => handlePlayVideo("/placeholder.svg?height=1080&width=1920")}
               className="px-8 py-4 bg-transparent hover:bg-white/10 border-2 border-yellow-400 text-yellow-400 font-bold rounded-full flex items-center transition-all transform hover:scale-105"
             >
               <Play className="h-5 w-5 mr-2" />
@@ -184,19 +165,15 @@ export default function PersonnalisationAccessoiresPage() {
       </section>
 
       {/* Accessory Types Section */}
-      <section
-        id="explorer"
-        className="py-20 bg-gradient-to-b from-black to-gray-900"
-      >
+      <section id="explorer" className="py-20 bg-gradient-to-b from-black to-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Personnalisez vos{" "}
-              <span className="text-yellow-400">accessoires</span>
+              Personnalisez vos <span className="text-yellow-400">accessoires</span>
             </h2>
             <p className="text-xl text-gray-300">
-              Découvrez notre gamme d'accessoires entièrement personnalisables
-              pour améliorer vos performances et affirmer votre style.
+              Découvrez notre gamme d'accessoires entièrement personnalisables pour améliorer vos performances et
+              affirmer votre style.
             </p>
           </div>
 
@@ -207,9 +184,7 @@ export default function PersonnalisationAccessoiresPage() {
                 key={type.id}
                 onClick={() => setActiveTab(type.id)}
                 className={`px-6 py-3 rounded-full text-sm md:text-base font-medium transition-all ${
-                  activeTab === type.id
-                    ? "bg-yellow-400 text-black"
-                    : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                  activeTab === type.id ? "bg-yellow-400 text-black" : "bg-gray-800 text-gray-300 hover:bg-gray-700"
                 }`}
               >
                 {type.name}
@@ -222,13 +197,10 @@ export default function PersonnalisationAccessoiresPage() {
             <div className="order-2 md:order-1">
               <h3 className="text-3xl font-bold mb-4">
                 {activeTab === "gants" && "Gants d'entraînement personnalisés"}
-                {activeTab === "ceintures" &&
-                  "Ceintures de musculation sur mesure"}
+                {activeTab === "ceintures" && "Ceintures de musculation sur mesure"}
                 {activeTab === "sangles" && "Sangles de levage personnalisées"}
-                {activeTab === "genouilleres" &&
-                  "Genouillères adaptées à vos besoins"}
-                {activeTab === "accessoires" &&
-                  "Accessoires fitness personnalisés"}
+                {activeTab === "genouilleres" && "Genouillères adaptées à vos besoins"}
+                {activeTab === "accessoires" && "Accessoires fitness personnalisés"}
               </h3>
 
               <p className="text-gray-300 mb-6">
@@ -248,54 +220,37 @@ export default function PersonnalisationAccessoiresPage() {
                 <li className="flex items-start">
                   <CheckCircle className="h-6 w-6 text-yellow-400 mr-3 flex-shrink-0" />
                   <span>
-                    {activeTab === "gants" &&
-                      "Protection optimale des mains et des poignets"}
-                    {activeTab === "ceintures" &&
-                      "Soutien lombaire adapté à votre morphologie"}
-                    {activeTab === "sangles" &&
-                      "Amélioration significative de votre grip"}
-                    {activeTab === "genouilleres" &&
-                      "Protection articulaire pendant les exercices intenses"}
-                    {activeTab === "accessoires" &&
-                      "Amélioration de vos performances sportives"}
+                    {activeTab === "gants" && "Protection optimale des mains et des poignets"}
+                    {activeTab === "ceintures" && "Soutien lombaire adapté à votre morphologie"}
+                    {activeTab === "sangles" && "Amélioration significative de votre grip"}
+                    {activeTab === "genouilleres" && "Protection articulaire pendant les exercices intenses"}
+                    {activeTab === "accessoires" && "Amélioration de vos performances sportives"}
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-6 w-6 text-yellow-400 mr-3 flex-shrink-0" />
                   <span>
-                    {activeTab === "gants" &&
-                      "Matériaux respirants et durables"}
-                    {activeTab === "ceintures" &&
-                      "Matériaux premium pour une durabilité maximale"}
-                    {activeTab === "sangles" &&
-                      "Confort et sécurité pendant les soulevés lourds"}
-                    {activeTab === "genouilleres" &&
-                      "Confort et liberté de mouvement"}
-                    {activeTab === "accessoires" &&
-                      "Design unique qui reflète votre personnalité"}
+                    {activeTab === "gants" && "Matériaux respirants et durables"}
+                    {activeTab === "ceintures" && "Matériaux premium pour une durabilité maximale"}
+                    {activeTab === "sangles" && "Confort et sécurité pendant les soulevés lourds"}
+                    {activeTab === "genouilleres" && "Confort et liberté de mouvement"}
+                    {activeTab === "accessoires" && "Design unique qui reflète votre personnalité"}
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-6 w-6 text-yellow-400 mr-3 flex-shrink-0" />
                   <span>
-                    {activeTab === "gants" &&
-                      "Design personnalisé avec vos couleurs et logo"}
-                    {activeTab === "ceintures" &&
-                      "Personnalisation complète (couleurs, logo, texte)"}
-                    {activeTab === "sangles" &&
-                      "Options de personnalisation étendues"}
-                    {activeTab === "genouilleres" &&
-                      "Personnalisation esthétique et fonctionnelle"}
-                    {activeTab === "accessoires" &&
-                      "Fabrication sur mesure selon vos spécifications"}
+                    {activeTab === "gants" && "Design personnalisé avec vos couleurs et logo"}
+                    {activeTab === "ceintures" && "Personnalisation complète (couleurs, logo, texte)"}
+                    {activeTab === "sangles" && "Options de personnalisation étendues"}
+                    {activeTab === "genouilleres" && "Personnalisation esthétique et fonctionnelle"}
+                    {activeTab === "accessoires" && "Fabrication sur mesure selon vos spécifications"}
                   </span>
                 </li>
               </ul>
 
               <button
-                onClick={() =>
-                  handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                }
+                onClick={() => handlePlayVideo("/placeholder.svg?height=1080&width=1920")}
                 className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-full flex items-center transition-all transform hover:scale-105 shadow-lg"
               >
                 <Play className="h-5 w-5 mr-2" />
@@ -313,9 +268,7 @@ export default function PersonnalisationAccessoiresPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
                   <button
-                    onClick={() =>
-                      handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                    }
+                    onClick={() => handlePlayVideo("/placeholder.svg?height=1080&width=1920")}
                     className="w-16 h-16 bg-yellow-400 hover:bg-yellow-500 rounded-full flex items-center justify-center transition-transform transform hover:scale-110"
                   >
                     <Play className="h-8 w-8 text-black ml-1" />
@@ -336,12 +289,10 @@ export default function PersonnalisationAccessoiresPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Notre <span className="text-yellow-400">processus</span> de
-              personnalisation
+              Notre <span className="text-yellow-400">processus</span> de personnalisation
             </h2>
             <p className="text-xl text-gray-300">
-              Une approche en 3 étapes pour créer des accessoires parfaitement
-              adaptés à vos besoins.
+              Une approche en 3 étapes pour créer des accessoires parfaitement adaptés à vos besoins.
             </p>
           </div>
 
@@ -352,28 +303,21 @@ export default function PersonnalisationAccessoiresPage() {
               </div>
               <h3 className="text-2xl font-bold mb-4">1. Conception</h3>
               <p className="text-gray-300 mb-6">
-                Nous définissons ensemble vos besoins spécifiques et créons un
-                design qui correspond à vos attentes esthétiques et
-                fonctionnelles.
+                Nous définissons ensemble vos besoins spécifiques et créons un design qui correspond à vos attentes
+                esthétiques et fonctionnelles.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-300">
-                    Consultation personnalisée
-                  </span>
+                  <span className="text-gray-300">Consultation personnalisée</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-300">
-                    Choix des matériaux et options
-                  </span>
+                  <span className="text-gray-300">Choix des matériaux et options</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-300">
-                    Création de maquettes 3D
-                  </span>
+                  <span className="text-gray-300">Création de maquettes 3D</span>
                 </li>
               </ul>
             </div>
@@ -384,28 +328,21 @@ export default function PersonnalisationAccessoiresPage() {
               </div>
               <h3 className="text-2xl font-bold mb-4">2. Fabrication</h3>
               <p className="text-gray-300 mb-6">
-                Nos artisans qualifiés fabriquent votre accessoire sur mesure en
-                utilisant des techniques de production avancées et des matériaux
-                premium.
+                Nos artisans qualifiés fabriquent votre accessoire sur mesure en utilisant des techniques de production
+                avancées et des matériaux premium.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-300">
-                    Sélection minutieuse des matériaux
-                  </span>
+                  <span className="text-gray-300">Sélection minutieuse des matériaux</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-300">
-                    Fabrication artisanale de précision
-                  </span>
+                  <span className="text-gray-300">Fabrication artisanale de précision</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-300">
-                    Contrôle qualité rigoureux
-                  </span>
+                  <span className="text-gray-300">Contrôle qualité rigoureux</span>
                 </li>
               </ul>
             </div>
@@ -416,22 +353,17 @@ export default function PersonnalisationAccessoiresPage() {
               </div>
               <h3 className="text-2xl font-bold mb-4">3. Livraison</h3>
               <p className="text-gray-300 mb-6">
-                Votre accessoire personnalisé est soigneusement emballé et livré
-                directement à votre porte, prêt à être utilisé pour vos
-                entraînements.
+                Votre accessoire personnalisé est soigneusement emballé et livré directement à votre porte, prêt à être
+                utilisé pour vos entraînements.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-300">
-                    Emballage premium éco-responsable
-                  </span>
+                  <span className="text-gray-300">Emballage premium éco-responsable</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-300">
-                    Livraison rapide et sécurisée
-                  </span>
+                  <span className="text-gray-300">Livraison rapide et sécurisée</span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
@@ -451,9 +383,7 @@ export default function PersonnalisationAccessoiresPage() {
             />
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
               <button
-                onClick={() =>
-                  handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                }
+                onClick={() => handlePlayVideo("/placeholder.svg?height=1080&width=1920")}
                 className="w-20 h-20 bg-yellow-400 hover:bg-yellow-500 rounded-full flex items-center justify-center transition-transform transform hover:scale-110"
               >
                 <Play className="h-10 w-10 text-black ml-1" />
@@ -468,12 +398,10 @@ export default function PersonnalisationAccessoiresPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Options de{" "}
-              <span className="text-yellow-400">personnalisation</span>
+              Options de <span className="text-yellow-400">personnalisation</span>
             </h2>
             <p className="text-xl text-gray-300">
-              Explorez les nombreuses possibilités pour créer des accessoires
-              uniques qui vous ressemblent.
+              Explorez les nombreuses possibilités pour créer des accessoires uniques qui vous ressemblent.
             </p>
           </div>
 
@@ -488,20 +416,13 @@ export default function PersonnalisationAccessoiresPage() {
                 className="bg-gray-800 rounded-2xl overflow-hidden"
               >
                 <div className="relative h-64">
-                  <Image
-                    src={option.image || "/placeholder.svg"}
-                    alt={option.title}
-                    fill
-                    className="object-cover"
-                  />
+                  <Image src={option.image || "/placeholder.svg"} alt={option.title} fill className="object-cover" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-3">{option.title}</h3>
                   <p className="text-gray-300 mb-6">{option.description}</p>
                   <button
-                    onClick={() =>
-                      handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                    }
+                    onClick={() => handlePlayVideo("/placeholder.svg?height=1080&width=1920")}
                     className="text-yellow-400 hover:text-yellow-300 font-medium flex items-center"
                   >
                     Découvrir <ArrowRight className="ml-2 h-4 w-4" />
@@ -521,8 +442,7 @@ export default function PersonnalisationAccessoiresPage() {
               Ils nous font <span className="text-yellow-400">confiance</span>
             </h2>
             <p className="text-xl text-gray-300">
-              Découvrez les témoignages de clients satisfaits par nos services
-              de personnalisation.
+              Découvrez les témoignages de clients satisfaits par nos services de personnalisation.
             </p>
           </div>
 
@@ -553,11 +473,7 @@ export default function PersonnalisationAccessoiresPage() {
                 <p className="text-gray-300 italic">"{testimonial.text}"</p>
                 <div className="flex mt-6">
                   {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 text-yellow-400 fill-current"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
                       <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                     </svg>
                   ))}
@@ -575,9 +491,7 @@ export default function PersonnalisationAccessoiresPage() {
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Galerie de <span className="text-yellow-400">réalisations</span>
             </h2>
-            <p className="text-xl text-gray-300">
-              Découvrez quelques exemples de nos créations personnalisées.
-            </p>
+            <p className="text-xl text-gray-300">Découvrez quelques exemples de nos créations personnalisées.</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -585,14 +499,10 @@ export default function PersonnalisationAccessoiresPage() {
               <div
                 key={index}
                 className="relative aspect-square rounded-xl overflow-hidden group cursor-pointer"
-                onClick={() =>
-                  handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                }
+                onClick={() => handlePlayVideo("/placeholder.svg?height=1080&width=1920")}
               >
                 <Image
-                  src={`/placeholder.svg?height=500&width=500&text=Réalisation+${
-                    index + 1
-                  }`}
+                  src={`/placeholder.svg?height=500&width=500&text=Réalisation+${index + 1}`}
                   alt={`Réalisation ${index + 1}`}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -606,25 +516,23 @@ export default function PersonnalisationAccessoiresPage() {
         </div>
       </section>
 
+      {/* Service CTA */}
+      <ServicePageCTA service="Personnalisation d'Accessoires" />
+
       {/* CTA Section */}
       <section className="py-20 bg-yellow-400 text-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Prêt à créer votre accessoire personnalisé?
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">Prêt à créer votre accessoire personnalisé?</h2>
             <p className="text-xl mb-10">
-              Contactez-nous dès aujourd'hui pour discuter de votre projet et
-              obtenir un devis gratuit.
+              Contactez-nous dès aujourd'hui pour discuter de votre projet et obtenir un devis gratuit.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-black hover:bg-gray-800 text-white font-bold rounded-full transition-all transform hover:scale-105 shadow-lg">
                 Demander un devis gratuit
               </button>
               <button
-                onClick={() =>
-                  handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                }
+                onClick={() => handlePlayVideo("/placeholder.svg?height=1080&width=1920")}
                 className="px-8 py-4 bg-transparent hover:bg-black/10 border-2 border-black text-black font-bold rounded-full flex items-center justify-center transition-all transform hover:scale-105"
               >
                 <Play className="h-5 w-5 mr-2" />
@@ -645,44 +553,32 @@ export default function PersonnalisationAccessoiresPage() {
                   Contactez-<span className="text-yellow-400">nous</span>
                 </h2>
                 <p className="text-xl text-gray-300 mb-8">
-                  Notre équipe d'experts est à votre disposition pour vous
-                  accompagner dans la création de vos accessoires personnalisés.
+                  Notre équipe d'experts est à votre disposition pour vous accompagner dans la création de vos
+                  accessoires personnalisés.
                 </p>
 
                 <div className="bg-gray-800 rounded-2xl p-6 mb-8">
-                  <h3 className="text-xl font-bold mb-4">
-                    Pourquoi nous choisir?
-                  </h3>
+                  <h3 className="text-xl font-bold mb-4">Pourquoi nous choisir?</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-300">
-                        Expertise dans la personnalisation d'accessoires fitness
-                      </span>
+                      <span className="text-gray-300">Expertise dans la personnalisation d'accessoires fitness</span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-300">
-                        Matériaux premium et fabrication artisanale
-                      </span>
+                      <span className="text-gray-300">Matériaux premium et fabrication artisanale</span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-300">
-                        Processus de personnalisation complet et transparent
-                      </span>
+                      <span className="text-gray-300">Processus de personnalisation complet et transparent</span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-300">
-                        Service client réactif et attentif
-                      </span>
+                      <span className="text-gray-300">Service client réactif et attentif</span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-300">
-                        Garantie satisfaction sur tous nos produits
-                      </span>
+                      <span className="text-gray-300">Garantie satisfaction sur tous nos produits</span>
                     </li>
                   </ul>
                 </div>
@@ -692,12 +588,7 @@ export default function PersonnalisationAccessoiresPage() {
                   <div className="space-y-4">
                     <div className="flex items-start">
                       <div className="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-400/20 flex items-center justify-center">
-                        <svg
-                          className="h-5 w-5 text-yellow-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
+                        <svg className="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -714,12 +605,7 @@ export default function PersonnalisationAccessoiresPage() {
 
                     <div className="flex items-start">
                       <div className="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-400/20 flex items-center justify-center">
-                        <svg
-                          className="h-5 w-5 text-yellow-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
+                        <svg className="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -730,9 +616,7 @@ export default function PersonnalisationAccessoiresPage() {
                       </div>
                       <div className="ml-4">
                         <h4 className="text-lg font-medium">Email</h4>
-                        <p className="mt-1 text-gray-300">
-                          personnalisation@ironzpro.com
-                        </p>
+                        <p className="mt-1 text-gray-300">personnalisation@ironzpro.com</p>
                       </div>
                     </div>
                   </div>
@@ -741,16 +625,11 @@ export default function PersonnalisationAccessoiresPage() {
 
               <div>
                 <div className="bg-gray-800 rounded-2xl p-8 shadow-xl">
-                  <h3 className="text-2xl font-bold mb-6">
-                    Parlez-nous de votre projet
-                  </h3>
+                  <h3 className="text-2xl font-bold mb-6">Parlez-nous de votre projet</h3>
                   <form className="space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label
-                          htmlFor="firstName"
-                          className="block text-sm font-medium text-gray-300 mb-1"
-                        >
+                        <label htmlFor="firstName" className="block text-sm font-medium text-gray-300 mb-1">
                           Prénom
                         </label>
                         <input
@@ -761,10 +640,7 @@ export default function PersonnalisationAccessoiresPage() {
                         />
                       </div>
                       <div>
-                        <label
-                          htmlFor="lastName"
-                          className="block text-sm font-medium text-gray-300 mb-1"
-                        >
+                        <label htmlFor="lastName" className="block text-sm font-medium text-gray-300 mb-1">
                           Nom
                         </label>
                         <input
@@ -777,10 +653,7 @@ export default function PersonnalisationAccessoiresPage() {
                     </div>
 
                     <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-300 mb-1"
-                      >
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
                         Email
                       </label>
                       <input
@@ -792,10 +665,7 @@ export default function PersonnalisationAccessoiresPage() {
                     </div>
 
                     <div>
-                      <label
-                        htmlFor="phone"
-                        className="block text-sm font-medium text-gray-300 mb-1"
-                      >
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-1">
                         Téléphone
                       </label>
                       <input
@@ -807,23 +677,16 @@ export default function PersonnalisationAccessoiresPage() {
                     </div>
 
                     <div>
-                      <label
-                        htmlFor="accessoryType"
-                        className="block text-sm font-medium text-gray-300 mb-1"
-                      >
+                      <label htmlFor="accessoryType" className="block text-sm font-medium text-gray-300 mb-1">
                         Type d'accessoire
                       </label>
                       <select
                         id="accessoryType"
                         className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-white"
                       >
-                        <option value="">
-                          Sélectionnez un type d'accessoire
-                        </option>
+                        <option value="">Sélectionnez un type d'accessoire</option>
                         <option value="gants">Gants d'entraînement</option>
-                        <option value="ceintures">
-                          Ceinture de musculation
-                        </option>
+                        <option value="ceintures">Ceinture de musculation</option>
                         <option value="sangles">Sangles de levage</option>
                         <option value="genouilleres">Genouillères</option>
                         <option value="autre">Autre accessoire</option>
@@ -831,10 +694,7 @@ export default function PersonnalisationAccessoiresPage() {
                     </div>
 
                     <div>
-                      <label
-                        htmlFor="message"
-                        className="block text-sm font-medium text-gray-300 mb-1"
-                      >
+                      <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
                         Votre projet
                       </label>
                       <textarea
@@ -897,11 +757,7 @@ export default function PersonnalisationAccessoiresPage() {
                     onClick={() => setVideoPlaying(!videoPlaying)}
                     className="p-3 bg-yellow-400 hover:bg-yellow-500 text-black rounded-full"
                   >
-                    {videoPlaying ? (
-                      <Pause className="h-6 w-6" />
-                    ) : (
-                      <Play className="h-6 w-6" />
-                    )}
+                    {videoPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
                   </button>
                 </div>
               </motion.div>
@@ -910,5 +766,5 @@ export default function PersonnalisationAccessoiresPage() {
         )}
       </AnimatePresence>
     </main>
-  );
+  )
 }

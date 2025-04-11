@@ -5,6 +5,7 @@ import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react"
 import Navbar from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import ServiceContactForm from "@/components/service-contact-form"
+import ServicePageCTA from "@/components/service-page-cta"
 
 export const metadata = {
   title: "Aménagement de Salle & Espace | IRONZ PRO",
@@ -593,6 +594,9 @@ export default function AmenagementSallePage() {
         </div>
       </section>
 
+      {/* Service CTA */}
+      <ServicePageCTA service="Aménagement de Salle & Espace" />
+
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-yellow-400">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -620,4 +624,3 @@ export default function AmenagementSallePage() {
     </main>
   )
 }
-

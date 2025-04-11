@@ -19,8 +19,7 @@ import { motion } from "framer-motion";
 import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -209,7 +208,7 @@ export default function CategoryPage() {
   if (isLoading) {
     return (
       <>
-        <Navbar />
+       
         <div className="container mx-auto px-4 py-32">
           <div className="animate-pulse">
             <div className="h-10 w-64 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
@@ -232,7 +231,8 @@ export default function CategoryPage() {
             </div>
           </div>
         </div>
-        <Footer />
+      
+    
       </>
     );
   }
@@ -240,7 +240,7 @@ export default function CategoryPage() {
   if (!category) {
     return (
       <>
-        <Navbar />
+    
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Catégorie non trouvée</h1>
           <p className="mb-8">
@@ -250,14 +250,14 @@ export default function CategoryPage() {
             <Link href="/produits">Voir tous les produits</Link>
           </Button>
         </div>
-        <Footer />
+       
       </>
     );
   }
 
   return (
     <>
-      <Navbar />
+      
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="mb-6">
@@ -739,7 +739,7 @@ export default function CategoryPage() {
           </div>
         </div>
       </div>
-      <Footer />
+     
     </>
   );
 }

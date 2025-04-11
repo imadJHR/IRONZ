@@ -19,8 +19,6 @@ import {
   ArrowLeft,
 } from "lucide-react";
 
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -140,8 +138,6 @@ export default function ArticlePage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
-      <Navbar />
-
       {/* Article Header */}
       <header className="relative pt-32 pb-20 bg-gradient-to-br from-gray-900 to-black text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -672,8 +668,6 @@ export default function ArticlePage() {
           </div>
         </section>
       )}
-
-      <Footer />
     </div>
   );
 }

@@ -18,7 +18,6 @@ import {
   TrendingUp,
 } from "lucide-react"
 
-import Navbar from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -85,7 +84,7 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
-      <Navbar />
+  
 
       {/* Hero Section */}
       <section className="relative pt-28 pb-20 bg-gradient-to-br from-black to-gray-900 text-white overflow-hidden">

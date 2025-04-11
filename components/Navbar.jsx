@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { useRouter, usePathname } from "next/navigation"
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 import {
   Menu,
   X,
@@ -18,115 +18,152 @@ import {
   Info,
   Home,
   ShoppingBag,
-  Sun,
-  Moon,
   Search,
   User,
-} from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useCart } from "@/context/cart-context"
-import { useFavorites } from "@/context/favorites-context"
-import { useTheme } from "next-themes"
-import { cn } from "@/lib/utils"
-import { categories } from "@/data/product"
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/context/cart-context";
+import { useFavorites } from "@/context/favorites-context";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+import { categories } from "@/data/product";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [mounted, setMounted] = useState(false)
-  const [isHoveringLogo, setIsHoveringLogo] = useState(false)
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [mobileProductsOpen, setMobileProductsOpen] = useState(false)
-  const [mobilePromotionsOpen, setMobilePromotionsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mounted, setMounted] = useState(false);
+  const [isHoveringLogo, setIsHoveringLogo] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobilePromotionsOpen, setMobilePromotionsOpen] = useState(false);
 
-  const router = useRouter()
-  const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
-  const { cart, cartOpen, itemCount, cartTotal, toggleCart, updateQuantity, removeFromCart } = useCart()
-  const { favorites, favoritesOpen, itemCount: favoritesCount, toggleFavorites } = useFavorites()
+  const router = useRouter();
+  const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const {
+    cart,
+    cartOpen,
+    itemCount,
+    cartTotal,
+    toggleCart,
+    updateQuantity,
+    removeFromCart,
+  } = useCart();
+  const {
+    favorites,
+    favoritesOpen,
+    itemCount: favoritesCount,
+    toggleFavorites,
+  } = useFavorites();
 
   // Refs for handling clicks outside
-  const searchRef = useRef(null)
-  const mobileMenuRef = useRef(null)
-  const cartRef = useRef(null)
-  const favoritesRef = useRef(null)
+  const searchRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const cartRef = useRef(null);
+  const favoritesRef = useRef(null);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Handle clicks outside of menus
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (searchOpen && searchRef.current && !searchRef.current.contains(event.target)) {
-        setSearchOpen(false)
+      if (
+        searchOpen &&
+        searchRef.current &&
+        !searchRef.current.contains(event.target)
+      ) {
+        setSearchOpen(false);
       }
-      if (mobileMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
-        setMobileMenuOpen(false)
+      if (
+        mobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setMobileMenuOpen(false);
       }
-      if (cartOpen && cartRef.current && !cartRef.current.contains(event.target)) {
-        toggleCart()
+      if (
+        cartOpen &&
+        cartRef.current &&
+        !cartRef.current.contains(event.target)
+      ) {
+        toggleCart();
       }
-      if (favoritesOpen && favoritesRef.current && !favoritesRef.current.contains(event.target)) {
-        toggleFavorites()
+      if (
+        favoritesOpen &&
+        favoritesRef.current &&
+        !favoritesRef.current.contains(event.target)
+      ) {
+        toggleFavorites();
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [searchOpen, mobileMenuOpen, cartOpen, favoritesOpen, toggleCart, toggleFavorites])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [
+    searchOpen,
+    mobileMenuOpen,
+    cartOpen,
+    favoritesOpen,
+    toggleCart,
+    toggleFavorites,
+  ]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
 
     return () => {
-      document.body.style.overflow = "auto"
-    }
-  }, [mobileMenuOpen])
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileMenuOpen]);
 
   const handleSearch = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/recherche?q=${encodeURIComponent(searchQuery)}`)
-      setSearchOpen(false)
-      setSearchQuery("")
-      setMobileMenuOpen(false)
+      router.push(`/recherche?q=${encodeURIComponent(searchQuery)}`);
+      setSearchOpen(false);
+      setSearchQuery("");
+      setMobileMenuOpen(false);
     }
-  }
+  };
 
   const isActive = (path) => {
-    if (path === "/") return pathname === "/"
-    return pathname.startsWith(path)
-  }
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
+  };
 
   const promotionLinks = [
     { name: "Offres du moment", path: "/promotions?type=current" },
     { name: "Soldes d'été", path: "/promotions?type=summer" },
     { name: "Packs économiques", path: "/promotions?type=bundle" },
     { name: "Déstockage", path: "/promotions?type=clearance" },
-  ]
+  ];
 
   const serviceLinks = [
     { name: "Aménagement de salle", path: "/services/amenagement-salle" },
-    { name: "Personnalisation d'accessoires", path: "/services/personnalisation-accessoires" },
+    {
+      name: "Personnalisation d'accessoires",
+      path: "/services/personnalisation-accessoires",
+    },
     { name: "Espace enfance", path: "/services/espace-enfance" },
     { name: "Revêtement sol & mur", path: "/services/revetement-sol-mur" },
-  ]
+  ];
 
   const dropdownVariants = {
     hidden: { opacity: 0, y: -10, scale: 0.98 },
@@ -147,12 +184,12 @@ export default function Navbar() {
         duration: 0.15,
       },
     },
-  }
+  };
 
   const logoVariants = {
     initial: { rotate: 0 },
     hover: { rotate: 10, transition: { type: "spring", stiffness: 300 } },
-  }
+  };
 
   const mobileSubmenuVariants = {
     closed: { height: 0, opacity: 0, overflow: "hidden" },
@@ -164,7 +201,7 @@ export default function Navbar() {
         opacity: { duration: 0.2 },
       },
     },
-  }
+  };
 
   const mobileMenuVariants = {
     hidden: { x: "100%", opacity: 0 },
@@ -184,7 +221,7 @@ export default function Navbar() {
         duration: 0.2,
       },
     },
-  }
+  };
 
   return (
     <>
@@ -193,7 +230,7 @@ export default function Navbar() {
           "fixed top-0 w-full z-[100] transition-all duration-300",
           scrolled
             ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm py-2 border-b border-gray-100 dark:border-gray-800"
-            : "bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm py-3",
+            : "bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm py-3"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -215,12 +252,6 @@ export default function Navbar() {
                   className="h-10 w-auto object-contain dark:invert"
                   priority
                 />
-                <motion.span
-                  className="ml-2 text-xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent"
-                  animate={isHoveringLogo ? { scale: 1.05 } : { scale: 1 }}
-                >
-                  IRONZ PRO
-                </motion.span>
               </Link>
             </motion.div>
 
@@ -237,7 +268,7 @@ export default function Navbar() {
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
                     isActive("/categories") || isActive("/produits")
                       ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
                   Produits
@@ -270,7 +301,7 @@ export default function Navbar() {
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
                     isActive("/promotions")
                       ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
                   Promotions
@@ -304,7 +335,7 @@ export default function Navbar() {
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
                     isActive("/services")
                       ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
                   Ironz Pro
@@ -360,9 +391,18 @@ export default function Navbar() {
                 className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors relative"
                 aria-label="Favoris"
               >
-                <Heart className={cn("h-5 w-5", favoritesCount > 0 ? "text-red-500 fill-red-500" : "")} />
+                <Heart
+                  className={cn(
+                    "h-5 w-5",
+                    favoritesCount > 0 ? "text-red-500 fill-red-500" : ""
+                  )}
+                />
                 {favoritesCount > 0 && (
-                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-1 -right-1">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1"
+                  >
                     <span className="h-5 w-5 p-0 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-medium">
                       {favoritesCount}
                     </span>
@@ -380,7 +420,11 @@ export default function Navbar() {
               >
                 <ShoppingCart className="h-5 w-5" />
                 {itemCount > 0 && (
-                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-1 -right-1">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1"
+                  >
                     <span className="h-5 w-5 p-0 flex items-center justify-center rounded-full bg-yellow-500 text-white text-xs font-medium">
                       {itemCount}
                     </span>
@@ -428,7 +472,11 @@ export default function Navbar() {
             >
               <div className="flex flex-col h-full">
                 <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-white dark:bg-gray-900 z-10 flex-shrink-0">
-                  <Link href="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
+                  <Link
+                    href="/"
+                    className="flex items-center"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
                     <Image
                       src="/logo.png"
                       alt="IRONZ PRO Logo"
@@ -457,7 +505,7 @@ export default function Navbar() {
                         "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                         isActive("/")
                           ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       )}
                     >
                       <Home className="h-5 w-5 mr-3" />
@@ -473,11 +521,13 @@ export default function Navbar() {
                       className="flex items-center justify-between px-3 mb-2 cursor-pointer"
                       onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
                     >
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Produits</h3>
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Produits
+                      </h3>
                       <ChevronDown
                         className={cn(
                           "h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200",
-                          mobileProductsOpen ? "rotate-180" : "",
+                          mobileProductsOpen ? "rotate-180" : ""
                         )}
                       />
                     </div>
@@ -521,7 +571,7 @@ export default function Navbar() {
                           "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                           isActive("/produits")
                             ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
                       >
                         Produits
@@ -535,13 +585,17 @@ export default function Navbar() {
                   <div>
                     <div
                       className="flex items-center justify-between px-3 mb-2 cursor-pointer"
-                      onClick={() => setMobilePromotionsOpen(!mobilePromotionsOpen)}
+                      onClick={() =>
+                        setMobilePromotionsOpen(!mobilePromotionsOpen)
+                      }
                     >
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Promotions</h3>
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Promotions
+                      </h3>
                       <ChevronDown
                         className={cn(
                           "h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200",
-                          mobilePromotionsOpen ? "rotate-180" : "",
+                          mobilePromotionsOpen ? "rotate-180" : ""
                         )}
                       />
                     </div>
@@ -585,7 +639,7 @@ export default function Navbar() {
                           "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                           isActive("/promotions")
                             ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
                       >
                         Promotions
@@ -601,11 +655,13 @@ export default function Navbar() {
                       className="flex items-center justify-between px-3 mb-2 cursor-pointer"
                       onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                     >
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Services</h3>
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Services
+                      </h3>
                       <ChevronDown
                         className={cn(
                           "h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200",
-                          mobileServicesOpen ? "rotate-180" : "",
+                          mobileServicesOpen ? "rotate-180" : ""
                         )}
                       />
                     </div>
@@ -649,7 +705,7 @@ export default function Navbar() {
                           "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                           isActive("/services")
                             ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
                       >
                         Services
@@ -665,7 +721,7 @@ export default function Navbar() {
                         "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                         isActive("/a-propos")
                           ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       )}
                     >
                       <Info className="h-5 w-5 mr-3" />À propos
@@ -678,7 +734,7 @@ export default function Navbar() {
                         "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                         isActive("/contact")
                           ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       )}
                     >
                       <Phone className="h-5 w-5 mr-3" />
@@ -720,39 +776,25 @@ export default function Navbar() {
                         </span>
                       )}
                     </Link>
-
-                    <Link
-                      href="/mon-compte"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      <User className="h-5 w-5 mr-3" />
-                      Mon compte
-                    </Link>
                   </div>
                 </div>
 
                 <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 flex-shrink-0">
                   <div className="flex items-center justify-center space-x-4 mb-4">
                     <button
-                      onClick={() => {
-                        setTheme(theme === "dark" ? "light" : "dark")
-                      }}
-                      className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
-                    >
-                      {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                    </button>
-                    <button
                       className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
                       onClick={() => {
-                        router.push("/contact")
-                        setMobileMenuOpen(false)
+                        router.push("/contact");
+                        setMobileMenuOpen(false);
                       }}
                     >
                       <Phone className="h-5 w-5" />
                     </button>
                   </div>
-                  <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+                  <Link
+                    href="/contact"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
                     <button className="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
                       Nous contacter
                     </button>
@@ -838,8 +880,12 @@ export default function Navbar() {
                 <div className="mx-auto w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
                   <ShoppingCart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                 </div>
-                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Votre panier est vide</h4>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">Commencez à ajouter des produits</p>
+                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  Votre panier est vide
+                </h4>
+                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                  Commencez à ajouter des produits
+                </p>
                 <button
                   onClick={toggleCart}
                   className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
@@ -881,15 +927,21 @@ export default function Navbar() {
                         <div className="flex items-center mt-2">
                           <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-full">
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
                               className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-l-full hover:bg-gray-100 dark:hover:bg-gray-800"
                               disabled={item.quantity <= 1}
                             >
                               <Minus className="h-3 w-3" />
                             </button>
-                            <span className="mx-2 text-xs font-medium w-5 text-center">{item.quantity}</span>
+                            <span className="mx-2 text-xs font-medium w-5 text-center">
+                              {item.quantity}
+                            </span>
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
                               className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-r-full hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
                               <Plus className="h-3 w-3" />
@@ -914,17 +966,29 @@ export default function Navbar() {
                 <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
                   <div className="space-y-3 mb-4">
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Sous-total:</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{cartTotal.toFixed(2)} MAD</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Sous-total:
+                      </span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {cartTotal.toFixed(2)} MAD
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Livraison:</span>
-                      <span className="text-gray-900 dark:text-white">Calculé à la commande</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Livraison:
+                      </span>
+                      <span className="text-gray-900 dark:text-white">
+                        Calculé à la commande
+                      </span>
                     </div>
                     <div className="h-px bg-gray-200 dark:bg-gray-700" />
                     <div className="flex justify-between text-lg font-medium">
-                      <span className="text-gray-900 dark:text-white">Total:</span>
-                      <span className="text-gray-900 dark:text-white">{cartTotal.toFixed(2)} MAD</span>
+                      <span className="text-gray-900 dark:text-white">
+                        Total:
+                      </span>
+                      <span className="text-gray-900 dark:text-white">
+                        {cartTotal.toFixed(2)} MAD
+                      </span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -981,8 +1045,12 @@ export default function Navbar() {
                 <div className="mx-auto w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
                   <Heart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                 </div>
-                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Vous n'avez pas de favoris</h4>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">Ajoutez des produits à vos favoris</p>
+                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  Vous n'avez pas de favoris
+                </h4>
+                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                  Ajoutez des produits à vos favoris
+                </p>
                 <button
                   onClick={toggleFavorites}
                   className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
@@ -1014,13 +1082,15 @@ export default function Navbar() {
                       >
                         {item.name}
                       </Link>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{item.price.toFixed(2)} MAD</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        {item.price.toFixed(2)} MAD
+                      </p>
                     </div>
                     <div className="ml-2 flex flex-col space-y-2">
                       <button
                         onClick={() => {
                           // Add to cart logic would go here
-                          toggleFavorites()
+                          toggleFavorites();
                         }}
                         className="p-1 text-yellow-500 hover:text-yellow-600 rounded-full hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
                         title="Ajouter au panier"
@@ -1045,7 +1115,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </>
-  )
+  );
 }
 
 function NavLink({ href, children, active }) {
@@ -1056,10 +1126,10 @@ function NavLink({ href, children, active }) {
         "px-4 py-2 rounded-lg text-sm font-medium transition-all",
         active
           ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
       )}
     >
       {children}
     </Link>
-  )
+  );
 }
