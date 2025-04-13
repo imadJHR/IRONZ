@@ -4,7 +4,6 @@ import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import ServiceContactForm from "@/components/service-contact-form";
-import ServicePageCTA from "@/components/service-page-cta";
 
 export const metadata = {
   title: "Revêtement Sol & Mur | IRONZ PRO",
@@ -46,15 +45,11 @@ export default function RevetementSolMurPage() {
               sécurité, la performance et l'esthétique de votre espace fitness.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
-                Demander un devis
-              </Button>
-              <Button
-                variant="outline"
-                className="border-yellow-400 text-yellow-400 hover:bg-yellow-400/10 font-medium text-lg px-8 py-6"
-              >
-                Découvrir nos réalisations
-              </Button>
+              <Link href="/demande-devis">
+                <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
+                  Demander un devis
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -513,22 +508,10 @@ export default function RevetementSolMurPage() {
                       ? "Revêtement de sol pour salle de musculation"
                       : "Revêtement mural pour espace fitness"}
                   </p>
-                  <Button
-                    variant="outline"
-                    className="border-white text-white hover:bg-white/20 w-full"
-                  >
-                    Voir le projet
-                  </Button>
+                 
                 </div>
               </div>
             ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Button className="bg-yellow-400 hover:bg-yellow-500 text-black">
-              Voir tous nos projets
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
           </div>
         </div>
       </section>
@@ -650,257 +633,6 @@ export default function RevetementSolMurPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-              Ce que disent nos clients
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Découvrez les témoignages de clients satisfaits par nos services
-              de revêtement.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-              <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image
-                    src="/placeholder.svg?height=100&width=100"
-                    alt="Client"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Pierre Durand</h4>
-                  <p className="text-yellow-500 text-sm">
-                    Propriétaire de salle de sport
-                  </p>
-                </div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 italic">
-                "Le revêtement de sol installé par IRONZ PRO a complètement
-                transformé notre espace de musculation. La qualité est
-                exceptionnelle et nos clients l'apprécient énormément."
-              </p>
-              <div className="flex mt-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-5 h-5 text-yellow-400 fill-current"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                  </svg>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-              <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image
-                    src="/placeholder.svg?height=100&width=100"
-                    alt="Client"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Céline Moreau</h4>
-                  <p className="text-yellow-500 text-sm">Coach sportif</p>
-                </div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 italic">
-                "Les panneaux acoustiques installés dans mon studio ont fait une
-                différence incroyable. L'ambiance est beaucoup plus agréable et
-                mes clients peuvent mieux se concentrer pendant les cours."
-              </p>
-              <div className="flex mt-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-5 h-5 text-yellow-400 fill-current"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                  </svg>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-              <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image
-                    src="/placeholder.svg?height=100&width=100"
-                    alt="Client"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Antoine Lefebvre</h4>
-                  <p className="text-yellow-500 text-sm">
-                    Directeur de centre sportif
-                  </p>
-                </div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 italic">
-                "Nous avons fait appel à IRONZ PRO pour le revêtement complet de
-                notre centre sportif. Le résultat est à la hauteur de nos
-                attentes, tant sur le plan esthétique que fonctionnel."
-              </p>
-              <div className="flex mt-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-5 h-5 text-yellow-400 fill-current"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                  </svg>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-                  Prêt à transformer votre espace?
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-                  Contactez-nous dès aujourd'hui pour discuter de votre projet
-                  de revêtement. Notre équipe d'experts est à votre disposition
-                  pour vous conseiller et vous proposer les solutions les plus
-                  adaptées à vos besoins.
-                </p>
-
-                <div className="space-y-6 mb-8">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                      <Phone className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-medium">Téléphone</h3>
-                      <p className="mt-1 text-gray-600 dark:text-gray-400">
-                        +33 1 23 45 67 89
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                      <svg
-                        className="h-5 w-5 text-yellow-600 dark:text-yellow-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-medium">Email</h3>
-                      <p className="mt-1 text-gray-600 dark:text-gray-400">
-                        revetement@ironzpro.com
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                      <svg
-                        className="h-5 w-5 text-yellow-600 dark:text-yellow-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-medium">Adresse</h3>
-                      <p className="mt-1 text-gray-600 dark:text-gray-400">
-                        123 Avenue des Champs-Élysées, 75008 Paris
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-6">
-                  <h3 className="text-lg font-medium mb-4">Nos garanties</h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-300">
-                        Matériaux de haute qualité
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-300">
-                        Installation professionnelle
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-300">
-                        Garantie de 5 ans sur nos revêtements
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-300">
-                        Service après-vente réactif
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-                  <h3 className="text-xl font-heading font-bold mb-6">
-                    Demande de devis
-                  </h3>
-                  <ServiceContactForm service="Revêtement Sol & Mur" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Service CTA */}
-      <ServicePageCTA service="Revêtement Sol & Mur" />
-
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-yellow-400">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -913,15 +645,11 @@ export default function RevetementSolMurPage() {
               engagement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6">
-                Demander un devis gratuit
-              </Button>
-              <Button
-                variant="outline"
-                className="border-black text-black hover:bg-black/10 font-medium text-lg px-8 py-6"
-              >
-                Découvrir nos réalisations
-              </Button>
+              <Link href="/demande-devis">
+                <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6">
+                  Demander un devis gratuit
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
