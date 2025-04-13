@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   Calendar,
   Clock,
@@ -16,25 +16,26 @@ import {
   Search,
   Bookmark,
   TrendingUp,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { blogPosts, blogCategories, popularTags } from "@/data/blog-posts"
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { blogPosts, blogCategories, popularTags } from "@/data/blog-posts";
+import Navbar from "@/components/navbar";
 
 export default function BlogPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [activeCategory, setActiveCategory] = useState("all")
-  const [filteredPosts, setFilteredPosts] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const postsPerPage = 6
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 6;
 
   // Filter posts based on search term and active category
   useEffect(() => {
-    let filtered = [...blogPosts]
+    let filtered = [...blogPosts];
 
     // Filter by search term
     if (searchTerm) {
@@ -42,49 +43,51 @@ export default function BlogPage() {
         (post) =>
           post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          post.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())),
-      )
+          post.tags.some((tag) =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+      );
     }
 
     // Filter by category
     if (activeCategory !== "all") {
-      filtered = filtered.filter((post) => post.category === activeCategory)
+      filtered = filtered.filter((post) => post.category === activeCategory);
     }
 
     // Sort by date (newest first)
-    filtered.sort((a, b) => new Date(b.date) - new Date(a.date))
+    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    setFilteredPosts(filtered)
-    setCurrentPage(1) // Reset to first page when filters change
-  }, [searchTerm, activeCategory])
+    setFilteredPosts(filtered);
+    setCurrentPage(1); // Reset to first page when filters change
+  }, [searchTerm, activeCategory]);
 
   // Calculate pagination
-  const indexOfLastPost = currentPage * postsPerPage
-  const indexOfFirstPost = indexOfLastPost - postsPerPage
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost)
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
   // Featured posts (top 3 featured posts)
   const featuredPosts = blogPosts
     .filter((post) => post.featured)
     .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 3)
+    .slice(0, 3);
 
   // Handle search
   const handleSearch = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // Search is already handled by the useEffect
-  }
+  };
 
   // Handle pagination
   const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber)
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
-  
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative pt-28 pb-20 bg-gradient-to-br from-black to-gray-900 text-white overflow-hidden">
@@ -111,10 +114,14 @@ export default function BlogPage() {
             </h1>
 
             <p className="text-lg md:text-xl text-gray-300 mb-10">
-              Découvrez des articles inspirants, des conseils d'experts et les dernières tendances pour votre bien-être.
+              Découvrez des articles inspirants, des conseils d'experts et les
+              dernières tendances pour votre bien-être.
             </p>
 
-            <form onSubmit={handleSearch} className="relative max-w-xl mx-auto mb-10">
+            <form
+              onSubmit={handleSearch}
+              className="relative max-w-xl mx-auto mb-10"
+            >
               <div className="relative">
                 <Input
                   type="text"
@@ -159,7 +166,7 @@ export default function BlogPage() {
       {featuredPosts.length > 0 && (
         <section className="py-20 bg-gray-50 dark:bg-gray-950">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -167,10 +174,15 @@ export default function BlogPage() {
               className="mb-16"
             >
               <div className="flex flex-col items-center">
-                <Badge variant="secondary" className="mb-4 px-4 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">
+                <Badge
+                  variant="secondary"
+                  className="mb-4 px-4 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
+                >
                   À ne pas manquer
                 </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Nos articles vedettes</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+                  Nos articles vedettes
+                </h2>
                 <div className="w-24 h-1 bg-yellow-500 rounded-full"></div>
               </div>
             </motion.div>
@@ -231,19 +243,28 @@ export default function BlogPage() {
                       </h3>
                     </Link>
 
-                    <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">{post.excerpt}</p>
+                    <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                      {post.excerpt}
+                    </p>
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <Avatar className="h-9 w-9 mr-3 border-2 border-white dark:border-gray-800 shadow-sm">
-                          <AvatarImage src={post.author.avatar} alt={post.author.name} />
+                          <AvatarImage
+                            src={post.author.avatar}
+                            alt={post.author.name}
+                          />
                           <AvatarFallback className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">
                             {post.author.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="text-sm font-medium">{post.author.name}</p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">Auteur</p>
+                          <p className="text-sm font-medium">
+                            {post.author.name}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            Auteur
+                          </p>
                         </div>
                       </div>
 
@@ -277,15 +298,25 @@ export default function BlogPage() {
             className="mb-16"
           >
             <div className="flex flex-col items-center">
-              <Badge variant="secondary" className="mb-4 px-4 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">
+              <Badge
+                variant="secondary"
+                className="mb-4 px-4 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
+              >
                 Nos articles
               </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Dernières publications</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+                Dernières publications
+              </h2>
               <div className="w-24 h-1 bg-yellow-500 rounded-full"></div>
             </div>
           </motion.div>
 
-          <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="mb-12">
+          <Tabs
+            defaultValue="all"
+            value={activeCategory}
+            onValueChange={setActiveCategory}
+            className="mb-12"
+          >
             <TabsList className="flex flex-wrap justify-center mb-10 bg-transparent gap-2">
               <TabsTrigger
                 value="all"
@@ -317,7 +348,10 @@ export default function BlogPage() {
                         viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                         className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700"
                       >
-                        <Link href={`/blog/${post.id}`} className="block relative">
+                        <Link
+                          href={`/blog/${post.id}`}
+                          className="block relative"
+                        >
                           <div className="relative h-52 overflow-hidden">
                             <Image
                               src={post.image || "/blog-placeholder.jpg"}
@@ -359,17 +393,24 @@ export default function BlogPage() {
                             </h3>
                           </Link>
 
-                          <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">{post.excerpt}</p>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                            {post.excerpt}
+                          </p>
 
                           <div className="flex items-center justify-between">
                             <div className="flex items-center">
                               <Avatar className="h-8 w-8 mr-2 border-2 border-white dark:border-gray-800">
-                                <AvatarImage src={post.author.avatar} alt={post.author.name} />
+                                <AvatarImage
+                                  src={post.author.avatar}
+                                  alt={post.author.name}
+                                />
                                 <AvatarFallback className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">
                                   {post.author.name.charAt(0)}
                                 </AvatarFallback>
                               </Avatar>
-                              <span className="text-sm font-medium">{post.author.name}</span>
+                              <span className="text-sm font-medium">
+                                {post.author.name}
+                              </span>
                             </div>
 
                             <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
@@ -410,10 +451,15 @@ export default function BlogPage() {
                           <ChevronLeft className="h-4 w-4" />
                         </Button>
 
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+                        {Array.from(
+                          { length: totalPages },
+                          (_, i) => i + 1
+                        ).map((number) => (
                           <Button
                             key={number}
-                            variant={currentPage === number ? "default" : "outline"}
+                            variant={
+                              currentPage === number ? "default" : "outline"
+                            }
                             className={
                               currentPage === number
                                 ? "bg-yellow-500 text-black hover:bg-yellow-600 h-10 w-10 rounded-full font-medium transition-all duration-300"
@@ -428,7 +474,9 @@ export default function BlogPage() {
                         <Button
                           variant="outline"
                           size="icon"
-                          onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
+                          onClick={() =>
+                            paginate(Math.min(totalPages, currentPage + 1))
+                          }
                           disabled={currentPage === totalPages}
                           className="h-10 w-10 rounded-full hover:bg-yellow-50 hover:text-yellow-600 hover:border-yellow-300 transition-colors duration-300 disabled:opacity-50"
                         >
@@ -446,14 +494,17 @@ export default function BlogPage() {
                   className="text-center py-16 bg-gray-50 dark:bg-gray-900 rounded-xl"
                 >
                   <Search className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                  <h3 className="text-xl font-bold mb-4">Aucun article trouvé</h3>
+                  <h3 className="text-xl font-bold mb-4">
+                    Aucun article trouvé
+                  </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-                    Aucun article ne correspond à vos critères de recherche. Essayez d'autres termes ou catégories.
+                    Aucun article ne correspond à vos critères de recherche.
+                    Essayez d'autres termes ou catégories.
                   </p>
                   <Button
                     onClick={() => {
-                      setSearchTerm("")
-                      setActiveCategory("all")
+                      setSearchTerm("");
+                      setActiveCategory("all");
                     }}
                     className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-6 py-2 rounded-full transition-all duration-300 hover:shadow-md"
                   >
@@ -487,13 +538,18 @@ export default function BlogPage() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Badge variant="secondary" className="mb-4 px-4 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100">
+              <Badge
+                variant="secondary"
+                className="mb-4 px-4 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
+              >
                 Restez connecté
               </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Ne manquez rien</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Ne manquez rien
+              </h2>
               <p className="text-gray-300 mb-10 text-lg">
-                Abonnez-vous à notre newsletter pour recevoir nos derniers articles et conseils directement dans votre
-                boîte mail.
+                Abonnez-vous à notre newsletter pour recevoir nos derniers
+                articles et conseils directement dans votre boîte mail.
               </p>
 
               <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
@@ -509,13 +565,13 @@ export default function BlogPage() {
               </form>
 
               <p className="text-gray-400 text-sm mt-4">
-                En vous inscrivant, vous acceptez de recevoir nos emails et confirmez avoir lu notre politique de
-                confidentialité.
+                En vous inscrivant, vous acceptez de recevoir nos emails et
+                confirmez avoir lu notre politique de confidentialité.
               </p>
             </motion.div>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }

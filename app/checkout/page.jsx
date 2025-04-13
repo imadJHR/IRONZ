@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import Navbar from "@/components/navbar";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -292,7 +293,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
   if (!mounted) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      
         <div className="flex items-center justify-center h-[calc(100vh-64px)]">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -305,8 +305,7 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-    
-
+      <Navbar />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
         <div className="flex items-center mb-8">
           <Link

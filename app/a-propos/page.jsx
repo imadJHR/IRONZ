@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,27 +18,23 @@ import {
   Linkedin,
   Calendar,
 } from "lucide-react";
-
 import logo from "@/public/logo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 export default function AboutPage() {
-  // Animation controls
   const controls = useAnimation();
   const storyRef = useRef(null);
   const storyInView = useInView(storyRef, { once: true, amount: 0.3 });
-
   useEffect(() => {
     if (storyInView) {
       controls.start("visible");
     }
   }, [controls, storyInView]);
 
-  // Structured data for SEO
   useEffect(() => {
-    // Add JSON-LD structured data for organization
     const script = document.createElement("script");
     script.type = "application/ld+json";
     script.innerHTML = JSON.stringify({
@@ -58,7 +53,7 @@ export default function AboutPage() {
       address: {
         "@type": "PostalAddress",
         streetAddress: "123 Avenue des Champs-Élysées",
-        addressLocality: "Paris",
+        addressLocality: "Agadir",
         postalCode: "75008",
         addressCountry: "FR",
       },
@@ -198,6 +193,7 @@ export default function AboutPage() {
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
+      <Navbar/>
       {/* Hero Section */}
       <section
         className="relative pt-20 sm:pt-24 md:pt-32 pb-16 sm:pb-20 md:pb-28 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden"
@@ -736,6 +732,7 @@ export default function AboutPage() {
         </nav>
         <Separator className="mt-4 mb-0" />
       </div>
+      <Footer/>
     </main>
   );
 }

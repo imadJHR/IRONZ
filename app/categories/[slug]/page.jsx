@@ -42,6 +42,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import { products, categories, filters } from "@/data/product";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -251,6 +253,7 @@ export default function CategoryPage() {
 
   return (
     <>
+    <Navbar/>
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="mb-6">
@@ -732,6 +735,7 @@ export default function CategoryPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

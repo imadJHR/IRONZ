@@ -20,7 +20,6 @@ import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -45,6 +44,8 @@ import { Separator } from "@/components/ui/separator";
 
 // Import product data
 import { products, categories, filters, productUtils } from "@/data/product";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -212,7 +213,7 @@ export default function ProductsPage() {
 
   return (
     <>
-      
+      <Navbar />
       <div className="container mx-auto px-4 py-28">
         {/* Header */}
         <div className="mb-8">
@@ -748,6 +749,7 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
