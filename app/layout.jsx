@@ -3,8 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { CartProvider } from "@/context/cart-context";
 import { FavoritesProvider } from "@/context/favorites-context";
-import Navbar from "../components/navbar";
-import Footer from "../components/footer";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,9 +22,9 @@ export default function RootLayout({ children }) {
           <CartProvider>
             <FavoritesProvider>
               <div className="flex flex-col min-h-screen">
-                <Navbar/>
+                <Navbar />
                 <main className="flex-grow pt-24">{children}</main>
-                <Footer/>
+                <Footer />
               </div>
             </FavoritesProvider>
           </CartProvider>

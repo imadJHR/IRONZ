@@ -24,7 +24,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { blogPosts, blogCategories, popularTags } from "@/data/blog-posts";
-import Navbar from "@/components/navbar";
 
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("");
