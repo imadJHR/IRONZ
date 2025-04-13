@@ -247,7 +247,7 @@ export default function Navbar() {
                   alt="IRONZ PRO Logo"
                   width={160}
                   height={50}
-                  className="h-10 w-auto object-contain dark:invert"
+                  className="h-20 w-auto object-contain dark:invert"
                   priority
                 />
               </Link>
@@ -474,11 +474,9 @@ export default function Navbar() {
                       alt="IRONZ PRO Logo"
                       width={120}
                       height={38}
-                      className="h-8 w-auto object-contain dark:invert"
+                      className="h-18 w-auto object-contain dark:invert"
                     />
-                    <span className="ml-2 text-xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">
-                      IRONZ
-                    </span>
+                  
                   </Link>
                   <button
                     onClick={() => setMobileMenuOpen(false)}

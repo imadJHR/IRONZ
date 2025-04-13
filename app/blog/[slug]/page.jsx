@@ -128,7 +128,7 @@ export default function ArticlePage() {
   if (isLoading || !article) {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950">
-        <Navbar />
+       
         <div className="container mx-auto px-4 py-32 flex items-center justify-center">
           <div className="w-16 h-16 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
