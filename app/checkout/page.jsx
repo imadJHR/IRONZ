@@ -24,7 +24,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import Navbar from "@/components/navbar";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -305,7 +304,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <Navbar />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
         <div className="flex items-center mb-8">
           <Link

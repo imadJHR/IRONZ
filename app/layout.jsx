@@ -22,7 +22,9 @@ export default function RootLayout({ children }) {
           <CartProvider>
             <FavoritesProvider>
               <div className="flex flex-col min-h-screen">
+                <Navbar/>
                 <main className="flex-grow pt-24">{children}</main>
+                <Footer/>
               </div>
             </FavoritesProvider>
           </CartProvider>

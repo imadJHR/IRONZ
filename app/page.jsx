@@ -28,8 +28,6 @@ import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 
 const blogPosts = [
   {
@@ -127,7 +125,6 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen py- bg-gray-50">
-        <Navbar/>
         <section className="relative  pt-16 pb-20 md:pt-24 md:pb-32 bg-black text-white overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image
@@ -1014,7 +1011,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <Footer/>
       </main>
     </>
   );

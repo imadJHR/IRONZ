@@ -22,8 +22,6 @@ import logo from "@/public/logo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
 export default function AboutPage() {
   const controls = useAnimation();
   const storyRef = useRef(null);
@@ -193,7 +191,6 @@ export default function AboutPage() {
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
-      <Navbar/>
       {/* Hero Section */}
       <section
         className="relative pt-20 sm:pt-24 md:pt-32 pb-16 sm:pb-20 md:pb-28 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden"
@@ -732,7 +729,6 @@ export default function AboutPage() {
         </nav>
         <Separator className="mt-4 mb-0" />
       </div>
-      <Footer/>
     </main>
   );
 }

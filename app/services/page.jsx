@@ -10,8 +10,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 
 export const metadata = {
   title: "Nos Services | IRONZ PRO",
@@ -115,7 +113,6 @@ export default function ServicesPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <Navbar/>
       <section className="relative pt-28 pb-20 md:pt-36 md:pb-32 bg-black text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
@@ -369,7 +366,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-      <Footer/>
     </main>
   );
 }

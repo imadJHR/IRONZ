@@ -87,7 +87,7 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
-      <Navbar />
+    
 
       {/* Hero Section */}
       <section className="relative pt-28 pb-20 bg-gradient-to-br from-black to-gray-900 text-white overflow-hidden">
