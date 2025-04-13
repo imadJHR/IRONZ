@@ -21,8 +21,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 import BrandsMarquee from "@/components/brands-marquee";
 
 import { categories, brands, productUtils } from "@/data/product";
@@ -126,8 +124,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
-      <main className="min-h-screen py-18 bg-gray-50">
+      <main className="min-h-screen py- bg-gray-50">
         <section className="relative  pt-16 pb-20 md:pt-24 md:pb-32 bg-black text-white overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image
@@ -1014,38 +1011,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <section className="py-16 md:py-24 bg-gradient-to-r from-yellow-500 to-yellow-400 text-black">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                Restez informé
-              </h2>
-              <p className="text-gray-800 mb-8">
-                Inscrivez-vous à notre newsletter pour recevoir nos offres
-                exclusives et nos conseils fitness
-              </p>
-
-              <form className="flex flex-col sm:flex-row gap-4">
-                <input
-                  type="email"
-                  placeholder="Votre adresse email"
-                  className="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                  required
-                />
-                <Button className="bg-black hover:bg-gray-800 text-white font-medium px-6 py-3">
-                  S'inscrire
-                </Button>
-              </form>
-              <p className="text-sm text-gray-700 mt-4">
-                En vous inscrivant, vous acceptez de recevoir nos emails
-                marketing. Vous pouvez vous désinscrire à tout moment.
-              </p>
-            </div>
-          </div>
-        </section>
       </main>
-      <Footer />
     </>
   );
 }

@@ -20,7 +20,6 @@ import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -208,7 +207,6 @@ export default function CategoryPage() {
   if (isLoading) {
     return (
       <>
-       
         <div className="container mx-auto px-4 py-32">
           <div className="animate-pulse">
             <div className="h-10 w-64 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
@@ -231,8 +229,6 @@ export default function CategoryPage() {
             </div>
           </div>
         </div>
-      
-    
       </>
     );
   }
@@ -240,7 +236,6 @@ export default function CategoryPage() {
   if (!category) {
     return (
       <>
-    
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Catégorie non trouvée</h1>
           <p className="mb-8">
@@ -250,14 +245,12 @@ export default function CategoryPage() {
             <Link href="/produits">Voir tous les produits</Link>
           </Button>
         </div>
-       
       </>
     );
   }
 
   return (
     <>
-      
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="mb-6">
@@ -739,7 +732,6 @@ export default function CategoryPage() {
           </div>
         </div>
       </div>
-     
     </>
   );
 }

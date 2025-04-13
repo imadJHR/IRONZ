@@ -1,20 +1,18 @@
-import Link from "next/link"
-import Image from "next/image"
-import { ArrowLeft } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowLeft } from "lucide-react";
 
-import Navbar from "@/components/navbar"
-import { categories } from "@/data/product"
+import { categories } from "@/data/product";
 
 export const metadata = {
   title: "Toutes les catégories | IRONZ PRO",
-  description: "Découvrez toutes nos catégories de produits fitness et arts martiaux",
-}
+  description:
+    "Découvrez toutes nos catégories de produits fitness et arts martiaux",
+};
 
 export default function CategoriesPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <Navbar />
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
         <Link
           href="/"
@@ -24,11 +22,13 @@ export default function CategoriesPage() {
           Retour à l'accueil
         </Link>
 
-        <h1 className="text-3xl md:text-4xl font-heading font-bold mb-8">Toutes nos catégories</h1>
+        <h1 className="text-3xl md:text-4xl font-heading font-bold mb-8">
+          Toutes nos catégories
+        </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((category) => {
-            const slug = category.href.split("/").pop()
+            const slug = category.href.split("/").pop();
 
             return (
               <Link
@@ -46,14 +46,20 @@ export default function CategoriesPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h2 className="text-xl font-heading font-bold text-white mb-1">{category.name}</h2>
-                    <p className="text-sm text-gray-200 line-clamp-2">{category.description}</p>
+                    <h2 className="text-xl font-heading font-bold text-white mb-1">
+                      {category.name}
+                    </h2>
+                    <p className="text-sm text-gray-200 line-clamp-2">
+                      {category.description}
+                    </p>
                   </div>
                 </div>
 
                 <div className="p-4 bg-gray-50 dark:bg-gray-800">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{category.productCount} produits</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {category.productCount} produits
+                    </span>
                     <span className="text-yellow-600 dark:text-yellow-400 text-sm font-medium group-hover:underline flex items-center">
                       Découvrir
                       <svg
@@ -73,11 +79,10 @@ export default function CategoriesPage() {
                   </div>
                 </div>
               </Link>
-            )
+            );
           })}
         </div>
       </div>
     </div>
-  )
+  );
 }
-

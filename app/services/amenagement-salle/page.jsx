@@ -1,22 +1,19 @@
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react"
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react";
 
-import Navbar from "@/components/navbar"
-import { Button } from "@/components/ui/button"
-import ServiceContactForm from "@/components/service-contact-form"
-import ServicePageCTA from "@/components/service-page-cta"
+import { Button } from "@/components/ui/button";
+import ServiceContactForm from "@/components/service-contact-form";
 
 export const metadata = {
   title: "Aménagement de Salle & Espace | IRONZ PRO",
-  description: "Services professionnels d'aménagement de salles de sport et d'espaces fitness par IRONZ PRO",
-}
+  description:
+    "Services professionnels d'aménagement de salles de sport et d'espaces fitness par IRONZ PRO",
+};
 
 export default function AmenagementSallePage() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <Navbar />
-
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-black text-white overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-40">
@@ -41,19 +38,22 @@ export default function AmenagementSallePage() {
 
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
-              Aménagement de <span className="text-yellow-400">Salle & Espace</span>
+              Aménagement de{" "}
+              <span className="text-yellow-400">Salle & Espace</span>
             </h1>
             <p className="text-xl text-gray-300 mb-8">
-              Transformez votre espace en une salle de fitness fonctionnelle et inspirante avec notre expertise en
-              aménagement d'espaces sportifs.
+              Transformez votre espace en une salle de fitness fonctionnelle et
+              inspirante avec notre expertise en aménagement d'espaces sportifs.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
-                Demander un devis
-              </Button>
+              <Link href="/demande-devis">
+                <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
+                  Demander un devis
+                </Button>
+              </Link>
               <Button
                 variant="outline"
-                className="border-yellow-400 text-yellow-400 hover:bg-yellow-400/10 font-medium text-lg px-8 py-6"
+                className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 font-medium text-lg px-8 py-6"
               >
                 Découvrir nos réalisations
               </Button>
@@ -66,10 +66,13 @@ export default function AmenagementSallePage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Créez l'espace fitness idéal</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Créez l'espace fitness idéal
+            </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Que vous souhaitiez aménager une salle de sport professionnelle, un espace fitness dans un hôtel ou un
-              home gym personnel, notre équipe d'experts vous accompagne à chaque étape.
+              Que vous souhaitiez aménager une salle de sport professionnelle,
+              un espace fitness dans un hôtel ou un home gym personnel, notre
+              équipe d'experts vous accompagne à chaque étape.
             </p>
           </div>
 
@@ -90,23 +93,31 @@ export default function AmenagementSallePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">Étude & Conception</h3>
+              <h3 className="text-xl font-heading font-bold mb-3">
+                Étude & Conception
+              </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Analyse de vos besoins, étude de l'espace disponible et conception de plans détaillés pour optimiser
-                chaque mètre carré.
+                Analyse de vos besoins, étude de l'espace disponible et
+                conception de plans détaillés pour optimiser chaque mètre carré.
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Plans 2D et 3D personnalisés</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Plans 2D et 3D personnalisés
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Optimisation des flux de circulation</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Optimisation des flux de circulation
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Respect des normes de sécurité</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Respect des normes de sécurité
+                  </span>
                 </li>
               </ul>
             </div>
@@ -127,23 +138,31 @@ export default function AmenagementSallePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">Aménagement & Installation</h3>
+              <h3 className="text-xl font-heading font-bold mb-3">
+                Aménagement & Installation
+              </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Mise en place complète de votre espace fitness, de la préparation du sol à l'installation des
-                équipements.
+                Mise en place complète de votre espace fitness, de la
+                préparation du sol à l'installation des équipements.
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Installation professionnelle</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Installation professionnelle
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Gestion de projet complète</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Gestion de projet complète
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Coordination des différents corps de métier</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Coordination des différents corps de métier
+                  </span>
                 </li>
               </ul>
             </div>
@@ -156,26 +175,39 @@ export default function AmenagementSallePage() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
                 </svg>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">Équipement & Finition</h3>
+              <h3 className="text-xl font-heading font-bold mb-3">
+                Équipement & Finition
+              </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Sélection et installation des équipements adaptés à vos besoins, avec finitions personnalisées pour un
-                résultat parfait.
+                Sélection et installation des équipements adaptés à vos besoins,
+                avec finitions personnalisées pour un résultat parfait.
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Sélection d'équipements de qualité</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Sélection d'équipements de qualité
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Personnalisation des finitions</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Personnalisation des finitions
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Formation à l'utilisation</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Formation à l'utilisation
+                  </span>
                 </li>
               </ul>
             </div>
@@ -187,9 +219,12 @@ export default function AmenagementSallePage() {
       <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Nos réalisations</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Nos réalisations
+            </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Découvrez quelques-uns de nos projets d'aménagement d'espaces fitness réalisés pour nos clients.
+              Découvrez quelques-uns de nos projets d'aménagement d'espaces
+              fitness réalisés pour nos clients.
             </p>
           </div>
 
@@ -206,23 +241,23 @@ export default function AmenagementSallePage() {
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <h3 className="text-white text-xl font-bold mb-2">Projet {item}</h3>
+                  <h3 className="text-white text-xl font-bold mb-2">
+                    Projet {item}
+                  </h3>
                   <p className="text-gray-200 text-sm mb-4">
-                    {item % 2 === 0 ? "Salle de sport professionnelle" : "Home gym privé"}
+                    {item % 2 === 0
+                      ? "Salle de sport professionnelle"
+                      : "Home gym privé"}
                   </p>
-                  <Button variant="outline" className="border-white text-white hover:bg-white/20 w-full">
+                  <Button
+                    variant="outline"
+                    className="border-white text-white hover:bg-white/20 w-full"
+                  >
                     Voir le projet
                   </Button>
                 </div>
               </div>
             ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Button className="bg-yellow-400 hover:bg-yellow-500 text-black">
-              Voir tous nos projets
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
           </div>
         </div>
       </section>
@@ -231,9 +266,12 @@ export default function AmenagementSallePage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Notre processus</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Notre processus
+            </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Une approche méthodique en 5 étapes pour garantir la réussite de votre projet d'aménagement.
+              Une approche méthodique en 5 étapes pour garantir la réussite de
+              votre projet d'aménagement.
             </p>
           </div>
 
@@ -246,9 +284,12 @@ export default function AmenagementSallePage() {
               {/* Step 1 */}
               <div className="flex flex-col md:flex-row items-center">
                 <div className="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">Consultation initiale</h3>
+                  <h3 className="text-xl font-heading font-bold mb-3">
+                    Consultation initiale
+                  </h3>
                   <p className="text-gray-600 dark:text-gray-400">
-                    Nous discutons de vos besoins, objectifs et contraintes pour comprendre parfaitement votre vision.
+                    Nous discutons de vos besoins, objectifs et contraintes pour
+                    comprendre parfaitement votre vision.
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pl-12 relative">
@@ -259,15 +300,21 @@ export default function AmenagementSallePage() {
                     <ul className="space-y-2">
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Analyse des besoins</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Analyse des besoins
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Définition du budget</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Définition du budget
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Visite des lieux</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Visite des lieux
+                        </span>
                       </li>
                     </ul>
                   </div>
@@ -277,10 +324,12 @@ export default function AmenagementSallePage() {
               {/* Step 2 */}
               <div className="flex flex-col md:flex-row-reverse items-center">
                 <div className="md:w-1/2 md:pl-12 md:text-left mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">Conception & Design</h3>
+                  <h3 className="text-xl font-heading font-bold mb-3">
+                    Conception & Design
+                  </h3>
                   <p className="text-gray-600 dark:text-gray-400">
-                    Nous élaborons des plans détaillés et des visualisations 3D pour vous permettre de projeter le
-                    résultat final.
+                    Nous élaborons des plans détaillés et des visualisations 3D
+                    pour vous permettre de projeter le résultat final.
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pr-12 relative">
@@ -291,15 +340,21 @@ export default function AmenagementSallePage() {
                     <ul className="space-y-2">
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Plans 2D et 3D</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Plans 2D et 3D
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Sélection des matériaux</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Sélection des matériaux
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Proposition d'équipements</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Proposition d'équipements
+                        </span>
                       </li>
                     </ul>
                   </div>
@@ -309,9 +364,12 @@ export default function AmenagementSallePage() {
               {/* Step 3 */}
               <div className="flex flex-col md:flex-row items-center">
                 <div className="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">Validation & Planification</h3>
+                  <h3 className="text-xl font-heading font-bold mb-3">
+                    Validation & Planification
+                  </h3>
                   <p className="text-gray-600 dark:text-gray-400">
-                    Nous finalisons ensemble le projet et établissons un calendrier précis pour sa réalisation.
+                    Nous finalisons ensemble le projet et établissons un
+                    calendrier précis pour sa réalisation.
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pl-12 relative">
@@ -322,15 +380,21 @@ export default function AmenagementSallePage() {
                     <ul className="space-y-2">
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Validation du projet</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Validation du projet
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Planification des travaux</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Planification des travaux
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Commande des équipements</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Commande des équipements
+                        </span>
                       </li>
                     </ul>
                   </div>
@@ -340,9 +404,12 @@ export default function AmenagementSallePage() {
               {/* Step 4 */}
               <div className="flex flex-col md:flex-row-reverse items-center">
                 <div className="md:w-1/2 md:pl-12 md:text-left mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">Réalisation & Installation</h3>
+                  <h3 className="text-xl font-heading font-bold mb-3">
+                    Réalisation & Installation
+                  </h3>
                   <p className="text-gray-600 dark:text-gray-400">
-                    Notre équipe réalise les travaux d'aménagement et installe les équipements selon le planning établi.
+                    Notre équipe réalise les travaux d'aménagement et installe
+                    les équipements selon le planning établi.
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pr-12 relative">
@@ -353,15 +420,21 @@ export default function AmenagementSallePage() {
                     <ul className="space-y-2">
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Préparation du site</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Préparation du site
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Installation des équipements</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Installation des équipements
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Contrôle qualité</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Contrôle qualité
+                        </span>
                       </li>
                     </ul>
                   </div>
@@ -371,10 +444,12 @@ export default function AmenagementSallePage() {
               {/* Step 5 */}
               <div className="flex flex-col md:flex-row items-center">
                 <div className="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">Livraison & Suivi</h3>
+                  <h3 className="text-xl font-heading font-bold mb-3">
+                    Livraison & Suivi
+                  </h3>
                   <p className="text-gray-600 dark:text-gray-400">
-                    Nous vous remettons les clés de votre nouvel espace et assurons un suivi pour garantir votre
-                    satisfaction.
+                    Nous vous remettons les clés de votre nouvel espace et
+                    assurons un suivi pour garantir votre satisfaction.
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pl-12 relative">
@@ -385,103 +460,25 @@ export default function AmenagementSallePage() {
                     <ul className="space-y-2">
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Formation à l'utilisation</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Formation à l'utilisation
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Remise des documents</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Remise des documents
+                        </span>
                       </li>
                       <li className="flex items-start">
                         <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 dark:text-gray-300">Service après-vente</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          Service après-vente
+                        </span>
                       </li>
                     </ul>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Ce que disent nos clients</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Découvrez les témoignages de clients satisfaits par nos services d'aménagement.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-              <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image src="/placeholder.svg?height=100&width=100" alt="Client" fill className="object-cover" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Jean Dupont</h4>
-                  <p className="text-yellow-500 text-sm">Propriétaire de salle de sport</p>
-                </div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 italic">
-                "L'équipe d'IRONZ PRO a transformé mon local commercial en une salle de sport moderne et fonctionnelle.
-                Leur expertise et leur professionnalisme ont fait toute la différence."
-              </p>
-              <div className="flex mt-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                  </svg>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-              <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image src="/placeholder.svg?height=100&width=100" alt="Client" fill className="object-cover" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Marie Laurent</h4>
-                  <p className="text-yellow-500 text-sm">Directrice d'hôtel</p>
-                </div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 italic">
-                "Nous avons fait appel à IRONZ PRO pour aménager l'espace fitness de notre hôtel. Le résultat est à la
-                hauteur de nos attentes, et nos clients sont ravis. Un service clé en main qui a dépassé nos
-                espérances."
-              </p>
-              <div className="flex mt-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                  </svg>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-              <div className="flex items-center mb-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image src="/placeholder.svg?height=100&width=100" alt="Client" fill className="object-cover" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-lg">Thomas Moreau</h4>
-                  <p className="text-yellow-500 text-sm">Particulier</p>
-                </div>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400 italic">
-                "Mon home gym est exactement comme je l'imaginais. L'équipe a su transformer un espace inutilisé en une
-                salle d'entraînement parfaitement équipée et agencée."
-              </p>
-              <div className="flex mt-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                  </svg>
-                ))}
               </div>
             </div>
           </div>
@@ -494,10 +491,13 @@ export default function AmenagementSallePage() {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Prêt à transformer votre espace?</h2>
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+                  Prêt à transformer votre espace?
+                </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-                  Contactez-nous dès aujourd'hui pour discuter de votre projet d'aménagement. Notre équipe d'experts est
-                  à votre disposition pour répondre à toutes vos questions.
+                  Contactez-nous dès aujourd'hui pour discuter de votre projet
+                  d'aménagement. Notre équipe d'experts est à votre disposition
+                  pour répondre à toutes vos questions.
                 </p>
 
                 <div className="space-y-6 mb-8">
@@ -507,7 +507,9 @@ export default function AmenagementSallePage() {
                     </div>
                     <div className="ml-4">
                       <h3 className="text-lg font-medium">Téléphone</h3>
-                      <p className="mt-1 text-gray-600 dark:text-gray-400">+33 1 23 45 67 89</p>
+                      <p className="mt-1 text-gray-600 dark:text-gray-400">
+                        +33 1 23 45 67 89
+                      </p>
                     </div>
                   </div>
 
@@ -529,7 +531,9 @@ export default function AmenagementSallePage() {
                     </div>
                     <div className="ml-4">
                       <h3 className="text-lg font-medium">Email</h3>
-                      <p className="mt-1 text-gray-600 dark:text-gray-400">amenagement@ironzpro.com</p>
+                      <p className="mt-1 text-gray-600 dark:text-gray-400">
+                        amenagement@ironzpro.com
+                      </p>
                     </div>
                   </div>
 
@@ -565,37 +569,37 @@ export default function AmenagementSallePage() {
                 </div>
 
                 <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6">
-                  <h3 className="text-lg font-medium mb-4">Horaires d'ouverture</h3>
+                  <h3 className="text-lg font-medium mb-4">
+                    Horaires d'ouverture
+                  </h3>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Lundi - Vendredi</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Lundi - Vendredi
+                      </span>
                       <span className="font-medium">9h - 18h</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Samedi</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Samedi
+                      </span>
                       <span className="font-medium">10h - 16h</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Dimanche</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Dimanche
+                      </span>
                       <span className="font-medium">Fermé</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div>
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-                  <h3 className="text-xl font-heading font-bold mb-6">Demande de devis</h3>
-                  <ServiceContactForm service="Aménagement de Salle & Espace" />
-                </div>
-              </div>
+              <div></div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Service CTA */}
-      <ServicePageCTA service="Aménagement de Salle & Espace" />
 
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-yellow-400">
@@ -605,12 +609,15 @@ export default function AmenagementSallePage() {
               Transformez votre espace dès maintenant
             </h2>
             <p className="text-xl text-black/80 mb-8">
-              Contactez-nous pour bénéficier d'une consultation gratuite et sans engagement.
+              Contactez-nous pour bénéficier d'une consultation gratuite et sans
+              engagement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6">
-                Demander un devis gratuit
-              </Button>
+              <Link href="/demande-devis">
+                <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6">
+                  Demander un devis gratuit
+                </Button>
+              </Link>
               <Button
                 variant="outline"
                 className="border-black text-black hover:bg-black/10 font-medium text-lg px-8 py-6"
@@ -622,5 +629,5 @@ export default function AmenagementSallePage() {
         </div>
       </section>
     </main>
-  )
+  );
 }

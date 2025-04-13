@@ -1,20 +1,27 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import logo from "../../public/logo.png"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import { Mail, Phone, Clock, ArrowRight, CheckCircle, Loader2, AlertCircle, MessageSquare } from "lucide-react"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
+import { useState } from "react";
+import logo from "../../public/logo.png";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  Mail,
+  Phone,
+  Clock,
+  ArrowRight,
+  CheckCircle,
+  Loader2,
+  AlertCircle,
+  MessageSquare,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -24,44 +31,44 @@ export default function ContactPage() {
     subject: "",
     message: "",
     contactReason: "question",
-  })
+  });
 
   const [formStatus, setFormStatus] = useState({
     isSubmitting: false,
     isSubmitted: false,
     error: null,
-  })
+  });
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormState((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setFormStatus({ isSubmitting: true, isSubmitted: false, error: null })
+    e.preventDefault();
+    setFormStatus({ isSubmitting: true, isSubmitted: false, error: null });
 
     try {
       // Format the message for WhatsApp
-      const whatsappMessage = formatWhatsAppMessage(formState)
+      const whatsappMessage = formatWhatsAppMessage(formState);
 
       // Encode the message for URL
-      const encodedMessage = encodeURIComponent(whatsappMessage)
+      const encodedMessage = encodeURIComponent(whatsappMessage);
 
       // WhatsApp phone number - replace with your actual number
-      const phoneNumber = "212674114446" // Format: country code without + and phone number
+      const phoneNumber = "212674114446"; // Format: country code without + and phone number
 
       // Create WhatsApp URL
-      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
       // Open WhatsApp in a new tab
-      window.open(whatsappUrl, "_blank")
+      window.open(whatsappUrl, "_blank");
 
       // Set form as submitted
-      setFormStatus({ isSubmitting: false, isSubmitted: true, error: null })
+      setFormStatus({ isSubmitting: false, isSubmitted: true, error: null });
 
       // Reset form
       setFormState({
@@ -71,15 +78,15 @@ export default function ContactPage() {
         subject: "",
         message: "",
         contactReason: "question",
-      })
+      });
     } catch (error) {
       setFormStatus({
         isSubmitting: false,
         isSubmitted: false,
         error: "Une erreur est survenue. Veuillez réessayer.",
-      })
+      });
     }
-  }
+  };
 
   // Format message for WhatsApp
   const formatWhatsAppMessage = (data) => {
@@ -90,14 +97,14 @@ export default function ContactPage() {
 *Sujet:* ${data.subject}
 *Raison du contact:* ${data.contactReason}
 *Message:*
-${data.message}`
-  }
+${data.message}`;
+  };
 
   // Direct WhatsApp contact
   const contactViaWhatsApp = () => {
-    const phoneNumber = "212669510042" // Replace with your actual number
-    window.open(`https://wa.me/${phoneNumber}`, "_blank")
-  }
+    const phoneNumber = "212669510042"; // Replace with your actual number
+    window.open(`https://wa.me/${phoneNumber}`, "_blank");
+  };
 
   // Animation variants
   const containerVariants = {
@@ -108,7 +115,7 @@ ${data.message}`
         staggerChildren: 0.1,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -121,11 +128,10 @@ ${data.message}`
         damping: 15,
       },
     },
-  }
+  };
 
   return (
     <>
-      <Navbar />
       <main className="bg-gray-50 dark:bg-gray-900 pt-32 pb-16">
         {/* Hero Section */}
         <div className="container mx-auto px-4 mb-16">
@@ -135,12 +141,18 @@ ${data.message}`
             transition={{ duration: 0.5 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Contactez-nous</h1>
+            <h1 className="text-4xl text-yellow-400 md:text-5xl font-bold mb-4">
+              Contactez-nous
+            </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-              Notre équipe est à votre disposition pour répondre à toutes vos questions et vous accompagner dans vos
-              projets.
+              Notre équipe est à votre disposition pour répondre à toutes vos
+              questions et vous accompagner dans vos projets.
             </p>
-            <Button onClick={contactViaWhatsApp} className="bg-green-500 hover:bg-green-600 text-white font-medium">
+            <Button
+              variant="outline"
+              onClick={contactViaWhatsApp}
+              className="bg-green-500 hover:bg-green-600 text-white font-medium"
+            >
               <MessageSquare className="mr-2 h-5 w-5" />
               Nous contacter sur WhatsApp
             </Button>
@@ -184,7 +196,8 @@ ${data.message}`
               </div>
               <h3 className="text-lg font-medium mb-2">Email</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Envoyez-nous un email, nous vous répondrons dans les plus brefs délais.
+                Envoyez-nous un email, nous vous répondrons dans les plus brefs
+                délais.
               </p>
               <a
                 href="mailto:muscleironz2019@gmail.com"
@@ -197,10 +210,10 @@ ${data.message}`
 
             <motion.div
               variants={itemVariants}
-              className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700"
+              className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700"
             >
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
-                <MessageSquare className="h-6 w-6 text-green-600 dark:text-green-400" />
+              <div className="w-12 h-12 bg-yellow-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+                <MessageSquare className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
               </div>
               <h3 className="text-lg font-medium mb-2">WhatsApp</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
@@ -208,7 +221,7 @@ ${data.message}`
               </p>
               <button
                 onClick={contactViaWhatsApp}
-                className="text-green-600 dark:text-green-400 font-medium hover:underline flex items-center"
+                className="text-yellow-600 font-medium hover:underline flex items-center"
               >
                 Discuter sur WhatsApp
                 <ArrowRight className="ml-1 h-4 w-4" />
@@ -223,12 +236,19 @@ ${data.message}`
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* Map Section */}
               <div className="relative h-[300px] lg:h-auto">
-                <Image src={logo || "/placeholder.svg"} alt="Carte" fill className="object-cover" />
+                <Image
+                  src={logo || "/placeholder.svg"}
+                  alt="Carte"
+                  fill
+                  className="object-cover"
+                />
                 <div className="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
                   <div className="text-white">
                     <h3 className="font-medium text-lg mb-1">IRONZ</h3>
-                    <p className="text-sm text-white/90">Localisation Agadir : SAHARA MALL 1 ÈRE ÉTAGE C169 & C120</p>
+                    <p className="text-sm text-white/90">
+                      Localisation Agadir : SAHARA MALL 1 ÈRE ÉTAGE C169 & C120
+                    </p>
                     <div className="flex items-center mt-2 text-sm text-white/80">
                       <Clock className="h-4 w-4 mr-1" />
                       <span>Lun-Ven: 9h-18h | Sam: 10h-16h | Dim: Fermé</span>
@@ -239,16 +259,21 @@ ${data.message}`
 
               {/* Contact Form */}
               <div className="p-6 lg:p-8">
-                <h2 className="text-2xl font-bold mb-6">Envoyez-nous un message</h2>
+                <h2 className="text-2xl font-bold mb-6">
+                  Envoyez-nous un message
+                </h2>
 
                 {formStatus.isSubmitted ? (
                   <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 text-center">
                     <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                       <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
                     </div>
-                    <h3 className="text-lg font-medium text-green-800 dark:text-green-300 mb-2">Message envoyé !</h3>
+                    <h3 className="text-lg font-medium text-green-800 dark:text-green-300 mb-2">
+                      Message envoyé !
+                    </h3>
                     <p className="text-green-700 dark:text-green-400 mb-4">
-                      Merci de nous avoir contacté. Votre message a été envoyé sur notre WhatsApp.
+                      Merci de nous avoir contacté. Votre message a été envoyé
+                      sur notre WhatsApp.
                     </p>
                     <Button
                       onClick={() =>
@@ -377,6 +402,7 @@ ${data.message}`
 
                     <Button
                       type="submit"
+                      variant="outline"
                       className="w-full bg-green-500 hover:bg-green-600 text-white font-medium"
                       disabled={formStatus.isSubmitting}
                     >
@@ -402,10 +428,13 @@ ${data.message}`
         {/* FAQ Section */}
         <div className="container mx-auto px-4 mt-16">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">Questions fréquentes</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              Questions fréquentes
+            </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Consultez nos réponses aux questions les plus fréquemment posées. Si vous ne trouvez pas votre réponse,
-              n'hésitez pas à nous contacter.
+              Consultez nos réponses aux questions les plus fréquemment posées.
+              Si vous ne trouvez pas votre réponse, n'hésitez pas à nous
+              contacter.
             </p>
           </div>
 
@@ -417,74 +446,105 @@ ${data.message}`
             </TabsList>
             <TabsContent value="general" className="space-y-4">
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="font-medium text-lg mb-2">Comment puis-je contacter le service client ?</h3>
+                <h3 className="font-medium text-lg mb-2">
+                  Comment puis-je contacter le service client ?
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Vous pouvez nous contacter par téléphone au +212 669510042, par email à muscleironz2019@gmail.com, ou
-                  via WhatsApp en cliquant sur le bouton "Nous contacter sur WhatsApp".
+                  Vous pouvez nous contacter par téléphone au +212 669510042,
+                  par email à muscleironz2019@gmail.com, ou via WhatsApp en
+                  cliquant sur le bouton "Nous contacter sur WhatsApp".
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="font-medium text-lg mb-2">Quels sont vos horaires d'ouverture ?</h3>
+                <h3 className="font-medium text-lg mb-2">
+                  Quels sont vos horaires d'ouverture ?
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Notre showroom est ouvert du lundi au vendredi de 9h à 18h et le samedi de 10h à 16h. Notre service
-                  client est disponible par téléphone et email du lundi au vendredi de 9h à 18h.
+                  Notre showroom est ouvert du lundi au vendredi de 9h à 18h et
+                  le samedi de 10h à 16h. Notre service client est disponible
+                  par téléphone et email du lundi au vendredi de 9h à 18h.
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="font-medium text-lg mb-2">Proposez-vous des services d'installation ?</h3>
+                <h3 className="font-medium text-lg mb-2">
+                  Proposez-vous des services d'installation ?
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Oui, nous proposons des services d'installation pour la plupart de nos équipements. Les frais
-                  d'installation varient selon le produit et votre localisation. Contactez-nous pour obtenir un devis
-                  personnalisé.
+                  Oui, nous proposons des services d'installation pour la
+                  plupart de nos équipements. Les frais d'installation varient
+                  selon le produit et votre localisation. Contactez-nous pour
+                  obtenir un devis personnalisé.
                 </p>
               </div>
             </TabsContent>
             <TabsContent value="orders" className="space-y-4">
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="font-medium text-lg mb-2">Comment puis-je suivre ma commande ?</h3>
+                <h3 className="font-medium text-lg mb-2">
+                  Comment puis-je suivre ma commande ?
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Vous recevrez un email de confirmation avec un numéro de suivi dès que votre commande sera expédiée.
-                  Vous pouvez également suivre votre commande en vous connectant à votre compte sur notre site.
+                  Vous recevrez un email de confirmation avec un numéro de suivi
+                  dès que votre commande sera expédiée. Vous pouvez également
+                  suivre votre commande en vous connectant à votre compte sur
+                  notre site.
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="font-medium text-lg mb-2">Puis-je modifier ou annuler ma commande ?</h3>
+                <h3 className="font-medium text-lg mb-2">
+                  Puis-je modifier ou annuler ma commande ?
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Vous pouvez modifier ou annuler votre commande dans les 24 heures suivant votre achat. Passé ce délai,
-                  veuillez contacter notre service client pour vérifier si des modifications sont encore possibles.
+                  Vous pouvez modifier ou annuler votre commande dans les 24
+                  heures suivant votre achat. Passé ce délai, veuillez contacter
+                  notre service client pour vérifier si des modifications sont
+                  encore possibles.
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="font-medium text-lg mb-2">Quels modes de paiement acceptez-vous ?</h3>
+                <h3 className="font-medium text-lg mb-2">
+                  Quels modes de paiement acceptez-vous ?
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Nous acceptons les cartes de crédit (Visa, Mastercard, American Express), PayPal, et les virements
-                  bancaires. Pour les commandes importantes, nous proposons également des solutions de financement.
+                  Nous acceptons les cartes de crédit (Visa, Mastercard,
+                  American Express), PayPal, et les virements bancaires. Pour
+                  les commandes importantes, nous proposons également des
+                  solutions de financement.
                 </p>
               </div>
             </TabsContent>
             <TabsContent value="shipping" className="space-y-4">
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="font-medium text-lg mb-2">Quels sont les délais de livraison ?</h3>
+                <h3 className="font-medium text-lg mb-2">
+                  Quels sont les délais de livraison ?
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Les délais de livraison varient selon votre localisation et les produits commandés. En général,
-                  comptez 2-5 jours ouvrés pour la France métropolitaine, 5-10 jours pour l'Europe, et 10-15 jours pour
-                  le reste du monde.
+                  Les délais de livraison varient selon votre localisation et
+                  les produits commandés. En général, comptez 2-5 jours ouvrés
+                  pour la France métropolitaine, 5-10 jours pour l'Europe, et
+                  10-15 jours pour le reste du monde.
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="font-medium text-lg mb-2">La livraison est-elle gratuite ?</h3>
+                <h3 className="font-medium text-lg mb-2">
+                  La livraison est-elle gratuite ?
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  La livraison est gratuite pour toutes les commandes supérieures à 100€ en France métropolitaine. Pour
-                  les commandes inférieures à ce montant, des frais de livraison s'appliquent en fonction du poids et de
-                  la destination.
+                  La livraison est gratuite pour toutes les commandes
+                  supérieures à 100€ en France métropolitaine. Pour les
+                  commandes inférieures à ce montant, des frais de livraison
+                  s'appliquent en fonction du poids et de la destination.
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="font-medium text-lg mb-2">Quelle est votre politique de retour ?</h3>
+                <h3 className="font-medium text-lg mb-2">
+                  Quelle est votre politique de retour ?
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Vous disposez de 30 jours à compter de la réception de votre commande pour retourner un article. Les
-                  produits doivent être dans leur état d'origine, non utilisés et dans leur emballage d'origine. Les
-                  frais de retour sont à la charge du client, sauf en cas de produit défectueux.
+                  Vous disposez de 30 jours à compter de la réception de votre
+                  commande pour retourner un article. Les produits doivent être
+                  dans leur état d'origine, non utilisés et dans leur emballage
+                  d'origine. Les frais de retour sont à la charge du client,
+                  sauf en cas de produit défectueux.
                 </p>
               </div>
             </TabsContent>
@@ -493,20 +553,26 @@ ${data.message}`
 
         {/* CTA Section */}
         <div className="container mx-auto px-4 mt-16">
-          <div className="bg-gradient-to-r from-green-500 to-green-400 rounded-xl p-8 md:p-12 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Besoin d'une assistance personnalisée ?</h2>
+          <div className="bg-gradient-to-r from-orange-500 to-yellow-400 rounded-xl p-8 md:p-12 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              Besoin d'une assistance personnalisée ?
+            </h2>
             <p className="text-white/90 text-lg mb-6 max-w-2xl mx-auto">
-              Notre équipe d'experts est à votre disposition pour vous accompagner dans tous vos projets fitness et
-              bien-être.
+              Notre équipe d'experts est à votre disposition pour vous
+              accompagner dans tous vos projets fitness et bien-être.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-white hover:bg-gray-100 text-green-600" onClick={contactViaWhatsApp}>
+              <Button
+                variant="outline"
+                className="bg-white text-orange-600"
+                onClick={contactViaWhatsApp}
+              >
                 <MessageSquare className="mr-2 h-4 w-4" />
                 Discuter sur WhatsApp
               </Button>
               <Button
                 variant="outline"
-                className="bg-green-600/20 hover:bg-green-600/30 backdrop-blur-sm text-white border border-white/20"
+                className="bg-white backdrop-blur-sm text-orange-600 border border-white/20"
                 onClick={() => (window.location.href = "tel:+212674114446")}
               >
                 <Phone className="mr-2 h-4 w-4" />
@@ -516,7 +582,6 @@ ${data.message}`
           </div>
         </div>
       </main>
-      <Footer />
     </>
-  )
+  );
 }

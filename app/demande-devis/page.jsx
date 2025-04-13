@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "@/components/navbar";
 import logo from "@/public/logo.png";
 
 export default function DemandeDevisPage() {
@@ -156,10 +155,41 @@ export default function DemandeDevisPage() {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Format the message for WhatsApp
+      const selectedService =
+        services.find((s) => s.id === formData.service)?.name ||
+        formData.service;
+      const selectedBudget =
+        budgetOptions.find((b) => b.value === formData.budget)?.label ||
+        "Non spécifié";
 
-      // Success
+      const whatsappMessage = `Nouvelle demande de devis:
+      
+  *Nom complet:* ${formData.firstName} ${formData.lastName}
+  *Email:* ${formData.email}
+  *Téléphone:* ${formData.phone}
+  *Entreprise:* ${formData.company || "Non spécifié"}
+  *Service demandé:* ${selectedService}
+  *Budget estimé:* ${selectedBudget}
+  
+  *Message:*
+  ${formData.message}
+  
+  Envoyé depuis le site web IRONZ PRO`;
+
+      // Encode the message for URL
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+
+      // Your WhatsApp number (replace with your actual number, remove any spaces or special characters)
+      const whatsappNumber = "212674114446"; // Example: +212 674-114446 becomes 212674114446
+
+      // Open WhatsApp with the pre-filled message
+      window.open(
+        `https://wa.me/${whatsappNumber}?text=${encodedMessage}`,
+        "_blank"
+      );
+
+      // Mark as submitted
       setIsSubmitted(true);
 
       // Reset form
@@ -174,11 +204,6 @@ export default function DemandeDevisPage() {
         message: "",
         terms: false,
       });
-
-      // Scroll to top of form for success message
-      if (formRef.current) {
-        formRef.current.scrollIntoView({ behavior: "smooth" });
-      }
     } catch (error) {
       console.error("Error submitting form:", error);
       setErrors((prev) => ({
@@ -189,7 +214,6 @@ export default function DemandeDevisPage() {
       setIsSubmitting(false);
     }
   };
-
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -266,7 +290,6 @@ export default function DemandeDevisPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <Navbar />
       <section className="relative pt-28 pb-20 md:pt-36 md:pb-32 overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-20">
           <Image
@@ -552,7 +575,7 @@ export default function DemandeDevisPage() {
                       Demande envoyée avec succès !
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 mb-6">
-                      Merci pour votre demande de devis. Notre équipe va
+                      Votre demande a été envoyée sur WhatsApp. Notre équipe va
                       l'étudier et vous contactera dans les plus brefs délais.
                     </p>
                     <div className="flex flex-wrap justify-center gap-4">

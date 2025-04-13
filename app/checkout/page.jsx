@@ -17,9 +17,6 @@ import {
 } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -194,7 +191,6 @@ Total: ${formatPrice(total)}
   if (orderComplete) {
     return (
       <>
-        <Navbar />
         <main className="bg-gray-50 dark:bg-gray-900 py-28">
           <div className="container mx-auto px-4 max-w-3xl">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8 text-center">
@@ -246,7 +242,7 @@ Total: ${formatPrice(total)}
             </div>
           </div>
         </main>
-        <Footer />
+      
       </>
     );
   }

@@ -1,23 +1,20 @@
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react"
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react";
 
-import Navbar from "@/components/navbar"
-import { Button } from "@/components/ui/button"
-import ServiceContactForm from "@/components/service-contact-form"
-import ServicePageCTA from "@/components/service-page-cta"
+import { Button } from "@/components/ui/button";
+import ServiceContactForm from "@/components/service-contact-form";
+import ServicePageCTA from "@/components/service-page-cta";
 
 export const metadata = {
   title: "Revêtement Sol & Mur | IRONZ PRO",
   description:
     "Services professionnels de revêtement de sol et mur pour salles de sport et espaces fitness par IRONZ PRO",
-}
+};
 
 export default function RevetementSolMurPage() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <Navbar />
-
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-black text-white overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-40">
@@ -45,8 +42,8 @@ export default function RevetementSolMurPage() {
               Revêtement <span className="text-yellow-400">Sol & Mur</span>
             </h1>
             <p className="text-xl text-gray-300 mb-8">
-              Des solutions de revêtement professionnelles pour optimiser la sécurité, la performance et l'esthétique de
-              votre espace fitness.
+              Des solutions de revêtement professionnelles pour optimiser la
+              sécurité, la performance et l'esthétique de votre espace fitness.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
@@ -71,8 +68,9 @@ export default function RevetementSolMurPage() {
               Des revêtements adaptés à chaque activité
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Nous proposons une large gamme de revêtements spécialement conçus pour les espaces fitness, offrant
-              performance, durabilité et esthétique.
+              Nous proposons une large gamme de revêtements spécialement conçus
+              pour les espaces fitness, offrant performance, durabilité et
+              esthétique.
             </p>
           </div>
 
@@ -93,23 +91,31 @@ export default function RevetementSolMurPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">Sols sportifs</h3>
+              <h3 className="text-xl font-heading font-bold mb-3">
+                Sols sportifs
+              </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Des revêtements de sol spécialement conçus pour les activités sportives, offrant amortissement,
-                adhérence et durabilité.
+                Des revêtements de sol spécialement conçus pour les activités
+                sportives, offrant amortissement, adhérence et durabilité.
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Dalles caoutchouc haute densité</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Dalles caoutchouc haute densité
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Sols PVC sportifs</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Sols PVC sportifs
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Résines polyuréthanes</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Résines polyuréthanes
+                  </span>
                 </li>
               </ul>
             </div>
@@ -130,23 +136,31 @@ export default function RevetementSolMurPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">Revêtements muraux</h3>
+              <h3 className="text-xl font-heading font-bold mb-3">
+                Revêtements muraux
+              </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Des solutions pour protéger et embellir vos murs, tout en améliorant l'acoustique et l'isolation de
-                votre espace.
+                Des solutions pour protéger et embellir vos murs, tout en
+                améliorant l'acoustique et l'isolation de votre espace.
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Panneaux acoustiques</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Panneaux acoustiques
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Miroirs de sécurité</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Miroirs de sécurité
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Protections murales</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Protections murales
+                  </span>
                 </li>
               </ul>
             </div>
@@ -173,19 +187,26 @@ export default function RevetementSolMurPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">Solutions personnalisées</h3>
+              <h3 className="text-xl font-heading font-bold mb-3">
+                Solutions personnalisées
+              </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Des revêtements sur mesure pour répondre aux besoins spécifiques de chaque activité, avec des options de
-                personnalisation graphique et fonctionnelle.
+                Des revêtements sur mesure pour répondre aux besoins spécifiques
+                de chaque activité, avec des options de personnalisation
+                graphique et fonctionnelle.
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Marquages et signalétique</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Marquages et signalétique
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">Zones d'entraînement dédiées</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Zones d'entraînement dédiées
+                  </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
@@ -203,9 +224,12 @@ export default function RevetementSolMurPage() {
       <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Nos types de revêtements</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Nos types de revêtements
+            </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Découvrez notre gamme complète de revêtements adaptés à chaque type d'activité et d'espace.
+              Découvrez notre gamme complète de revêtements adaptés à chaque
+              type d'activité et d'espace.
             </p>
           </div>
 
@@ -220,23 +244,32 @@ export default function RevetementSolMurPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">Dalles caoutchouc</h3>
+                <h3 className="text-xl font-heading font-bold mb-3">
+                  Dalles caoutchouc
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Idéales pour les zones de musculation et de crossfit, ces dalles offrent une excellente absorption des
-                  chocs et une grande résistance.
+                  Idéales pour les zones de musculation et de crossfit, ces
+                  dalles offrent une excellente absorption des chocs et une
+                  grande résistance.
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Épaisseurs de 10 à 40mm</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Épaisseurs de 10 à 40mm
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Résistant aux impacts lourds</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Résistant aux impacts lourds
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Installation facile et rapide</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Installation facile et rapide
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -252,23 +285,31 @@ export default function RevetementSolMurPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">PVC sportif</h3>
+                <h3 className="text-xl font-heading font-bold mb-3">
+                  PVC sportif
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Parfait pour les zones de cardio et de fitness, ce revêtement offre confort, durabilité et facilité
-                  d'entretien.
+                  Parfait pour les zones de cardio et de fitness, ce revêtement
+                  offre confort, durabilité et facilité d'entretien.
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Surface antidérapante</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Surface antidérapante
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Résistant à l'usure et aux UV</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Résistant à l'usure et aux UV
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Large choix de coloris</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Large choix de coloris
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -284,23 +325,32 @@ export default function RevetementSolMurPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">Résine polyuréthane</h3>
+                <h3 className="text-xl font-heading font-bold mb-3">
+                  Résine polyuréthane
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Solution haut de gamme pour les espaces multifonctionnels, offrant une surface lisse, uniforme et
-                  hautement personnalisable.
+                  Solution haut de gamme pour les espaces multifonctionnels,
+                  offrant une surface lisse, uniforme et hautement
+                  personnalisable.
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Surface sans joint</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Surface sans joint
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Excellente absorption acoustique</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Excellente absorption acoustique
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Personnalisation graphique avancée</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Personnalisation graphique avancée
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -316,22 +366,31 @@ export default function RevetementSolMurPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">Panneaux acoustiques</h3>
+                <h3 className="text-xl font-heading font-bold mb-3">
+                  Panneaux acoustiques
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Améliorez l'acoustique de votre espace fitness tout en créant une ambiance esthétique et confortable.
+                  Améliorez l'acoustique de votre espace fitness tout en créant
+                  une ambiance esthétique et confortable.
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Réduction significative du bruit</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Réduction significative du bruit
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Design personnalisable</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Design personnalisable
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Installation simple et rapide</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Installation simple et rapide
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -347,22 +406,31 @@ export default function RevetementSolMurPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">Miroirs de sécurité</h3>
+                <h3 className="text-xl font-heading font-bold mb-3">
+                  Miroirs de sécurité
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Des miroirs spécialement conçus pour les salles de sport, offrant sécurité et fonctionnalité.
+                  Des miroirs spécialement conçus pour les salles de sport,
+                  offrant sécurité et fonctionnalité.
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Verre de sécurité anti-bris</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Verre de sécurité anti-bris
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Installation professionnelle</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Installation professionnelle
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Dimensions sur mesure</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Dimensions sur mesure
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -378,22 +446,31 @@ export default function RevetementSolMurPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">Protections murales</h3>
+                <h3 className="text-xl font-heading font-bold mb-3">
+                  Protections murales
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Protégez vos murs des impacts et de l'usure tout en améliorant l'esthétique de votre espace.
+                  Protégez vos murs des impacts et de l'usure tout en améliorant
+                  l'esthétique de votre espace.
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Matériaux résistants aux chocs</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Matériaux résistants aux chocs
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Facile à nettoyer et entretenir</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Facile à nettoyer et entretenir
+                    </span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">Options de personnalisation graphique</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Options de personnalisation graphique
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -406,9 +483,12 @@ export default function RevetementSolMurPage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Nos réalisations</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Nos réalisations
+            </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Découvrez quelques-uns de nos projets de revêtement réalisés pour nos clients.
+              Découvrez quelques-uns de nos projets de revêtement réalisés pour
+              nos clients.
             </p>
           </div>
 
@@ -425,13 +505,18 @@ export default function RevetementSolMurPage() {
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <h3 className="text-white text-xl font-bold mb-2">Projet {item}</h3>
+                  <h3 className="text-white text-xl font-bold mb-2">
+                    Projet {item}
+                  </h3>
                   <p className="text-gray-200 text-sm mb-4">
                     {item % 2 === 0
                       ? "Revêtement de sol pour salle de musculation"
                       : "Revêtement mural pour espace fitness"}
                   </p>
-                  <Button variant="outline" className="border-white text-white hover:bg-white/20 w-full">
+                  <Button
+                    variant="outline"
+                    className="border-white text-white hover:bg-white/20 w-full"
+                  >
                     Voir le projet
                   </Button>
                 </div>
@@ -452,9 +537,12 @@ export default function RevetementSolMurPage() {
       <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Pourquoi choisir nos revêtements?</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Pourquoi choisir nos revêtements?
+            </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Des solutions professionnelles qui allient performance, sécurité et esthétique.
+              Des solutions professionnelles qui allient performance, sécurité
+              et esthétique.
             </p>
           </div>
 
@@ -475,10 +563,12 @@ export default function RevetementSolMurPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-heading font-bold mb-2">Sécurité optimale</h3>
+              <h3 className="text-lg font-heading font-bold mb-2">
+                Sécurité optimale
+              </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Nos revêtements sont conçus pour minimiser les risques de blessures et offrir une sécurité maximale aux
-                utilisateurs.
+                Nos revêtements sont conçus pour minimiser les risques de
+                blessures et offrir une sécurité maximale aux utilisateurs.
               </p>
             </div>
 
@@ -490,12 +580,20 @@ export default function RevetementSolMurPage() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
                 </svg>
               </div>
-              <h3 className="text-lg font-heading font-bold mb-2">Performance accrue</h3>
+              <h3 className="text-lg font-heading font-bold mb-2">
+                Performance accrue
+              </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Des surfaces adaptées à chaque activité pour optimiser les performances et le confort des sportifs.
+                Des surfaces adaptées à chaque activité pour optimiser les
+                performances et le confort des sportifs.
               </p>
             </div>
 
@@ -515,9 +613,12 @@ export default function RevetementSolMurPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-heading font-bold mb-2">Durabilité exceptionnelle</h3>
+              <h3 className="text-lg font-heading font-bold mb-2">
+                Durabilité exceptionnelle
+              </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Des matériaux de haute qualité pour une résistance maximale à l'usure, aux impacts et au temps.
+                Des matériaux de haute qualité pour une résistance maximale à
+                l'usure, aux impacts et au temps.
               </p>
             </div>
 
@@ -537,9 +638,12 @@ export default function RevetementSolMurPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-heading font-bold mb-2">Esthétique personnalisée</h3>
+              <h3 className="text-lg font-heading font-bold mb-2">
+                Esthétique personnalisée
+              </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                Une large gamme de couleurs et d'options de personnalisation pour créer un espace à votre image.
+                Une large gamme de couleurs et d'options de personnalisation
+                pour créer un espace à votre image.
               </p>
             </div>
           </div>
@@ -550,9 +654,12 @@ export default function RevetementSolMurPage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Ce que disent nos clients</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              Ce que disent nos clients
+            </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Découvrez les témoignages de clients satisfaits par nos services de revêtement.
+              Découvrez les témoignages de clients satisfaits par nos services
+              de revêtement.
             </p>
           </div>
 
@@ -560,20 +667,32 @@ export default function RevetementSolMurPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image src="/placeholder.svg?height=100&width=100" alt="Client" fill className="object-cover" />
+                  <Image
+                    src="/placeholder.svg?height=100&width=100"
+                    alt="Client"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <h4 className="font-bold text-lg">Pierre Durand</h4>
-                  <p className="text-yellow-500 text-sm">Propriétaire de salle de sport</p>
+                  <p className="text-yellow-500 text-sm">
+                    Propriétaire de salle de sport
+                  </p>
                 </div>
               </div>
               <p className="text-gray-600 dark:text-gray-400 italic">
-                "Le revêtement de sol installé par IRONZ PRO a complètement transformé notre espace de musculation. La
-                qualité est exceptionnelle et nos clients l'apprécient énormément."
+                "Le revêtement de sol installé par IRONZ PRO a complètement
+                transformé notre espace de musculation. La qualité est
+                exceptionnelle et nos clients l'apprécient énormément."
               </p>
               <div className="flex mt-4">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                  <svg
+                    key={i}
+                    className="w-5 h-5 text-yellow-400 fill-current"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                   </svg>
                 ))}
@@ -583,7 +702,12 @@ export default function RevetementSolMurPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image src="/placeholder.svg?height=100&width=100" alt="Client" fill className="object-cover" />
+                  <Image
+                    src="/placeholder.svg?height=100&width=100"
+                    alt="Client"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <h4 className="font-bold text-lg">Céline Moreau</h4>
@@ -591,12 +715,17 @@ export default function RevetementSolMurPage() {
                 </div>
               </div>
               <p className="text-gray-600 dark:text-gray-400 italic">
-                "Les panneaux acoustiques installés dans mon studio ont fait une différence incroyable. L'ambiance est
-                beaucoup plus agréable et mes clients peuvent mieux se concentrer pendant les cours."
+                "Les panneaux acoustiques installés dans mon studio ont fait une
+                différence incroyable. L'ambiance est beaucoup plus agréable et
+                mes clients peuvent mieux se concentrer pendant les cours."
               </p>
               <div className="flex mt-4">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                  <svg
+                    key={i}
+                    className="w-5 h-5 text-yellow-400 fill-current"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                   </svg>
                 ))}
@@ -606,20 +735,32 @@ export default function RevetementSolMurPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
               <div className="flex items-center mb-4">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                  <Image src="/placeholder.svg?height=100&width=100" alt="Client" fill className="object-cover" />
+                  <Image
+                    src="/placeholder.svg?height=100&width=100"
+                    alt="Client"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <h4 className="font-bold text-lg">Antoine Lefebvre</h4>
-                  <p className="text-yellow-500 text-sm">Directeur de centre sportif</p>
+                  <p className="text-yellow-500 text-sm">
+                    Directeur de centre sportif
+                  </p>
                 </div>
               </div>
               <p className="text-gray-600 dark:text-gray-400 italic">
-                "Nous avons fait appel à IRONZ PRO pour le revêtement complet de notre centre sportif. Le résultat est à
-                la hauteur de nos attentes, tant sur le plan esthétique que fonctionnel."
+                "Nous avons fait appel à IRONZ PRO pour le revêtement complet de
+                notre centre sportif. Le résultat est à la hauteur de nos
+                attentes, tant sur le plan esthétique que fonctionnel."
               </p>
               <div className="flex mt-4">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                  <svg
+                    key={i}
+                    className="w-5 h-5 text-yellow-400 fill-current"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                   </svg>
                 ))}
@@ -635,11 +776,14 @@ export default function RevetementSolMurPage() {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Prêt à transformer votre espace?</h2>
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+                  Prêt à transformer votre espace?
+                </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-                  Contactez-nous dès aujourd'hui pour discuter de votre projet de revêtement. Notre équipe d'experts est
-                  à votre disposition pour vous conseiller et vous proposer les solutions les plus adaptées à vos
-                  besoins.
+                  Contactez-nous dès aujourd'hui pour discuter de votre projet
+                  de revêtement. Notre équipe d'experts est à votre disposition
+                  pour vous conseiller et vous proposer les solutions les plus
+                  adaptées à vos besoins.
                 </p>
 
                 <div className="space-y-6 mb-8">
@@ -649,7 +793,9 @@ export default function RevetementSolMurPage() {
                     </div>
                     <div className="ml-4">
                       <h3 className="text-lg font-medium">Téléphone</h3>
-                      <p className="mt-1 text-gray-600 dark:text-gray-400">+33 1 23 45 67 89</p>
+                      <p className="mt-1 text-gray-600 dark:text-gray-400">
+                        +33 1 23 45 67 89
+                      </p>
                     </div>
                   </div>
 
@@ -671,7 +817,9 @@ export default function RevetementSolMurPage() {
                     </div>
                     <div className="ml-4">
                       <h3 className="text-lg font-medium">Email</h3>
-                      <p className="mt-1 text-gray-600 dark:text-gray-400">revetement@ironzpro.com</p>
+                      <p className="mt-1 text-gray-600 dark:text-gray-400">
+                        revetement@ironzpro.com
+                      </p>
                     </div>
                   </div>
 
@@ -711,19 +859,27 @@ export default function RevetementSolMurPage() {
                   <ul className="space-y-3">
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-300">Matériaux de haute qualité</span>
+                      <span className="text-gray-700 dark:text-gray-300">
+                        Matériaux de haute qualité
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-300">Installation professionnelle</span>
+                      <span className="text-gray-700 dark:text-gray-300">
+                        Installation professionnelle
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-300">Garantie de 5 ans sur nos revêtements</span>
+                      <span className="text-gray-700 dark:text-gray-300">
+                        Garantie de 5 ans sur nos revêtements
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700 dark:text-gray-300">Service après-vente réactif</span>
+                      <span className="text-gray-700 dark:text-gray-300">
+                        Service après-vente réactif
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -731,7 +887,9 @@ export default function RevetementSolMurPage() {
 
               <div>
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-                  <h3 className="text-xl font-heading font-bold mb-6">Demande de devis</h3>
+                  <h3 className="text-xl font-heading font-bold mb-6">
+                    Demande de devis
+                  </h3>
                   <ServiceContactForm service="Revêtement Sol & Mur" />
                 </div>
               </div>
@@ -751,7 +909,8 @@ export default function RevetementSolMurPage() {
               Transformez votre espace dès maintenant
             </h2>
             <p className="text-xl text-black/80 mb-8">
-              Contactez-nous pour bénéficier d'une consultation gratuite et sans engagement.
+              Contactez-nous pour bénéficier d'une consultation gratuite et sans
+              engagement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6">
@@ -768,5 +927,5 @@ export default function RevetementSolMurPage() {
         </div>
       </section>
     </main>
-  )
+  );
 }

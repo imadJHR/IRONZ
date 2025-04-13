@@ -18,8 +18,6 @@ import {
   Info,
   Home,
   ShoppingBag,
-  Search,
-  User,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/cart-context";
@@ -368,21 +366,15 @@ export default function Navbar() {
               <NavLink href="/contact" active={isActive("/contact")}>
                 Contact
               </NavLink>
+              <Link href="/demande-devis">
+                <button className="ml-1 px-4 py-2 rounded-lg bg-white border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-50 font-medium transition-colors flex items-center">
+                  Demande devis
+                </button>
+              </Link>
             </div>
 
             {/* Right side icons */}
             <div className="flex items-center space-x-3">
-              {/* Search button */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setSearchOpen(true)}
-                className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
-                aria-label="Rechercher"
-              >
-                <Search className="h-5 w-5" />
-              </motion.button>
-
               {/* Favorites button with animation */}
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -791,14 +783,24 @@ export default function Navbar() {
                       <Phone className="h-5 w-5" />
                     </button>
                   </div>
-                  <Link
-                    href="/contact"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <button className="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
-                      Nous contacter
-                    </button>
-                  </Link>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link
+                      href="/demande-devis"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <button className="w-full py-2 px-4 rounded-lg bg-white border border-yellow-500 text-yellow-600 hover:bg-yellow-50 font-medium transition-colors">
+                        Demande devis
+                      </button>
+                    </Link>
+                    <Link
+                      href="/contact"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <button className="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
+                        Nous contacter
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </motion.div>

@@ -19,8 +19,7 @@ import { motion } from "framer-motion";
 import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -213,7 +212,7 @@ export default function ProductsPage() {
 
   return (
     <>
-      <Navbar />
+      
       <div className="container mx-auto px-4 py-28">
         {/* Header */}
         <div className="mb-8">
@@ -749,7 +748,6 @@ export default function ProductsPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

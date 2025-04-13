@@ -23,8 +23,6 @@ import { motion } from "framer-motion";
 import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -314,7 +312,6 @@ export default function PromotionsPage() {
                 sur une sélection de produits.
               </p>
               <div className="flex gap-3">
-                
                 <Link href="/promotions">
                   <Button
                     variant="outline"
@@ -410,7 +407,6 @@ export default function PromotionsPage() {
                 exceptionnelles sur nos produits en fin de série.
               </p>
               <div className="flex gap-3">
-                
                 <Link href="/promotions">
                   <Button
                     variant="outline"
@@ -433,11 +429,10 @@ export default function PromotionsPage() {
 
   return (
     <>
-      <Navbar />
       <div className="container mx-auto px-4 py-32">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl text-red-600 font-bold mb-2">Promotions</h1>
+          <h1 className="text-3xl text-yellow-400 font-bold mb-2">Promotions</h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-3xl">
             Découvrez nos offres spéciales et profitez de réductions
             exceptionnelles sur une sélection de produits.
@@ -1033,7 +1028,6 @@ export default function PromotionsPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }
