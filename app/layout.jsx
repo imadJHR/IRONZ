@@ -1,12 +1,5 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { CartProvider } from "@/context/cart-context";
-import { FavoritesProvider } from "@/context/favorites-context";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
-
-const inter = Inter({ subsets: ["latin"] });
+import React from "react";
+import  ClientLayout  from "./ClientLayout";
 
 export const metadata = {
   title: "IRONZ PRO - Équipements Professionnels et Matériaux",
@@ -15,21 +8,5 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="fr" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <CartProvider>
-            <FavoritesProvider>
-              <div className="flex flex-col min-h-screen">
-                <Navbar />
-                <main className="flex-grow pt-24">{children}</main>
-                <Footer />
-              </div>
-            </FavoritesProvider>
-          </CartProvider>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+  return <ClientLayout>{children}</ClientLayout>;
 }
