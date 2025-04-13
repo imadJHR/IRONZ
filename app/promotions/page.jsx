@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import {
   Search,
   Filter,
@@ -426,13 +427,14 @@ export default function PromotionsPage() {
         return null;
     }
   };
-
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="container mx-auto px-4 py-32">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl text-yellow-400 font-bold mb-2">Promotions</h1>
+          <h1 className="text-3xl text-yellow-400 font-bold mb-2">
+            Promotions
+          </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-3xl">
             Découvrez nos offres spéciales et profitez de réductions
             exceptionnelles sur une sélection de produits.
@@ -1028,6 +1030,6 @@ export default function PromotionsPage() {
           </div>
         </div>
       </div>
-    </>
+    </Suspense>
   );
 }
