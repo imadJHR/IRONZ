@@ -18,7 +18,6 @@ import {
   CurrencyIcon as Cash,
 } from "lucide-react";
 
-import Navbar from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/cart-context";
 import { Input } from "@/components/ui/input";
@@ -236,8 +235,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
   if (orderComplete) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-        <Navbar />
-
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
           <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 rounded-lg shadow-md p-8 text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 mb-6">
@@ -295,7 +292,7 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
   if (!mounted) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-        <Navbar />
+      
         <div className="flex items-center justify-center h-[calc(100vh-64px)]">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -308,7 +305,7 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <Navbar />
+    
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
         <div className="flex items-center mb-8">
