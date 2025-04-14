@@ -269,9 +269,11 @@ export default function EspaceEnfanceClientPage() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="flex flex-wrap gap-4"
             >
-              <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6 btn-3d">
-                Demander un devis
-              </Button>
+              <Link href="/demande-devis">
+                <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6 btn-3d">
+                  Demander un devis
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </div>
@@ -576,8 +578,6 @@ export default function EspaceEnfanceClientPage() {
         </div>
       </section>
 
-   
-
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-gradient-to-r from-yellow-400 to-yellow-500 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/placeholder.svg?height=200&width=200')] bg-repeat opacity-10" />
@@ -612,16 +612,16 @@ export default function EspaceEnfanceClientPage() {
               transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
             >
-              <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all">
-                Commencer votre projet
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <Link href="/demande-devis">
+                <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6 rounded-full shadow-xl hover:shadow-2xl transition-all">
+                  Commencer votre projet
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </div>
       </section>
-
-     
 
       {/* Video Modal */}
       {isVideoModalOpen && (
