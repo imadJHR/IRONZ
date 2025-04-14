@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { CartProvider } from "@/context/cart-context"
-import { FavoritesProvider } from "@/context/favorites-context"
-import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { useRouter, usePathname } from "next/navigation"
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import { CartProvider } from "@/context/cart-context";
+import { FavoritesProvider } from "@/context/favorites-context";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 import {
   Menu,
   X,
@@ -29,15 +29,15 @@ import {
   MapPin,
   ArrowRight,
   Search,
-} from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useCart } from "@/context/cart-context"
-import { useFavorites } from "@/context/favorites-context"
-import { useTheme } from "next-themes"
-import { cn } from "@/lib/utils"
-import { categories } from "@/data/product"
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/context/cart-context";
+import { useFavorites } from "@/context/favorites-context";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+import { categories } from "@/data/product";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function ClientLayout({ children }) {
   return (
@@ -56,100 +56,136 @@ export default function ClientLayout({ children }) {
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
 
 // Navbar Component
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [mounted, setMounted] = useState(false)
-  const [isHoveringLogo, setIsHoveringLogo] = useState(false)
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [mobileProductsOpen, setMobileProductsOpen] = useState(false)
-  const [mobilePromotionsOpen, setMobilePromotionsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mounted, setMounted] = useState(false);
+  const [isHoveringLogo, setIsHoveringLogo] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobilePromotionsOpen, setMobilePromotionsOpen] = useState(false);
 
-  const router = useRouter()
-  const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
-  const { cart, cartOpen, itemCount, cartTotal, toggleCart, updateQuantity, removeFromCart } = useCart()
-  const { favorites, favoritesOpen, itemCount: favoritesCount, toggleFavorites } = useFavorites()
+  const router = useRouter();
+  const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const {
+    cart,
+    cartOpen,
+    itemCount,
+    cartTotal,
+    toggleCart,
+    updateQuantity,
+    removeFromCart,
+  } = useCart();
+  const {
+    favorites,
+    favoritesOpen,
+    itemCount: favoritesCount,
+    toggleFavorites,
+  } = useFavorites();
 
   // Refs for handling clicks outside
-  const searchRef = useRef(null)
-  const mobileMenuRef = useRef(null)
-  const cartRef = useRef(null)
-  const favoritesRef = useRef(null)
+  const searchRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const cartRef = useRef(null);
+  const favoritesRef = useRef(null);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Handle clicks outside of menus
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (searchOpen && searchRef.current && !searchRef.current.contains(event.target)) {
-        setSearchOpen(false)
+      if (
+        searchOpen &&
+        searchRef.current &&
+        !searchRef.current.contains(event.target)
+      ) {
+        setSearchOpen(false);
       }
-      if (mobileMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
-        setMobileMenuOpen(false)
+      if (
+        mobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setMobileMenuOpen(false);
       }
-      if (cartOpen && cartRef.current && !cartRef.current.contains(event.target)) {
-        toggleCart()
+      if (
+        cartOpen &&
+        cartRef.current &&
+        !cartRef.current.contains(event.target)
+      ) {
+        toggleCart();
       }
-      if (favoritesOpen && favoritesRef.current && !favoritesRef.current.contains(event.target)) {
-        toggleFavorites()
+      if (
+        favoritesOpen &&
+        favoritesRef.current &&
+        !favoritesRef.current.contains(event.target)
+      ) {
+        toggleFavorites();
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [searchOpen, mobileMenuOpen, cartOpen, favoritesOpen, toggleCart, toggleFavorites])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [
+    searchOpen,
+    mobileMenuOpen,
+    cartOpen,
+    favoritesOpen,
+    toggleCart,
+    toggleFavorites,
+  ]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = "auto";
     }
 
     return () => {
-      document.body.style.overflow = "auto"
-    }
-  }, [mobileMenuOpen])
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileMenuOpen]);
 
   const handleSearch = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/recherche?q=${encodeURIComponent(searchQuery)}`)
-      setSearchOpen(false)
-      setSearchQuery("")
-      setMobileMenuOpen(false)
+      router.push(`/recherche?q=${encodeURIComponent(searchQuery)}`);
+      setSearchOpen(false);
+      setSearchQuery("");
+      setMobileMenuOpen(false);
     }
-  }
+  };
 
   const isActive = (path) => {
-    if (path === "/") return pathname === "/"
-    return pathname.startsWith(path)
-  }
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
+  };
 
   const promotionLinks = [
     { name: "Offres du moment", path: "/promotions?type=current" },
     { name: "Soldes d'été", path: "/promotions?type=summer" },
     { name: "Packs économiques", path: "/promotions?type=bundle" },
     { name: "Déstockage", path: "/promotions?type=clearance" },
-  ]
+  ];
 
   const serviceLinks = [
     { name: "Aménagement de salle", path: "/services/amenagement-salle" },
@@ -159,7 +195,7 @@ function Navbar() {
     },
     { name: "Espace enfance", path: "/services/espace-enfance" },
     { name: "Revêtement sol & mur", path: "/services/revetement-sol-mur" },
-  ]
+  ];
 
   const dropdownVariants = {
     hidden: { opacity: 0, y: -10, scale: 0.98 },
@@ -180,12 +216,12 @@ function Navbar() {
         duration: 0.15,
       },
     },
-  }
+  };
 
   const logoVariants = {
     initial: { rotate: 0 },
     hover: { rotate: 10, transition: { type: "spring", stiffness: 300 } },
-  }
+  };
 
   const mobileSubmenuVariants = {
     closed: { height: 0, opacity: 0, overflow: "hidden" },
@@ -197,7 +233,7 @@ function Navbar() {
         opacity: { duration: 0.2 },
       },
     },
-  }
+  };
 
   const mobileMenuVariants = {
     hidden: { x: "100%", opacity: 0 },
@@ -217,7 +253,7 @@ function Navbar() {
         duration: 0.2,
       },
     },
-  }
+  };
 
   return (
     <>
@@ -226,7 +262,7 @@ function Navbar() {
           "fixed top-0 w-full z-[100] transition-all duration-300",
           scrolled
             ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm py-2 border-b border-gray-100 dark:border-gray-800"
-            : "bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm py-3",
+            : "bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm py-3"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -264,7 +300,7 @@ function Navbar() {
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
                     isActive("/categories") || isActive("/product")
                       ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
                   Produits
@@ -297,7 +333,7 @@ function Navbar() {
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
                     isActive("/promotions")
                       ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
                   Promotions
@@ -331,7 +367,7 @@ function Navbar() {
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
                     isActive("/services")
                       ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
                   Ironz Pro
@@ -381,9 +417,18 @@ function Navbar() {
                 className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors relative"
                 aria-label="Favoris"
               >
-                <Heart className={cn("h-5 w-5", favoritesCount > 0 ? "text-red-500 fill-red-500" : "")} />
+                <Heart
+                  className={cn(
+                    "h-5 w-5",
+                    favoritesCount > 0 ? "text-red-500 fill-red-500" : ""
+                  )}
+                />
                 {favoritesCount > 0 && (
-                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-1 -right-1">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1"
+                  >
                     <span className="h-5 w-5 p-0 flex items-center justify-center rounded-full bg-red-500 text-white text-xs font-medium">
                       {favoritesCount}
                     </span>
@@ -401,7 +446,11 @@ function Navbar() {
               >
                 <ShoppingCart className="h-5 w-5" />
                 {itemCount > 0 && (
-                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-1 -right-1">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1"
+                  >
                     <span className="h-5 w-5 p-0 flex items-center justify-center rounded-full bg-yellow-500 text-white text-xs font-medium">
                       {itemCount}
                     </span>
@@ -449,7 +498,11 @@ function Navbar() {
             >
               <div className="flex flex-col h-full">
                 <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-white dark:bg-gray-900 z-10 flex-shrink-0">
-                  <Link href="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
+                  <Link
+                    href="/"
+                    className="flex items-center"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
                     <Image
                       src="/logo.png"
                       alt="IRONZ PRO Logo"
@@ -475,7 +528,7 @@ function Navbar() {
                         "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                         isActive("/")
                           ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       )}
                     >
                       <Home className="h-5 w-5 mr-3" />
@@ -491,11 +544,13 @@ function Navbar() {
                       className="flex items-center justify-between px-3 mb-2 cursor-pointer"
                       onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
                     >
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Produits</h3>
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Produits
+                      </h3>
                       <ChevronDown
                         className={cn(
                           "h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200",
-                          mobileProductsOpen ? "rotate-180" : "",
+                          mobileProductsOpen ? "rotate-180" : ""
                         )}
                       />
                     </div>
@@ -539,7 +594,7 @@ function Navbar() {
                           "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                           isActive("/product")
                             ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
                       >
                         Produits
@@ -553,13 +608,17 @@ function Navbar() {
                   <div>
                     <div
                       className="flex items-center justify-between px-3 mb-2 cursor-pointer"
-                      onClick={() => setMobilePromotionsOpen(!mobilePromotionsOpen)}
+                      onClick={() =>
+                        setMobilePromotionsOpen(!mobilePromotionsOpen)
+                      }
                     >
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Promotions</h3>
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Promotions
+                      </h3>
                       <ChevronDown
                         className={cn(
                           "h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200",
-                          mobilePromotionsOpen ? "rotate-180" : "",
+                          mobilePromotionsOpen ? "rotate-180" : ""
                         )}
                       />
                     </div>
@@ -603,7 +662,7 @@ function Navbar() {
                           "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                           isActive("/promotions")
                             ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
                       >
                         Promotions
@@ -619,11 +678,13 @@ function Navbar() {
                       className="flex items-center justify-between px-3 mb-2 cursor-pointer"
                       onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                     >
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Services</h3>
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Services
+                      </h3>
                       <ChevronDown
                         className={cn(
                           "h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200",
-                          mobileServicesOpen ? "rotate-180" : "",
+                          mobileServicesOpen ? "rotate-180" : ""
                         )}
                       />
                     </div>
@@ -667,7 +728,7 @@ function Navbar() {
                           "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                           isActive("/services")
                             ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
                       >
                         Services
@@ -683,7 +744,7 @@ function Navbar() {
                         "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                         isActive("/a-propos")
                           ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       )}
                     >
                       <Info className="h-5 w-5 mr-3" />À propos
@@ -696,7 +757,7 @@ function Navbar() {
                         "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                         isActive("/contact")
                           ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       )}
                     >
                       <Phone className="h-5 w-5 mr-3" />
@@ -746,20 +807,26 @@ function Navbar() {
                     <button
                       className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
                       onClick={() => {
-                        router.push("/contact")
-                        setMobileMenuOpen(false)
+                        router.push("/contact");
+                        setMobileMenuOpen(false);
                       }}
                     >
                       <Phone className="h-5 w-5" />
                     </button>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <Link href="/demande-devis" onClick={() => setMobileMenuOpen(false)}>
+                    <Link
+                      href="/demande-devis"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
                       <button className="w-full py-2 px-4 rounded-lg bg-white border border-yellow-500 text-yellow-600 hover:bg-yellow-50 font-medium transition-colors">
                         Demande devis
                       </button>
                     </Link>
-                    <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
+                    <Link
+                      href="/contact"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
                       <button className="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
                         Nous contacter
                       </button>
@@ -846,8 +913,12 @@ function Navbar() {
                 <div className="mx-auto w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
                   <ShoppingCart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                 </div>
-                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Votre panier est vide</h4>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">Commencez à ajouter des produits</p>
+                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  Votre panier est vide
+                </h4>
+                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                  Commencez à ajouter des produits
+                </p>
                 <button
                   onClick={toggleCart}
                   className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
@@ -889,15 +960,21 @@ function Navbar() {
                         <div className="flex items-center mt-2">
                           <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-full">
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity - 1)
+                              }
                               className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-l-full hover:bg-gray-100 dark:hover:bg-gray-800"
                               disabled={item.quantity <= 1}
                             >
                               <Minus className="h-3 w-3" />
                             </button>
-                            <span className="mx-2 text-xs font-medium w-5 text-center">{item.quantity}</span>
+                            <span className="mx-2 text-xs font-medium w-5 text-center">
+                              {item.quantity}
+                            </span>
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.quantity + 1)
+                              }
                               className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-r-full hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
                               <Plus className="h-3 w-3" />
@@ -922,17 +999,29 @@ function Navbar() {
                 <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
                   <div className="space-y-3 mb-4">
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Sous-total:</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{cartTotal.toFixed(2)} MAD</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Sous-total:
+                      </span>
+                      <span className="font-medium text-gray-900 dark:text-white">
+                        {cartTotal.toFixed(2)} MAD
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Livraison:</span>
-                      <span className="text-gray-900 dark:text-white">Calculé à la commande</span>
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Livraison:
+                      </span>
+                      <span className="text-gray-900 dark:text-white">
+                        Calculé à la commande
+                      </span>
                     </div>
                     <div className="h-px bg-gray-200 dark:bg-gray-700" />
                     <div className="flex justify-between text-lg font-medium">
-                      <span className="text-gray-900 dark:text-white">Total:</span>
-                      <span className="text-gray-900 dark:text-white">{cartTotal.toFixed(2)} MAD</span>
+                      <span className="text-gray-900 dark:text-white">
+                        Total:
+                      </span>
+                      <span className="text-gray-900 dark:text-white">
+                        {cartTotal.toFixed(2)} MAD
+                      </span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -989,8 +1078,12 @@ function Navbar() {
                 <div className="mx-auto w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
                   <Heart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                 </div>
-                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Vous n'avez pas de favoris</h4>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">Ajoutez des produits à vos favoris</p>
+                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  Vous n'avez pas de favoris
+                </h4>
+                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                  Ajoutez des produits à vos favoris
+                </p>
                 <button
                   onClick={toggleFavorites}
                   className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
@@ -1022,13 +1115,15 @@ function Navbar() {
                       >
                         {item.name}
                       </Link>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{item.price.toFixed(2)} MAD</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        {item.price.toFixed(2)} MAD
+                      </p>
                     </div>
                     <div className="ml-2 flex flex-col space-y-2">
                       <button
                         onClick={() => {
                           // Add to cart logic would go here
-                          toggleFavorites()
+                          toggleFavorites();
                         }}
                         className="p-1 text-yellow-500 hover:text-yellow-600 rounded-full hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
                         title="Ajouter au panier"
@@ -1053,7 +1148,7 @@ function Navbar() {
         )}
       </AnimatePresence>
     </>
-  )
+  );
 }
 
 // NavLink Component for Navbar
@@ -1065,23 +1160,23 @@ function NavLink({ href, children, active }) {
         "px-4 py-2 rounded-lg text-sm font-medium transition-all",
         active
           ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
+          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
       )}
     >
       {children}
     </Link>
-  )
+  );
 }
 
 // Footer Component
 function Footer() {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   const socialLinks = [
     {
@@ -1094,19 +1189,19 @@ function Footer() {
       icon: <Youtube className="h-5 w-5" />,
       href: "https://www.youtube.com/@muscleironz8921",
     },
-  ]
+  ];
 
   const categories = [
     { name: "Home Gym", href: "/categories/home-gym" },
     { name: "Équipements", href: "/categories/equipements" },
     { name: "Supplément", href: "/categories/supplement" },
     { name: "Accessoires", href: "/categories/accessoires" },
-  ]
+  ];
 
   const infoLinks = [
     { name: "À propos de nous", href: "/a-propos" },
     { name: "Contact", href: "/contact" },
-  ]
+  ];
 
   const contactInfo = [
     {
@@ -1123,9 +1218,9 @@ function Footer() {
       content: "muscleironz2019@gmail.com",
       href: "mailto:muscleironz2019@gmail.com",
     },
-  ]
+  ];
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   return (
     <footer className="relative">
@@ -1162,7 +1257,8 @@ function Footer() {
                   IRONZ
                 </h3>
                 <p className="text-gray-300 mb-6 leading-relaxed">
-                  Votre partenaire pour tous vos besoins en équipement de fitness, suppléments et accessoires de sport.
+                  Votre partenaire pour tous vos besoins en équipement de
+                  fitness, suppléments et accessoires de sport.
                 </p>
                 <div className="flex space-x-3">
                   {socialLinks.map((social, index) => (
@@ -1191,7 +1287,11 @@ function Footer() {
               </h3>
               <ul className="space-y-3">
                 {categories.map((category, index) => (
-                  <motion.li key={index} whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 300 }}>
+                  <motion.li
+                    key={index}
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     <Link
                       href={category.href}
                       className="text-gray-400 hover:text-yellow-400 transition-colors flex items-center group"
@@ -1212,7 +1312,11 @@ function Footer() {
               </h3>
               <ul className="space-y-3">
                 {infoLinks.map((link, index) => (
-                  <motion.li key={index} whileHover={{ x: 5 }} transition={{ type: "spring", stiffness: 300 }}>
+                  <motion.li
+                    key={index}
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     <Link
                       href={link.href}
                       className="text-gray-400 hover:text-yellow-400 transition-colors flex items-center group"
@@ -1228,7 +1332,9 @@ function Footer() {
             {/* Contact */}
             <div className="lg:col-span-4">
               <div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-700/50 h-full">
-                <h3 className="font-heading text-lg font-bold mb-5 text-white">Contactez-nous</h3>
+                <h3 className="font-heading text-lg font-bold mb-5 text-white">
+                  Contactez-nous
+                </h3>
                 <address className="not-italic text-gray-300 space-y-4">
                   {contactInfo.map((item, index) => (
                     <div key={index} className="flex items-start group">
@@ -1237,7 +1343,10 @@ function Footer() {
                       </div>
                       <div>
                         {item.href ? (
-                          <a href={item.href} className="text-gray-300 hover:text-yellow-400 transition-colors">
+                          <a
+                            href={item.href}
+                            className="text-gray-300 hover:text-yellow-400 transition-colors"
+                          >
                             {item.content}
                           </a>
                         ) : (
@@ -1254,7 +1363,9 @@ function Footer() {
           {/* Bottom Section */}
           <div className="border-t border-gray-800/50 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-500 text-sm mb-4 md:mb-0">&copy; {currentYear} IRONZ. Tous droits réservés.</p>
+              <p className="text-gray-500 text-sm mb-4 md:mb-0">
+                &copy; {currentYear} IRONZ. Tous droits réservés.
+              </p>
               <motion.a
                 href="#top"
                 className="flex items-center text-sm text-gray-400 hover:text-yellow-400 transition-colors"
@@ -1268,7 +1379,12 @@ function Footer() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 10l7-7m0 0l7 7m-7-7v18"
+                  />
                 </svg>
               </motion.a>
             </div>
@@ -1276,5 +1392,5 @@ function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
