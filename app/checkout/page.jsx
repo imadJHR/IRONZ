@@ -60,7 +60,7 @@ export default function CheckoutPage() {
   // Redirect if cart is empty
   useEffect(() => {
     if (mounted && cart.length === 0 && !orderComplete) {
-      router.push("/produits");
+      router.push("/product");
     }
   }, [cart, router, orderComplete, mounted]);
 
@@ -274,7 +274,7 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                 </Button>
               </Link>
 
-              <Link href="/produits">
+              <Link href="/product">
                 <Button
                   variant="outline"
                   className="border-gray-300 dark:border-gray-600"

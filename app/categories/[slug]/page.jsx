@@ -242,7 +242,7 @@ export default function CategoryPage() {
             La catégorie que vous recherchez n'existe pas ou a été supprimée.
           </p>
           <Button asChild>
-            <Link href="/produits">Voir tous les produits</Link>
+            <Link href="/product">Voir tous les produits</Link>
           </Button>
         </div>
       </>

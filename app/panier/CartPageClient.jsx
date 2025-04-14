@@ -114,7 +114,7 @@ export default function CartPageClient() {
                           <div>
                             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
                               <Link
-                                href={`/produits/${item.id}`}
+                                href={`/product/${item.id}`}
                                 className="hover:text-yellow-600 dark:hover:text-yellow-400"
                               >
                                 {item.name}

@@ -262,7 +262,7 @@ function Navbar() {
                 <button
                   className={cn(
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
-                    isActive("/categories") || isActive("/produits")
+                    isActive("/categories") || isActive("/product")
                       ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
                       : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800",
                   )}
@@ -282,7 +282,7 @@ function Navbar() {
                   ))}
                   <div className="h-px bg-gray-100 dark:bg-gray-800 my-1" />
                   <Link
-                    href="/produits"
+                    href="/product"
                     className="flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-600 dark:text-yellow-400 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                   >
                     Voir tous les produits
@@ -521,7 +521,7 @@ function Navbar() {
                             </Link>
                           ))}
                           <Link
-                            href="/produits"
+                            href="/product"
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                           >
@@ -533,11 +533,11 @@ function Navbar() {
 
                     {!mobileProductsOpen && (
                       <Link
-                        href="/produits"
+                        href="/product"
                         onClick={() => setMobileMenuOpen(false)}
                         className={cn(
                           "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                          isActive("/produits")
+                          isActive("/product")
                             ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
                             : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800",
                         )}
@@ -877,7 +877,7 @@ function Navbar() {
                       </div>
                       <div className="ml-3 flex-1 min-w-0">
                         <Link
-                          href={`/produits/${item.slug}`}
+                          href={`/product/${item.slug}`}
                           onClick={toggleCart}
                           className="text-sm font-medium text-gray-900 dark:text-white hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-1"
                         >
@@ -1016,7 +1016,7 @@ function Navbar() {
                     </div>
                     <div className="ml-3 flex-1 min-w-0">
                       <Link
-                        href={`/produits/${item.id}`}
+                        href={`/product/${item.id}`}
                         className="text-sm font-medium text-gray-900 dark:text-white hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-1"
                         onClick={toggleFavorites}
                       >
