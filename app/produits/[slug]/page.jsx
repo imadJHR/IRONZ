@@ -225,7 +225,6 @@ export default function ProductPage() {
   return (
     <>
       <main className="bg-gray-50 dark:bg-gray-900 pt-8 pb-16">
-        <Navbar />
         {/* Breadcrumb */}
         <div className="container mx-auto px-4 mb-6">
           <nav className="flex items-center text-sm text-gray-500 dark:text-gray-400">
