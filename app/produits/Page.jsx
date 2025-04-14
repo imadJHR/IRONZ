@@ -44,6 +44,7 @@ import { Separator } from "@/components/ui/separator";
 
 // Import product data
 import { products, categories, filters, productUtils } from "@/data/product";
+import Head from "next/head";
 
 export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -211,6 +212,19 @@ export default function ProductsPage() {
 
   return (
     <>
+      <Head>
+        <title>Tous nos produits - Votre Boutique</title>
+        <meta
+          name="description"
+          content="Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de loisirs."
+        />
+        <meta
+          name="keywords"
+          content="produits sportifs, équipement sportif, aménagement sportif, loisirs"
+        />
+        <meta name="author" content="Votre Boutique" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
       <div className="container mx-auto px-4 py-28">
         {/* Header */}
         <div className="mb-8">
