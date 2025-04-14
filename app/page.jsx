@@ -153,7 +153,7 @@ export default function Home() {
                   asChild
                   className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6"
                 >
-                  <Link href="/produits">Découvrir nos produits</Link>
+                  <Link href="/product">Découvrir nos produits</Link>
                 </Button>
                 <Button
                   variant="outline"
