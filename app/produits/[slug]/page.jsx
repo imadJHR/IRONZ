@@ -217,7 +217,7 @@ export default function ProductPage() {
             <Link href="/produits">Voir tous les produits</Link>
           </Button>
         </div>
-        <Footer />
+        
       </>
     );
   }
