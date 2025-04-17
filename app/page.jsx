@@ -140,7 +140,7 @@ export default function Home() {
           <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
-                Équipement de Fitness{" "}
+                Équipement de Fitness{""}
                 <span className="text-yellow-400">Professionnel</span> pour Tous
               </h1>
               <p className="text-xl text-gray-300 mb-8">
@@ -156,9 +156,8 @@ export default function Home() {
                   <Link href="/product">Découvrir nos produits</Link>
                 </Button>
                 <Button
-                  variant="outline"
                   asChild
-                  className="border-yellow-400 text-yellow-400 hover:bg-yellow-400/10 font-medium text-lg px-8 py-6"
+                  className="border-yellow-400 bg-white text-yellow-400 hover:bg-yellow-400/10 font-medium text-lg px-8 py-6"
                 >
                   <Link href="/promotions">Nos promotions</Link>
                 </Button>
@@ -184,9 +183,7 @@ export default function Home() {
                 </div>
               </div>
               <Button asChild className="bg-black hover:bg-gray-800 text-white">
-                <Link href="/promotions">
-                  Voir toutes les offres
-                </Link>
+                <Link href="/promotions">Voir toutes les offres</Link>
               </Button>
             </div>
           </div>

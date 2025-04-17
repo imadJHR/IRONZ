@@ -37,6 +37,7 @@ import { useFavorites } from "@/context/favorites-context";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { categories } from "@/data/product";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,9 +47,14 @@ export default function ClientLayout({ children }) {
   const toggleLanguage = () => {
     setLanguage((prevLanguage) => (prevLanguage === "fr" ? "en" : "fr"));
   };
-
   return (
     <html lang={language} suppressHydrationWarning>
+      <Head>
+        <meta
+          name="google-site-verification"
+          content="google-site-verification=5sW8fdyJZl9vDyjyFZm_fd0xOpxOz6njx92h9poyZ44"
+        />
+      </Head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <CartProvider>
@@ -188,20 +194,45 @@ function Navbar({ language, toggleLanguage }) {
   };
 
   const promotionLinks = [
-    { name: language === "fr" ? "Offres du moment" : "Current Offers", path: "/promotions?type=current" },
-    { name: language === "fr" ? "Soldes d'été" : "Summer Sales", path: "/promotions?type=summer" },
-    { name: language === "fr" ? "Packs économiques" : "Economy Packs", path: "/promotions?type=bundle" },
-    { name: language === "fr" ? "Déstockage" : "Clearance", path: "/promotions?type=clearance" },
+    {
+      name: language === "fr" ? "Offres du moment" : "Current Offers",
+      path: "/promotions?type=current",
+    },
+    {
+      name: language === "fr" ? "Soldes d'été" : "Summer Sales",
+      path: "/promotions?type=summer",
+    },
+    {
+      name: language === "fr" ? "Packs économiques" : "Economy Packs",
+      path: "/promotions?type=bundle",
+    },
+    {
+      name: language === "fr" ? "Déstockage" : "Clearance",
+      path: "/promotions?type=clearance",
+    },
   ];
 
   const serviceLinks = [
-    { name: language === "fr" ? "Aménagement de salle" : "Room Setup", path: "/services/amenagement-salle" },
     {
-      name: language === "fr" ? "Personnalisation d'accessoires" : "Accessory Customization",
+      name: language === "fr" ? "Aménagement de salle" : "Room Setup",
+      path: "/services/amenagement-salle",
+    },
+    {
+      name:
+        language === "fr"
+          ? "Personnalisation d'accessoires"
+          : "Accessory Customization",
       path: "/services/personnalisation-accessoires",
     },
-    { name: language === "fr" ? "Espace enfance" : "Kids Area", path: "/services/espace-enfance" },
-    { name: language === "fr" ? "Revêtement sol & mur" : "Floor & Wall Covering", path: "/services/revetement-sol-mur" },
+    {
+      name: language === "fr" ? "Espace enfance" : "Kids Area",
+      path: "/services/espace-enfance",
+    },
+    {
+      name:
+        language === "fr" ? "Revêtement sol & mur" : "Floor & Wall Covering",
+      path: "/services/revetement-sol-mur",
+    },
   ];
 
   const dropdownVariants = {
@@ -328,7 +359,9 @@ function Navbar({ language, toggleLanguage }) {
                     href="/product"
                     className="flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-600 dark:text-yellow-400 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                   >
-                    {language === "fr" ? "Voir tous les produits" : "View All Products"}
+                    {language === "fr"
+                      ? "Voir tous les produits"
+                      : "View All Products"}
                   </Link>
                 </div>
               </div>
@@ -362,7 +395,9 @@ function Navbar({ language, toggleLanguage }) {
                     href="/promotions"
                     className="flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-600 dark:text-yellow-400 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                   >
-                    {language === "fr" ? "Toutes les promotions" : "All Promotions"}
+                    {language === "fr"
+                      ? "Toutes les promotions"
+                      : "All Promotions"}
                   </Link>
                 </div>
               </div>
@@ -598,7 +633,9 @@ function Navbar({ language, toggleLanguage }) {
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                           >
-                            {language === "fr" ? "Voir tous les produits" : "View All Products"}
+                            {language === "fr"
+                              ? "Voir tous les produits"
+                              : "View All Products"}
                           </Link>
                         </motion.div>
                       )}
@@ -666,7 +703,9 @@ function Navbar({ language, toggleLanguage }) {
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                           >
-                            {language === "fr" ? "Toutes les promotions" : "All Promotions"}
+                            {language === "fr"
+                              ? "Toutes les promotions"
+                              : "All Promotions"}
                           </Link>
                         </motion.div>
                       )}
@@ -732,7 +771,9 @@ function Navbar({ language, toggleLanguage }) {
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                           >
-                            {language === "fr" ? "Tous nos services" : "All Services"}
+                            {language === "fr"
+                              ? "Tous nos services"
+                              : "All Services"}
                           </Link>
                         </motion.div>
                       )}
@@ -879,7 +920,11 @@ function Navbar({ language, toggleLanguage }) {
               <form onSubmit={handleSearch} className="relative">
                 <input
                   type="text"
-                  placeholder={language === "fr" ? "Rechercher des produits..." : "Search for products..."}
+                  placeholder={
+                    language === "fr"
+                      ? "Rechercher des produits..."
+                      : "Search for products..."
+                  }
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-16 py-6 text-lg rounded-lg border-none bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-yellow-500 dark:focus:ring-yellow-400 outline-none"
@@ -933,16 +978,22 @@ function Navbar({ language, toggleLanguage }) {
                   <ShoppingCart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                 </div>
                 <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  {language === "fr" ? "Votre panier est vide" : "Your cart is empty"}
+                  {language === "fr"
+                    ? "Votre panier est vide"
+                    : "Your cart is empty"}
                 </h4>
                 <p className="text-gray-500 dark:text-gray-400 mb-6">
-                  {language === "fr" ? "Commencez à ajouter des produits" : "Start adding products"}
+                  {language === "fr"
+                    ? "Commencez à ajouter des produits"
+                    : "Start adding products"}
                 </p>
                 <button
                   onClick={toggleCart}
                   className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
-                  {language === "fr" ? "Continuer vos achats" : "Continue Shopping"}
+                  {language === "fr"
+                    ? "Continuer vos achats"
+                    : "Continue Shopping"}
                 </button>
               </div>
             ) : (
@@ -1030,7 +1081,9 @@ function Navbar({ language, toggleLanguage }) {
                         {language === "fr" ? "Livraison:" : "Shipping:"}
                       </span>
                       <span className="text-gray-900 dark:text-white">
-                        {language === "fr" ? "Calculé à la commande" : "Calculated at checkout"}
+                        {language === "fr"
+                          ? "Calculé à la commande"
+                          : "Calculated at checkout"}
                       </span>
                     </div>
                     <div className="h-px bg-gray-200 dark:bg-gray-700" />
@@ -1098,16 +1151,22 @@ function Navbar({ language, toggleLanguage }) {
                   <Heart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                 </div>
                 <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  {language === "fr" ? "Vous n'avez pas de favoris" : "You have no favorites"}
+                  {language === "fr"
+                    ? "Vous n'avez pas de favoris"
+                    : "You have no favorites"}
                 </h4>
                 <p className="text-gray-500 dark:text-gray-400 mb-6">
-                  {language === "fr" ? "Ajoutez des produits à vos favoris" : "Add products to your favorites"}
+                  {language === "fr"
+                    ? "Ajoutez des produits à vos favoris"
+                    : "Add products to your favorites"}
                 </p>
                 <button
                   onClick={toggleFavorites}
                   className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
-                  {language === "fr" ? "Découvrir des produits" : "Discover Products"}
+                  {language === "fr"
+                    ? "Découvrir des produits"
+                    : "Discover Products"}
                 </button>
               </div>
             ) : (
@@ -1145,7 +1204,11 @@ function Navbar({ language, toggleLanguage }) {
                           toggleFavorites();
                         }}
                         className="p-1 text-yellow-500 hover:text-yellow-600 rounded-full hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
-                        title={language === "fr" ? "Ajouter au panier" : "Add to Cart"}
+                        title={
+                          language === "fr"
+                            ? "Ajouter au panier"
+                            : "Add to Cart"
+                        }
                       >
                         <ShoppingCart className="h-4 w-4" />
                       </button>
@@ -1154,7 +1217,11 @@ function Navbar({ language, toggleLanguage }) {
                           // Remove from favorites logic would go here
                         }}
                         className="p-1 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-                        title={language === "fr" ? "Retirer des favoris" : "Remove from Favorites"}
+                        title={
+                          language === "fr"
+                            ? "Retirer des favoris"
+                            : "Remove from Favorites"
+                        }
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -1211,14 +1278,29 @@ function Footer({ language }) {
   ];
 
   const categories = [
-    { name: language === "fr" ? "Home Gym" : "Home Gym", href: "/categories/home-gym" },
-    { name: language === "fr" ? "Équipements" : "Equipment", href: "/categories/equipements" },
-    { name: language === "fr" ? "Supplément" : "Supplement", href: "/categories/supplement" },
-    { name: language === "fr" ? "Accessoires" : "Accessories", href: "/categories/accessoires" },
+    {
+      name: language === "fr" ? "Home Gym" : "Home Gym",
+      href: "/categories/home-gym",
+    },
+    {
+      name: language === "fr" ? "Équipements" : "Equipment",
+      href: "/categories/equipements",
+    },
+    {
+      name: language === "fr" ? "Supplément" : "Supplement",
+      href: "/categories/supplement",
+    },
+    {
+      name: language === "fr" ? "Accessoires" : "Accessories",
+      href: "/categories/accessoires",
+    },
   ];
 
   const infoLinks = [
-    { name: language === "fr" ? "À propos de nous" : "About Us", href: "/a-propos" },
+    {
+      name: language === "fr" ? "À propos de nous" : "About Us",
+      href: "/a-propos",
+    },
     { name: language === "fr" ? "Contact" : "Contact", href: "/contact" },
   ];
 
@@ -1384,7 +1466,10 @@ function Footer({ language }) {
           <div className="border-t border-gray-800/50 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-500 text-sm mb-4 md:mb-0">
-                &copy; {currentYear} IRONZ. {language === "fr" ? "Tous droits réservés." : "All rights reserved."}
+                &copy; {currentYear} IRONZ.{" "}
+                {language === "fr"
+                  ? "Tous droits réservés."
+                  : "All rights reserved."}
               </p>
               <motion.a
                 href="#top"
