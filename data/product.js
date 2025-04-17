@@ -21,6 +21,9 @@ import a14 from "../public/a14.jpeg";
 import a15 from "../public/a15.jpeg";
 import a16 from "../public/a16.jpeg";
 import a17 from "../public/a17.jpeg";
+import a18 from "../public/a18.jpeg";
+import a19 from "../public/a19.jpeg";
+import a20 from "../public/a20.jpeg";
 export const categories = [
   {
     id: "1",
@@ -300,26 +303,23 @@ export const products = [
   },
   {
     id: "6",
-    name: "Ceinture de musculation en cuir",
-    slug: "ceinture-musculation-cuir",
+    name: "Ensemble veste et pantalon Under Armour",
+    slug: "ensemble-veste-pantalon",
     description:
-      "Ceinture de musculation en cuir véritable pour un soutien lombaire optimal pendant les exercices de force. Idéale pour les soulevés de terre et les squats.",
+      "Ensemble veste et pantalon Under ArmourDécouvrez cet ensemble élégant signé Under Armour, conçu pour répondre aux besoins des sportifs et amateurs de confort au quotidien. Disponible en trois couleurs",
     features: [
-      "Cuir véritable de 4mm d'épaisseur",
-      "Boucle à double ardillon",
-      "Largeur: 10cm à l'arrière, 6cm à l'avant",
-      "Soutien lombaire renforcé",
-      "Conçue pour durer des années",
+      "Coupe slim : Offrant une silhouette moderne et ajustée, parfaite pour l'entraînement ou les sorties décontractées.",
+      "Logo discret : Positionné sur la jambe pour une finition raffinée.",
+      "Confort optimal : Tissu doux et respirant qui évacue l'humidité pour rester au sec.",
+      "Résistance accrue : Matériaux conçus pour durer, même après des séances d'entraînement intensives.",
+      "Polyvalence : Convient aussi bien pour le sport que pour un look décontracté.",
     ],
-    price: 49.99,
-    oldPrice: 59.99,
-    discount: 16,
-    image: "/placeholder.svg?height=300&width=300&text=Ceinture+Musculation",
-    gallery: [
-      "/placeholder.svg?height=600&width=600&text=Ceinture+Vue+1",
-      "/placeholder.svg?height=600&width=600&text=Ceinture+Vue+2",
-      "/placeholder.svg?height=600&width=600&text=Ceinture+Vue+3",
-    ],
+    price: 349.99,
+    oldPrice: "",
+    discount: "",
+    taille: ["XL", "M", "S"],
+    image: a18,
+    gallery: [a18, a19, a20],
     category: "accessoires",
     categoryId: "4",
     subCategoryId: "4-2",
@@ -329,8 +329,6 @@ export const products = [
     isFeatured: true,
     inStock: true,
     stockQuantity: 75,
-    sku: "CM-CU-006",
-    date: "2023-07-10",
     tags: [
       "ceinture",
       "musculation",
@@ -338,21 +336,8 @@ export const products = [
       "soutien lombaire",
       "current",
     ],
-    dimensions: {
-      width: 10,
-      height: 0.4,
-      depth: 110,
-      weight: 0.5,
-    },
-    colors: ["Noir", "Marron"],
-    materials: ["Cuir véritable", "Métal"],
-    warranty: "2 ans",
-    shipping: {
-      dimensions: "30 x 15 x 5 cm",
-      weight: 0.6,
-      method: "Standard",
-      estimatedDelivery: "2-3 jours ouvrés",
-    },
+    colors: ["Bleu", "Gris"],
+
     relatedProducts: ["5", "7"],
   },
   {
