@@ -184,7 +184,7 @@ export default function Home() {
                 </div>
               </div>
               <Button asChild className="bg-black hover:bg-gray-800 text-white">
-                <Link href="/produits?sort=discount">
+                <Link href="/promotions">
                   Voir toutes les offres
                 </Link>
               </Button>
@@ -337,7 +337,7 @@ export default function Home() {
                         <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                           {product.category}
                         </div>
-                        <Link href={`/produits/${product.slug}`}>
+                        <Link href={`/product/${product.slug}`}>
                           <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                             {product.name}
                           </h3>

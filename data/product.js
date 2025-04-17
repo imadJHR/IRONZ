@@ -2,8 +2,25 @@ import img1 from "../public/homeGym.jpg";
 import img2 from "../public/equipement.jpg";
 import img3 from "../public/complement.jpg";
 import img4 from "../public/accessoire.jpg";
-import img5 from "../public/matrix.png"
-import img6 from "../public/lifefitness.png"
+import img5 from "../public/matrix.png";
+import img6 from "../public/lifefitness.png";
+import a1 from "../public/a1.jpeg";
+import a2 from "../public/a2.jpeg";
+import a3 from "../public/a3.jpeg";
+import a4 from "../public/a4.jpeg";
+import a5 from "../public/a5.jpeg";
+import a6 from "../public/a6.jpeg";
+import a7 from "../public/a7.jpeg";
+import a8 from "../public/a8.jpeg";
+import a9 from "../public/a9.jpeg";
+import a10 from "../public/a10.jpeg";
+import a11 from "../public/a11.jpeg";
+import a12 from "../public/a12.jpeg";
+import a13 from "../public/a13.jpeg";
+import a14 from "../public/a14.jpeg";
+import a15 from "../public/a15.jpeg";
+import a16 from "../public/a16.jpeg";
+import a17 from "../public/a17.jpeg";
 export const categories = [
   {
     id: "1",
@@ -68,30 +85,25 @@ export const categories = [
   },
 ];
 
-// Produits
 export const products = [
   {
     id: "1",
-    name: "Banc de musculation multifonction",
-    slug: "banc-musculation-multifonction",
+    name: "Tapis de Yoga ECO-FRIENDLY EVA",
+    slug: "Tapis-de-Yoga-ECO-FRIENDLY-EVA",
     description:
-      "Banc de musculation réglable avec support pour haltères et accessoires d'entraînement intégrés. Idéal pour les exercices de musculation à domicile.",
+      "Profitez d’un confort optimal avec ce tapis de yoga en EVA écologique, idéal pour vos séances de yoga, pilates et fitness.",
     features: [
-      "Réglable en hauteur et inclinaison",
-      "Supporte jusqu'à 200kg",
-      "Dimensions: 120 x 60 x 50 cm",
-      "Livré avec support pour haltères",
-      "Matériaux haute résistance",
+      " Matériau EVA de haute qualité : léger, durable et résistant.",
+      " Surface antidérapante pour une meilleure adhérence et sécurité.",
+      " Facile à transporter et à entretenir.",
+      " Disponible en plusieurs couleurs pour s’adapter à vos goûts.",
+      "Parfait pour tous les niveaux, du débutant au yogi expérimenté ! 🌿",
     ],
-    price: 349.99,
+    price: 159,
     oldPrice: "",
     discount: "",
-    image: "/placeholder.svg?height=300&width=300&text=Banc+Musculation",
-    gallery: [
-      "/placeholder.svg?height=600&width=600&text=Banc+Vue+1",
-      "/placeholder.svg?height=600&width=600&text=Banc+Vue+2",
-      "/placeholder.svg?height=600&width=600&text=Banc+Vue+3",
-    ],
+    image: a1,
+    gallery: [a2, a3, a4, a1],
     category: "home gym",
     categoryId: "1",
     rating: 4.7,
@@ -109,7 +121,7 @@ export const products = [
       depth: 60,
       weight: 25,
     },
-    colors: ["Noir", "Rouge", "Gris"],
+    colors: ["Gris", "Violet", "Vert", "Bleu"],
     materials: ["Acier", "Mousse haute densité", "Similicuir"],
     warranty: "2 ans",
     shipping: {
@@ -122,31 +134,26 @@ export const products = [
   },
   {
     id: "2",
-    name: "Tapis de yoga premium",
-    slug: "tapis-yoga-premium",
+    name: "Bande de Résistance LIVEPRO  Small",
+    slug: "bande-de-resistance-small",
     description:
-      "Tapis de yoga antidérapant en matériaux écologiques pour un confort optimal pendant vos séances. Surface texturée pour une meilleure adhérence.",
+      "Optimisez vos entraînements avec la bande de résistance LIVEPRO Small, conçue pour améliorer votre force, votre endurance et votre souplesse !",
     features: [
-      "Épaisseur: 6mm",
-      "Dimensions: 183 x 61 cm",
-      "Matériaux écologiques sans PVC",
-      "Antidérapant des deux côtés",
-      "Facile à nettoyer",
+      "Niveau de résistance modéré, parfait pour les tractions assistées, la musculation, le CrossFit, le Pilates et les étirements.",
+      "Matériau en latex premium, offrant une grande durabilité et une élasticité optimale.",
+      "Adaptée aux sportifs de tous niveaux, idéale pour progresser en douceur.",
+      "🔥 Ajoutez de l’intensité à vos séances et atteignez de nouveaux sommets avec la Super Band LIVEPRO Small ! 💯",
     ],
-    price: 59.99,
-    oldPrice: 79.99,
-    discount: 25,
-    image: "/placeholder.svg?height=300&width=300&text=Tapis+Yoga",
-    gallery: [
-      "/placeholder.svg?height=600&width=600&text=Tapis+Vue+1",
-      "/placeholder.svg?height=600&width=600&text=Tapis+Vue+2",
-      "/placeholder.svg?height=600&width=600&text=Tapis+Vue+3",
-    ],
+    price: 109,
+    oldPrice: "",
+    discount: "",
+    image: a5,
+    gallery: [a5],
     category: "équipements",
     categoryId: "2",
     rating: 4.9,
     reviewCount: 89,
-    isNew: true,
+    isNew: false,
     isFeatured: true,
     inStock: true,
     stockQuantity: 120,
@@ -172,27 +179,23 @@ export const products = [
   },
   {
     id: "3",
-    name: "Haltères ajustables 2-20kg",
-    slug: "halteres-ajustables",
+    name: "Chaussettes de Sport Antidérapantes",
+    slug: "chaussettes-de-sport",
     description:
-      "Paire d'haltères avec poids ajustables de 2 à 20kg, idéale pour l'entraînement à domicile. Système de verrouillage sécurisé.",
+      "Assurez-vous un contrôle total et un confort absolu avec ces chaussettes de sport spécialement conçues pour optimiser vos performances.",
     features: [
-      "Poids ajustable de 2 à 20kg par haltère",
-      "Système de verrouillage rapide",
-      "Poignée ergonomique antidérapante",
-      "Disques en fonte recouverts de caoutchouc",
-      "Rangement compact",
+      "Maintien ergonomique : S’ajuste à la forme de votre pied pour un soutien optimal.",
+      "Grip antidérapant : Parfait pour les changements de direction rapides et les accélérations sur le terrain.",
+      "Matières respirantes : Gardent vos pieds au sec même lors des efforts les plus intenses.",
+      "Multisports : Idéales pour le football, le basketball, la course et les sports de combat.",
+      "Large choix de couleurs : Trouvez la teinte qui correspond à votre style et à votre équipe.",
     ],
-    price: 199.99,
+    price: 89.99,
     oldPrice: "",
     discount: "",
-    image: "/placeholder.svg?height=300&width=300&text=Haltères",
-    gallery: [
-      "/placeholder.svg?height=600&width=600&text=Haltères+Vue+1",
-      "/placeholder.svg?height=600&width=600&text=Haltères+Vue+2",
-      "/placeholder.svg?height=600&width=600&text=Haltères+Vue+3",
-    ],
-    category: "supplément",
+    image: a6,
+    gallery: [a6, a7, a8, a9, a10],
+    category: "accessoires",
     categoryId: "3",
     rating: 4.5,
     reviewCount: 76,
@@ -222,77 +225,57 @@ export const products = [
   },
   {
     id: "4",
-    name: "Lampe de relaxation LED",
-    slug: "lampe-relaxation-led",
+    name: "Chaussures de Boxe – Alliez Vitesse et Puissance sur le Ring !",
+    slug: "Chaussures-de-Boxe",
     description:
-      "Lampe LED avec variations de couleurs et minuterie pour créer une ambiance relaxante dans votre espace. Contrôle tactile et télécommande incluse.",
+      "🔥 Passez à la vitesse supérieure avec ces chaussures de boxe conçues pour offrir légèreté, stabilité et confort à chaque mouvement. Elles vous permettent d’exploiter pleinement votre potentiel sur le ring.",
     features: [
-      "16 couleurs différentes",
-      "Intensité réglable",
-      "Minuterie programmable",
-      "Contrôle tactile et télécommande",
+      "Agilité Maximale – Structure ultra légère pour des déplacements rapides et précis.",
+      "Maintien Renforcé – Renforts stratégiques pour une protection optimale de la cheville.",
+      "Adhérence Exceptionnelle – Semelle innovante pour une traction parfaite sur tous les supports.",
+      " Respirabilité et Confort – Matériaux aérés qui évacuent efficacement la transpiration.",
       "Port USB intégré",
     ],
-    price: 79.99,
-    oldPrice: 99.99,
-    discount: 20,
-    image: "/placeholder.svg?height=300&width=300&text=Lampe+LED",
-    gallery: [
-      "/placeholder.svg?height=600&width=600&text=Lampe+Vue+1",
-      "/placeholder.svg?height=600&width=600&text=Lampe+Vue+2",
-      "/placeholder.svg?height=600&width=600&text=Lampe+Vue+3",
-    ],
+    price: 499,
+    oldPrice: "",
+    discount: "",
+    image: a11,
+    gallery: [a11, a12, a13],
     category: "accessoires",
     categoryId: "4",
     subCategoryId: "4-4",
     rating: 4.2,
     reviewCount: 53,
-    isNew: true,
+    isNew: false,
     isFeatured: false,
     inStock: true,
-    stockQuantity: 68,
-    sku: "LL-RL-004",
-    date: "2023-12-01",
+
     tags: ["luminaire", "relaxation", "LED", "ambiance", "summer"],
-    dimensions: {
-      width: 15,
-      height: 30,
-      depth: 15,
-      weight: 0.8,
-    },
-    colors: ["Blanc", "Noir"],
-    materials: ["Plastique ABS", "Silicone"],
-    warranty: "1 an",
+
+    colors: ["Rouge", "Bleu"],
+
     shipping: {
-      dimensions: "20 x 20 x 35 cm",
-      weight: 1.2,
-      method: "Express",
-      estimatedDelivery: "1-2 jours ouvrés",
+      estimatedDelivery: "2-3 jours ouvrés",
     },
     relatedProducts: ["10"],
   },
   {
     id: "5",
-    name: "Gants de musculation premium",
-    slug: "gants-musculation-premium",
+    name: "Ensemble Venum Training Camp – Dominez le ring avec style et puissance !",
+    slug: "Ensemble-Venum-Training-Camp",
     description:
-      "Gants de musculation en cuir véritable avec rembourrage ergonomique pour un confort optimal et une protection maximale pendant vos séances d'entraînement.",
+      "🔥 Préparez-vous à l'entraînement ultime avec cet ensemble exclusif Venum Training Camp. Conçu pour les combattants de haut niveau, il offre une combinaison parfaite de confort, de résistance et de style audacieux",
     features: [
-      "Cuir véritable de haute qualité",
-      "Rembourrage ergonomique",
-      "Poignets ajustables avec velcro",
-      "Respirants et anti-transpiration",
-      "Disponibles en plusieurs tailles",
+      " Tissu ultra-résistant et extensible pour une liberté de mouvement totale.",
+      "Technologie de compression pour un maintien optimal et une meilleure récupération musculaire.",
+      " Matériaux respirants pour une évacuation rapide de la transpiration.",
+      "Design agressif et moderne qui reflète la puissance et l'intensité des vrais guerriers.",
     ],
-    price: 29.99,
-    oldPrice: 39.99,
-    discount: 25,
-    image: "/placeholder.svg?height=300&width=300&text=Gants+Musculation",
-    gallery: [
-      "/placeholder.svg?height=600&width=600&text=Gants+Vue+1",
-      "/placeholder.svg?height=600&width=600&text=Gants+Vue+2",
-      "/placeholder.svg?height=600&width=600&text=Gants+Vue+3",
-    ],
+    price: 299,
+    oldPrice: "",
+    discount: "",
+    image: a14,
+    gallery: [a14, a15, a16, a17],
     category: "accessoires",
     categoryId: "4",
     subCategoryId: "4-1",
@@ -312,21 +295,7 @@ export const products = [
       "summer",
       "current",
     ],
-    dimensions: {
-      width: 12,
-      height: 2,
-      depth: 20,
-      weight: 0.2,
-    },
-    colors: ["Noir", "Rouge", "Bleu"],
-    materials: ["Cuir véritable", "Néoprène", "Mesh respirant"],
-    warranty: "1 an",
-    shipping: {
-      dimensions: "15 x 10 x 5 cm",
-      weight: 0.3,
-      method: "Standard",
-      estimatedDelivery: "2-3 jours ouvrés",
-    },
+    colors: ["Vert", "Rouge", "Bleu", "Gris"],
     relatedProducts: ["6", "7"],
   },
   {

@@ -263,7 +263,7 @@ export default function CategoryPage() {
             </Link>
             <ChevronRight className="h-4 w-4 mx-2" />
             <Link
-              href="/produits"
+              href="/product"
               className="hover:text-gray-900 dark:hover:text-white"
             >
               Produits
@@ -592,7 +592,7 @@ export default function CategoryPage() {
                       <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
                         {product.category}
                       </div>
-                      <Link href={`/produits/${product.slug || product.id}`}>
+                      <Link href={`/product/${product.slug || product.id}`}>
                         <h3 className="font-medium text-gray-900 dark:text-white mb-1 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                           {product.name}
                         </h3>
@@ -666,7 +666,7 @@ export default function CategoryPage() {
                       <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
                         {product.category}
                       </div>
-                      <Link href={`/produits/${product.slug || product.id}`}>
+                      <Link href={`/product/${product.slug || product.id}`}>
                         <h3 className="font-medium text-gray-900 dark:text-white mb-1 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                           {product.name}
                         </h3>

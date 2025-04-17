@@ -29,6 +29,7 @@ import {
   MapPin,
   ArrowRight,
   Search,
+  Globe,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/cart-context";
@@ -40,16 +41,22 @@ import { categories } from "@/data/product";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function ClientLayout({ children }) {
+  const [language, setLanguage] = useState("fr");
+
+  const toggleLanguage = () => {
+    setLanguage((prevLanguage) => (prevLanguage === "fr" ? "en" : "fr"));
+  };
+
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang={language} suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <CartProvider>
             <FavoritesProvider>
               <div className="flex flex-col min-h-screen">
-                <Navbar />
+                <Navbar language={language} toggleLanguage={toggleLanguage} />
                 <main className="flex-grow pt-24">{children}</main>
-                <Footer />
+                <Footer language={language} />
               </div>
             </FavoritesProvider>
           </CartProvider>
@@ -60,7 +67,7 @@ export default function ClientLayout({ children }) {
 }
 
 // Navbar Component
-function Navbar() {
+function Navbar({ language, toggleLanguage }) {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -181,20 +188,20 @@ function Navbar() {
   };
 
   const promotionLinks = [
-    { name: "Offres du moment", path: "/promotions?type=current" },
-    { name: "Soldes d'été", path: "/promotions?type=summer" },
-    { name: "Packs économiques", path: "/promotions?type=bundle" },
-    { name: "Déstockage", path: "/promotions?type=clearance" },
+    { name: language === "fr" ? "Offres du moment" : "Current Offers", path: "/promotions?type=current" },
+    { name: language === "fr" ? "Soldes d'été" : "Summer Sales", path: "/promotions?type=summer" },
+    { name: language === "fr" ? "Packs économiques" : "Economy Packs", path: "/promotions?type=bundle" },
+    { name: language === "fr" ? "Déstockage" : "Clearance", path: "/promotions?type=clearance" },
   ];
 
   const serviceLinks = [
-    { name: "Aménagement de salle", path: "/services/amenagement-salle" },
+    { name: language === "fr" ? "Aménagement de salle" : "Room Setup", path: "/services/amenagement-salle" },
     {
-      name: "Personnalisation d'accessoires",
+      name: language === "fr" ? "Personnalisation d'accessoires" : "Accessory Customization",
       path: "/services/personnalisation-accessoires",
     },
-    { name: "Espace enfance", path: "/services/espace-enfance" },
-    { name: "Revêtement sol & mur", path: "/services/revetement-sol-mur" },
+    { name: language === "fr" ? "Espace enfance" : "Kids Area", path: "/services/espace-enfance" },
+    { name: language === "fr" ? "Revêtement sol & mur" : "Floor & Wall Covering", path: "/services/revetement-sol-mur" },
   ];
 
   const dropdownVariants = {
@@ -290,7 +297,7 @@ function Navbar() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
               <NavLink href="/" active={isActive("/")}>
-                Accueil
+                {language === "fr" ? "Accueil" : "Home"}
               </NavLink>
 
               {/* Products dropdown */}
@@ -303,7 +310,7 @@ function Navbar() {
                       : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
-                  Produits
+                  {language === "fr" ? "Produits" : "Products"}
                   <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
                 </button>
                 <div className="absolute left-0 mt-2 w-64 rounded-xl p-2 shadow-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -321,7 +328,7 @@ function Navbar() {
                     href="/product"
                     className="flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-600 dark:text-yellow-400 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                   >
-                    Voir tous les produits
+                    {language === "fr" ? "Voir tous les produits" : "View All Products"}
                   </Link>
                 </div>
               </div>
@@ -336,7 +343,7 @@ function Navbar() {
                       : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
-                  Promotions
+                  {language === "fr" ? "Promotions" : "Promotions"}
                   <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
                 </button>
                 <div className="absolute left-0 mt-2 w-64 rounded-xl p-2 shadow-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -355,7 +362,7 @@ function Navbar() {
                     href="/promotions"
                     className="flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-600 dark:text-yellow-400 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                   >
-                    Toutes les promotions
+                    {language === "fr" ? "Toutes les promotions" : "All Promotions"}
                   </Link>
                 </div>
               </div>
@@ -370,7 +377,7 @@ function Navbar() {
                       : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
                 >
-                  Ironz Pro
+                  {language === "fr" ? "Ironz Pro" : "Ironz Pro"}
                   <ChevronDown className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
                 </button>
                 <div className="absolute left-0 mt-2 w-64 rounded-xl p-2 shadow-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -388,23 +395,34 @@ function Navbar() {
                     href="/services"
                     className="flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-600 dark:text-yellow-400 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                   >
-                    Tous nos services
+                    {language === "fr" ? "Tous nos services" : "All Services"}
                   </Link>
                 </div>
               </div>
 
               <NavLink href="/a-propos" active={isActive("/a-propos")}>
-                À propos
+                {language === "fr" ? "À propos" : "About"}
               </NavLink>
 
               <NavLink href="/contact" active={isActive("/contact")}>
-                Contact
+                {language === "fr" ? "Contact" : "Contact"}
               </NavLink>
               <Link href="/demande-devis">
                 <button className="ml-1 px-4 py-2 rounded-lg bg-white border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-50 font-medium transition-colors flex items-center">
-                  Demande devis
+                  {language === "fr" ? "Demande devis" : "Request Quote"}
                 </button>
               </Link>
+
+              {/* Language Toggle Button */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={toggleLanguage}
+                className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors relative ml-4"
+                aria-label="Language"
+              >
+                <Globe className="h-5 w-5" />
+              </motion.button>
             </div>
 
             {/* Right side icons */}
@@ -532,7 +550,7 @@ function Navbar() {
                       )}
                     >
                       <Home className="h-5 w-5 mr-3" />
-                      Accueil
+                      {language === "fr" ? "Accueil" : "Home"}
                     </Link>
                   </div>
 
@@ -545,7 +563,7 @@ function Navbar() {
                       onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
                     >
                       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Produits
+                        {language === "fr" ? "Produits" : "Products"}
                       </h3>
                       <ChevronDown
                         className={cn(
@@ -580,7 +598,7 @@ function Navbar() {
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                           >
-                            Voir tous les produits
+                            {language === "fr" ? "Voir tous les produits" : "View All Products"}
                           </Link>
                         </motion.div>
                       )}
@@ -597,7 +615,7 @@ function Navbar() {
                             : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
                       >
-                        Produits
+                        {language === "fr" ? "Produits" : "Products"}
                       </Link>
                     )}
                   </div>
@@ -613,7 +631,7 @@ function Navbar() {
                       }
                     >
                       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Promotions
+                        {language === "fr" ? "Promotions" : "Promotions"}
                       </h3>
                       <ChevronDown
                         className={cn(
@@ -648,7 +666,7 @@ function Navbar() {
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                           >
-                            Toutes les promotions
+                            {language === "fr" ? "Toutes les promotions" : "All Promotions"}
                           </Link>
                         </motion.div>
                       )}
@@ -665,7 +683,7 @@ function Navbar() {
                             : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
                       >
-                        Promotions
+                        {language === "fr" ? "Promotions" : "Promotions"}
                       </Link>
                     )}
                   </div>
@@ -679,7 +697,7 @@ function Navbar() {
                       onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                     >
                       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Services
+                        {language === "fr" ? "Services" : "Services"}
                       </h3>
                       <ChevronDown
                         className={cn(
@@ -714,7 +732,7 @@ function Navbar() {
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                           >
-                            Tous nos services
+                            {language === "fr" ? "Tous nos services" : "All Services"}
                           </Link>
                         </motion.div>
                       )}
@@ -731,7 +749,7 @@ function Navbar() {
                             : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
                       >
-                        Services
+                        {language === "fr" ? "Services" : "Services"}
                       </Link>
                     )}
                   </div>
@@ -747,7 +765,8 @@ function Navbar() {
                           : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                       )}
                     >
-                      <Info className="h-5 w-5 mr-3" />À propos
+                      <Info className="h-5 w-5 mr-3" />
+                      {language === "fr" ? "À propos" : "About"}
                     </Link>
 
                     <Link
@@ -761,7 +780,7 @@ function Navbar() {
                       )}
                     >
                       <Phone className="h-5 w-5 mr-3" />
-                      Contact
+                      {language === "fr" ? "Contact" : "Contact"}
                     </Link>
                   </div>
 
@@ -775,7 +794,7 @@ function Navbar() {
                     >
                       <div className="flex items-center">
                         <Heart className="h-5 w-5 mr-3" />
-                        Mes favoris
+                        {language === "fr" ? "Mes favoris" : "My Favorites"}
                       </div>
                       {favoritesCount > 0 && (
                         <span className="ml-auto px-2 py-1 text-xs font-medium rounded-full bg-red-500 text-white">
@@ -791,7 +810,7 @@ function Navbar() {
                     >
                       <div className="flex items-center">
                         <ShoppingCart className="h-5 w-5 mr-3" />
-                        Mon panier
+                        {language === "fr" ? "Mon panier" : "My Cart"}
                       </div>
                       {itemCount > 0 && (
                         <span className="ml-auto px-2 py-1 text-xs font-medium rounded-full bg-yellow-500 text-white">
@@ -820,7 +839,7 @@ function Navbar() {
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <button className="w-full py-2 px-4 rounded-lg bg-white border border-yellow-500 text-yellow-600 hover:bg-yellow-50 font-medium transition-colors">
-                        Demande devis
+                        {language === "fr" ? "Demande devis" : "Request Quote"}
                       </button>
                     </Link>
                     <Link
@@ -828,7 +847,7 @@ function Navbar() {
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <button className="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
-                        Nous contacter
+                        {language === "fr" ? "Nous contacter" : "Contact Us"}
                       </button>
                     </Link>
                   </div>
@@ -860,7 +879,7 @@ function Navbar() {
               <form onSubmit={handleSearch} className="relative">
                 <input
                   type="text"
-                  placeholder="Rechercher des produits..."
+                  placeholder={language === "fr" ? "Rechercher des produits..." : "Search for products..."}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-16 py-6 text-lg rounded-lg border-none bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-yellow-500 dark:focus:ring-yellow-400 outline-none"
@@ -871,7 +890,7 @@ function Navbar() {
                   type="submit"
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 h-10 px-4 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
                 >
-                  Rechercher
+                  {language === "fr" ? "Rechercher" : "Search"}
                 </button>
               </form>
             </motion.div>
@@ -893,7 +912,7 @@ function Navbar() {
             <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
               <h3 className="font-medium text-lg text-gray-900 dark:text-white flex items-center">
                 <ShoppingCart className="h-6 w-6 mr-2 text-yellow-500" />
-                Votre Panier
+                {language === "fr" ? "Votre Panier" : "Your Cart"}
                 {itemCount > 0 && (
                   <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-yellow-500 text-white">
                     {itemCount}
@@ -914,16 +933,16 @@ function Navbar() {
                   <ShoppingCart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                 </div>
                 <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  Votre panier est vide
+                  {language === "fr" ? "Votre panier est vide" : "Your cart is empty"}
                 </h4>
                 <p className="text-gray-500 dark:text-gray-400 mb-6">
-                  Commencez à ajouter des produits
+                  {language === "fr" ? "Commencez à ajouter des produits" : "Start adding products"}
                 </p>
                 <button
                   onClick={toggleCart}
                   className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
-                  Continuer vos achats
+                  {language === "fr" ? "Continuer vos achats" : "Continue Shopping"}
                 </button>
               </div>
             ) : (
@@ -1000,7 +1019,7 @@ function Navbar() {
                   <div className="space-y-3 mb-4">
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">
-                        Sous-total:
+                        {language === "fr" ? "Sous-total:" : "Subtotal:"}
                       </span>
                       <span className="font-medium text-gray-900 dark:text-white">
                         {cartTotal.toFixed(2)} MAD
@@ -1008,16 +1027,16 @@ function Navbar() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">
-                        Livraison:
+                        {language === "fr" ? "Livraison:" : "Shipping:"}
                       </span>
                       <span className="text-gray-900 dark:text-white">
-                        Calculé à la commande
+                        {language === "fr" ? "Calculé à la commande" : "Calculated at checkout"}
                       </span>
                     </div>
                     <div className="h-px bg-gray-200 dark:bg-gray-700" />
                     <div className="flex justify-between text-lg font-medium">
                       <span className="text-gray-900 dark:text-white">
-                        Total:
+                        {language === "fr" ? "Total:" : "Total:"}
                       </span>
                       <span className="text-gray-900 dark:text-white">
                         {cartTotal.toFixed(2)} MAD
@@ -1029,11 +1048,11 @@ function Navbar() {
                       onClick={toggleCart}
                       className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                     >
-                      Continuer
+                      {language === "fr" ? "Continuer" : "Continue"}
                     </button>
                     <Link href="/checkout" onClick={toggleCart}>
                       <button className="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
-                        Commander
+                        {language === "fr" ? "Commander" : "Checkout"}
                       </button>
                     </Link>
                   </div>
@@ -1058,7 +1077,7 @@ function Navbar() {
             <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
               <h3 className="font-medium text-lg text-gray-900 dark:text-white flex items-center">
                 <Heart className="h-6 w-6 mr-2 text-red-500" />
-                Vos Favoris
+                {language === "fr" ? "Vos Favoris" : "Your Favorites"}
                 {favoritesCount > 0 && (
                   <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-red-500 text-white">
                     {favoritesCount}
@@ -1079,16 +1098,16 @@ function Navbar() {
                   <Heart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                 </div>
                 <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  Vous n'avez pas de favoris
+                  {language === "fr" ? "Vous n'avez pas de favoris" : "You have no favorites"}
                 </h4>
                 <p className="text-gray-500 dark:text-gray-400 mb-6">
-                  Ajoutez des produits à vos favoris
+                  {language === "fr" ? "Ajoutez des produits à vos favoris" : "Add products to your favorites"}
                 </p>
                 <button
                   onClick={toggleFavorites}
                   className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
-                  Découvrir des produits
+                  {language === "fr" ? "Découvrir des produits" : "Discover Products"}
                 </button>
               </div>
             ) : (
@@ -1126,7 +1145,7 @@ function Navbar() {
                           toggleFavorites();
                         }}
                         className="p-1 text-yellow-500 hover:text-yellow-600 rounded-full hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
-                        title="Ajouter au panier"
+                        title={language === "fr" ? "Ajouter au panier" : "Add to Cart"}
                       >
                         <ShoppingCart className="h-4 w-4" />
                       </button>
@@ -1135,7 +1154,7 @@ function Navbar() {
                           // Remove from favorites logic would go here
                         }}
                         className="p-1 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-                        title="Retirer des favoris"
+                        title={language === "fr" ? "Retirer des favoris" : "Remove from Favorites"}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -1169,7 +1188,7 @@ function NavLink({ href, children, active }) {
 }
 
 // Footer Component
-function Footer() {
+function Footer({ language }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -1192,15 +1211,15 @@ function Footer() {
   ];
 
   const categories = [
-    { name: "Home Gym", href: "/categories/home-gym" },
-    { name: "Équipements", href: "/categories/equipements" },
-    { name: "Supplément", href: "/categories/supplement" },
-    { name: "Accessoires", href: "/categories/accessoires" },
+    { name: language === "fr" ? "Home Gym" : "Home Gym", href: "/categories/home-gym" },
+    { name: language === "fr" ? "Équipements" : "Equipment", href: "/categories/equipements" },
+    { name: language === "fr" ? "Supplément" : "Supplement", href: "/categories/supplement" },
+    { name: language === "fr" ? "Accessoires" : "Accessories", href: "/categories/accessoires" },
   ];
 
   const infoLinks = [
-    { name: "À propos de nous", href: "/a-propos" },
-    { name: "Contact", href: "/contact" },
+    { name: language === "fr" ? "À propos de nous" : "About Us", href: "/a-propos" },
+    { name: language === "fr" ? "Contact" : "Contact", href: "/contact" },
   ];
 
   const contactInfo = [
@@ -1257,8 +1276,9 @@ function Footer() {
                   IRONZ
                 </h3>
                 <p className="text-gray-300 mb-6 leading-relaxed">
-                  Votre partenaire pour tous vos besoins en équipement de
-                  fitness, suppléments et accessoires de sport.
+                  {language === "fr"
+                    ? "Votre partenaire pour tous vos besoins en équipement de fitness, suppléments et accessoires de sport."
+                    : "Your partner for all your fitness equipment, supplements, and sports accessories needs."}
                 </p>
                 <div className="flex space-x-3">
                   {socialLinks.map((social, index) => (
@@ -1283,7 +1303,7 @@ function Footer() {
             <div className="lg:col-span-2">
               <h3 className="font-heading text-lg font-bold mb-5 text-white flex items-center">
                 <span className="w-8 h-0.5 bg-gradient-to-r from-yellow-500 to-orange-500 mr-3"></span>
-                Catégories
+                {language === "fr" ? "Catégories" : "Categories"}
               </h3>
               <ul className="space-y-3">
                 {categories.map((category, index) => (
@@ -1308,7 +1328,7 @@ function Footer() {
             <div className="lg:col-span-2">
               <h3 className="font-heading text-lg font-bold mb-5 text-white flex items-center">
                 <span className="w-8 h-0.5 bg-gradient-to-r from-yellow-500 to-orange-500 mr-3"></span>
-                Informations
+                {language === "fr" ? "Informations" : "Information"}
               </h3>
               <ul className="space-y-3">
                 {infoLinks.map((link, index) => (
@@ -1333,7 +1353,7 @@ function Footer() {
             <div className="lg:col-span-4">
               <div className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-700/50 h-full">
                 <h3 className="font-heading text-lg font-bold mb-5 text-white">
-                  Contactez-nous
+                  {language === "fr" ? "Contactez-nous" : "Contact Us"}
                 </h3>
                 <address className="not-italic text-gray-300 space-y-4">
                   {contactInfo.map((item, index) => (
@@ -1364,14 +1384,14 @@ function Footer() {
           <div className="border-t border-gray-800/50 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-500 text-sm mb-4 md:mb-0">
-                &copy; {currentYear} IRONZ. Tous droits réservés.
+                &copy; {currentYear} IRONZ. {language === "fr" ? "Tous droits réservés." : "All rights reserved."}
               </p>
               <motion.a
                 href="#top"
                 className="flex items-center text-sm text-gray-400 hover:text-yellow-400 transition-colors"
                 whileHover={{ y: -2 }}
               >
-                Retour en haut
+                {language === "fr" ? "Retour en haut" : "Back to top"}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4 ml-1"
