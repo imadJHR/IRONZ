@@ -710,7 +710,7 @@ export default function Home() {
                 asChild
                 className="bg-yellow-400 hover:bg-yellow-500 text-black"
               >
-                <Link href="/produits">
+                <Link href="/product">
                   Voir tous les produits
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>

@@ -39,6 +39,15 @@ import a32 from "../public/a32.jpeg";
 import a33 from "../public/a33.jpeg";
 import a34 from "../public/a34.jpeg";
 import a35 from "../public/a35.jpeg";
+import a36 from "../public/a36.jpeg";
+import a37 from "../public/a37.jpeg";
+import a38 from "../public/a38.jpeg";
+import a39 from "../public/a39.jpeg";
+import a40 from "../public/a40.jpeg";
+import a41 from "../public/a41.jpeg";
+import a42 from "../public/a42.jpeg";
+import a43 from "../public/a43.jpeg";
+import a44 from "../public/a44.jpeg";
 export const categories = [
   {
     id: "1",
@@ -167,7 +176,7 @@ export const products = [
     discount: "",
     image: a5,
     gallery: [a5],
-    category: "équipements",
+    category: "accessoires",
     categoryId: "2",
     rating: 4.9,
     reviewCount: 89,
@@ -243,7 +252,7 @@ export const products = [
   },
   {
     id: "4",
-    name: "Chaussures de Boxe – Alliez Vitesse et Puissance sur le Ring !",
+    name: "Chaussures de Boxe – Alliez Vitesse et Puissance sur le Ring ",
     slug: "Chaussures-de-Boxe",
     description:
       "🔥 Passez à la vitesse supérieure avec ces chaussures de boxe conçues pour offrir légèreté, stabilité et confort à chaque mouvement. Elles vous permettent d’exploiter pleinement votre potentiel sur le ring.",
@@ -417,7 +426,7 @@ export const products = [
     taille: ["XL", "M", "S"],
     image: a23,
     gallery: a23,
-    category: "accessoires",
+    category: "équipements",
     categoryId: "4",
     subCategoryId: "4-2",
     rating: 4.8,
@@ -493,7 +502,7 @@ export const products = [
     discount: "",
     image: a25,
     gallery: [a25, a26, a27],
-    category: "équipement",
+    category: "équipements",
     categoryId: "1",
     rating: 4.7,
     reviewCount: 124,
@@ -584,7 +593,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: a31,
-    gallery: [a31, a32, a33,a34,a35],
+    gallery: [a31, a32, a33, a34, a35],
     category: "équipement",
     categoryId: "1",
     rating: 4.7,
@@ -613,9 +622,93 @@ export const products = [
     },
     relatedProducts: ["3", "7", "9"],
   },
+  {
+    id: "13",
+    name: "Capsules de Zinc Picolinate - Swanson",
+    slug: "Capsules-de-Zinc-Picolinate-Swanson",
+    description:
+      "Le picolinate de zinc est une forme hautement biodisponible de zinc, favorisant une absorption optimale par l'organisme. Ce complément soutient :",
+    features: [
+      "Le fonctionnement normal du système immunitaire.",
+      "La santé des cheveux, de la peau et des ongles.",
+      "Une fertilité et une reproduction normales.",
+      "La protection contre le stress oxydatif.",
+    ],
+    price: 279,
+    oldPrice: "",
+    discount: "",
+    image: a36,
+    gallery: [a36, a37],
+    category: "supplément",
+    categoryId: "1",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["3", "7", "9"],
+  },
+  {
+    id: "14",
+    name: "Glutamine Premium avec AstraGin",
+    slug: "Glutamine-Premium-avec-AstraGin",
+    description:
+      "Ce produit est idéal pour les sportifs, amateurs ou professionnels, qui cherchent à maximiser leur récupération et à protéger leur organisme contre l’usure physique liée à l’entraînement intensif.",
+    features: [
+      "Augmenter l’absorption des nutriments : Notamment la créatine, avec une efficacité démontrée de +33 %.",
+      "Optimiser la santé intestinale : Favorise un environnement intestinal sain, garantissant une meilleure utilisation des compléments alimentaires.",
+      "Convient parfaitement aux sportifs soumis à des contrôles antidopage, car la L-Glutamine et les acides aminés ne figurent pas sur la liste des substances interdites de l’AMA.",
+      "Sans stimulant, ce complément est adapté à une utilisation quotidienne et prolongée.",
+    ],
+    price: 486,
+    oldPrice: "",
+    discount: "",
+    image: a38,
+    gallery: [a38, a39],
+    category: "supplément",
+    categoryId: "1",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["3", "7", "9"],
+  },
+  {
+    id: "15",
+    name: "Shaker sportif avec porte-clé protéine Whey  – Plus qu'un simple shaker !",
+    slug: "Shaker-sportif",
+    description:
+      "Êtes-vous prêt à allier style et praticité pour vos besoins quotidiens d'entraînement ? Avec ce shaker sportif innovant, soyez toujours préparé à donner le meilleur de vous-même.",
+    features: [
+      "Design moderne et unique : Avec ses motifs audacieux, il ne s’agit pas seulement d’un outil, mais d’un accessoire qui reflète votre personnalité sportive.",
+      "Boîte de stockage intégrée : Transportez vos compléments alimentaires ou votre poudre de protéines en toute simplicité et utilisez-les quand vous en avez besoin.",
+      "Ergonomie parfaite : Couvercle étanche et poignée pratique pour un transport facile, idéal pour vos séances en extérieur ou en salle.",
+      "Capacité de 600 ml : Le shaker dispose d’un espace de 600 ml pour stocker des compléments ou autres liquides essentiels.",
+      "Qualité supérieure : Fabriqué en matériaux légers, résistants aux chocs et sûrs pour la santé, il est conçu pour durer.",
+    ],
+    price: 159,
+    oldPrice: "",
+    discount: "",
+    image: a40,
+    gallery: [a40, a41,a42,a43,a44],
+    category: "supplément",
+    categoryId: "1",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
+  },
 ];
 
-// Marques partenaires
 export const brands = [
   {
     id: "1",
@@ -649,7 +742,6 @@ export const brands = [
   },
 ];
 
-// Filtres disponibles
 export const filters = {
   price: {
     min: 0,
