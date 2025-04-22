@@ -48,16 +48,16 @@ const findProductBySlug = (slug) => {
   );
 };
 
-// Fonction pour obtenir la catégorie d'un produit
+
 const getCategoryInfo = (categoryId) => {
   return categories.find((cat) => cat.id === categoryId);
 };
 
-// Fonction optimisée pour obtenir des produits similaires
+
 const getRelatedProducts = (product, limit = 4) => {
   if (!product || !product.categoryId) return [];
 
-  // Filtrer pour obtenir les produits similaires
+  
   return products
     .filter((p) => {
       // Si le produit a des produits liés spécifiés, les utiliser en priorité
@@ -236,7 +236,7 @@ export default function ProductPage() {
             </Link>
             <ChevronRight className="h-4 w-4 mx-2" />
             <Link
-              href="/produits"
+              href="/product"
               className="hover:text-gray-900 dark:hover:text-white"
             >
               Produits

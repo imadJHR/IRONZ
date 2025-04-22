@@ -228,7 +228,9 @@ export default function ProductsPage() {
       <div className="container mx-auto px-4 py-28">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl text-yellow-500 font-bold mb-2">Tous nos produits</h1>
+          <h1 className="text-3xl text-yellow-500 font-bold mb-2">
+            Tous nos produits
+          </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-3xl">
             Découvrez notre gamme complète de produits pour l'aménagement et
             l'équipement de vos espaces sportifs et de loisirs.
@@ -738,7 +740,11 @@ export default function ProductsPage() {
                               )}
                             />
                           </Button>
-                          <Button size="sm" className="bg-yellow-500" onClick={() => addToCart(product)}>
+                          <Button
+                            size="sm"
+                            className="bg-yellow-500"
+                            onClick={() => addToCart(product)}
+                          >
                             <ShoppingCart className="h-4 w-4 mr-2" />
                             Ajouter
                           </Button>
@@ -750,7 +756,6 @@ export default function ProductsPage() {
               </motion.div>
             )}
 
-            {/* Results count */}
             {!isLoading && filteredProducts.length > 0 && (
               <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
                 Affichage de {filteredProducts.length} produit
