@@ -48,6 +48,12 @@ import a41 from "../public/a41.jpeg";
 import a42 from "../public/a42.jpeg";
 import a43 from "../public/a43.jpeg";
 import a44 from "../public/a44.jpeg";
+import a45 from "../public/a45.jpeg";
+import a46 from "../public/a46.jpeg";
+import a47 from "../public/a47.jpeg";
+import a48 from "../public/a48.jpeg";
+import a49 from "../public/a49.jpeg";
+import a50 from "../public/a50.jpeg";
 export const categories = [
   {
     id: "1",
@@ -680,6 +686,35 @@ export const products = [
   },
   {
     id: "15",
+    name: "RED REX 100% BEEF PROTEIN ISOLATE 8 lbs",
+    slug: "red-rex-beef",
+    description:
+      "RED REX Isolat de Protéine de Boeuf (BPI) est une source exceptionnelle de protéines pures et d'acides aminés, ce qui en fait l'un des meilleurs choix pour construire du muscle et améliorer les performances sportives. Avec une valeur nutritionnelle optimale et un goût agréable, RED REX BPI fournit une protéine complète pour une énergie durable et le développement musculaire. RED REX BPI offre l'une des plus hautes concentrations de protéines fonctionnelles parmi toutes les sources de protéines.CE FORMAT VOUS OFFRE 100 SERVINGS PAR POT Une portion de cet isolat de protéine de boeuf contient une incroyable quantité de 24 grammes de protéines, avec seulement 3 grammes de glucides et zéro matière grasse. Il délivre la puissance protéique de la viande de boeuf, concentrée à 350 % par rapport au steak !",
+    features: [
+      "Fournit des nutriments pour le développement de la masse musculaire maigre",
+      "Contribue à la perte de poids",
+      "Soutient le système immunitaire",
+      "Aide à maintenir des os, des cheveux, des ongles et une peau en bonne santé.",
+      "Big Ramy est l'un des plus grands bodybuilders de tous les temps, ayant remporté plusieurs fois le titre de Mr. Olympia. En créant Big Ramy Labs et la marque RED REX, il a réuni des produits nutritionnels qu'il estime propices à la croissance et au développement de quiconque est prêt à fournir des efforts en salle de sport et à suivre une bonne nutrition. RED REX est une marque sérieuse et déterminée !",
+    ],
+    price: 190,
+    oldPrice: "",
+    discount: "",
+    image: a45,
+    gallery: [a45, a46],
+    category: "supplément",
+    categoryId: "1",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
+  },
+  {
+    id: "16",
     name: "Shaker sportif avec porte-clé protéine Whey  – Plus qu'un simple shaker !",
     slug: "Shaker-sportif",
     description:
@@ -696,6 +731,34 @@ export const products = [
     discount: "",
     image: a40,
     gallery: [a40, a41,a42,a43,a44],
+    category: "supplément",
+    categoryId: "1",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
+  },
+  {
+    id: "17",
+    name: "RED REX 100% BEEF PROTEIN ISOLATE 4lbs",
+    slug: "RED-REX-BEEF-PROTEIN-ISOLATE-4lbs",
+    description:
+      "RED REX Isolat de Protéine de Boeuf (BPI) est une source exceptionnelle de protéines pures et d'acides aminés, ce qui en fait l'un des meilleurs choix pour construire du muscle et améliorer les performances sportives. Avec une valeur nutritionnelle optimale et un goût agréable, RED REX BPI fournit une protéine complète pour une énergie durable et le développement musculaire. RED REX BPI offre l'une des plus hautes concentrations de protéines fonctionnelles parmi toutes les sources de protéines.CE FORMAT VOUS OFFRE 60 SERVINGS PAR POT Une portion de cet isolat de protéine de boeuf contient une incroyable quantité de 24 grammes de protéines, avec seulement 3 grammes de glucides et zéro matière grasse. Il délivre la puissance protéique de la viande de boeuf, concentrée à 350 % par rapport au steak !RED REX BPI est également sans lactose et constitue une excellente alternative aux protéines de lactosérum ou de lait pour les personnes sensibles aux produits laitiers. BPI est également un excellent choix pour les adeptes du régime paléo, qui privilégie les aliments disponibles durant l'ère paléolithique, comme les viandes, les poissons, les fruits et les légumes.",
+    features: [
+      "Fournit des nutriments pour le développement de la masse musculaire maigre",
+      "Contribue à la perte de poids",
+      "Soutient le système immunitaire",
+      "Aide à maintenir des os, des cheveux, des ongles et une peau en bonne santé.",
+    ],
+    price: 159,
+    oldPrice: "",
+    discount: "",
+    image: a47,
+    gallery: [a47, a48,a49,a50],
     category: "supplément",
     categoryId: "1",
     rating: 4.7,

@@ -62,7 +62,7 @@ export default function CategoryPage() {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
-  // Find category by slug
+ 
   useEffect(() => {
     const categorySlug = slug.toLowerCase();
     const foundCategory = categories.find((cat) =>
@@ -73,7 +73,7 @@ export default function CategoryPage() {
       setCategory(foundCategory);
     }
 
-    // Simulate loading
+    
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -275,7 +275,6 @@ export default function CategoryPage() {
           </nav>
         </div>
 
-        {/* Header */}
         <div className="mb-8 py-16">
           <h1 className="text-3xl text-yellow-500 font-bold mb-2">
             {category.name}
@@ -285,10 +284,8 @@ export default function CategoryPage() {
           </p>
         </div>
 
-        {/* Filters and Search Bar */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div className="w-full md:w-auto flex items-center gap-2">
-            {/* Mobile Filter Button */}
             <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <SheetTrigger asChild>
                 <Button
@@ -343,7 +340,6 @@ export default function CategoryPage() {
               </SheetContent>
             </Sheet>
 
-            {/* Search Bar */}
             <div className="relative w-full md:w-[300px]">
               <Input
                 type="text"
@@ -365,7 +361,6 @@ export default function CategoryPage() {
           </div>
 
           <div className="w-full md:w-auto flex items-center gap-2">
-            {/* Sort Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="flex items-center gap-2">
@@ -391,7 +386,6 @@ export default function CategoryPage() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* View Mode Toggle */}
             <div className="hidden md:flex items-center border rounded-md">
               <button
                 onClick={() => setViewMode("grid")}
@@ -430,7 +424,6 @@ export default function CategoryPage() {
           </div>
         </div>
 
-        {/* Active Filters */}
         {(priceRange[0] > filters.price.min ||
           priceRange[1] < filters.price.max ||
           searchQuery) && (
@@ -475,7 +468,6 @@ export default function CategoryPage() {
         )}
 
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Desktop Filters Sidebar */}
           <div className="hidden md:block w-64 flex-shrink-0">
             <div className="sticky top-24 space-y-6">
               <div>
@@ -513,7 +505,6 @@ export default function CategoryPage() {
             </div>
           </div>
 
-          {/* Products Grid */}
           <div className="flex-1">
             {filteredProducts.length === 0 ? (
               <div className="text-center py-12">
@@ -722,7 +713,6 @@ export default function CategoryPage() {
               </motion.div>
             )}
 
-            {/* Results count */}
             {filteredProducts.length > 0 && (
               <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
                 Affichage de {filteredProducts.length} produit
