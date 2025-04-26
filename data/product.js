@@ -944,8 +944,8 @@ export const products = [
       "Bandages Pakka : Maintien ferme et protection des poignets pour des coups puissants."
     ],
     price: 639,
-    oldPrice: 66,
-    discount: 33,
+    oldPrice: null,
+    discount: null,
     image: a61,
     gallery: [a61, a62, a63, a64],
     category: "accessoires",
@@ -955,11 +955,12 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+    tags: ["kickboxing", "muay thai", "boxe", "équipement", "sports de combat"],
     colors: ["Bleu", "Rouge", "Jaune"],
     relatedProducts: ["16", "17"],
-    promotionType: "bundle"
+    promotionType: "bundle" // 🔥 Added this line!
   }
+  
   
 ];
 
