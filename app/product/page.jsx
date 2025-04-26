@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -99,16 +98,17 @@ export default function ProductsPage() {
     // Apply price filter
     result = result.filter(
       (product) =>
-        product.price >= priceRange[0] && product.price <= priceRange[1]
+        parseFloat(product.price) >= priceRange[0] &&
+        parseFloat(product.price) <= priceRange[1]
     );
 
     // Apply sorting
     switch (sortOption) {
       case "price-asc":
-        result.sort((a, b) => a.price - b.price);
+        result.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
         break;
       case "price-desc":
-        result.sort((a, b) => b.price - a.price);
+        result.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
         break;
       case "newest":
         result.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -123,6 +123,8 @@ export default function ProductsPage() {
       default:
         break;
     }
+
+    console.log("Filtered Products:", result); // Log the filtered products
 
     setFilteredProducts(result);
   }, [searchQuery, selectedCategories, priceRange, sortOption]);

@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import Head from 'next/head';
 import {
   ArrowRight,
   CheckCircle,
@@ -125,9 +124,6 @@ export default function Home() {
 
   return (
     <>
-     <Head>
-        <meta name="google-site-verification" content="google-site-verification=mmnLGFKUA1cxMD4YIA5KTgNvjjkSArNv3AHF8xbSnS8" />
-      </Head>
       <main className="min-h-screen py- bg-gray-50">
         <section className="relative  pt-16 pb-20 md:pt-24 md:pb-32 bg-black text-white overflow-hidden">
           <div className="absolute inset-0 z-0">

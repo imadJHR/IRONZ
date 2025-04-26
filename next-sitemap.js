@@ -1,6 +1,6 @@
-// next-sitemap.js
+
 module.exports = {
-    siteUrl: 'https://ironz.ma', // remplace par ton domaine réel
+    siteUrl: 'https://ironz.ma', 
     generateRobotsTxt: true,
     sitemapSize: 5000,
     changefreq: 'daily',

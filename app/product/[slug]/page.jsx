@@ -786,6 +786,7 @@ export default function ProductPage() {
                         >
                           politique de retour
                         </Link>
+
                         .
                       </p>
                     </div>
@@ -880,7 +881,7 @@ export default function ProductPage() {
         {/* Back to Products */}
         <div className="container mx-auto px-4 mt-12">
           <Button variant="outline" asChild className="flex items-center">
-            <Link href="/produits">
+            <Link href="/product">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Retour aux produits
             </Link>

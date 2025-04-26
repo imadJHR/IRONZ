@@ -54,6 +54,20 @@ import a47 from "../public/a47.jpeg";
 import a48 from "../public/a48.jpeg";
 import a49 from "../public/a49.jpeg";
 import a50 from "../public/a50.jpeg";
+import a51 from "../public/a51.jpeg";
+import a52 from "../public/a52.jpeg";
+import a53 from "../public/a53.jpeg";
+import a54 from "../public/a54.jpeg";
+import a55 from "../public/a55.jpeg";
+import a56 from "../public/a56.jpeg";
+import a57 from "../public/a57.jpeg";
+import a58 from "../public/a58.jpeg";
+import a59 from "../public/a59.jpeg";
+import a60 from "../public/a60.jpeg";
+import a61 from "../public/a61.jpeg";
+import a62 from "../public/a62.jpeg";
+import a63 from "../public/a63.jpeg"; 
+import a64 from "../public/a64.jpeg"; 
 export const categories = [
   {
     id: "1",
@@ -87,34 +101,6 @@ export const categories = [
     href: "/categories/accessoires",
     icon: "Package",
     description: "Accessoires indispensables pour le sport et le bien-être",
-    subCategories: [
-      {
-        id: "4-1",
-        name: "gants",
-        href: "/categories/accessoires/gants",
-        description: "Gants de protection pour tous types d'entraînements",
-      },
-      {
-        id: "4-2",
-        name: "ceintures",
-        href: "/categories/accessoires/ceintures",
-        description:
-          "Ceintures de maintien pour la musculation et l'haltérophilie",
-      },
-      {
-        id: "4-3",
-        name: "sacs",
-        href: "/categories/accessoires/sacs",
-        description: "Sacs de sport et de rangement pour vos équipements",
-      },
-      {
-        id: "4-4",
-        name: "autres",
-        href: "/categories/accessoires/autres",
-        description:
-          "Autres accessoires pour compléter votre équipement sportif",
-      },
-    ],
   },
 ];
 
@@ -145,15 +131,8 @@ export const products = [
     isFeatured: true,
     inStock: true,
     stockQuantity: 45,
-    sku: "BM-MF-001",
-    date: "2023-10-15",
     tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
-    dimensions: {
-      width: 120,
-      height: 50,
-      depth: 60,
-      weight: 25,
-    },
+
     colors: ["Gris", "Violet", "Vert", "Bleu"],
     materials: ["Acier", "Mousse haute densité", "Similicuir"],
     warranty: "2 ans",
@@ -190,24 +169,9 @@ export const products = [
     isFeatured: true,
     inStock: true,
     stockQuantity: 120,
-    sku: "TY-PR-002",
-    date: "2023-11-20",
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-    dimensions: {
-      width: 61,
-      height: 0.6,
-      depth: 183,
-      weight: 1.2,
-    },
     colors: ["Bleu", "Violet", "Vert", "Noir"],
     materials: ["TPE écologique", "Caoutchouc naturel"],
-    warranty: "1 an",
-    shipping: {
-      dimensions: "62 x 15 x 15 cm",
-      weight: 1.5,
-      method: "Express",
-      estimatedDelivery: "1-2 jours ouvrés",
-    },
     relatedProducts: ["8", "12"],
   },
   {
@@ -392,25 +356,7 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    stockQuantity: 120,
-    sku: "TY-PR-002",
-    date: "2023-11-20",
-    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-    dimensions: {
-      width: 61,
-      height: 0.6,
-      depth: 183,
-      weight: 1.2,
-    },
     colors: ["Bleu", "Violet", "Vert", "Noir"],
-    materials: ["TPE écologique", "Caoutchouc naturel"],
-    warranty: "1 an",
-    shipping: {
-      dimensions: "62 x 15 x 15 cm",
-      weight: 1.5,
-      method: "Express",
-      estimatedDelivery: "1-2 jours ouvrés",
-    },
     relatedProducts: ["8", "12"],
   },
   {
@@ -697,7 +643,7 @@ export const products = [
       "Aide à maintenir des os, des cheveux, des ongles et une peau en bonne santé.",
       "Big Ramy est l'un des plus grands bodybuilders de tous les temps, ayant remporté plusieurs fois le titre de Mr. Olympia. En créant Big Ramy Labs et la marque RED REX, il a réuni des produits nutritionnels qu'il estime propices à la croissance et au développement de quiconque est prêt à fournir des efforts en salle de sport et à suivre une bonne nutrition. RED REX est une marque sérieuse et déterminée !",
     ],
-    price: 190,
+    price: 1900,
     oldPrice: "",
     discount: "",
     image: a45,
@@ -730,7 +676,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: a40,
-    gallery: [a40, a41,a42,a43,a44],
+    gallery: [a40, a41, a42, a43, a44],
     category: "supplément",
     categoryId: "1",
     rating: 4.7,
@@ -754,11 +700,11 @@ export const products = [
       "Soutient le système immunitaire",
       "Aide à maintenir des os, des cheveux, des ongles et une peau en bonne santé.",
     ],
-    price: 159,
+    price: "1249",
     oldPrice: "",
     discount: "",
     image: a47,
-    gallery: [a47, a48,a49,a50],
+    gallery: [a47, a48, a49, a50],
     category: "supplément",
     categoryId: "1",
     rating: 4.7,
@@ -770,6 +716,251 @@ export const products = [
     tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
     relatedProducts: ["8", "6", "8"],
   },
+  {
+    id: "18",
+    name: "Disque de Poids en Caoutchouc de 20 kg – TopGym",
+    slug: "disque-de-Poids-20kg",
+    description:
+      "Ce disque de poids TopGym de 20 kg, arborant une couleur bleue distincte, est destiné aux athlètes avancés et aux passionnés de musculation. Fabriqué en caoutchouc durable, il est conçu pour résister aux séances d’entraînement les plus exigeantes tout en protégeant vos sols. Compatible avec les barres olympiques, il est idéal pour les exercices de levage de poids lourds et les routines de musculation avancées. Un équipement de qualité professionnelle pour vous aider à atteindre vos objectifs de performance.",
+    features: [
+      "cible également les mollets, les fessiers, l'aine, les ischio-jambiers, les fléchisseurs de la hanche, le bas du dos et l'extérieur des cuisses",
+      "Le seul équipement de presse à jambes assise dont vous avez réellement besoin est le suivant : une presse à jambes. Il existe cependant de nombreuses variantes de presse pour jambes assises que vous pouvez essayer et qui peuvent nécessiter différents types d'équipement de presse pour jambes assises ou même ne nécessiter aucun équipement du tout.",
+    ],
+    price: "1399",
+    oldPrice: null,
+    discount: 0,
+    image: a51,
+    gallery: [a51, a52],
+    category: "équipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 120,
+    sku: "TY-PR-002",
+    date: "2023-11-20",
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+    dimensions: {
+      width: 61,
+      height: 0.6,
+      depth: 183,
+      weight: 1.2,
+    },
+    colors: ["Bleu", "Violet", "Vert", "Noir"],
+    materials: ["TPE écologique", "Caoutchouc naturel"],
+    warranty: "1 an",
+    shipping: {
+      dimensions: "62 x 15 x 15 cm",
+      weight: 1.5,
+      method: "Express",
+      estimatedDelivery: "1-2 jours ouvrés",
+    },
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "19",
+    name: "Disque de Poids en Caoutchouc de 10 kg – TopGym",
+    slug: "disque-de-Poids-10kg",
+    description:
+      "Le disque de poids TopGym de 10 kg, avec son code couleur vert, est conçu pour un entraînement de niveau intermédiaire. Construit en caoutchouc de haute qualité, il amortit les chocs et réduit le bruit, préservant ainsi l’état de vos surfaces d’entraînement. Sa prise en main aisée permet une manipulation rapide et sécurisée, que ce soit pour un usage individuel ou sur une barre olympique. Idéal pour renforcer vos séances et intensifier votre entraînement.",
+    features: [
+      "cible également les mollets, les fessiers, l'aine, les ischio-jambiers, les fléchisseurs de la hanche, le bas du dos et l'extérieur des cuisses",
+      "Le seul équipement de presse à jambes assise dont vous avez réellement besoin est le suivant : une presse à jambes. Il existe cependant de nombreuses variantes de presse pour jambes assises que vous pouvez essayer et qui peuvent nécessiter différents types d'équipement de presse pour jambes assises ou même ne nécessiter aucun équipement du tout.",
+    ],
+    price: "699",
+    oldPrice: null,
+    discount: 0,
+    image: a53,
+    gallery: [a53],
+    category: "équipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+
+    colors: ["Bleu", "Gris", "Vert"],
+    warranty: "1 an",
+
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "20",
+    name: "Disque de Poids en Caoutchouc de 5 kg – TopGym",
+    slug: "disque-de-Poids-5kg",
+    description:
+      "Ce disque de poids TopGym de 5 kg est idéal pour les athlètes débutants et les amateurs de fitness souhaitant affiner leurs mouvements. Fabriqué en caoutchouc robuste, il offre une excellente durabilité tout en protégeant vos sols des impacts. Sa couleur noire le rend facilement reconnaissable dans la gamme TopGym. Parfait pour une utilisation sur barres olympiques ou pour des exercices de musculation au sol, ce disque vous accompagnera dans vos progrès.",
+    features: [],
+    price: 349,
+    oldPrice: null,
+    discount: 0,
+    image: a54,
+    gallery: [a54],
+    category: "équipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+
+    colors: ["Bleu", "Gris", "Vert"],
+
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "21",
+    name: "Poids Hexagonaux TopGym de 10 kg : Performance et Durabilité",
+    slug: "poids-hexagonaux-topgym-de-10kg",
+    description:
+      "Ces haltères hexagonaux TopGym de 10 kg sont conçus pour offrir une qualité supérieure et une robustesse adaptée aux séances d'entraînement intensives. Idéals pour les athlètes et passionnés de fitness, ils permettent d'ajouter un niveau de résistance supplémentaire pour le renforcement musculaire.",
+    features: [
+      "Poids de 10 kg : Un poids adapté pour les exercices de renforcement musculaire avancés et les séances d'endurance.Forme Hexagonale : Empêche les haltères de rouler, offrant une sécurité supplémentaire et facilitant le rangement",
+      "Poignée en Acier Texturée : Fournit une prise en main antidérapante, permettant une meilleure stabilité et un confort optimal pendant les exercices.",
+      "Revêtement en Caoutchouc : Protège le sol des impacts, réduit le bruit lors des entraînements et augmente la durabilité des haltères.",
+      "Les haltères de 10 kg sont parfaits pour une utilisation en salle de sport ou à domicile, permettant une variété d'exercices tels que les presses, les squats, et autres mouvements de musculation pour le développement de la force et de l'endurance.",
+    ],
+    price: 899,
+    oldPrice: null,
+    discount: 0,
+    image: a55,
+    gallery: [a55],
+    category: "équipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+
+    colors: ["Bleu", "Gris", "Vert"],
+
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "22",
+    name: "Poids Hexagonaux TopGym : Conception Robuste et Précision",
+    slug: "poids-hexagonaux-topgym-de-5kg",
+    description:
+      "Ces haltères hexagonaux de la marque TopGym, avec leur design solide et ergonomique, sont parfaits pour les entraînements en salle de sport ou à domicile. Disponibles ici en poids de 5 kg, ils offrent une prise en main confortable grâce à leur manche en acier texturé, ce qui permet une meilleure adhérence pendant les exercices.",
+    features: [
+      "Forme Hexagonale : Leur design hexagonal empêche les haltères de rouler au sol, ce qui est idéal pour la sécurité et le rangement.",
+      "Revêtement Résistant : Le revêtement extérieur en caoutchouc de haute qualité protège le sol des chocs et prolonge la durabilité des haltères.",
+      "Polyvalence : Adaptés pour une variété d'exercices, que ce soit pour le renforcement musculaire, les circuits de HIIT ou les séances de fitness général.",
+      "Ces haltères sont idéaux pour ceux qui recherchent des équipements durables, pratiques et efficaces pour leurs routines de musculation. Parfait pour les athlètes et amateurs de fitness qui souhaitent développer force et endurance.",
+    ],
+    price: 439,
+    oldPrice: null,
+    discount: 0,
+    image: a56,
+    gallery: [a56],
+    category: "équipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+
+    colors: ["Bleu", "Gris", "Vert"],
+
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "23",
+    name: "Brique de Yoga en Mousse - Un Soutien Parfait pour Votre Pratique",
+    slug: "brique-de-yoga-en-mousse-un-soutien-parfait-pour-votre-pratique",
+    description:
+      "La brique de yoga en mousse de Decathlon est un accessoire essentiel pour les pratiquants de yoga, qu'ils soient débutants ou avancés. Conçue pour offrir soutien et stabilité, elle permet d'améliorer l'alignement, d'approfondir les postures et de faciliter la pratique pour ceux qui manquent de souplesse.",
+    features: [
+      "Matériau : Mousse dense et légère, agréable au toucher et résistante aux déformations.",
+      "Utilisation : Parfaite pour soutenir les bras, les jambes ou les hanches dans diverses postures de yoga.",
+      "Avantages : Aide à maintenir l’équilibre et permet un alignement correct du corps, ce qui rend les postures plus accessibles aux débutants.",
+      "Entretien : Facile à nettoyer, il suffit de l'essuyer avec un chiffon humide.",
+    ],
+    price: 69,
+    oldPrice: null,
+    discount: 0,
+    image: a57,
+    gallery: [a57],
+    category: "équipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+
+    colors: ["Bleu", "Gris", "Vert"],
+
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "24",
+    name: "Gants de boxe Pakka – Qualité supérieure, fabriqués au Pakistan",
+    slug: "gants-de-boxe-pakka-qualite-superieure-fabriques-au-pakistan",
+    description:
+      "Les gants de boxe Pakka sont conçus pour ceux qui recherchent à la fois puissance et confort dans leurs entraînements. Fabriqués au Pakistan, pays réputé pour son savoir-faire en équipements de boxe, ces gants sont élaborés avec un rembourrage de haute qualité pour absorber les chocs et protéger vos mains à chaque frappe. Leur coupe ergonomique et leur fermeture en velcro assurent un ajustement parfait, vous offrant stabilité et sécurité pendant vos sessions de combat.",
+    features: [
+      "Robustes et durables, les gants Pakka sont conçus pour les amateurs comme pour les professionnels, et sont disponibles en plusieurs designs modernes pour un look à la hauteur de vos performances. Préparez-vous à dominer le ring avec des gants qui allient style, confort et qualité artisanale.",
+    ],
+    price: 159,
+    oldPrice: null,
+    discount: 0,
+    image: a58,
+    gallery: [a58, a59, a60],
+    category: "accessoires",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+
+    colors: ["Bleu", "Rouge", "Jaune"],
+
+    relatedProducts: ["16", "17"],
+  },
+  {
+    id: "25",
+    name: "🔥 Pack Complet d’Équipement Kickboxing & Boxe Thaïlandaise – Préparez-vous pour la Victoire ! 🔥",
+    slug: "pack-complet-dequipement-kickboxing-and-boxe-thailandaise",
+    description: "Amateurs de sports de combat, ne cherchez plus ! ...",
+    features: [
+      "Protège-tibias Pakka : Conçus pour un confort optimal et une protection maximale.",
+      "Gants de boxe Pakka : Solidité, durabilité et ajustement parfait pour tous les niveaux.",
+      "Corde à sauter professionnelle : Idéale pour l’échauffement et l’amélioration de l’endurance.",
+      "Short Kickboxing Venum : Style unique, parfait pour les mouvements de haute intensité.",
+      "Protège-dents Venum : Sécurité assurée pour vos dents, même lors des impacts les plus forts.",
+      "Bandages Pakka : Maintien ferme et protection des poignets pour des coups puissants."
+    ],
+    price: 639,
+    oldPrice: 66,
+    discount: 33,
+    image: a61,
+    gallery: [a61, a62, a63, a64],
+    category: "accessoires",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+    colors: ["Bleu", "Rouge", "Jaune"],
+    relatedProducts: ["16", "17"],
+    promotionType: "bundle"
+  }
+  
 ];
 
 export const brands = [
@@ -808,7 +999,7 @@ export const brands = [
 export const filters = {
   price: {
     min: 0,
-    max: 1000,
+    max: 30000,
     step: 10,
   },
   ratings: [
@@ -826,8 +1017,6 @@ export const filters = {
     { value: "discount", label: "Promotions" },
   ],
 };
-
-// Fonctions utilitaires pour les produits
 export const productUtils = {
   // Obtenir les produits en promotion
   getDiscountedProducts: () =>
