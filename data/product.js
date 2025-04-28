@@ -66,8 +66,22 @@ import a59 from "../public/a59.jpeg";
 import a60 from "../public/a60.jpeg";
 import a61 from "../public/a61.jpeg";
 import a62 from "../public/a62.jpeg";
-import a63 from "../public/a63.jpeg"; 
-import a64 from "../public/a64.jpeg"; 
+import a63 from "../public/a63.jpeg";
+import a64 from "../public/a64.jpeg";
+import a65 from "../public/a65.jpeg";
+import a66 from "../public/a66.jpeg";
+import a67 from "../public/a67.jpeg";
+import a68 from "../public/a68.jpeg";
+import a69 from "../public/a69.jpeg";
+import a70 from "../public/a70.jpeg";
+import a71 from "../public/a71.jpeg";
+import a72 from "../public/a72.jpeg";
+import a73 from "../public/a73.jpeg";
+import a74 from "../public/a74.jpeg";
+import a75 from "../public/a75.jpeg";
+import a76 from "../public/a76.jpeg";
+import a77 from "../public/a77.jpeg";
+
 export const categories = [
   {
     id: "1",
@@ -941,7 +955,7 @@ export const products = [
       "Corde à sauter professionnelle : Idéale pour l’échauffement et l’amélioration de l’endurance.",
       "Short Kickboxing Venum : Style unique, parfait pour les mouvements de haute intensité.",
       "Protège-dents Venum : Sécurité assurée pour vos dents, même lors des impacts les plus forts.",
-      "Bandages Pakka : Maintien ferme et protection des poignets pour des coups puissants."
+      "Bandages Pakka : Maintien ferme et protection des poignets pour des coups puissants.",
     ],
     price: 639,
     oldPrice: null,
@@ -949,19 +963,198 @@ export const products = [
     image: a61,
     gallery: [a61, a62, a63, a64],
     category: "accessoires",
-    categoryId: "2",
+    categoryId: "23",
     rating: 4.9,
     reviewCount: 89,
     isNew: false,
     isFeatured: true,
     inStock: true,
-    tags: ["kickboxing", "muay thai", "boxe", "équipement", "sports de combat"],
+    tags: ["pack", "bundle", "débutant", "ensemble"],
     colors: ["Bleu", "Rouge", "Jaune"],
     relatedProducts: ["16", "17"],
-    promotionType: "bundle" // 🔥 Added this line!
-  }
-  
-  
+    promotionType: "bundle",
+  },
+  {
+    id: "26",
+    name: "Slip de Posing (Coupe Droite)",
+    slug: "slip-de-posing-coupe-droite",
+    description:
+      "Améliorez votre condition physique avec cette corde à sauter de haute qualité, conçue en Inde pour les amateurs de fitness et les athlètes. Dotée de poignées ajustables et d’un câble durable",
+    features: [
+      "Boostez vos performances avec cette corde à sauter de haute qualité, disponible en bleu et rouge, conçue en Inde pour répondre aux besoins des sportifs exigeants. Avec ses poignées ajustables et son câble robuste, elle est idéale pour les exercices de cardio, d’endurance, et de renforcement musculaire.",
+      "Fabriquée en Inde Options de Couleurs : Disponible en bleu et en rouge, pour s’adapter à votre style personnel Matériau : Câble en plastique résistant pour une durabilité maximale",
+      "Roulement fluide : Assure des rotations rapides et sans accrocs, parfait pour les exercices de vitesse",
+      "Cette corde à sauter est idéale pour divers types d'entraînement, que ce soit pour la boxe, le cross-training, ou des exercices de fitness quotidiens.",
+    ],
+    price: 119,
+    oldPrice: null,
+    discount: null,
+    image: a68,
+    gallery: [a68, a69],
+    category: "home gym",
+    categoryId: "23",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["pack", "bundle", "débutant", "ensemble"],
+    colors: ["Bleu", "Rouge", "Jaune"],
+    relatedProducts: ["16", "17"],
+    promotionType: "bundle",
+  },
+  {
+    id: "27",
+    name: "Corde à Sauter de Vitesse - Fabriquée en Chine",
+    slug: "corde-a-sauter-de-vitesse-fabriquee-en-chine",
+    description:
+      "Améliorez vos performances sportives avec cette corde à sauter de vitesse, conçue pour l'entraînement intensif et le cardio. Légère et facile à manier, elle permet des rotations rapides, idéales pour le fitness, le cross-training et les exercices d'endurance. Son câble en acier recouvert de plastique assure durabilité et fluidité dans les mouvements.",
+    features: [
+      "Matériaux : Câble en acier avec revêtement plastique pour une utilisation durable",
+      "Poignées ergonomiques : Confortables et antidérapantes, parfaites pour un contrôle optimal",
+      "Facile à transporter et à entretenir.",
+      "RUsage polyvalent : Convient pour les athlètes de tous niveaux, pour des séances d’entraînement à la maison ou en salle de sport Que vous soyez débutant ou athlète confirmé, cette corde à sauter est un excellent choix pour brûler des calories et améliorer votre agilité !",
+    ],
+    price: 79,
+    oldPrice: "",
+    discount: "",
+    image: a70,
+    gallery: [a70],
+    category: "home gym",
+    categoryId: "1",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+
+    materials: ["Acier", "Mousse haute densité", "Similicuir"],
+    warranty: "2 ans",
+    shipping: {
+      dimensions: "130 x 70 x 20 cm",
+      weight: 28,
+      method: "Standard",
+      estimatedDelivery: "3-5 jours ouvrés",
+    },
+    relatedProducts: ["3", "7", "9"],
+  },
+  {
+    id: "28",
+    name: "Spray de Soulagement Rapide Deep Heat - Douleurs Musculaires et Articulaires",
+    slug: "spray-de-soulagement-rapide-deep-heat-douleurs-musculaires-et-articulaires",
+    description:
+      "Le spray Deep Heat est la solution idéale pour soulager rapidement les douleurs musculaires et articulaires. Formulé pour pénétrer en profondeur, il procure une sensation de chaleur apaisante, parfaite pour atténuer les douleurs rhumatismales, les douleurs musculaires, ainsi que les entorses et les foulures. Ce spray est facile à appliquer et offre un soulagement immédiat là où vous en avez le plus besoin.",
+    features: [
+      "Utilisation : Pour les douleurs musculaires, articulaires, entorses et courbatures.",
+      "Mode d'emploi : Vaporiser directement sur la zone douloureuse et masser légèrement",
+      "Avantages : Sensation de chaleur immédiate, soulagement rapide et ciblé",
+      "Format pratique : Spray de 150 ml, facile à emporter partout.",
+    ],
+    price: 149,
+    oldPrice: null,
+    discount: null,
+    image: a72,
+    gallery: [a72, a71],
+    category: "accessoires ",
+    categoryId: "23",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["pack", "bundle", "débutant", "ensemble"],
+    colors: ["Bleu", "Rouge", "Jaune"],
+    relatedProducts: ["16", "17"],
+    promotionType: "bundle",
+  },
+  {
+    id: "29",
+    name: "Roue avec roulement intégré DHZ S001 - Φ120x17 mm",
+    slug: "roue-avec-roulement-integre-dhz-s001-f120x17-mm",
+    description:
+      "Optimisez vos équipements de fitness avec cette roue de haute qualité, idéale pour les appareils de musculation nécessitant des pièces robustes et durables.",
+    features: [
+      "Modèle : DHZ S001",
+      "Diamètre : 120 mm",
+      "Largeur : 17 mm",
+      "Matériau : Nylon renforcé PA35 pour une grande résistance et une durabilité accrue",
+    ],
+    price: 397,
+    oldPrice: null,
+    discount: null,
+    image: a73,
+    gallery: [a73, a74],
+    category: "equipement",
+    categoryId: "23",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["pack", "bundle", "débutant", "ensemble"],
+    colors: ["Bleu", "Rouge", "Jaune"],
+    relatedProducts: ["16", "17"],
+    promotionType: "bundle",
+  },
+  {
+    id: "30",
+    name: "Crème Muscle Relax Clean Body - Relaxant Musculaire",
+    slug: "creme-muscle-relax-clean-body-relaxant-musculaire",
+    description:
+      "Cette crème de massage active, Muscle Relax de la marque Clean Body, est conçue pour soulager les douleurs musculaires et les tensions. Parfaite pour une application sur les zones sensibles après une séance d'entraînement ou une journée intense, elle favorise la relaxation et aide à détendre les muscles fatigués.",
+    features: [
+      "Volume : 100 ml (3.38 fl. oz)",
+      "Effet : Apaisant et relaxant",
+      "Utilisation : Application externe sur les zones musculaires douloureuses ou tendues",
+      "Idéale pour : Les sportifs, les personnes actives, ou ceux souffrant de douleurs musculaires",
+    ],
+    price: 129,
+    oldPrice: null,
+    discount: null,
+    image: a75,
+    gallery: [a73, a74],
+    category: "accessoires",
+    categoryId: "23",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["pack", "bundle", "débutant", "ensemble"],
+    colors: ["Bleu", "Rouge", "Jaune"],
+    relatedProducts: ["16", "17"],
+    promotionType: "bundle",
+  },
+  {
+    id: "31",
+    name: "Créatine Creapure 7Nutrition – 500g",
+    slug: "creatine-creapure-7nutrition-500g",
+    description: "Créatine Creapure 7Nutrition – 500g",
+    features: [
+      "Pureté et Qualité : Formulée avec 95% de créatine Creapure, garantie de pureté et qualité supérieure.",
+      "Contenance : 500g de créatine monohydrate pour booster vos performances sportives.",
+      "Augmente la puissance et l'endurance musculaire.",
+      "Favorise la récupération après l'entraînement.",
+      "Aide au développement de la masse musculaire.",
+    ],
+    price: 649,
+    oldPrice: "",
+    discount: "",
+    image: a77,
+    gallery: [a77],
+    category: "supplément",
+    categoryId: "31",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["3", "7", "9"],
+  },
 ];
 
 export const brands = [
