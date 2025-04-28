@@ -6,6 +6,8 @@ import img5 from "../public/matrix.png";
 import img6 from "../public/lifefitness.png";
 import img66 from "../public/panatta.png"
 import topgym from "../public/topgym.png"
+import teslaa from "../public/teslaa.png"
+import sup from "../public/14.png"
 import a1 from "../public/a1.jpeg";
 import a2 from "../public/a2.jpeg";
 import a3 from "../public/a3.jpeg";
@@ -1213,20 +1215,14 @@ export const brands = [
   },
   {
     id: "5",
-    name: "Redrexx",
-    logo: "/placeholder.svg?height=80&width=160&text=OrganizeIt",
+    name: "Tesla Nutrition",
+    logo: teslaa,
     description: "Solutions de rangement intelligentes",
   },
   {
     id: "6",
-    name: "Tesla Nutrition",
-    logo: "/placeholder.svg?height=80&width=160&text=OrganizeIt",
-    description: "Solutions de rangement intelligentes",
-  },
-  {
-    id: "7",
     name: "Superior14",
-    logo: "/placeholder.svg?height=80&width=160&text=OrganizeIt",
+    logo: sup,
     description: "Solutions de rangement intelligentes",
   },
 ];
