@@ -4,6 +4,8 @@ import img3 from "../public/complement.jpg";
 import img4 from "../public/accessoire.jpg";
 import img5 from "../public/matrix.png";
 import img6 from "../public/lifefitness.png";
+import img66 from "../public/panatta.png"
+import topgym from "../public/topgym.png"
 import a1 from "../public/a1.jpeg";
 import a2 from "../public/a2.jpeg";
 import a3 from "../public/a3.jpeg";
@@ -68,9 +70,6 @@ import a61 from "../public/a61.jpeg";
 import a62 from "../public/a62.jpeg";
 import a63 from "../public/a63.jpeg";
 import a64 from "../public/a64.jpeg";
-import a65 from "../public/a65.jpeg";
-import a66 from "../public/a66.jpeg";
-import a67 from "../public/a67.jpeg";
 import a68 from "../public/a68.jpeg";
 import a69 from "../public/a69.jpeg";
 import a70 from "../public/a70.jpeg";
@@ -79,9 +78,11 @@ import a72 from "../public/a72.jpeg";
 import a73 from "../public/a73.jpeg";
 import a74 from "../public/a74.jpeg";
 import a75 from "../public/a75.jpeg";
-import a76 from "../public/a76.jpeg";
 import a77 from "../public/a77.jpeg";
-
+import a78 from "../public/a78.jpeg";
+import a79 from "../public/a79.jpeg";
+import a80 from "../public/a80.jpeg";
+import a81 from "../public/a81.jpeg";
 export const categories = [
   {
     id: "1",
@@ -1155,6 +1156,34 @@ export const products = [
     tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
     relatedProducts: ["3", "7", "9"],
   },
+  {
+    id: "32",
+    name: "Vélo pour enfants de la marque Milayo",
+    slug: "velo-pour-enfants-de-la-marque-milayo-1",
+    description:
+      "Vélo pour enfants de la marque Milayo, idéal pour les jeunes aventuriers.",
+    features: [
+      "Roues d’appoint : aide à l’équilibre des débutants.",
+      "Panier avant : pratique pour transporter des petits objets.",
+      "Porte-bouteille : inclut une gourde pour l’hydratation.",
+      "Siège confortable : conçu pour une assise agréable.",
+      "Ce vélo combine sécurité et confort, parfait pour les enfants qui apprennent à rouler.",
+    ],
+    price: 699,
+    oldPrice: null,
+    discount: null,
+    image: a78,
+    gallery: [a78, a79, a80, a81],
+    category: "accessoires",
+    categoryId: "32",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    colors: ["Jaune", "Noir"],
+    relatedProducts: ["16", "17"],
+  },
 ];
 
 export const brands = [
@@ -1172,19 +1201,31 @@ export const brands = [
   },
   {
     id: "3",
-    name: "LuxLight",
-    logo: "/placeholder.svg?height=80&width=160&text=LuxLight",
+    name: "Panatta",
+    logo: img66,
     description: "Solutions d'éclairage innovantes",
   },
   {
     id: "4",
-    name: "ComfortZone",
-    logo: "/placeholder.svg?height=80&width=160&text=ComfortZone",
+    name: "Topgym",
+    logo: topgym,
     description: "Textiles et accessoires de confort",
   },
   {
     id: "5",
-    name: "OrganizeIt",
+    name: "Redrexx",
+    logo: "/placeholder.svg?height=80&width=160&text=OrganizeIt",
+    description: "Solutions de rangement intelligentes",
+  },
+  {
+    id: "6",
+    name: "Tesla Nutrition",
+    logo: "/placeholder.svg?height=80&width=160&text=OrganizeIt",
+    description: "Solutions de rangement intelligentes",
+  },
+  {
+    id: "7",
+    name: "Superior14",
     logo: "/placeholder.svg?height=80&width=160&text=OrganizeIt",
     description: "Solutions de rangement intelligentes",
   },

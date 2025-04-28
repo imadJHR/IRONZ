@@ -48,16 +48,13 @@ const findProductBySlug = (slug) => {
   );
 };
 
-
 const getCategoryInfo = (categoryId) => {
   return categories.find((cat) => cat.id === categoryId);
 };
 
-
 const getRelatedProducts = (product, limit = 4) => {
   if (!product || !product.categoryId) return [];
 
-  
   return products
     .filter((p) => {
       // Si le produit a des produits liés spécifiés, les utiliser en priorité
@@ -179,7 +176,7 @@ export default function ProductPage() {
           <div className="animate-pulse">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
-                <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                <div className="h-96 bg- dark:bg-gray-700 rounded-lg"></div>
                 <div className="flex space-x-2">
                   {[...Array(4)].map((_, i) => (
                     <div
@@ -217,7 +214,6 @@ export default function ProductPage() {
             <Link href="/produits">Voir tous les produits</Link>
           </Button>
         </div>
-        
       </>
     );
   }
@@ -263,9 +259,8 @@ export default function ProductPage() {
         <div className="container mx-auto px-4">
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
-              {/* Product Images */}
               <div className="space-y-4">
-                <div className="relative h-96 bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
+                <div className="relative h-96 bg-white  dark:bg-gray-700 rounded-lg overflow-hidden">
                   <Image
                     src={
                       product.gallery?.[selectedImage] ||
@@ -274,7 +269,7 @@ export default function ProductPage() {
                     }
                     alt={product.name}
                     fill
-                    className="object-contain"
+                    className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority
                   />
@@ -508,52 +503,12 @@ export default function ProductPage() {
                     </Alert>
                   )}
                 </div>
-
-                {/* Shipping & Returns */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                  <div className="flex items-start">
-                    <Truck className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-3 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900 dark:text-white">
-                        Livraison
-                      </h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Livraison estimée:{" "}
-                        {product.shipping?.estimatedDelivery ||
-                          "2-5 jours ouvrés"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <ShieldCheck className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-3 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900 dark:text-white">
-                        Garantie
-                      </h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {product.warranty || "Garantie 1 an"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
             {/* Product Details Tabs */}
             <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-8">
               <Tabs defaultValue="details">
-                <TabsList className="w-full justify-start border-b border-gray-200 dark:border-gray-700 pb-px mb-6">
-                  <TabsTrigger value="details" className="text-sm">
-                    Détails du produit
-                  </TabsTrigger>
-                  <TabsTrigger value="specs" className="text-sm">
-                    Spécifications
-                  </TabsTrigger>
-                  <TabsTrigger value="shipping" className="text-sm">
-                    Livraison & Retours
-                  </TabsTrigger>
-                </TabsList>
-
                 <TabsContent value="details" className="space-y-4">
                   <p className="text-gray-600 dark:text-gray-300">
                     {product.description}
@@ -584,70 +539,6 @@ export default function ProductPage() {
                       Spécifications techniques
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* Dimensions */}
-                      {product.dimensions && (
-                        <div className="space-y-2">
-                          <h4 className="font-medium text-gray-900 dark:text-white">
-                            Dimensions
-                          </h4>
-                          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-2">
-                            <div className="flex justify-between">
-                              <span className="text-gray-500 dark:text-gray-400">
-                                Largeur
-                              </span>
-                              <span className="text-gray-900 dark:text-white">
-                                {product.dimensions.width} cm
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-500 dark:text-gray-400">
-                                Hauteur
-                              </span>
-                              <span className="text-gray-900 dark:text-white">
-                                {product.dimensions.height} cm
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-500 dark:text-gray-400">
-                                Profondeur
-                              </span>
-                              <span className="text-gray-900 dark:text-white">
-                                {product.dimensions.depth} cm
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-500 dark:text-gray-400">
-                                Poids
-                              </span>
-                              <span className="text-gray-900 dark:text-white">
-                                {product.dimensions.weight} kg
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Materials */}
-                      {product.materials && product.materials.length > 0 && (
-                        <div className="space-y-2">
-                          <h4 className="font-medium text-gray-900 dark:text-white">
-                            Matériaux
-                          </h4>
-                          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                            <ul className="space-y-1">
-                              {product.materials.map((material, index) => (
-                                <li
-                                  key={index}
-                                  className="text-gray-600 dark:text-gray-300"
-                                >
-                                  {material}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      )}
-
                       {/* Colors */}
                       {product.colors && product.colors.length > 0 && (
                         <div className="space-y-2">
@@ -669,126 +560,6 @@ export default function ProductPage() {
                           </div>
                         </div>
                       )}
-
-                      {/* SKU & Stock */}
-                      <div className="space-y-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white">
-                          Informations produit
-                        </h4>
-                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">
-                              Référence (SKU)
-                            </span>
-                            <span className="text-gray-900 dark:text-white">
-                              {product.sku || "N/A"}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">
-                              Disponibilité
-                            </span>
-                            <span
-                              className={cn(
-                                "font-medium",
-                                product.inStock
-                                  ? "text-green-600 dark:text-green-400"
-                                  : "text-red-600 dark:text-red-400"
-                              )}
-                            >
-                              {product.inStock
-                                ? `En stock (${
-                                    product.stockQuantity || "Disponible"
-                                  })`
-                                : "Rupture de stock"}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-500 dark:text-gray-400">
-                              Date d'ajout
-                            </span>
-                            <span className="text-gray-900 dark:text-white">
-                              {new Date(product.date).toLocaleDateString(
-                                "fr-FR",
-                                {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                }
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="shipping" className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                      Livraison
-                    </h3>
-                    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-4">
-                      <div className="flex items-start">
-                        <Truck className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
-                        <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white">
-                            Délais de livraison
-                          </h4>
-                          <p className="text-gray-600 dark:text-gray-300 mt-1">
-                            Livraison estimée:{" "}
-                            {product.shipping?.estimatedDelivery ||
-                              "2-5 jours ouvrés"}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start">
-                        <Info className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0 mt-0.5" />
-                        <div>
-                          <h4 className="font-medium text-gray-900 dark:text-white">
-                            Informations de livraison
-                          </h4>
-                          <p className="text-gray-600 dark:text-gray-300 mt-1">
-                            Dimensions du colis:{" "}
-                            {product.shipping?.dimensions || "N/A"}
-                          </p>
-                          <p className="text-gray-600 dark:text-gray-300">
-                            Poids du colis: {product.shipping?.weight || "N/A"}{" "}
-                            kg
-                          </p>
-                          <p className="text-gray-600 dark:text-gray-300">
-                            Méthode d'expédition:{" "}
-                            {product.shipping?.method || "Standard"}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                      Politique de retour
-                    </h3>
-                    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                      <p className="text-gray-600 dark:text-gray-300">
-                        Vous disposez de 30 jours à compter de la réception de
-                        votre commande pour retourner un article. L'article doit
-                        être dans son état d'origine, non utilisé et dans son
-                        emballage d'origine.
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-300 mt-2">
-                        Pour plus d'informations, veuillez consulter notre{" "}
-                        <Link
-                          href="/retours"
-                          className="text-yellow-600 dark:text-yellow-400 hover:underline"
-                        >
-                          politique de retour
-                        </Link>
-
-                        .
-                      </p>
                     </div>
                   </div>
                 </TabsContent>
@@ -797,7 +568,6 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div className="container mx-auto px-4 mt-16">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
