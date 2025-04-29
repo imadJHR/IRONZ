@@ -37,6 +37,8 @@ import { useFavorites } from "@/context/favorites-context";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { categories } from "@/data/product";
+import Head from "next/head";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -49,6 +51,18 @@ export default function ClientLayout({ children }) {
 
   return (
     <html lang={language} suppressHydrationWarning>
+      <Head>
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-8V0884TV40"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {` window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8V0884TV40');`}
+        </Script>
+      </Head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <CartProvider>
