@@ -4,10 +4,10 @@ import img3 from "../public/complement.jpg";
 import img4 from "../public/accessoire.jpg";
 import img5 from "../public/matrix.png";
 import img6 from "../public/lifefitness.png";
-import img66 from "../public/panatta.png"
-import topgym from "../public/topgym.png"
-import teslaa from "../public/teslaa.png"
-import sup from "../public/14.png"
+import img66 from "../public/panatta.png";
+import topgym from "../public/topgym.png";
+import teslaa from "../public/teslaa.png";
+import sup from "../public/14.png";
 import a1 from "../public/a1.jpeg";
 import a2 from "../public/a2.jpeg";
 import a3 from "../public/a3.jpeg";
@@ -85,6 +85,8 @@ import a78 from "../public/a78.jpeg";
 import a79 from "../public/a79.jpeg";
 import a80 from "../public/a80.jpeg";
 import a81 from "../public/a81.jpeg";
+import adidas from "../public/adidas.png";
+import red from "../public/red.png";
 export const categories = [
   {
     id: "1",
@@ -1174,37 +1176,49 @@ export const brands = [
     id: "1",
     name: "MATRIX",
     logo: img5,
-    description: "Équipements de fitness haut de gamme",
+    description: "",
   },
   {
     id: "2",
     name: "LIFE FITNESS",
     logo: img6,
-    description: "Produits écologiques pour le fitness",
+    description: "",
   },
   {
     id: "3",
     name: "Panatta",
     logo: img66,
-    description: "Solutions d'éclairage innovantes",
+    description: "",
   },
   {
     id: "4",
     name: "Topgym",
     logo: topgym,
-    description: "Textiles et accessoires de confort",
+    description: "",
   },
   {
     id: "5",
     name: "Tesla Nutrition",
     logo: teslaa,
-    description: "Solutions de rangement intelligentes",
+    description: "",
   },
   {
     id: "6",
     name: "Superior14",
     logo: sup,
-    description: "Solutions de rangement intelligentes",
+    description: "",
+  },
+  {
+    id: "7",
+    name: "Adidas",
+    logo: adidas,
+    description: "",
+  },
+  {
+    id: "8",
+    name: "Red Rex",
+    logo: red,
+    description: "",
   },
 ];
 

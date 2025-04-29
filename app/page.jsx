@@ -770,7 +770,7 @@ export default function Home() {
         <section className="py-16 md:py-20 bg-gray-100">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+              <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-4">
                 Nos Marques Partenaires
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
@@ -779,7 +779,7 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Marquee component for brands */}
+           
             <BrandsMarquee brands={brands} />
           </div>
         </section>
@@ -989,7 +989,7 @@ export default function Home() {
                   Restez informé
                 </span>
               </div>
-              <h2 className="text-2xl text-yellow-400 sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6  dark:text-white">
+              <h2 className="text-2xl  sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6  dark:text-white">
                 Abonnez-vous à notre newsletter
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">

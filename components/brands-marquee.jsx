@@ -13,7 +13,7 @@ export default function BrandsMarquee({ brands }) {
             className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center justify-center text-center min-w-[200px]"
           >
             <div className="relative h-16 w-16 mb-4">
-              <Image src={brand.logo || "/placeholder.svg"} alt={brand.name} fill className="object-contain" />
+              <Image src={brand.logo || "/placeholder.svg"} alt={brand.name} fill className="object-cover" />
             </div>
             <h3 className="font-heading font-bold text-lg mb-1">{brand.name}</h3>
             <p className="text-xs text-gray-500 line-clamp-2">{brand.description}</p>
