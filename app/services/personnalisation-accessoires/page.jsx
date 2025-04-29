@@ -223,12 +223,12 @@ export default function PersonnalisationAccessoiresPage() {
         />
       </Head>
 
-      <main className="min-h-screen bg-gradient-to-b bg-white text-black overflow-x-hidden">
+      <main className="min-h-screen bg-black text-white overflow-x-hidden">
         {/* Hero Section with Video Background */}
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
           {/* Background Video with Gradient Overlay */}
           <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80 z-10" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-black z-10" />
             <video
               autoPlay
               muted
@@ -241,18 +241,6 @@ export default function PersonnalisationAccessoiresPage() {
                 type="video/mp4"
               />
             </video>
-          </div>
-
-          {/* Animated Particles Background */}
-          <div className="absolute inset-0 z-5">
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-              {[...Array(20)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute rounded-full bg-yellow-400/20"
-                ></div>
-              ))}
-            </div>
           </div>
 
           {/* Hero Content */}
@@ -652,7 +640,7 @@ export default function PersonnalisationAccessoiresPage() {
                           {index + 1}
                         </div>
                         <div
-                          className="hidden md:block absolute top-1/2 -translate-y-1/2 w-12 h-0.5 bg-yellow-400/50 
+                          className="hidden md:block absolute top-1/2 -translate-y-1/2 w-12 h-0.5 bg-yellow-400/50
                           ${index % 2 === 0 ? 'right-full mr-4' : 'left-full ml-4'}"
                         ></div>
                       </div>
@@ -962,9 +950,7 @@ export default function PersonnalisationAccessoiresPage() {
                         </div>
                         <div className="ml-4">
                           <h4 className="text-lg font-medium">Téléphone</h4>
-                          <p className="mt-1 text-gray-300">
-                            +33 1 23 45 67 89
-                          </p>
+                          <p className="mt-1 text-gray-300">+212 674-114446</p>
                         </div>
                       </div>
 

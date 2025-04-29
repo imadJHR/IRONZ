@@ -22,10 +22,13 @@ import logo from "@/public/logo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import Head from "next/head";
+
 export default function AboutPage() {
   const controls = useAnimation();
   const storyRef = useRef(null);
   const storyInView = useInView(storyRef, { once: true, amount: 0.3 });
+
   useEffect(() => {
     if (storyInView) {
       controls.start("visible");
@@ -45,26 +48,25 @@ export default function AboutPage() {
       founders: [
         {
           "@type": "Person",
-          name: "Alexandre Martin",
+          name: "RIDA MAGHRABI",
         },
       ],
       address: {
         "@type": "PostalAddress",
-        streetAddress: "123 Avenue des Champs-Élysées",
+        streetAddress: "",
         addressLocality: "Agadir",
-        postalCode: "75008",
-        addressCountry: "FR",
+        postalCode: "",
+        addressCountry: "MAR",
       },
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+33 1 23 45 67 89",
+        telephone: "+212 674-114446",
         contactType: "customer service",
       },
       sameAs: [
-        "https://www.facebook.com/ironzpro",
-        "https://www.instagram.com/ironzpro",
-        "https://www.youtube.com/ironzpro",
-        "https://www.linkedin.com/company/ironzpro",
+        "https://www.instagram.com/ironz_official/",
+        "https://www.instagram.com/ironz_equipements/",
+        "https://www.youtube.com/@muscleironz21",
       ],
     });
     document.head.appendChild(script);
@@ -191,6 +193,15 @@ export default function AboutPage() {
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
+      <Head>
+        <title>
+          À Propos de IRONZ PRO - Équipement de Fitness Professionnel
+        </title>
+        <meta
+          name="description"
+          content="Découvrez l'histoire, les valeurs et l'engagement d'IRONZ PRO à fournir les meilleurs équipements et services de fitness."
+        />
+      </Head>
       {/* Hero Section */}
       <section
         className="relative pt-20 sm:pt-24 md:pt-32 pb-16 sm:pb-20 md:pb-28 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden"
@@ -256,10 +267,10 @@ export default function AboutPage() {
                 Notre Histoire
               </h2>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 leading-relaxed">
-                Fondée en 2019 par RIDA MAGHRABI , ancien athlète
-                professionnel, IRONZ PRO est née d'une passion pour le fitness
-                et d'une vision : rendre accessible à tous un équipement de
-                qualité professionnelle.
+                Fondée en 2019 par RIDA MAGHRABI , ancien athlète professionnel,
+                IRONZ PRO est née d'une passion pour le fitness et d'une vision
+                : rendre accessible à tous un équipement de qualité
+                professionnelle.
               </p>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
                 Ce qui a commencé comme une petite boutique à Agadir s'est
@@ -392,8 +403,8 @@ export default function AboutPage() {
       </section>
 
       {/*
-   
-      <section
+
+    <section
         className="py-16 sm:py-20 md:py-32"
         aria-labelledby="team-heading"
       >
@@ -479,7 +490,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    
+
     */}
 
       {/* Contact Section */}
@@ -667,9 +678,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      
-
-    
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <nav aria-label="Fil d'Ariane" className="text-sm">
           <ol className="flex flex-wrap items-center space-x-1 text-gray-500 dark:text-gray-400">
