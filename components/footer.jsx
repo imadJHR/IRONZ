@@ -83,7 +83,7 @@ export default function Footer() {
         </svg>
       </div>
 
-      <div className="bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 pt-24 pb-12 relative">
+      <div className="bg-gradient-to-br pt-24 pb-12 relative">
         {/* Decorative Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
           <div className="absolute -top-24 -left-24 w-64 h-64 rounded-full bg-yellow-500 blur-3xl"></div>

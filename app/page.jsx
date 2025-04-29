@@ -12,6 +12,7 @@ import {
   Star,
   ShoppingCart,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -189,58 +190,60 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                Nos Catégories
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Explorez notre large sélection de produits pour tous vos besoins
-                en fitness et arts martiaux
-              </p>
-            </div>
+        <section className="py-16 md:py-24 bg-white text-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-yellow-400">
+            Nos Catégories
+          </h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Explorez notre large sélection de produits pour tous vos besoins
+            en fitness et arts martiaux
+          </p>
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categories.map((category, index) => (
-                <div
-                  key={category.id}
-                  className="group relative rounded-xl overflow-hidden h-60 bg-gray-100 dark:bg-gray-800 hover:shadow-md transition-shadow"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.map((category, index) => (
+            <motion.div
+              key={category.id}
+              className="group relative rounded-xl overflow-hidden h-60 bg-gray-800 hover:shadow-lg transition-shadow"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
+              <Image
+                src={category.image}
+                alt={category.name}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                priority={index < 2}
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                <h3 className="text-white font-medium text-xl mb-2">
+                  {category.name}
+                </h3>
+                <p className="text-gray-300 text-sm mb-4 line-clamp-2">
+                  {category.description ||
+                    "Découvrez notre sélection de produits"}
+                </p>
+                <Link
+                  href={category.href}
+                  className="inline-flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-medium"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    priority={index < 2}
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                    <h3 className="text-white font-medium text-xl mb-2">
-                      {category.name}
-                    </h3>
-                    <p className="text-white/80 text-sm mb-4 line-clamp-2">
-                      {category.description ||
-                        "Découvrez notre sélection de produits"}
-                    </p>
-                    <Link
-                      href={category.href}
-                      className="inline-flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-medium"
-                    >
-                      Découvrir
-                      <ChevronRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+                  Découvrir
+                  <ChevronRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
 
         <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+              <h2 className="text-3xl md:text-4xl text-yellow-400 font-heading font-bold mb-4">
                 Nos Produits
               </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -719,7 +722,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24 bg-gray-900 text-white">
+        <section className="py-16 md:py-24 bg-black text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden">
