@@ -1,6 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react";
+import img1 from "../../../public/dalles.jpeg"
+import img2 from "../../../public/pvc.png"
+import img3 from "../../../public/poly.png"
+import img4 from "../../../public/accou.jpeg"
+import img5 from "../../../public/mir.jpeg"
+import img6 from "../../../public/plan.png"
 
 import { Button } from "@/components/ui/button";
 import ServiceContactForm from "@/components/service-contact-form";
@@ -59,7 +65,7 @@ export default function RevetementSolMurPage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
               Des revêtements adaptés à chaque activité
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -219,7 +225,7 @@ export default function RevetementSolMurPage() {
       <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
               Nos types de revêtements
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -232,7 +238,7 @@ export default function RevetementSolMurPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
               <div className="relative h-48">
                 <Image
-                  src="/placeholder.svg?height=400&width=600&text=Dalles+caoutchouc"
+                  src={img1}
                   alt="Dalles caoutchouc"
                   fill
                   className="object-cover"
@@ -273,7 +279,7 @@ export default function RevetementSolMurPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
               <div className="relative h-48">
                 <Image
-                  src="/placeholder.svg?height=400&width=600&text=PVC+sportif"
+                  src={img2}
                   alt="PVC sportif"
                   fill
                   className="object-cover"
@@ -313,7 +319,7 @@ export default function RevetementSolMurPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
               <div className="relative h-48">
                 <Image
-                  src="/placeholder.svg?height=400&width=600&text=Résine+polyuréthane"
+                  src={img3}
                   alt="Résine polyuréthane"
                   fill
                   className="object-cover"
@@ -354,7 +360,7 @@ export default function RevetementSolMurPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
               <div className="relative h-48">
                 <Image
-                  src="/placeholder.svg?height=400&width=600&text=Panneaux+acoustiques"
+                  src={img4}
                   alt="Panneaux acoustiques"
                   fill
                   className="object-cover"
@@ -394,7 +400,7 @@ export default function RevetementSolMurPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
               <div className="relative h-48">
                 <Image
-                  src="/placeholder.svg?height=400&width=600&text=Miroirs+de+sécurité"
+                  src={img5}
                   alt="Miroirs de sécurité"
                   fill
                   className="object-cover"
@@ -434,7 +440,7 @@ export default function RevetementSolMurPage() {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
               <div className="relative h-48">
                 <Image
-                  src="/placeholder.svg?height=400&width=600&text=Protections+murales"
+                  src={img6}
                   alt="Protections murales"
                   fill
                   className="object-cover"
@@ -474,8 +480,8 @@ export default function RevetementSolMurPage() {
         </div>
       </section>
 
-      {/* Portfolio Section */}
-      <section className="py-16 md:py-24">
+     
+     {/* <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
@@ -514,7 +520,7 @@ export default function RevetementSolMurPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Benefits Section */}
       <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">

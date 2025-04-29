@@ -315,7 +315,7 @@ export default function EspaceEnfanceClientPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <FadeInWhenVisible>
             <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
                 Des espaces fitness{" "}
                 <span className="gradient-text">adaptés aux enfants</span>
               </h2>
@@ -441,7 +441,7 @@ export default function EspaceEnfanceClientPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <FadeInWhenVisible>
             <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
                 Nos <span className="gradient-text">solutions</span> pour les
                 enfants
               </h2>
@@ -515,29 +515,7 @@ export default function EspaceEnfanceClientPage() {
         </div>
       </section>
 
-      {/* Marquee Section */}
-      <section className="py-12 bg-yellow-400 text-black overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-          <h2 className="text-center text-3xl md:text-4xl font-heading font-bold">
-            Nos partenaires font confiance à IRONZ PRO
-          </h2>
-        </div>
-        <Marquee speed={40}>
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-            <MarqueeItem key={item} className="mx-8">
-              <div className="bg-white rounded-lg shadow-md p-4 w-40 h-20 flex items-center justify-center">
-                <Image
-                  src={`/placeholder.svg?height=80&width=160&text=Partenaire+${item}`}
-                  alt={`Partenaire ${item}`}
-                  width={160}
-                  height={80}
-                  className="max-h-full max-w-full object-contain"
-                />
-              </div>
-            </MarqueeItem>
-          ))}
-        </Marquee>
-      </section>
+      
 
       {/* Benefits Section */}
       <section className="py-16 md:py-24 bg-white dark:bg-gray-950 relative overflow-hidden">
@@ -546,7 +524,7 @@ export default function EspaceEnfanceClientPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <FadeInWhenVisible>
             <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl text-yellow-400 font-heading font-bold mb-6">
                 Les <span className="gradient-text">bienfaits</span> pour les
                 enfants
               </h2>

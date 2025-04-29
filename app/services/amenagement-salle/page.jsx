@@ -51,12 +51,12 @@ export default function AmenagementSallePage() {
                   Demander un devis
                 </Button>
               </Link>
-              <Button
+             {/* <Button
                 variant="outline"
                 className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 font-medium text-lg px-8 py-6"
               >
                 Découvrir nos réalisations
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function AmenagementSallePage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
               Créez l'espace fitness idéal
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -215,11 +215,11 @@ export default function AmenagementSallePage() {
         </div>
       </section>
 
-      {/* Portfolio Section */}
-      <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
+     
+     {/* <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
               Nos réalisations
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -260,13 +260,13 @@ export default function AmenagementSallePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Process Section */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
               Notre processus
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
