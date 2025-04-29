@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
+import Lottie from "lottie-react";
 import Link from "next/link";
+import stayInformedAnimation from "../animations/Animation - 1745942121504.json"; 
 import {
   ArrowRight,
   CheckCircle,
@@ -11,6 +13,7 @@ import {
   ChevronRight,
   Star,
   ShoppingCart,
+  Badge,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -30,41 +33,7 @@ import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 
-const blogPosts = [
-  {
-    id: "1",
-    slug: "optimiser-entrainement-musculation",
-    title: "Comment optimiser votre entraînement de musculation",
-    excerpt:
-      "Découvrez les meilleures techniques pour maximiser vos résultats en musculation.",
-    image: "/placeholder.svg?height=400&width=600&text=Blog+Post+1",
-    category: "Musculation",
-    author: "Thomas Dubois",
-    date: "2023-11-15",
-  },
-  {
-    id: "2",
-    slug: "nutrition-sportive-guide",
-    title: "Guide complet de la nutrition sportive",
-    excerpt:
-      "Tout ce que vous devez savoir sur l'alimentation pour améliorer vos performances.",
-    image: "/placeholder.svg?height=400&width=600&text=Blog+Post+2",
-    category: "Nutrition",
-    author: "Sophie Martin",
-    date: "2023-10-28",
-  },
-  {
-    id: "3",
-    slug: "equipement-essentiel-home-gym",
-    title: "L'équipement essentiel pour votre home gym",
-    excerpt:
-      "Les indispensables pour créer un espace d'entraînement efficace chez vous.",
-    image: "/placeholder.svg?height=400&width=600&text=Blog+Post+3",
-    category: "Équipement",
-    author: "Marc Leroy",
-    date: "2023-10-10",
-  },
-];
+
 
 const faqs = [
   {
@@ -191,54 +160,54 @@ export default function Home() {
         </section>
 
         <section className="py-16 md:py-24 bg-white text-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-yellow-400">
-            Nos Catégories
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Explorez notre large sélection de produits pour tous vos besoins
-            en fitness et arts martiaux
-          </p>
-        </div>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-yellow-400">
+                Nos Catégories
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                Explorez notre large sélection de produits pour tous vos besoins
+                en fitness et arts martiaux
+              </p>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.id}
-              className="group relative rounded-xl overflow-hidden h-60 bg-gray-800 hover:shadow-lg transition-shadow"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
-              <Image
-                src={category.image}
-                alt={category.name}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                priority={index < 2}
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                <h3 className="text-white font-medium text-xl mb-2">
-                  {category.name}
-                </h3>
-                <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-                  {category.description ||
-                    "Découvrez notre sélection de produits"}
-                </p>
-                <Link
-                  href={category.href}
-                  className="inline-flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-medium"
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {categories.map((category, index) => (
+                <motion.div
+                  key={category.id}
+                  className="group relative rounded-xl overflow-hidden h-60 bg-gray-800 hover:shadow-lg transition-shadow"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                 >
-                  Découvrir
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </Link>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
+                  <Image
+                    src={category.image}
+                    alt={category.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    priority={index < 2}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                    <h3 className="text-white font-medium text-xl mb-2">
+                      {category.name}
+                    </h3>
+                    <p className="text-gray-300 text-sm mb-4 line-clamp-2">
+                      {category.description ||
+                        "Découvrez notre sélection de produits"}
+                    </p>
+                    <Link
+                      href={category.href}
+                      className="inline-flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-medium"
+                    >
+                      Découvrir
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -902,7 +871,7 @@ export default function Home() {
           </div>
         </section>
 
-      {/*  <section className="py-16 md:py-24 bg-gray-100">
+        {/*  <section className="py-16 md:py-24 bg-gray-100">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
               <div>
@@ -975,7 +944,7 @@ export default function Home() {
         <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+              <h2 className="text-3xl md:text-4xl text-yellow-400 font-heading font-bold mb-4">
                 Questions Fréquentes
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
@@ -1009,6 +978,52 @@ export default function Home() {
                 </Button>
               </div>
             </div>
+          </div>
+        </section>
+        {/* Newsletter Section */}
+        <section className="py-16 sm:py-20 md:py-32 bg-white dark:bg-gray-950">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8 }}
+              className="max-w-4xl mx-auto text-center"
+            >
+              <div className="flex justify-center items-center space-x-2">
+                <Lottie
+                  animationData={stayInformedAnimation}
+                  className="w-12 h-12 "
+                  loop
+                />
+                <span className="text-yellow-400 font-medium">
+                  Restez informé
+                </span>
+              </div>
+              <h2 className="text-2xl text-yellow-400 sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6  dark:text-white">
+                Abonnez-vous à notre newsletter
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">
+                Recevez nos dernières offres, nouveautés et conseils fitness
+                directement dans votre boîte mail.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-2xl mx-auto">
+                <input
+                  type="email"
+                  placeholder="Votre adresse email"
+                  aria-label="Votre adresse email"
+                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                />
+                <Button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-full px-6 sm:px-8 py-3 sm:py-4">
+                  S'abonner
+                </Button>
+              </div>
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-3 sm:mt-4">
+                En vous inscrivant, vous acceptez notre politique de
+                confidentialité. Vous pouvez vous désinscrire à tout moment.
+              </p>
+            </motion.div>
           </div>
         </section>
       </main>

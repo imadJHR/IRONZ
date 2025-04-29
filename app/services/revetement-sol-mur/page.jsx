@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react";
-import img1 from "../../../public/dalles.jpeg"
-import img2 from "../../../public/pvc.png"
-import img3 from "../../../public/poly.png"
-import img4 from "../../../public/accou.jpeg"
-import img5 from "../../../public/mir.jpeg"
-import img6 from "../../../public/plan.png"
+import img1 from "../../../public/dalles.jpeg";
+import img2 from "../../../public/pvc.png";
+import img3 from "../../../public/poly.png";
+import img4 from "../../../public/accou.jpeg";
+import img5 from "../../../public/mir.jpeg";
+import img6 from "../../../public/plan.png";
 
 import { Button } from "@/components/ui/button";
 import ServiceContactForm from "@/components/service-contact-form";
@@ -480,8 +480,7 @@ export default function RevetementSolMurPage() {
         </div>
       </section>
 
-     
-     {/* <section className="py-16 md:py-24">
+      {/* <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">

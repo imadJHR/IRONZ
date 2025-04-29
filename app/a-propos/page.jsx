@@ -256,14 +256,14 @@ export default function AboutPage() {
                 Notre Histoire
               </h2>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 leading-relaxed">
-                Fondée en 2019 par Alexandre Martin, ancien athlète
+                Fondée en 2019 par RIDA MAGHRABI , ancien athlète
                 professionnel, IRONZ PRO est née d'une passion pour le fitness
                 et d'une vision : rendre accessible à tous un équipement de
                 qualité professionnelle.
               </p>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                Ce qui a commencé comme une petite boutique à Paris s'est
-                rapidement développé pour devenir l'un des leaders français de
+                Ce qui a commencé comme une petite boutique à Agadir s'est
+                rapidement développé pour devenir l'un des leaders Maroccaine de
                 l'équipement fitness, avec une présence en ligne forte et
                 plusieurs showrooms à travers le pays.
               </p>
@@ -667,47 +667,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-16 sm:py-20 md:py-32 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <Badge className="mb-4 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 px-3 py-1">
-              Restez informé
-            </Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white">
-              Abonnez-vous à notre newsletter
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">
-              Recevez nos dernières offres, nouveautés et conseils fitness
-              directement dans votre boîte mail.
-            </p>
+      
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-2xl mx-auto">
-              <input
-                type="email"
-                placeholder="Votre adresse email"
-                aria-label="Votre adresse email"
-                className="flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              />
-              <Button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-full px-6 sm:px-8 py-3 sm:py-4">
-                S'abonner
-              </Button>
-            </div>
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-3 sm:mt-4">
-              En vous inscrivant, vous acceptez notre politique de
-              confidentialité. Vous pouvez vous désinscrire à tout moment.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Breadcrumbs for SEO */}
+    
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <nav aria-label="Fil d'Ariane" className="text-sm">
           <ol className="flex flex-wrap items-center space-x-1 text-gray-500 dark:text-gray-400">
