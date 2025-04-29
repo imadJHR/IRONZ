@@ -64,7 +64,9 @@ function PromotionsLoading() {
   return (
     <div className="container mx-auto px-4 py-32">
       <div className="flex justify-center items-center h-64">
-        <div className="animate-pulse text-lg">Chargement des promotions...</div>
+        <div className="animate-pulse text-lg">
+          Chargement des promotions...
+        </div>
       </div>
     </div>
   );
@@ -554,10 +556,7 @@ function PromotionsContent() {
                         id="minPrice"
                         value={priceRange[0]}
                         onChange={(e) =>
-                          setPriceRange([
-                            Number(e.target.value),
-                            priceRange[1],
-                          ])
+                          setPriceRange([Number(e.target.value), priceRange[1]])
                         }
                         min={filters.price.min}
                         max={priceRange[1]}
@@ -576,10 +575,7 @@ function PromotionsContent() {
                         id="maxPrice"
                         value={priceRange[1]}
                         onChange={(e) =>
-                          setPriceRange([
-                            priceRange[0],
-                            Number(e.target.value),
-                          ])
+                          setPriceRange([priceRange[0], Number(e.target.value)])
                         }
                         min={priceRange[0]}
                         max={filters.price.max}
@@ -823,11 +819,7 @@ function PromotionsContent() {
 
             <Separator />
 
-            <Button
-              variant="outline"
-              onClick={clearFilters}
-              className="w-full"
-            >
+            <Button variant="outline" onClick={clearFilters} className="w-full">
               Réinitialiser les filtres
             </Button>
           </div>
@@ -862,9 +854,7 @@ function PromotionsContent() {
               <p className="text-gray-500 dark:text-gray-400 mb-4">
                 Essayez de modifier vos filtres ou votre recherche.
               </p>
-              <Button onClick={clearFilters}>
-                Réinitialiser les filtres
-              </Button>
+              <Button onClick={clearFilters}>Réinitialiser les filtres</Button>
             </div>
           ) : viewMode === "grid" ? (
             <motion.div
@@ -882,8 +872,7 @@ function PromotionsContent() {
                   <div className="relative h-48 overflow-hidden group">
                     <Image
                       src={
-                        product.image ||
-                        "/placeholder.svg?height=192&width=256"
+                        product.image || "/placeholder.svg?height=192&width=256"
                       }
                       alt={product.name}
                       fill
@@ -969,8 +958,7 @@ function PromotionsContent() {
                   <div className="relative h-48 sm:h-auto sm:w-48 overflow-hidden">
                     <Image
                       src={
-                        product.image ||
-                        "/placeholder.svg?height=192&width=192"
+                        product.image || "/placeholder.svg?height=192&width=192"
                       }
                       alt={product.name}
                       fill

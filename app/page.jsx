@@ -1,19 +1,16 @@
 "use client";
 import Image from "next/image";
-import Lottie from "lottie-react";
 import Link from "next/link";
-import stayInformedAnimation from "../animations/Animation - 1745942121504.json"; 
 import {
   ArrowRight,
   CheckCircle,
   TrendingUp,
   Award,
-  Truck,
-  ShieldCheck,
   ChevronRight,
   Star,
   ShoppingCart,
   Badge,
+  Truck,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -32,8 +29,6 @@ import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
-
-
 
 const faqs = [
   {
@@ -68,7 +63,6 @@ const faqs = [
 export default function Home() {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
-
   const featuredProducts = productUtils.getFeaturedProducts().slice(0, 8);
   const newArrivals = productUtils.getNewProducts().slice(0, 8);
   const bestSellers = productUtils.getFeaturedProducts().slice(0, 8);
@@ -991,11 +985,6 @@ export default function Home() {
               className="max-w-4xl mx-auto text-center"
             >
               <div className="flex justify-center items-center space-x-2">
-                <Lottie
-                  animationData={stayInformedAnimation}
-                  className="w-12 h-12 "
-                  loop
-                />
                 <span className="text-yellow-400 font-medium">
                   Restez informé
                 </span>
