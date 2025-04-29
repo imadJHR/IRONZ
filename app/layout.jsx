@@ -3,8 +3,10 @@ import ClientLayout from "./ClientLayout";
 
 export const metadata = {
   title: "IRONZ PRO - Équipements Professionnels et Matériaux",
-  description: "Votre partenaire de confiance pour tous vos besoins en équipements professionnels et matériaux de construction.",
-  keywords: "équipements professionnels, matériaux de construction, fitness, musculation, arts martiaux, Maroc, ironz",
+  description:
+    "Votre partenaire de confiance pour tous vos besoins en équipements professionnels et matériaux de construction.",
+  keywords:
+    "équipements professionnels, matériaux de construction, fitness, musculation, arts martiaux, Maroc, ironz",
   authors: [{ name: "IRONZ PRO", url: "https://ironz.ma" }],
   metadataBase: new URL("https://ironz.ma"),
   alternates: {
@@ -16,14 +18,13 @@ export const metadata = {
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
-    apple: [
-      { url: "/public/logo.png", sizes: "180x180", type: "image/png" },
-    ],
+    apple: [{ url: "/public/logo.png", sizes: "180x180", type: "image/png" }],
   },
   // Open Graph - Used by both Facebook and Instagram
   openGraph: {
     title: "IRONZ PRO - Équipements Professionnels et Matériaux",
-    description: "Votre partenaire de confiance pour tous vos besoins en équipements professionnels et matériaux de construction.",
+    description:
+      "Votre partenaire de confiance pour tous vos besoins en équipements professionnels et matériaux de construction.",
     url: "https://ironz.ma",
     siteName: "IRONZ PRO",
     images: [
@@ -46,7 +47,7 @@ export const metadata = {
       appId: "your-facebook-app-id",
     },
   },
-  
+
   facebook: {
     domainVerification: "your-facebook-domain-verification-code",
   },
@@ -72,9 +73,9 @@ export const metadata = {
     // You can add additional tags that might help
     "instagram:creator": "@ironz_equipements",
     "instagram:site": "@ironz_official",
-  }
+  },
 };
 
 export default function RootLayout({ children }) {
-  return (<ClientLayout>{children}</ClientLayout>)
+  return <ClientLayout> {children}</ClientLayout>;
 }

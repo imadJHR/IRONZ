@@ -39,6 +39,7 @@ import { cn } from "@/lib/utils";
 import { categories } from "@/data/product";
 import Head from "next/head";
 import Script from "next/script";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,12 +57,8 @@ export default function ClientLayout({ children }) {
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-8V0884TV40"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {` window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-8V0884TV40');`}
-        </Script>
+        
+        <GoogleAnalytics gaId="G-4NJE0534YH"/>
       </Head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
