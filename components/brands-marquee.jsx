@@ -5,22 +5,33 @@ import Marquee from "react-fast-marquee"
 
 export default function BrandsMarquee({ brands }) {
   return (
-    <Marquee gradient={false} speed={40} pauseOnHover={true} className="py-6">
-      <div className="flex gap-12 mx-6">
-        {brands.map((brand) => (
-          <div
-            key={brand.id}
-            className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col items-center justify-center text-center min-w-[200px]"
-          >
-            <div className="relative h-16 w-16 mb-4">
-              <Image src={brand.logo || "/placeholder.svg"} alt={brand.name} fill className="object-cover" />
+    <section className="py-10 bg-muted/40">
+      <Marquee gradient={false} speed={50} pauseOnHover className="overflow-hidden">
+        <div className="flex items-center gap-8 px-8">
+          {brands.map((brand) => (
+            <div
+              key={brand.id}
+              className="group bg-white border border-gray-200 p-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 min-w-[220px] max-w-xs flex flex-col items-center text-center hover:scale-[1.02]"
+            >
+              <div className="relative h-16 w-full mb-4">
+                <Image
+                  src={brand.logo || "/placeholder.svg"}
+                  alt={brand.name}
+                  fill
+                  className="object-contain"
+                  sizes="64px"
+                />
+              </div>
+              <h3 className="font-semibold text-base text-black mb-1 truncate max-w-full">
+                {brand.name}
+              </h3>
+              <p className="text-sm text-gray-500 line-clamp-2">
+                {brand.description}
+              </p>
             </div>
-            <h3 className="font-heading font-bold text-lg mb-1">{brand.name}</h3>
-            <p className="text-xs text-gray-500 line-clamp-2">{brand.description}</p>
-          </div>
-        ))}
-      </div>
-    </Marquee>
+          ))}
+        </div>
+      </Marquee>
+    </section>
   )
 }
-
