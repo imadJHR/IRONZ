@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Head from "next/head";
+import YouTube from "react-youtube"; // Import the YouTube component
 
 export default function AboutPage() {
   const controls = useAnimation();
@@ -402,11 +403,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/*
-
-    <section
-        className="py-16 sm:py-20 md:py-32"
-        aria-labelledby="team-heading"
+      {/* Video Section */}
+      <section
+        className="py-16 sm:py-20 md:py-32 bg-white dark:bg-gray-950"
+        aria-labelledby="video-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -417,81 +417,36 @@ export default function AboutPage() {
             className="text-center mb-10 sm:mb-16"
           >
             <Badge className="mb-4 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 px-3 py-1">
-              Notre force
+              Découvrez-nous en vidéo
             </Badge>
             <h2
-              id="team-heading"
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white"
+              id="video-heading"
+              className="text-2xl text-yellow-400 sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white"
             >
-              Notre Équipe
+              Notre Vidéo
             </h2>
             <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Des experts passionnés à votre service
+              Regardez notre vidéo pour en savoir plus sur IRONZ PRO
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {teamMembers.map((member, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden group"
-              >
-                <div className="relative h-64 sm:h-80 overflow-hidden">
-                  <Image
-                    src={member.image || "/placeholder.svg"}
-                    alt={`${member.name} - ${member.role} chez IRONZ PRO`}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute bottom-0 left-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="flex space-x-3">
-                      <Link
-                        href={member.social.linkedin}
-                        className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/40 transition-colors"
-                        aria-label={`LinkedIn de ${member.name}`}
-                      >
-                        <Linkedin
-                          className="h-5 w-5 text-white"
-                          aria-hidden="true"
-                        />
-                      </Link>
-                      <Link
-                        href={member.social.instagram}
-                        className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/40 transition-colors"
-                        aria-label={`Instagram de ${member.name}`}
-                      >
-                        <Instagram
-                          className="h-5 w-5 text-white"
-                          aria-hidden="true"
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 sm:p-8">
-                  <h3 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900 dark:text-white">
-                    {member.name}
-                  </h3>
-                  <p className="text-yellow-500 font-medium mb-3 sm:mb-4 text-base sm:text-lg">
-                    {member.role}
-                  </p>
-                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                    {member.bio}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <div className="relative h-[300px] sm:h-[400px] md:h-[500px] w-full rounded-3xl overflow-hidden shadow-2xl mt-6 md:mt-0">
+  <div className="absolute top-0 left-0 w-full h-full">
+    <YouTube
+      videoId="LED1s8Ecpbw"
+      opts={{
+        width: "100%",
+        height: "100%",
+        playerVars: {
+          autoplay: 0,
+        },
+      }}
+      className="w-full h-full"
+    />
+  </div>
+</div>
         </div>
       </section>
-
-    */}
 
       {/* Contact Section */}
       <section
