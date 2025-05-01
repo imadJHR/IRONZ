@@ -13,6 +13,8 @@ import {
   ArrowUpDown,
   Star,
   StarHalf,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart } from "@/context/cart-context";
@@ -40,6 +42,14 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 // Import product data
 import { products, categories, filters, productUtils } from "@/data/product";
@@ -47,6 +57,7 @@ import Head from "next/head";
 
 export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([
@@ -57,6 +68,8 @@ export default function ProductsPage() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid"); // grid or list
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(12); // Number of products per page
 
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
@@ -124,10 +137,21 @@ export default function ProductsPage() {
         break;
     }
 
-    console.log("Filtered Products:", result); // Log the filtered products
-
     setFilteredProducts(result);
+    setCurrentPage(1); // Reset to first page when filters change
   }, [searchQuery, selectedCategories, priceRange, sortOption]);
+
+  // Pagination logic
+  useEffect(() => {
+    // Calculate current products
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(
+      indexOfFirstProduct,
+      indexOfLastProduct
+    );
+    setDisplayedProducts(currentProducts);
+  }, [currentPage, filteredProducts, productsPerPage]);
 
   const handleCategoryToggle = (category) => {
     setSelectedCategories((prev) =>
@@ -154,6 +178,62 @@ export default function ProductsPage() {
     } else {
       addToFavorites(product);
     }
+  };
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5; // Maximum number of visible page buttons
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      // Always show first page
+      pageNumbers.push(1);
+
+      // Calculate start and end pages
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+      // Adjust if we're at the beginning
+      if (currentPage <= 3) {
+        endPage = Math.min(4, totalPages - 1);
+      }
+      // Adjust if we're at the end
+      else if (currentPage >= totalPages - 2) {
+        startPage = Math.max(totalPages - 3, 2);
+      }
+
+      // Add ellipsis if needed after first page
+      if (startPage > 2) {
+        pageNumbers.push("...");
+      }
+
+      // Add middle pages
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+
+      // Add ellipsis if needed before last page
+      if (endPage < totalPages - 1) {
+        pageNumbers.push("...");
+      }
+
+      // Always show last page
+      if (totalPages > 1) {
+        pageNumbers.push(totalPages);
+      }
+    }
+
+    return pageNumbers;
   };
 
   // Animation variants
@@ -569,7 +649,7 @@ export default function ProductsPage() {
                 initial="hidden"
                 animate="visible"
               >
-                {filteredProducts.map((product) => (
+                {displayedProducts.map((product) => (
                   <motion.div
                     key={product.id}
                     className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
@@ -666,7 +746,7 @@ export default function ProductsPage() {
                 initial="hidden"
                 animate="visible"
               >
-                {filteredProducts.map((product) => (
+                {displayedProducts.map((product) => (
                   <motion.div
                     key={product.id}
                     className="flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
@@ -759,9 +839,62 @@ export default function ProductsPage() {
             )}
 
             {!isLoading && filteredProducts.length > 0 && (
-              <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
-                Affichage de {filteredProducts.length} produit
-                {filteredProducts.length > 1 ? "s" : ""}
+              <div className="mt-8">
+                <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  Affichage de {displayedProducts.length} produit
+                  {displayedProducts.length > 1 ? "s" : ""} sur{" "}
+                  {filteredProducts.length}
+                </div>
+
+                {/* Pagination */}
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        className={cn(
+                          "cursor-pointer",
+                          currentPage === 1 && "pointer-events-none opacity-50"
+                        )}
+                      />
+                    </PaginationItem>
+
+                    {getPageNumbers().map((pageNumber, index) =>
+                      pageNumber === "..." ? (
+                        <PaginationItem key={`ellipsis-${index}`}>
+                          <span className="px-3 py-1">...</span>
+                        </PaginationItem>
+                      ) : (
+                        <PaginationItem key={pageNumber}>
+                          <PaginationLink
+                            onClick={() => paginate(pageNumber)}
+                            isActive={currentPage === pageNumber}
+                            className="cursor-pointer"
+                          >
+                            {pageNumber}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )
+                    )}
+
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={() =>
+                          setCurrentPage((prev) =>
+                            Math.min(prev + 1, totalPages)
+                          )
+                        }
+                        className={cn(
+                          "cursor-pointer",
+                          currentPage === totalPages &&
+                            "pointer-events-none opacity-50"
+                        )}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             )}
           </div>

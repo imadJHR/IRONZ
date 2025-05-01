@@ -845,16 +845,16 @@ function PromotionsContent() {
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-12">
-              <div className="mb-4 text-gray-400">
+              <div className="mb-4 text-yellow-400">
                 <Search className="h-12 w-12 mx-auto" />
               </div>
-              <h3 className="text-lg font-medium mb-2">
+              <h3 className="text-lg text-yellow-400 font-medium mb-2">
                 Aucun produit en promotion trouvé
               </h3>
               <p className="text-gray-500 dark:text-gray-400 mb-4">
                 Essayez de modifier vos filtres ou votre recherche.
               </p>
-              <Button onClick={clearFilters}>Réinitialiser les filtres</Button>
+              <Button onClick={clearFilters} className="bg-yellow-400">Réinitialiser les filtres</Button>
             </div>
           ) : viewMode === "grid" ? (
             <motion.div
