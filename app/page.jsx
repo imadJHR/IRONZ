@@ -12,7 +12,20 @@ import {
   Badge,
   Truck,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import {
+  MessageSquare,
+  X,
+  Send,
+  Bot,
+  ChevronDown,
+  Lightbulb,
+  RefreshCw,
+  CreditCard,
+  Phone,
+  Tag,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -40,7 +53,7 @@ const faqs = [
   {
     question: "Quels sont les délais de livraison ?",
     answer:
-      "Nos délais de livraison varient selon votre localisation. En général, comptez 2-3 jours ouvrés pour la France métropolitaine, 3-5 jours pour l'Europe et 5-10 jours pour le reste du monde. Vous recevrez un email de confirmation avec un numéro de suivi dès l'expédition de votre commande.",
+      "Nos délais de livraison varient selon votre localisation. En général, comptez 2-3 jours , Vous recevrez un email de confirmation avec un numéro de suivi dès l'expédition de votre commande.",
   },
   {
     question: "Proposez-vous un service d'installation pour les équipements ?",
@@ -59,6 +72,497 @@ const faqs = [
       "Absolument. Tous nos suppléments nutritionnels sont fabriqués dans des installations certifiées et sont testés par des laboratoires indépendants pour garantir leur pureté et l'absence de substances interdites. Nous fournissons des certificats d'analyse sur demande.",
   },
 ];
+
+const ChatBot = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const knowledgeBase = {
+    returns: {
+      triggers: [
+        "retour",
+        "remboursement",
+        "garantie",
+        "échanger",
+        "défectueux",
+      ],
+      response: `Nous offrons une politique de retour flexible :
+
+🔄 **Retours standards** : 30 jours pour un remboursement complet (produit non utilisé, dans son emballage d'origine)
+⚡ **Retours rapides** : Retours gratuits dans nos boutiques physiques
+🔧 **Produits défectueux** : Remplacement gratuit dans les 2 ans avec garantie constructeur
+
+Pour initier un retour, veuillez visiter notre [portail de retours](https://ironz.ma/retours) ou répondre à ce message avec votre numéro de commande.`,
+    },
+    delivery: {
+      triggers: [
+        "livraison",
+        "délai",
+        "expédition",
+        "recevoir",
+        "temps",
+        "commande",
+      ],
+      response: `🚚 **Options de livraison disponibles** :
+
+1. **Standard** : 2-3 jours ouvrés (gratuite à partir de 500 DH)
+2. **Express** : Livraison en 24h (+50 DH)
+3. **Click & Collect** : Retrait en magasin en 1h
+
+📦 **Suivi en temps réel** : Vous recevrez un lien de suivi par SMS/email dès l'expédition. Notre système intelligent peut prédire votre heure de livraison à ±30 minutes près !`,
+    },
+    products: {
+      triggers: [
+        "équipement",
+        "choisir",
+        "produit",
+        "conseil",
+        "recommander",
+        "suggestion",
+      ],
+      response: `Pour une recommandation personnalisée, j'ai besoin de savoir :
+
+1. **Type d'activité** : Musculation, cardio, cross-training, etc.
+2. **Niveau** : Débutant, intermédiaire, avancé
+3. **Espace disponible** : <5m², 5-10m², >10m²
+4. **Budget** : <2000 DH, 2000-5000 DH, >5000 DH
+
+💡 **Top choix ce mois-ci** :
+- Home Gym 3000 (meilleur rapport qualité-prix)
+- Tapis de course AI Pro (avec coach virtuel intégré)
+- Kit haltères intelligents (capteurs de performance)`,
+    },
+    payment: {
+      triggers: ["paiement", "pay", "carte", "crédit", "facture", "payer"],
+      response: `💳 **Modes de paiement sécurisés** :
+
+- Carte bancaire (3D Secure) : Visa, Mastercard, Amex
+- PayFlex : Paiement en 3x ou 4x sans frais
+- Wallet Ironz : Cumulez 5% de cashback
+- Cryptomonnaies : Bitcoin, Ethereum (via Binance Pay)
+
+🔒 **Sécurité** : Tous les paiements sont cryptés et protégés par notre système de détection de fraude IA.`,
+    },
+    contact: {
+      triggers: [
+        "contact",
+        "service client",
+        "appeler",
+        "email",
+        "adresse",
+        "téléphone",
+      ],
+      response: `📞 **Contactez-nous facilement** :
+
+- **Chat live** : Disponible 24/7 sur notre app
+- **Téléphone** : +212 674-114446 (8h-20h)
+- **Réseaux sociaux** : Réponse garantie en <30 min
+
+💬 **Astuce** : Dites-moi "rappeler" et je vous mets en contact immédiat avec un conseiller !`,
+    },
+    promotions: {
+      triggers: ["promo", "réduction", "solde", "offre", "code", "rabais"],
+      response: `🎁 **Promotions actuelles** :
+
+🔥 **Flash Sale** : Jusqu'à 40% sur les équipements premium (fin dans 3h12m)
+✨ **Nouveaux membres** : 15% de réduction avec code BIENVENUE15
+👑 **Fidélité** : Double points ce week-end
+
+🔔 **Conseil pro** : Abonnez-vous à notre newsletter pour recevoir des offres exclusives avant tout le monde !`,
+    },
+  };
+
+  const suggestedQuestions = [
+    "Comment faire un retour ?",
+    "Quand sera livrée ma commande ?",
+    "Quel équipement pour débutant ?",
+    "Avez-vous des promotions ?",
+    "Comment contacter le service client ?",
+  ];
+
+  useEffect(() => {
+    setMessages([
+      {
+        id: 1,
+        text: `🌟 **Bonjour ! Je suis IronzBot, votre assistant IA** 🌟
+
+Comment puis-je vous aider aujourd'hui ? Voici ce que je peux faire pour vous :
+
+1. Trouver le produit parfait pour vos besoins
+2. Vous informer sur les livraisons et retours
+3. Vous proposer des offres personnalisées
+4. Vous connecter avec un expert humain
+
+Essayez de me demander : "Quel équipement pour perdre du poids ?" ou "Comment suivre ma commande ?"`,
+        sender: "bot",
+        timestamp: new Date(),
+      },
+    ]);
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isMinimized]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSendMessage = () => {
+    if (inputValue.trim() === "") return;
+
+    const newUserMessage = {
+      id: messages.length + 1,
+      text: inputValue,
+      sender: "user",
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, newUserMessage]);
+    setInputValue("");
+    setIsTyping(true);
+
+    setTimeout(() => {
+      const botResponse = generateEnhancedResponse(inputValue);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: messages.length + 2,
+          text: botResponse,
+          sender: "bot",
+          timestamp: new Date(),
+        },
+      ]);
+      setIsTyping(false);
+    }, 800 + Math.random() * 1500);
+  };
+
+  const generateEnhancedResponse = (userInput) => {
+    const input = userInput.toLowerCase();
+
+    for (const [topic, data] of Object.entries(knowledgeBase)) {
+      if (data.triggers.some((trigger) => input.includes(trigger))) {
+        return data.response;
+      }
+    }
+
+    if (input.includes("merci") || input.includes("thanks")) {
+      return `Je vous en prie ! 😊 N'hésitez pas si vous avez d'autres questions. Saviez-vous que vous pouvez aussi :
+
+- **Programmer un rappel** pour ne pas oublier nos promotions
+- **Obtenir un guide gratuit** sur l'entraînement à domicile
+- **Réserver une consultation** avec nos coachs certifiés
+
+Comment puis-je continuer à vous aider ?`;
+    } else if (input.includes("bonjour") || input.includes("salut")) {
+      return `Bonjour à vous ! 🌞 Je suis ravi de vous aider aujourd'hui. Pour gagner du temps, voici quelques demandes fréquentes que je peux traiter instantanément :
+
+1. "Où en est ma commande n°XYZ ?"
+2. "Je veux retourner un article"
+3. "Quels accessoires pour compléter mon home gym ?"
+
+Dites-moi simplement ce dont vous avez besoin !`;
+    } else if (input.includes("urgence") || input.includes("important")) {
+      return `🚨 Pour les questions urgentes, je peux :
+
+1. Vous mettre en relation IMMÉDIATE avec un conseiller (réponse <2 min)
+2. Envoyer un SMS de rappel avec les informations critiques
+3. Vous donner le numéro direct du responsable de service
+
+Dites "rappeler" ou "urgence" pour activer le mode prioritaire.`;
+    } else {
+      return `🤖 **Je veux m'assurer de bien comprendre votre demande**
+
+Pouvez-vous préciser votre question ou choisir parmi ces options :
+
+1. Informations sur une commande existante
+2. Recommandation de produits
+3. Support technique
+4. Questions sur les paiements
+5. Autre demande
+
+Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous offrir un service toujours plus pertinent !`;
+    }
+  };
+
+  const handleQuickReply = (question) => {
+    setInputValue(question);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  const toggleChat = () => {
+    setIsOpen(!isOpen);
+    if (isOpen) {
+      setIsMinimized(false);
+    }
+  };
+
+  const toggleMinimize = () => {
+    setIsMinimized(!isMinimized);
+  };
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
+
+  const getIconForMessage = (text) => {
+    if (text.includes("livraison") || text.includes("délai"))
+      return <Truck size={16} className="mr-1" />;
+    if (text.includes("retour") || text.includes("remboursement"))
+      return <RefreshCw size={16} className="mr-1" />;
+    if (text.includes("paiement") || text.includes("payer"))
+      return <CreditCard size={16} className="mr-1" />;
+    if (text.includes("contact") || text.includes("appeler"))
+      return <Phone size={16} className="mr-1" />;
+    if (text.includes("promo") || text.includes("réduction"))
+      return <Tag size={16} className="mr-1" />;
+    if (text.includes("produit") || text.includes("équipement"))
+      return <ShoppingCart size={16} className="mr-1" />;
+    return <Lightbulb size={16} className="mr-1" />;
+  };
+
+  return (
+    <>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className={`fixed bottom-8 right-8 z-50 ${isOpen ? "hidden" : "block"}`}
+      >
+        <button
+          onClick={toggleChat}
+          className="bg-gradient-to-br from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white rounded-full p-4 shadow-xl flex items-center justify-center transition-all duration-300 ring-2 ring-white/20 hover:ring-4 hover:ring-white/30"
+          aria-label="Ouvrir le chat"
+        >
+          <MessageSquare className="h-6 w-6" />
+          <motion.span
+            className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-2 py-1 shadow"
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            BOT
+          </motion.span>
+        </button>
+      </motion.div>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              height: isMinimized ? 60 : 550,
+            }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-8 right-8 z-50 w-full max-w-md"
+          >
+            <div
+              className={`bg-white ml-16 dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-200  flex flex-col h-full transition-all duration-300 ${
+                isMinimized ? "min-h-[60px]" : "min-h-[550px]"
+              }`}
+            >
+              <div
+                className="bg-gradient-to-r from-yellow-500 to-yellow-600 dark:from-yellow-600 dark:to-yellow-700 p-4 flex items-center justify-between cursor-pointer"
+                onClick={toggleMinimize}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="relative">
+                    <Bot className="h-7 w-7 text-white" />
+                    <motion.div
+                      className="absolute -bottom-1 -right-1 bg-green-400 rounded-full w-3 h-3 border-2 border-yellow-600"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white">
+                      IronzBot Assistant IA
+                    </h3>
+                    {!isMinimized && (
+                      <p className="text-xs text-yellow-100">
+                        En ligne • Prêt à vous aider
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleMinimize();
+                    }}
+                    className="text-white hover:text-gray-200 transition-transform"
+                  >
+                    <ChevronDown
+                      className={`h-5 w-5 transition-transform ${
+                        isMinimized ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleChat();
+                    }}
+                    className="text-white hover:text-gray-200"
+                    aria-label="Fermer le chat"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+
+              {!isMinimized && (
+                <>
+                  <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-white/90 to-gray-50/80 dark:from-gray-800/90 dark:to-gray-900/80">
+                    {messages.map((message) => (
+                      <motion.div
+                        key={message.id}
+                        initial={{
+                          opacity: 0,
+                          y: message.sender === "user" ? 10 : -10,
+                        }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className={`flex ${
+                          message.sender === "user"
+                            ? "justify-end"
+                            : "justify-start"
+                        }`}
+                      >
+                        <div
+                          className={`max-w-xs md:max-w-md rounded-2xl px-4 py-3 ${
+                            message.sender === "user"
+                              ? "bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-br-none"
+                              : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-none border border-gray-200 dark:border-gray-600"
+                          }`}
+                        >
+                          {message.sender === "bot" && (
+                            <div className="flex items-center mb-1">
+                              {getIconForMessage(message.text)}
+                              <span className="text-xs font-semibold text-yellow-600 dark:text-yellow-400">
+                                IronzBot
+                              </span>
+                            </div>
+                          )}
+                          <div className="text-sm whitespace-pre-line">
+                            {message.text}
+                          </div>
+                          <div
+                            className={`text-xs mt-1 flex justify-end ${
+                              message.sender === "user"
+                                ? "text-yellow-100/80"
+                                : "text-gray-500 dark:text-gray-400"
+                            }`}
+                          >
+                            {formatTime(message.timestamp)}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                    {isTyping && (
+                      <div className="flex justify-start">
+                        <div className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-2xl rounded-bl-none px-4 py-3 border border-gray-200 dark:border-gray-600">
+                          <div className="flex items-center space-x-2">
+                            <div className="relative">
+                              <Bot className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                            </div>
+                            <div className="flex space-x-1">
+                              <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"></div>
+                              <div
+                                className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
+                                style={{ animationDelay: "0.2s" }}
+                              ></div>
+                              <div
+                                className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"
+                                style={{ animationDelay: "0.4s" }}
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <div ref={messagesEndRef} />
+                  </div>
+
+                  {messages.length <= 2 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="px-4 pb-2"
+                    >
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                        Essayez de demander :
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {suggestedQuestions.map((question, index) => (
+                          <motion.button
+                            key={index}
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={() => handleQuickReply(question)}
+                            className="text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-full px-3 py-1.5 transition-colors"
+                          >
+                            {question}
+                          </motion.button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  <div className="border-t border-gray-200 dark:border-gray-800 p-4 bg-gray-50 dark:bg-gray-800/50 backdrop-blur-sm">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Écrivez votre message..."
+                        className="flex-1 border border-gray-300 dark:border-gray-700 rounded-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
+                      />
+                      <motion.button
+                        onClick={handleSendMessage}
+                        disabled={inputValue.trim() === ""}
+                        whileHover={
+                          inputValue.trim() !== "" ? { scale: 1.05 } : {}
+                        }
+                        whileTap={
+                          inputValue.trim() !== "" ? { scale: 0.95 } : {}
+                        }
+                        className={`bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-full p-3 ${
+                          inputValue.trim() === ""
+                            ? "opacity-50 cursor-not-allowed"
+                            : "hover:from-yellow-600 hover:to-yellow-700 shadow-md"
+                        }`}
+                        aria-label="Envoyer le message"
+                      >
+                        <Send className="h-5 w-5" />
+                      </motion.button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
 
 export default function Home() {
   const { addToCart } = useCart();
@@ -89,7 +593,7 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen py- bg-gray-50">
-        <section className="relative  pt-16 pb-20 md:pt-24 md:pb-32 bg-black text-white overflow-hidden">
+        <section className="relative pt-16 pb-20 md:pt-24 md:pb-32 bg-black text-white overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image
               src="/placeholder.svg?height=1200&width=2000"
@@ -779,7 +1283,6 @@ export default function Home() {
               </p>
             </div>
 
-           
             <BrandsMarquee brands={brands} />
           </div>
         </section>
@@ -844,8 +1347,7 @@ export default function Home() {
                   Livraison Rapide
                 </h3>
                 <p className="text-gray-600">
-                  Livraison rapide et sécurisée partout en France et en Europe,
-                  avec suivi en temps réel.
+                  Livraison rapide et sécurisée partout en Maroc.
                 </p>
               </div>
 
@@ -864,76 +1366,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/*  <section className="py-16 md:py-24 bg-gray-100">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                  Conseils & Actualités
-                </h2>
-                <p className="text-gray-600 max-w-2xl">
-                  Découvrez nos derniers articles, conseils et guides pour
-                  optimiser votre entraînement
-                </p>
-              </div>
-              <Link
-                href="/blog"
-                className="mt-4 md:mt-0 inline-flex items-center text-yellow-600 font-medium hover:text-yellow-700 group"
-              >
-                Voir tous les articles
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {blogPosts.map((post) => (
-                <Link
-                  key={post.id}
-                  href={`/blog/${post.slug}`}
-                  className="group"
-                >
-                  <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                    <div className="relative h-48 overflow-hidden">
-                      <Image
-                        src={post.image || "/placeholder.svg"}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute top-0 left-0 bg-yellow-500 text-black text-xs font-bold px-3 py-1">
-                        {post.category}
-                      </div>
-                    </div>
-                    <div className="p-5">
-                      <div className="flex items-center text-gray-500 text-sm mb-2">
-                        <span>
-                          {new Date(post.date).toLocaleDateString("fr-FR", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
-                        </span>
-                        <span className="mx-2">•</span>
-                        <span>{post.author}</span>
-                      </div>
-                      <h3 className="font-heading font-bold text-xl mb-2 group-hover:text-yellow-600 transition-colors">
-                        {post.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-2">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center text-yellow-600 font-medium group-hover:underline">
-                        Lire l'article
-                        <ChevronRight className="ml-1 h-4 w-4" />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section> */}
 
         <section className="py-16 md:py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -974,7 +1406,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        {/* Newsletter Section */}
+
         <section className="py-16 sm:py-20 md:py-32 bg-white dark:bg-gray-950">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -1015,6 +1447,7 @@ export default function Home() {
             </motion.div>
           </div>
         </section>
+        <ChatBot />
       </main>
     </>
   );
