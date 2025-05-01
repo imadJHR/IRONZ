@@ -446,7 +446,7 @@ function Navbar({ language, toggleLanguage }) {
               </Link>
 
               {/* Language Toggle Button */}
-              <motion.button
+             {/* <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleLanguage}
@@ -454,7 +454,7 @@ function Navbar({ language, toggleLanguage }) {
                 aria-label="Language"
               >
                 <Globe className="h-5 w-5" />
-              </motion.button>
+              </motion.button> */}
             </div>
 
             {/* Right side icons */}
