@@ -431,20 +431,20 @@ export default function AboutPage() {
           </motion.div>
 
           <div className="relative h-[300px] sm:h-[400px] md:h-[500px] w-full rounded-3xl overflow-hidden shadow-2xl mt-6 md:mt-0">
-  <div className="absolute top-0 left-0 w-full h-full">
-    <YouTube
-      videoId="LED1s8Ecpbw"
-      opts={{
-        width: "100%",
-        height: "100%",
-        playerVars: {
-          autoplay: 0,
-        },
-      }}
-      className="w-full h-full"
-    />
-  </div>
-</div>
+            <div className="absolute top-0 left-0 w-full h-full">
+              <YouTube
+                videoId="LED1s8Ecpbw"
+                opts={{
+                  width: "100%",
+                  height: "100%",
+                  playerVars: {
+                    autoplay: 0,
+                  },
+                }}
+                className="w-full h-full"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

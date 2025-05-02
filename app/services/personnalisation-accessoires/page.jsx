@@ -573,7 +573,7 @@ export default function PersonnalisationAccessoiresPage() {
                   </div>
                 </div>
 
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center text-black font-bold text-xl p-4 transform rotate-12 shadow-lg">
+                <div className="absolute -bottom-6 -right-6  h-32 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center text-black font-bold text-xl p-4 transform rotate-12 shadow-lg">
                   100% personnalisable
                 </div>
 
