@@ -11,19 +11,16 @@ import {
   MapPin,
   Phone,
   Mail,
-  ChevronDown,
   Facebook,
   Instagram,
   Youtube,
-  Linkedin,
-  Calendar,
 } from "lucide-react";
 import logo from "@/public/logo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Head from "next/head";
-import YouTube from "react-youtube"; // Import the YouTube component
+import YouTube from "react-youtube";
 
 export default function AboutPage() {
   const controls = useAnimation();
@@ -35,7 +32,6 @@ export default function AboutPage() {
       controls.start("visible");
     }
   }, [controls, storyInView]);
-
   useEffect(() => {
     const script = document.createElement("script");
     script.type = "application/ld+json";
@@ -43,7 +39,7 @@ export default function AboutPage() {
       "@context": "https://schema.org",
       "@type": "Organization",
       name: "IRONZ PRO",
-      url: "https://www.ironzpro.com",
+      url: "https://www.ironz.ma",
       logo: "https://www.ironzpro.com/logo.png",
       foundingDate: "2019",
       founders: [

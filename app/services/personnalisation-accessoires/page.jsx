@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
+import img11 from "../../../public/img11.png"
+import img12 from "../../../public/img12.png"
 import {
   motion,
   useScroll,
@@ -25,13 +27,14 @@ import {
   Shield,
   Heart,
 } from "lucide-react";
+import img1 from "../../../public/acce1.jpeg";
+import img2 from "../../../public/acce2.jpeg";
+import img3 from "../../../public/acce3.jpeg";
 
 export default function PersonnalisationAccessoiresPage() {
   const [activeTab, setActiveTab] = useState("gants");
-  const [videoPlaying, setVideoPlaying] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const videoRef = useRef(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
   const sectionRef = useRef(null);
 
@@ -58,21 +61,6 @@ export default function PersonnalisationAccessoiresPage() {
     };
   }, []);
 
-  const handlePlayVideo = (videoSrc) => {
-    setSelectedVideo(videoSrc);
-    setShowModal(true);
-  };
-
-  useEffect(() => {
-    if (videoRef.current) {
-      if (videoPlaying) {
-        videoRef.current.play();
-      } else {
-        videoRef.current.pause();
-      }
-    }
-  }, [videoPlaying]);
-
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = "hidden";
@@ -98,85 +86,45 @@ export default function PersonnalisationAccessoiresPage() {
       title: "Matériaux premium",
       description:
         "Choisissez parmi une sélection de cuirs, tissus techniques et matériaux innovants pour des performances optimales.",
-      image: "/placeholder.svg?height=400&width=600&text=Matériaux+Premium",
+      image: img1,
       icon: <Shield className="h-6 w-6" />,
     },
     {
       title: "Couleurs & motifs",
       description:
         "Personnalisez les couleurs, ajoutez des motifs ou votre logo pour un style unique qui vous représente.",
-      image: "/placeholder.svg?height=400&width=600&text=Couleurs+et+Motifs",
+      image: img2,
       icon: <Palette className="h-6 w-6" />,
     },
     {
       title: "Ajustement sur mesure",
       description:
         "Adaptez parfaitement l'accessoire à votre morphologie pour un confort et des performances optimales.",
-      image: "/placeholder.svg?height=400&width=600&text=Ajustement+Sur+Mesure",
+      image: img3,
       icon: <Heart className="h-6 w-6" />,
     },
   ];
 
-  const testimonials = [
+  const videoList = [
     {
-      name: "Alexandre Dupont",
-      role: "Coach CrossFit",
-      image: "/placeholder.svg?height=100&width=100",
-      text: "Les gants personnalisés IRONZ PRO ont transformé mes entraînements. Le confort et la durabilité sont incomparables, et le design personnalisé motive mes clients!",
+      title: "",
+      url: "/c1.mp4",
+      poster: img11, 
     },
     {
-      name: "Sarah Legrand",
-      role: "Athlète professionnelle",
-      image: "/placeholder.svg?height=100&width=100",
-      text: "J'ai fait personnaliser ma ceinture de powerlifting aux couleurs de mon équipe. La qualité est exceptionnelle et elle me suit dans toutes mes compétitions.",
-    },
-    {
-      name: "Team FitnessPro",
-      role: "Salle de sport",
-      image: "/placeholder.svg?height=100&width=100",
-      text: "Nous avons équipé toute notre équipe avec des accessoires personnalisés. L'impact sur notre image de marque est considérable, et nos membres adorent!",
+      title: "  ",
+      url: "/c2.mp4",
+      poster: img12, 
     },
   ];
 
-  const processSteps = [
-    {
-      title: "Conception",
-      description:
-        "Nous définissons ensemble vos besoins spécifiques et créons un design qui correspond à vos attentes esthétiques et fonctionnelles.",
-      icon: <Palette />,
-      features: [
-        "Consultation personnalisée",
-        "Choix des matériaux et options",
-        "Création de maquettes 3D",
-      ],
-    },
-    {
-      title: "Fabrication",
-      description:
-        "Nos artisans qualifiés fabriquent votre accessoire sur mesure en utilisant des techniques de production avancées et des matériaux premium.",
-      icon: <Scissors />,
-      features: [
-        "Sélection minutieuse des matériaux",
-        "Fabrication artisanale de précision",
-        "Contrôle qualité rigoureux",
-      ],
-    },
-    {
-      title: "Livraison",
-      description:
-        "Votre accessoire personnalisé est soigneusement emballé et livré directement à votre porte, prêt à être utilisé pour vos entraînements.",
-      icon: <Package />,
-      features: [
-        "Emballage premium éco-responsable",
-        "Livraison rapide et sécurisée",
-        "Suivi en temps réel",
-      ],
-    },
-  ];
+  const handleVideoClick = (video) => {
+    setSelectedVideo(video);
+    setShowModal(true);
+  };
 
   return (
     <>
-      {/* SEO Head Tags */}
       <Head>
         <title>Personnalisation d'Accessoires Fitness | IRONZ PRO</title>
         <meta
@@ -224,9 +172,7 @@ export default function PersonnalisationAccessoiresPage() {
       </Head>
 
       <main className="min-h-screen bg-black text-white overflow-x-hidden">
-        {/* Hero Section with Video Background */}
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
-          {/* Background Video with Gradient Overlay */}
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-black z-10" />
             <video
@@ -243,12 +189,10 @@ export default function PersonnalisationAccessoiresPage() {
             </video>
           </div>
 
-          {/* Hero Content */}
           <motion.div
             style={{ opacity, scale }}
             className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center"
           >
-            {/* Breadcrumb Navigation */}
             <nav
               className="flex justify-center mb-8 text-sm"
               aria-label="Breadcrumb"
@@ -284,7 +228,6 @@ export default function PersonnalisationAccessoiresPage() {
               </ol>
             </nav>
 
-            {/* Hero Badge */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -294,7 +237,6 @@ export default function PersonnalisationAccessoiresPage() {
               Service Premium
             </motion.div>
 
-            {/* Hero Title */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -311,7 +253,6 @@ export default function PersonnalisationAccessoiresPage() {
               </span>
             </motion.h1>
 
-            {/* Hero Description */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -322,7 +263,6 @@ export default function PersonnalisationAccessoiresPage() {
               et répondent parfaitement à vos besoins spécifiques.
             </motion.p>
 
-            {/* Hero Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -343,44 +283,13 @@ export default function PersonnalisationAccessoiresPage() {
                 </span>
                 <span className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
               </button>
-
-              <button
-                onClick={() =>
-                  handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                }
-                className="group relative px-8 py-4 bg-transparent border-2 border-yellow-400/50 hover:border-yellow-400 text-yellow-400 font-bold rounded-full flex items-center transition-all transform hover:scale-105 overflow-hidden"
-              >
-                <span className="relative z-10 flex items-center">
-                  <Play className="h-5 w-5 mr-2" />
-                  Voir notre processus
-                </span>
-                <span className="absolute inset-0 bg-yellow-400/10 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
-              </button>
-            </motion.div>
-
-            {/* Scroll Indicator */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2, duration: 1 }}
-              className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-            >
-              <span className="text-sm text-gray-400 mb-2">Découvrir</span>
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
-              >
-                <ChevronDown className="h-8 w-8 text-yellow-400" />
-              </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Decorative Elements */}
           <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-5"></div>
         </section>
-        {/* Accessory Types Section */}
+
         <section id="explorer" className="py-24 relative" ref={sectionRef}>
-          {/* Background Elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl"></div>
@@ -407,7 +316,6 @@ export default function PersonnalisationAccessoiresPage() {
               </p>
             </motion.div>
 
-            {/* Tabs */}
             <div className="flex flex-wrap justify-center gap-2 mb-16 overflow-x-auto pb-4 scrollbar-hide">
               {accessoryTypes.map((type) => (
                 <motion.button
@@ -426,7 +334,6 @@ export default function PersonnalisationAccessoiresPage() {
               ))}
             </div>
 
-            {/* Tab Content */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
               <motion.div
                 key={activeTab}
@@ -530,181 +437,11 @@ export default function PersonnalisationAccessoiresPage() {
                     </div>
                   </div>
                 </div>
-
-                <button
-                  onClick={() =>
-                    handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                  }
-                  className="group relative px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold rounded-full flex items-center transition-all transform hover:scale-105 shadow-lg shadow-yellow-400/20 overflow-hidden"
-                >
-                  <span className="relative z-10 flex items-center">
-                    <Play className="h-5 w-5 mr-2" />
-                    Voir en action
-                  </span>
-                  <span className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
-                </button>
-              </motion.div>
-
-              <motion.div
-                key={`image-${activeTab}`}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-                className="order-1 md:order-2 relative"
-              >
-                <div className="relative aspect-square overflow-hidden rounded-3xl shadow-2xl border border-yellow-400/20 group">
-                  <Image
-                    src={`/placeholder.svg?height=800&width=800&text=${activeTab}`}
-                    alt={`${activeTab} personnalisés`}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end p-8">
-                    <button
-                      onClick={() =>
-                        handlePlayVideo(
-                          "/placeholder.svg?height=1080&width=1920"
-                        )
-                      }
-                      className="w-16 h-16 bg-yellow-400 hover:bg-yellow-500 rounded-full flex items-center justify-center transition-transform transform hover:scale-110 shadow-lg shadow-yellow-400/30"
-                    >
-                      <Play className="h-8 w-8 text-black ml-1" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="absolute -bottom-6 -right-6  h-32 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center text-black font-bold text-xl p-4 transform rotate-12 shadow-lg">
-                  100% personnalisable
-                </div>
-
-                {/* Floating Badges */}
-                <div className="absolute -top-4 -left-4 px-4 py-2 bg-zinc-800/90 backdrop-blur-sm rounded-full text-yellow-400 text-sm font-medium border border-yellow-400/20 shadow-lg">
-                  <div className="flex items-center">
-                    <Zap className="h-4 w-4 mr-2" />
-                    <span>Fabrication française</span>
-                  </div>
-                </div>
               </motion.div>
             </div>
           </div>
         </section>
-        {/* Process Section with Timeline */}
-        <section className="py-24 relative">
-          {/* Background Elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-yellow-400/5 rounded-full blur-3xl"></div>
-          </div>
 
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8 }}
-              className="max-w-3xl mx-auto text-center mb-16"
-            >
-              <span className="inline-block px-4 py-1 rounded-full bg-yellow-400/20 text-yellow-400 text-sm font-medium mb-4">
-                Comment ça marche
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                Notre <span className="text-yellow-400">processus</span> de
-                personnalisation
-              </h2>
-              <p className="text-xl text-gray-300 leading-relaxed">
-                Une approche en 3 étapes pour créer des accessoires parfaitement
-                adaptés à vos besoins.
-              </p>
-            </motion.div>
-
-            {/* Process Timeline */}
-            <div className="relative">
-              {/* Timeline Line */}
-              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-yellow-400/80 via-yellow-400/50 to-yellow-400/20"></div>
-
-              <div className="space-y-24 relative">
-                {processSteps.map((step, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.6, delay: index * 0.2 }}
-                    className={`flex flex-col ${
-                      index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                    } items-center gap-8 md:gap-16`}
-                  >
-                    {/* Step Number */}
-                    <div className="md:w-1/2 flex md:justify-center">
-                      <div className="relative">
-                        <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center text-black text-4xl font-bold shadow-lg shadow-yellow-400/20 z-10">
-                          {index + 1}
-                        </div>
-                        <div
-                          className="hidden md:block absolute top-1/2 -translate-y-1/2 w-12 h-0.5 bg-yellow-400/50
-                          ${index % 2 === 0 ? 'right-full mr-4' : 'left-full ml-4'}"
-                        ></div>
-                      </div>
-                    </div>
-
-                    {/* Step Content */}
-                    <div className="md:w-1/2 bg-zinc-800/80 backdrop-blur-sm p-8 rounded-3xl border border-yellow-400/10 shadow-xl">
-                      <div className="flex items-center mb-4">
-                        <div className="w-12 h-12 rounded-full bg-yellow-400/20 flex items-center justify-center mr-4">
-                          {step.icon}
-                        </div>
-                        <h3 className="text-2xl font-bold">{`${index + 1}. ${
-                          step.title
-                        }`}</h3>
-                      </div>
-
-                      <p className="text-gray-300 mb-6 leading-relaxed">
-                        {step.description}
-                      </p>
-
-                      <ul className="space-y-3">
-                        {step.features.map((feature, featureIndex) => (
-                          <li key={featureIndex} className="flex items-start">
-                            <CheckCircle className="h-5 w-5 text-yellow-400 mr-3 flex-shrink-0 mt-0.5" />
-                            <span className="text-gray-300">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Process Video */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8 }}
-              className="mt-24"
-            >
-              <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl border border-yellow-400/20 group">
-                <Image
-                  src="/placeholder.svg?height=1080&width=1920&text=Notre+Processus"
-                  alt="Notre processus de personnalisation"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                  <button
-                    onClick={() =>
-                      handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                    }
-                    className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 rounded-full flex items-center justify-center transition-transform transform hover:scale-110 shadow-lg shadow-yellow-400/30"
-                  >
-                    <Play className="h-10 w-10 text-black ml-1" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-        {/* Customization Options */}
         <section className="py-24 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
@@ -756,24 +493,13 @@ export default function PersonnalisationAccessoiresPage() {
                     <p className="text-gray-300 mb-6 leading-relaxed">
                       {option.description}
                     </p>
-                    <button
-                      onClick={() =>
-                        handlePlayVideo(
-                          "/placeholder.svg?height=1080&width=1920"
-                        )
-                      }
-                      className="text-yellow-400 hover:text-yellow-300 font-medium flex items-center group"
-                    >
-                      Découvrir
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </button>
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
-        {/* Gallery Section */}
+
         <section className="py-24 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
@@ -794,33 +520,29 @@ export default function PersonnalisationAccessoiresPage() {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[...Array(8)].map((_, index) => (
+            <div className="grid md:grid-cols-2 gap-4">
+              {videoList.map((video, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer"
-                  onClick={() =>
-                    handlePlayVideo("/placeholder.svg?height=1080&width=1920")
-                  }
+                  className="rounded-2xl border overflow-hidden aspect-video bg-black relative group cursor-pointer"
+                  onClick={() => handleVideoClick(video)}
                 >
-                  <Image
-                    src={`/placeholder.svg?height=500&width=500&text=Réalisation+${
-                      index + 1
-                    }`}
-                    alt={`Réalisation ${index + 1}`}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex flex-col items-center">
-                      <Play className="h-12 w-12 text-yellow-400 mb-2" />
-                      <span className="text-white font-medium">
-                        Voir détails
-                      </span>
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={video.poster}
+                      alt={`Thumbnail for ${video.title}`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity group-hover:opacity-100 opacity-0">
+                      <div className="w-16 h-16 rounded-full bg-yellow-400/80 flex items-center justify-center">
+                        <Play className="h-8 w-8 text-black" />
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -828,9 +550,8 @@ export default function PersonnalisationAccessoiresPage() {
             </div>
           </div>
         </section>
-        {/* CTA Section */}
+
         <section className="py-24 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black relative overflow-hidden">
-          {/* Decorative Elements */}
           <div className="absolute inset-0 overflow-hidden">
             {[...Array(20)].map((_, i) => (
               <div key={i} className="absolute rounded-full bg-white/10"></div>
@@ -866,254 +587,41 @@ export default function PersonnalisationAccessoiresPage() {
             </motion.div>
           </div>
         </section>
-        {/* Contact Form */}
-        <section className="py-24 relative">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="max-w-5xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  <span className="inline-block px-4 py-1 rounded-full bg-yellow-400/20 text-yellow-400 text-sm font-medium mb-4">
-                    Contactez-nous
-                  </span>
-                  <h2 className="text-4xl font-bold mb-6 leading-tight">
-                    Discutons de votre{" "}
-                    <span className="text-yellow-400">projet</span>
-                  </h2>
-                  <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                    Notre équipe d'experts est à votre disposition pour vous
-                    accompagner dans la création de vos accessoires
-                    personnalisés.
-                  </p>
 
-                  <div className="bg-zinc-800/80 backdrop-blur-sm rounded-3xl p-6 mb-8 border border-yellow-400/10">
-                    <h3 className="text-xl font-bold mb-4">
-                      Pourquoi nous choisir?
-                    </h3>
-                    <ul className="space-y-3">
-                      <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-yellow-400 mr-3 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-300">
-                          Expertise dans la personnalisation d'accessoires
-                          fitness
-                        </span>
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-yellow-400 mr-3 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-300">
-                          Matériaux premium et fabrication artisanale
-                        </span>
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-yellow-400 mr-3 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-300">
-                          Processus de personnalisation complet et transparent
-                        </span>
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-yellow-400 mr-3 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-300">
-                          Service client réactif et attentif
-                        </span>
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-yellow-400 mr-3 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-300">
-                          Garantie satisfaction sur tous nos produits
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="bg-zinc-800/80 backdrop-blur-sm rounded-3xl p-6 border border-yellow-400/10">
-                    <h3 className="text-xl font-bold mb-4">Nos coordonnées</h3>
-                    <div className="space-y-4">
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-400/20 flex items-center justify-center">
-                          <svg
-                            className="h-5 w-5 text-yellow-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="ml-4">
-                          <h4 className="text-lg font-medium">Téléphone</h4>
-                          <p className="mt-1 text-gray-300">+212 674-114446</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-400/20 flex items-center justify-center">
-                          <svg
-                            className="h-5 w-5 text-yellow-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="ml-4">
-                          <h4 className="text-lg font-medium">Email</h4>
-                          <p className="mt-1 text-gray-300">
-                            personnalisation@ironzpro.com
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.8 }}
-                  className="bg-zinc-800/80 backdrop-blur-sm rounded-3xl p-8 border border-yellow-400/10 shadow-xl"
-                >
-                  <h3 className="text-2xl font-bold mb-6">Contactez-nous</h3>
-                  <form className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label
-                          htmlFor="name"
-                          className="block text-sm font-medium text-gray-300 mb-1"
-                        >
-                          Nom complet
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          className="w-full px-4 py-3 bg-zinc-700/50 border border-zinc-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
-                          placeholder="Votre nom"
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm font-medium text-gray-300 mb-1"
-                        >
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          className="w-full px-4 py-3 bg-zinc-700/50 border border-zinc-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
-                          placeholder="votre@email.com"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="subject"
-                        className="block text-sm font-medium text-gray-300 mb-1"
-                      >
-                        Sujet
-                      </label>
-                      <input
-                        type="text"
-                        id="subject"
-                        className="w-full px-4 py-3 bg-zinc-700/50 border border-zinc-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
-                        placeholder="Sujet de votre message"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="message"
-                        className="block text-sm font-medium text-gray-300 mb-1"
-                      >
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        rows={5}
-                        className="w-full px-4 py-3 bg-zinc-700/50 border border-zinc-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
-                        placeholder="Décrivez votre projet..."
-                      ></textarea>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-yellow-400/20"
-                    >
-                      Envoyer le message
-                    </button>
-                  </form>
-                </motion.div>
-              </div>
-            </div>
-          </div>
-        </section>
         {/* Video Modal */}
         <AnimatePresence>
-          {showModal && (
-            <>
+          {showModal && selectedVideo && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+              onClick={() => setShowModal(false)}
+            >
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-                onClick={() => setShowModal(false)}
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.9 }}
+                className="relative w-full max-w-4xl"
+                onClick={(e) => e.stopPropagation()}
               >
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.9, opacity: 0 }}
-                  className="relative w-full max-w-5xl aspect-video bg-black rounded-3xl overflow-hidden border border-yellow-400/20 shadow-2xl"
-                  onClick={(e) => e.stopPropagation()}
+                <button
+                  className="absolute -top-12 right-0 text-white hover:text-yellow-400 transition-colors"
+                  onClick={() => setShowModal(false)}
                 >
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black text-white rounded-full transition-colors"
-                  >
-                    <X className="h-6 w-6" />
-                  </button>
-
-                  <video
-                    ref={videoRef}
-                    src={selectedVideo}
-                    className="w-full h-full object-cover"
-                    controls
-                    autoPlay
-                  ></video>
-
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-4">
-                    <button
-                      onClick={() => setVideoPlaying(!videoPlaying)}
-                      className="p-3 bg-yellow-400 hover:bg-yellow-500 text-black rounded-full transition-colors"
-                    >
-                      {videoPlaying ? (
-                        <Pause className="h-6 w-6" />
-                      ) : (
-                        <Play className="h-6 w-6" />
-                      )}
-                    </button>
-                  </div>
-                </motion.div>
+                  <X className="h-8 w-8" />
+                </button>
+                <video
+                  src={selectedVideo.url}
+                  className="w-full rounded-lg"
+                  controls
+                  autoPlay
+                />
               </motion.div>
-            </>
+            </motion.div>
           )}
         </AnimatePresence>
-        {/* Schema.org JSON-LD */}
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -1124,19 +632,19 @@ export default function PersonnalisationAccessoiresPage() {
               provider: {
                 "@type": "Organization",
                 name: "IRONZ PRO",
-                url: "https://www.ironzpro.com",
+                url: "https://www.ironz.ma",
                 logo: "https://www.ironzpro.com/logo.png",
-                telephone: "+33123456789",
-                email: "personnalisation@ironzpro.com",
+                telephone: "+212669510042",
+                email: "muscleironz2019@gmail.com",
               },
               description:
                 "Créez des accessoires fitness uniques qui reflètent votre identité et répondent parfaitement à vos besoins spécifiques.",
               offers: {
                 "@type": "Offer",
                 price: "Sur devis",
-                priceCurrency: "EUR",
+                priceCurrency: "MAD",
               },
-              areaServed: "France",
+              areaServed: "MAROC",
               serviceType: "Personnalisation d'accessoires fitness",
             }),
           }}
