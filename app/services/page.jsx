@@ -330,10 +330,10 @@ export default function ServicesPage() {
 
               <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
                 <h3 className="text-xl font-heading font-bold mb-3">
-                  Les services sont-ils disponibles partout en France ?
+                  Les services sont-ils disponibles partout en Maroc ?
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Oui, nos services sont disponibles dans toute la France
+                  Oui, nos services sont disponibles dans toute la Maroc
                   métropolitaine. Pour les DOM-TOM, veuillez nous contacter pour
                   vérifier la disponibilité.
                 </p>
