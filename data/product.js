@@ -364,7 +364,7 @@ export const products = [
       "cible également les mollets, les fessiers, l'aine, les ischio-jambiers, les fléchisseurs de la hanche, le bas du dos et l'extérieur des cuisses",
       "Le seul équipement de presse à jambes assise dont vous avez réellement besoin est le suivant : une presse à jambes. Il existe cependant de nombreuses variantes de presse pour jambes assises que vous pouvez essayer et qui peuvent nécessiter différents types d'équipement de presse pour jambes assises ou même ne nécessiter aucun équipement du tout.",
     ],
-    price: 210,
+    price: 17999,
     oldPrice: "",
     discount: "",
     image: a21,
