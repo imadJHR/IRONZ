@@ -3,38 +3,27 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Head from "next/head";
-import img11 from "../../../public/img11.png"
-import img12 from "../../../public/img12.png"
-import {
-  motion,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight,
   CheckCircle,
   Palette,
   Scissors,
   Package,
-  ChevronDown,
-  Play,
-  Pause,
-  X,
-  Star,
-  Zap,
   Shield,
   Heart,
 } from "lucide-react";
+import logo from "../../../public/logo.png";
 import img1 from "../../../public/acce1.jpeg";
 import img2 from "../../../public/acce2.jpeg";
 import img3 from "../../../public/acce3.jpeg";
 
 export default function PersonnalisationAccessoiresPage() {
   const [activeTab, setActiveTab] = useState("gants");
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const videoRef = useRef(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
   const sectionRef = useRef(null);
 
@@ -62,6 +51,16 @@ export default function PersonnalisationAccessoiresPage() {
   }, []);
 
   useEffect(() => {
+    if (videoRef.current) {
+      if (videoPlaying) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [videoPlaying]);
+
+  useEffect(() => {
     if (showModal) {
       document.body.style.overflow = "hidden";
     } else {
@@ -75,9 +74,13 @@ export default function PersonnalisationAccessoiresPage() {
 
   const accessoryTypes = [
     { id: "gants", name: "Gants d'entraînement" },
-    { id: "ceintures", name: "Ceintures de musculation" },
+    { id: "ceintures", name: "Ceintures fitness" },
     { id: "sangles", name: "Sangles de levage" },
     { id: "genouilleres", name: "Genouillères" },
+    { id: "wallball", name: "Wall Ball" },
+    { id: "boxjump", name: "Box Jump" },
+    { id: "powerbag", name: "Power Bag" },
+    { id: "sacbulgare", name: "Sac Bulgare" },
     { id: "accessoires", name: "Autres accessoires" },
   ];
 
@@ -105,90 +108,46 @@ export default function PersonnalisationAccessoiresPage() {
     },
   ];
 
-  const videoList = [
+  const processSteps = [
     {
-      title: "",
-      url: "/c1.mp4",
-      poster: img11, 
+      title: "Conception",
+      description:
+        "Nous définissons ensemble vos besoins spécifiques et créons un design qui correspond à vos attentes esthétiques et fonctionnelles.",
+      icon: <Palette />,
+      features: [
+        "Consultation personnalisée",
+        "Choix des matériaux et options",
+        "Création de maquettes 3D",
+      ],
     },
     {
-      title: "  ",
-      url: "/c2.mp4",
-      poster: img12, 
+      title: "Fabrication",
+      description:
+        "Nos artisans qualifiés fabriquent votre accessoire sur mesure en utilisant des techniques de production avancées et des matériaux premium.",
+      icon: <Scissors />,
+      features: [
+        "Sélection minutieuse des matériaux",
+        "Fabrication artisanale de précision",
+        "Contrôle qualité rigoureux",
+      ],
+    },
+    {
+      title: "Livraison",
+      description:
+        "Votre accessoire personnalisé est soigneusement emballé et livré directement à votre porte, prêt à être utilisé pour vos entraînements.",
+      icon: <Package />,
+      features: [
+        "Emballage premium éco-responsable",
+        "Livraison rapide et sécurisée",
+        "Suivi en temps réel",
+      ],
     },
   ];
 
-  const handleVideoClick = (video) => {
-    setSelectedVideo(video);
-    setShowModal(true);
-  };
-
   return (
     <>
-      <Head>
-        <title>Personnalisation d'Accessoires Fitness | IRONZ PRO</title>
-        <meta
-          name="description"
-          content="Créez des accessoires fitness uniques qui reflètent votre identité et répondent parfaitement à vos besoins spécifiques. Gants, ceintures, sangles personnalisés."
-        />
-        <meta
-          name="keywords"
-          content="personnalisation, accessoires fitness, gants d'entraînement, ceintures musculation, sangles levage, genouillères, équipement fitness personnalisé"
-        />
-        <meta
-          property="og:title"
-          content="Personnalisation d'Accessoires Fitness | IRONZ PRO"
-        />
-        <meta
-          property="og:description"
-          content="Créez des accessoires fitness uniques qui reflètent votre identité et répondent parfaitement à vos besoins spécifiques."
-        />
-        <meta
-          property="og:image"
-          content="https://www.ironzpro.com/images/personnalisation-accessoires.jpg"
-        />
-        <meta
-          property="og:url"
-          content="https://www.ironzpro.com/services/personnalisation-accessoires"
-        />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="Personnalisation d'Accessoires Fitness | IRONZ PRO"
-        />
-        <meta
-          name="twitter:description"
-          content="Créez des accessoires fitness uniques qui reflètent votre identité et répondent parfaitement à vos besoins spécifiques."
-        />
-        <meta
-          name="twitter:image"
-          content="https://www.ironzpro.com/images/personnalisation-accessoires.jpg"
-        />
-        <link
-          rel="canonical"
-          href="https://www.ironzpro.com/services/personnalisation-accessoires"
-        />
-      </Head>
-
-      <main className="min-h-screen bg-black text-white overflow-x-hidden">
+      <main className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white overflow-x-hidden">
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-black z-10" />
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover"
-            >
-              <source
-                src="/placeholder.svg?height=1080&width=1920"
-                type="video/mp4"
-              />
-            </video>
-          </div>
-
           <motion.div
             style={{ opacity, scale }}
             className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center"
@@ -263,6 +222,7 @@ export default function PersonnalisationAccessoiresPage() {
               et répondent parfaitement à vos besoins spécifiques.
             </motion.p>
 
+            {/* Hero Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -275,7 +235,7 @@ export default function PersonnalisationAccessoiresPage() {
                     .getElementById("explorer")
                     .scrollIntoView({ behavior: "smooth" })
                 }
-                className="group relative px-8 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(250,204,21,0.3)] hover:shadow-[0_0_25px_rgba(250,204,21,0.5)] overflow-hidden"
+                className="group relative px-8 py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(250,204,21,0.3)] hover:shadow-[0_0_25px_rgba(250,204,21,0.5)] overflow-hidden"
               >
                 <span className="relative z-10 flex items-center">
                   Explorer nos options
@@ -286,10 +246,15 @@ export default function PersonnalisationAccessoiresPage() {
             </motion.div>
           </motion.div>
 
-          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-5"></div>
+          {/* Decorative Elements */}
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-yellow-400 to-transparent z-5"></div>
         </section>
 
-        <section id="explorer" className="py-24 relative" ref={sectionRef}>
+        <section
+          id="explorer"
+          className="py-24 relative bg-gray-50 dark:bg-gray-800/50"
+          ref={sectionRef}
+        >
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl"></div>
@@ -310,12 +275,13 @@ export default function PersonnalisationAccessoiresPage() {
                 Personnalisez vos{" "}
                 <span className="text-yellow-400">accessoires</span>
               </h2>
-              <p className="text-xl text-gray-300 leading-relaxed">
+              <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
                 Découvrez notre gamme d'accessoires entièrement personnalisables
                 pour améliorer vos performances et affirmer votre style.
               </p>
             </motion.div>
 
+            {/* Tabs */}
             <div className="flex flex-wrap justify-center gap-2 mb-16 overflow-x-auto pb-4 scrollbar-hide">
               {accessoryTypes.map((type) => (
                 <motion.button
@@ -325,8 +291,8 @@ export default function PersonnalisationAccessoiresPage() {
                   whileTap={{ scale: 0.95 }}
                   className={`px-6 py-3 rounded-full text-sm md:text-base font-medium transition-all ${
                     activeTab === type.id
-                      ? "bg-gradient-to-r from-yellow-400 to-yellow-500 text-black shadow-lg shadow-yellow-400/20"
-                      : "bg-zinc-800/80 text-gray-300 hover:bg-zinc-700/80 backdrop-blur-sm"
+                      ? "bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-lg shadow-yellow-400/20"
+                      : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm"
                   }`}
                 >
                   {type.name}
@@ -347,31 +313,46 @@ export default function PersonnalisationAccessoiresPage() {
                   {activeTab === "ceintures" && "Support & Stabilité"}
                   {activeTab === "sangles" && "Grip & Sécurité"}
                   {activeTab === "genouilleres" && "Protection Articulaire"}
+                  {activeTab === "wallball" && "Entraînement Fonctionnel"}
+                  {activeTab === "boxjump" && "Entraînement Pliométrique"}
+                  {activeTab === "powerbag" && "Force & Conditionnement"}
+                  {activeTab === "sacbulgare" && "Force & Puissance"}
                   {activeTab === "accessoires" && "Équipement Spécialisé"}
                 </span>
 
                 <h3 className="text-3xl font-bold mb-4 leading-tight">
                   {activeTab === "gants" &&
                     "Gants d'entraînement personnalisés"}
-                  {activeTab === "ceintures" &&
-                    "Ceintures de musculation sur mesure"}
+                  {activeTab === "ceintures" && "Ceintures fitness sur mesure"}
                   {activeTab === "sangles" &&
                     "Sangles de levage personnalisées"}
                   {activeTab === "genouilleres" &&
                     "Genouillères adaptées à vos besoins"}
+                  {activeTab === "wallball" && "Wall Balls personnalisés"}
+                  {activeTab === "boxjump" && "Box Jumps sur mesure"}
+                  {activeTab === "powerbag" && "Power Bags personnalisés"}
+                  {activeTab === "sacbulgare" && "Sacs Bulgares sur mesure"}
                   {activeTab === "accessoires" &&
                     "Accessoires fitness personnalisés"}
                 </h3>
 
-                <p className="text-gray-300 mb-8 leading-relaxed">
+                <p className="text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
                   {activeTab === "gants" &&
                     "Nos gants d'entraînement personnalisés offrent une protection optimale et un style unique. Choisissez les matériaux, les couleurs et les finitions pour créer des gants parfaitement adaptés à votre pratique."}
                   {activeTab === "ceintures" &&
-                    "Soutenez votre dos avec style grâce à nos ceintures de musculation personnalisées. Sélectionnez l'épaisseur, la largeur, les matériaux et ajoutez votre touche personnelle avec des gravures ou broderies."}
+                    "Soutenez votre dos avec style grâce à nos ceintures fitness personnalisées. Sélectionnez l'épaisseur, la largeur, les matériaux et ajoutez votre touche personnelle avec des gravures ou broderies."}
                   {activeTab === "sangles" &&
                     "Améliorez votre grip et protégez vos poignets avec nos sangles de levage sur mesure. Personnalisez la longueur, la rigidité et le design pour des performances optimales."}
                   {activeTab === "genouilleres" &&
                     "Protégez vos articulations avec nos genouillères personnalisées. Adaptez le niveau de compression, le rembourrage et le design pour un confort maximal pendant vos entraînements."}
+                  {activeTab === "wallball" &&
+                    "Personnalisez vos Wall Balls avec des matériaux durables et des designs uniques. Choisissez le poids, la taille et les couleurs pour des entraînements optimaux et un style distinctif."}
+                  {activeTab === "boxjump" &&
+                    "Créez des Box Jumps sur mesure adaptés à votre niveau et à votre espace d'entraînement. Personnalisez la hauteur, la stabilité et l'esthétique pour des performances maximales."}
+                  {activeTab === "powerbag" &&
+                    "Nos Power Bags personnalisables offrent une solution polyvalente pour vos entraînements. Définissez le poids, les matériaux et les poignées pour un équipement parfaitement adapté à vos besoins."}
+                  {activeTab === "sacbulgare" &&
+                    "Personnalisez vos Sacs Bulgares pour des entraînements de force et de puissance optimaux. Choisissez le poids, la taille et les finitions pour un équipement unique et performant."}
                   {activeTab === "accessoires" &&
                     "Découvrez notre gamme complète d'accessoires fitness personnalisables : bandes de résistance, protège-poignets, straps et bien plus encore."}
                 </p>
@@ -382,7 +363,7 @@ export default function PersonnalisationAccessoiresPage() {
                       <CheckCircle className="h-5 w-5 text-yellow-400" />
                     </div>
                     <div className="ml-4">
-                      <p className="text-gray-200">
+                      <p className="text-gray-700 dark:text-gray-200">
                         {activeTab === "gants" &&
                           "Protection optimale des mains et des poignets"}
                         {activeTab === "ceintures" &&
@@ -391,6 +372,14 @@ export default function PersonnalisationAccessoiresPage() {
                           "Amélioration significative de votre grip"}
                         {activeTab === "genouilleres" &&
                           "Protection articulaire pendant les exercices intenses"}
+                        {activeTab === "wallball" &&
+                          "Matériaux résistants pour une durabilité maximale"}
+                        {activeTab === "boxjump" &&
+                          "Construction robuste supportant des charges importantes"}
+                        {activeTab === "powerbag" &&
+                          "Poignées ergonomiques pour une prise en main optimale"}
+                        {activeTab === "sacbulgare" &&
+                          "Répartition optimale du poids pour des mouvements fluides"}
                         {activeTab === "accessoires" &&
                           "Amélioration de vos performances sportives"}
                       </p>
@@ -402,7 +391,7 @@ export default function PersonnalisationAccessoiresPage() {
                       <CheckCircle className="h-5 w-5 text-yellow-400" />
                     </div>
                     <div className="ml-4">
-                      <p className="text-gray-200">
+                      <p className="text-gray-700 dark:text-gray-200">
                         {activeTab === "gants" &&
                           "Matériaux respirants et durables"}
                         {activeTab === "ceintures" &&
@@ -411,6 +400,14 @@ export default function PersonnalisationAccessoiresPage() {
                           "Confort et sécurité pendant les soulevés lourds"}
                         {activeTab === "genouilleres" &&
                           "Confort et liberté de mouvement"}
+                        {activeTab === "wallball" &&
+                          "Différentes options de poids disponibles"}
+                        {activeTab === "boxjump" &&
+                          "Surface antidérapante pour une sécurité maximale"}
+                        {activeTab === "powerbag" &&
+                          "Différentes formes et tailles disponibles"}
+                        {activeTab === "sacbulgare" &&
+                          "Matériaux premium pour une longue durée de vie"}
                         {activeTab === "accessoires" &&
                           "Design unique qui reflète votre personnalité"}
                       </p>
@@ -422,7 +419,7 @@ export default function PersonnalisationAccessoiresPage() {
                       <CheckCircle className="h-5 w-5 text-yellow-400" />
                     </div>
                     <div className="ml-4">
-                      <p className="text-gray-200">
+                      <p className="text-gray-700 dark:text-gray-200">
                         {activeTab === "gants" &&
                           "Design personnalisé avec vos couleurs et logo"}
                         {activeTab === "ceintures" &&
@@ -431,6 +428,14 @@ export default function PersonnalisationAccessoiresPage() {
                           "Options de personnalisation étendues"}
                         {activeTab === "genouilleres" &&
                           "Personnalisation esthétique et fonctionnelle"}
+                        {activeTab === "wallball" &&
+                          "Personnalisation complète (logo, couleurs, textures)"}
+                        {activeTab === "boxjump" &&
+                          "Design personnalisable selon vos besoins"}
+                        {activeTab === "powerbag" &&
+                          "Options de personnalisation étendues"}
+                        {activeTab === "sacbulgare" &&
+                          "Finitions personnalisées pour un look unique"}
                         {activeTab === "accessoires" &&
                           "Fabrication sur mesure selon vos spécifications"}
                       </p>
@@ -438,11 +443,114 @@ export default function PersonnalisationAccessoiresPage() {
                   </div>
                 </div>
               </motion.div>
+
+              <Image
+                src={logo}
+                alt="logo"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className="order-1 md:order-2 relative"
+              ></Image>
             </div>
           </div>
         </section>
 
         <section className="py-24 relative">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-yellow-400/5 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8 }}
+              className="max-w-3xl mx-auto text-center mb-16"
+            >
+              <span className="inline-block px-4 py-1 rounded-full bg-yellow-400/20 text-yellow-400 text-sm font-medium mb-4">
+                Comment ça marche
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                Notre <span className="text-yellow-400">processus</span> de
+                personnalisation
+              </h2>
+              <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                Une approche en 3 étapes pour créer des accessoires parfaitement
+                adaptés à vos besoins.
+              </p>
+            </motion.div>
+
+            <div className="relative">
+              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-yellow-400/80 via-yellow-400/50 to-yellow-400/20"></div>
+
+              <div className="space-y-24 relative">
+                {processSteps.map((step, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                    className={`flex flex-col ${
+                      index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                    } items-center gap-8 md:gap-16`}
+                  >
+                    {/* Step Number */}
+                    <div className="md:w-1/2 flex md:justify-center">
+                      <div className="relative">
+                        <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-black text-4xl font-bold shadow-lg shadow-yellow-400/20 z-10">
+                          {index + 1}
+                        </div>
+                        <div
+                          className="hidden md:block absolute top-1/2 -translate-y-1/2 w-12 h-0.5 bg-yellow-400/50 
+                          ${index % 2 === 0 ? 'right-full mr-4' : 'left-full ml-4'}"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div className="md:w-1/2 bg-white dark:bg-gray-800 backdrop-blur-sm p-8 rounded-3xl border border-gray-200 dark:border-gray-700 shadow-xl">
+                      <div className="flex items-center mb-4">
+                        <div className="w-12 h-12 rounded-full bg-yellow-400/20 flex items-center justify-center mr-4">
+                          {step.icon}
+                        </div>
+                        <h3 className="text-2xl font-bold">{`${index + 1}. ${
+                          step.title
+                        }`}</h3>
+                      </div>
+
+                      <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                        {step.description}
+                      </p>
+
+                      <ul className="space-y-3">
+                        {step.features.map((feature, featureIndex) => (
+                          <li key={featureIndex} className="flex items-start">
+                            <CheckCircle className="h-5 w-5 text-yellow-400 mr-3 flex-shrink-0 mt-0.5" />
+                            <span className="text-gray-700 dark:text-gray-300">
+                              {feature}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8 }}
+              className="mt-24"
+            ></motion.div>
+          </div>
+        </section>
+
+        <section className="py-24 relative bg-gray-50 dark:bg-gray-800/50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -458,7 +566,7 @@ export default function PersonnalisationAccessoiresPage() {
                 Options de{" "}
                 <span className="text-yellow-400">personnalisation</span>
               </h2>
-              <p className="text-xl text-gray-300 leading-relaxed">
+              <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
                 Explorez les nombreuses possibilités pour créer des accessoires
                 uniques qui vous ressemblent.
               </p>
@@ -472,7 +580,7 @@ export default function PersonnalisationAccessoiresPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group bg-gradient-to-b from-zinc-800/90 to-zinc-900/90 backdrop-blur-sm rounded-3xl overflow-hidden border border-yellow-400/10 shadow-xl hover:shadow-2xl hover:shadow-yellow-400/5 transition-all duration-300 hover:-translate-y-2"
+                  className="group bg-white dark:bg-gray-800 backdrop-blur-sm rounded-3xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-xl hover:shadow-2xl hover:shadow-yellow-400/5 transition-all duration-300 hover:-translate-y-2"
                 >
                   <div className="relative h-64 overflow-hidden">
                     <Image
@@ -490,7 +598,7 @@ export default function PersonnalisationAccessoiresPage() {
                   </div>
                   <div className="p-8">
                     <h3 className="text-2xl font-bold mb-3">{option.title}</h3>
-                    <p className="text-gray-300 mb-6 leading-relaxed">
+                    <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
                       {option.description}
                     </p>
                   </div>
@@ -500,64 +608,7 @@ export default function PersonnalisationAccessoiresPage() {
           </div>
         </section>
 
-        <section className="py-24 relative">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8 }}
-              className="max-w-3xl mx-auto text-center mb-16"
-            >
-              <span className="inline-block px-4 py-1 rounded-full bg-yellow-400/20 text-yellow-400 text-sm font-medium mb-4">
-                Nos créations
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                Galerie de <span className="text-yellow-400">réalisations</span>
-              </h2>
-              <p className="text-xl text-gray-300 leading-relaxed">
-                Découvrez quelques exemples de nos créations personnalisées.
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              {videoList.map((video, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="rounded-2xl border overflow-hidden aspect-video bg-black relative group cursor-pointer"
-                  onClick={() => handleVideoClick(video)}
-                >
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={video.poster}
-                      alt={`Thumbnail for ${video.title}`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity group-hover:opacity-100 opacity-0">
-                      <div className="w-16 h-16 rounded-full bg-yellow-400/80 flex items-center justify-center">
-                        <Play className="h-8 w-8 text-black" />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-24 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black relative overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden">
-            {[...Array(20)].map((_, i) => (
-              <div key={i} className="absolute rounded-full bg-white/10"></div>
-            ))}
-          </div>
-
+        <section className="py-24 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black relative overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -575,80 +626,18 @@ export default function PersonnalisationAccessoiresPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/demande-devis">
-                  <button className="group relative px-8 py-4 bg-black text-white font-bold rounded-full transition-all transform hover:scale-105 shadow-lg overflow-hidden">
-                    <span className="relative z-10 flex items-center">
-                      Demander un devis gratuit
-                      <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
-                    </span>
-                    <span className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
-                  </button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-6 py-3 bg-black text-white font-medium rounded-lg shadow-md w-full sm:w-auto"
+                  >
+                    Demander un devis gratuit
+                  </motion.button>
                 </Link>
               </div>
             </motion.div>
           </div>
         </section>
-
-        {/* Video Modal */}
-        <AnimatePresence>
-          {showModal && selectedVideo && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-              onClick={() => setShowModal(false)}
-            >
-              <motion.div
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.9 }}
-                className="relative w-full max-w-4xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  className="absolute -top-12 right-0 text-white hover:text-yellow-400 transition-colors"
-                  onClick={() => setShowModal(false)}
-                >
-                  <X className="h-8 w-8" />
-                </button>
-                <video
-                  src={selectedVideo.url}
-                  className="w-full rounded-lg"
-                  controls
-                  autoPlay
-                />
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Service",
-              name: "Personnalisation d'Accessoires Fitness",
-              provider: {
-                "@type": "Organization",
-                name: "IRONZ PRO",
-                url: "https://www.ironz.ma",
-                logo: "https://www.ironzpro.com/logo.png",
-                telephone: "+212669510042",
-                email: "muscleironz2019@gmail.com",
-              },
-              description:
-                "Créez des accessoires fitness uniques qui reflètent votre identité et répondent parfaitement à vos besoins spécifiques.",
-              offers: {
-                "@type": "Offer",
-                price: "Sur devis",
-                priceCurrency: "MAD",
-              },
-              areaServed: "MAROC",
-              serviceType: "Personnalisation d'accessoires fitness",
-            }),
-          }}
-        />
       </main>
     </>
   );
