@@ -111,7 +111,7 @@ export const categories = [
   {
     id: "1",
     image: img1,
-    name: "home gym",
+    name: "Home Gym",
     href: "/categories/home-gym",
     icon: "Dumbbell",
     description: "Matériel et équipements pour l'entraînement à domicile",
@@ -119,7 +119,7 @@ export const categories = [
   {
     id: "2",
     image: img2,
-    name: "équipements",
+    name: "Equipements",
     href: "/categories/equipements",
     icon: "Settings",
     description: "Matériel professionnel pour le sport et la remise en forme",
@@ -127,7 +127,7 @@ export const categories = [
   {
     id: "3",
     image: img3,
-    name: "supplément",
+    name: "Supplément",
     href: "/categories/supplement",
     icon: "Pill",
     description:
@@ -136,7 +136,7 @@ export const categories = [
   {
     id: "4",
     image: img4,
-    name: "accessoires",
+    name: "Accessoires",
     href: "/categories/accessoires",
     icon: "Package",
     description: "Accessoires indispensables pour le sport et le bien-être",
