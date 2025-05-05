@@ -23,7 +23,7 @@ import {
   Mail,
   Linkedin,
   Whatsapp,
-  Pinterest
+  Pinterest,
 } from "lucide-react";
 import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
@@ -280,11 +280,17 @@ export default function ProductPage() {
       <Head>
         <title>{product.name} - Achetez en ligne chez IRONZ</title>
         <meta name="description" content={product.description} />
-        <meta name="keywords" content={`${product.name}, fitness, équipement, achat en ligne`} />
+        <meta
+          name="keywords"
+          content={`${product.name}, fitness, équipement, achat en ligne`}
+        />
         <meta property="og:title" content={product.name} />
         <meta property="og:description" content={product.description} />
         <meta property="og:image" content={product.image} />
-        <meta property="og:url" content={`https://ironz.ma/produits/${product.slug}`} />
+        <meta
+          property="og:url"
+          content={`https://ironz.ma/produits/${product.slug}`}
+        />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <main className="bg-gray-50 dark:bg-gray-900 pt-8 pb-16">

@@ -146,6 +146,7 @@ export const categories = [
 export const products = [
   {
     id: "1",
+    promotionType: "summer",
     name: "Tapis de Yoga ECO-FRIENDLY EVA",
     slug: "Tapis-de-Yoga-ECO-FRIENDLY-EVA",
     description:
@@ -172,16 +173,6 @@ export const products = [
     inStock: true,
     stockQuantity: 45,
     tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
-
-    colors: ["Gris", "Violet", "Vert", "Bleu"],
-    materials: ["Acier", "Mousse haute densité", "Similicuir"],
-    warranty: "2 ans",
-    shipping: {
-      dimensions: "130 x 70 x 20 cm",
-      weight: 28,
-      method: "Standard",
-      estimatedDelivery: "3-5 jours ouvrés",
-    },
     relatedProducts: ["3", "7", "9"],
   },
   {
@@ -1134,34 +1125,6 @@ export const products = [
     promotionType: "bundle",
   },
   {
-    id: "31",
-    name: "Créatine Creapure 7Nutrition – 500g",
-    slug: "creatine-creapure-7nutrition-500g",
-    description: "Créatine Creapure 7Nutrition – 500g",
-    features: [
-      "Pureté et Qualité : Formulée avec 95% de créatine Creapure, garantie de pureté et qualité supérieure.",
-      "Contenance : 500g de créatine monohydrate pour booster vos performances sportives.",
-      "Augmente la puissance et l'endurance musculaire.",
-      "Favorise la récupération après l'entraînement.",
-      "Aide au développement de la masse musculaire.",
-    ],
-    price: 649,
-    oldPrice: "",
-    discount: "",
-    image: a77,
-    gallery: [a77],
-    category: "Supplément",
-    categoryId: "3",
-    rating: 4.7,
-    reviewCount: 124,
-    isNew: false,
-    isFeatured: false,
-    inStock: false,
-    stockQuantity: 45,
-    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
-    relatedProducts: ["3", "7", "9"],
-  },
-  {
     id: "32",
     name: "Vélo pour enfants de la marque Milayo",
     slug: "velo-pour-enfants-de-la-marque-milayo-1",
@@ -1685,13 +1648,10 @@ export const filters = {
   ],
 };
 export const productUtils = {
-  
   getDiscountedProducts: () =>
     products.filter((product) => product.discount > 0),
 
-  
   getNewProducts: () => products.filter((product) => product.isNew),
-
 
   getFeaturedProducts: () => products.filter((product) => product.isFeatured),
 
