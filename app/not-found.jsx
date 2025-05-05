@@ -1,37 +1,47 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { Home, Search, ArrowLeft, RefreshCw, Compass, MapPin, Frown, Smile, ChevronRight } from "lucide-react"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  Home,
+  Search,
+  ArrowLeft,
+  RefreshCw,
+  Compass,
+  MapPin,
+  Frown,
+  Smile,
+  ChevronRight,
+} from "lucide-react";
 
 export default function NotFound() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [isSearching, setIsSearching] = useState(false)
-  const [isHoveringButton, setIsHoveringButton] = useState(false)
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
-  const [isMounted, setIsMounted] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isSearching, setIsSearching] = useState(false);
+  const [isHoveringButton, setIsHoveringButton] = useState(false);
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const [isMounted, setIsMounted] = useState(false);
 
   // Set isMounted to true when component mounts
   useEffect(() => {
-    setIsMounted(true)
+    setIsMounted(true);
     setWindowSize({
       width: window.innerWidth,
       height: window.innerHeight,
-    })
+    });
 
     // Handle window resize
     const handleResize = () => {
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
-      })
-    }
+      });
+    };
 
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Track mouse position for parallax effect
   useEffect(() => {
@@ -39,26 +49,26 @@ export default function NotFound() {
       setMousePosition({
         x: e.clientX / windowSize.width - 0.5,
         y: e.clientY / windowSize.height - 0.5,
-      })
-    }
+      });
+    };
 
     if (isMounted) {
-      window.addEventListener("mousemove", handleMouseMove)
-      return () => window.removeEventListener("mousemove", handleMouseMove)
+      window.addEventListener("mousemove", handleMouseMove);
+      return () => window.removeEventListener("mousemove", handleMouseMove);
     }
-  }, [isMounted, windowSize])
+  }, [isMounted, windowSize]);
 
   // Simulate search functionality
   const handleSearch = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (searchQuery.trim()) {
-      setIsSearching(true)
+      setIsSearching(true);
       setTimeout(() => {
-        setIsSearching(false)
-        setSearchQuery("")
-      }, 2000)
+        setIsSearching(false);
+        setSearchQuery("");
+      }, 2000);
     }
-  }
+  };
 
   // Popular pages for quick navigation
   const popularPages = [
@@ -67,22 +77,22 @@ export default function NotFound() {
     { name: "Services", path: "/services" },
     { name: "À propos", path: "/a-propos" },
     { name: "Contact", path: "/contact" },
-  ]
+  ];
 
   // Generate random positions for background elements
   const generateRandomPosition = (index) => {
-    if (!isMounted) return { x: 0, y: 0, scale: 1 }
+    if (!isMounted) return { x: 0, y: 0, scale: 1 };
 
-    const randomX = Math.random() * windowSize.width
-    const randomY = Math.random() * windowSize.height
-    const randomScale = Math.random() * 0.5 + 0.5
+    const randomX = Math.random() * windowSize.width;
+    const randomY = Math.random() * windowSize.height;
+    const randomScale = Math.random() * 0.5 + 0.5;
 
     return {
       x: randomX,
       y: randomY,
       scale: randomScale,
-    }
-  }
+    };
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
@@ -90,8 +100,9 @@ export default function NotFound() {
       {isMounted && (
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(windowSize.width < 768 ? 10 : 20)].map((_, i) => {
-            const randomPos = generateRandomPosition(i)
-            const randomSize = Math.random() * (windowSize.width < 768 ? 100 : 200) + 50
+            const randomPos = generateRandomPosition(i);
+            const randomSize =
+              Math.random() * (windowSize.width < 768 ? 100 : 200) + 50;
 
             return (
               <motion.div
@@ -119,7 +130,7 @@ export default function NotFound() {
                   opacity: Math.random() * 0.5 + 0.1,
                 }}
               />
-            )
+            );
           })}
         </div>
       )}
@@ -172,7 +183,11 @@ export default function NotFound() {
                 <motion.div
                   className="relative flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32"
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                  transition={{
+                    duration: 20,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: "linear",
+                  }}
                 >
                   <div className="absolute inset-0 rounded-full border-2 border-dashed border-yellow-400/50 dark:border-yellow-400/30" />
                 </motion.div>
@@ -189,7 +204,11 @@ export default function NotFound() {
                     repeatType: "reverse",
                   }}
                 >
-                  {isHoveringButton ? <Smile className="text-yellow-500" /> : <Frown className="text-yellow-500" />}
+                  {isHoveringButton ? (
+                    <Smile className="text-yellow-500" />
+                  ) : (
+                    <Frown className="text-yellow-500" />
+                  )}
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -217,7 +236,8 @@ export default function NotFound() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
             >
-              Oups ! Vous vous êtes <span className="text-yellow-500">égaré</span>
+              Oups ! Vous vous êtes{" "}
+              <span className="text-yellow-500">égaré</span>
             </motion.h1>
 
             <motion.p
@@ -226,8 +246,9 @@ export default function NotFound() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
             >
-              La page que vous recherchez semble avoir disparu dans l'espace-temps. Pas d'inquiétude, nous pouvons vous
-              aider à retrouver votre chemin.
+              La page que vous recherchez semble avoir disparu dans
+              l'espace-temps. Pas d'inquiétude, nous pouvons vous aider à
+              retrouver votre chemin.
             </motion.p>
 
             <motion.div
@@ -235,7 +256,9 @@ export default function NotFound() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.6 }}
             >
-              <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4 text-gray-800 dark:text-gray-200">Pages populaires</h3>
+              <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4 text-gray-800 dark:text-gray-200">
+                Pages populaires
+              </h3>
 
               <div className="flex flex-wrap justify-center lg:justify-start gap-2 sm:gap-3">
                 {popularPages.map((page, index) => (
@@ -290,5 +313,5 @@ export default function NotFound() {
         </div>
       </div>
     </div>
-  )
+  );
 }
