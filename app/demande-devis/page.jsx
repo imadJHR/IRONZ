@@ -73,11 +73,10 @@ export default function DemandeDevisPage() {
   ];
 
   const budgetOptions = [
-    { value: "moins-5000", label: "Moins de 5 000 MAD" },
-    { value: "5000-10000", label: "5 000 MAD - 10 000 MAD" },
-    { value: "10000-20000", label: "10 000 MAD - 20 000 MAD" },
-    { value: "20000-50000", label: "20 000 MAD - 50 000 MAD" },
-    { value: "plus-50000", label: "Plus de 50 000 MAD" },
+    { value: "8000-10000", label: "8 000 MAD - 25 000 MAD" },
+    { value: "10000-20000", label: "28 000 MAD - 35 000 MAD" },
+    { value: "20000-50000", label: "35 000 MAD - 50 000 MAD" },
+    { value: "plus-50000", label: "Plus de 70 000 MAD" },
     { value: "a-definir", label: "À définir" },
   ];
 

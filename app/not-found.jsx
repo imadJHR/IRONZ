@@ -89,9 +89,9 @@ export default function NotFound() {
       {/* Animated background elements - Only render when component is mounted */}
       {isMounted && (
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => {
+          {[...Array(windowSize.width < 768 ? 10 : 20)].map((_, i) => {
             const randomPos = generateRandomPosition(i)
-            const randomSize = Math.random() * 200 + 50
+            const randomSize = Math.random() * (windowSize.width < 768 ? 100 : 200) + 50
 
             return (
               <motion.div
@@ -124,10 +124,10 @@ export default function NotFound() {
         </div>
       )}
 
-      <div className="container max-w-5xl mx-auto z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div className="container max-w-5xl mx-auto z-10 px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-20 items-center">
           {/* Left column: 404 visual */}
-          <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1 flex justify-center lg:justify-start">
             <motion.div
               className="relative"
               initial={{ opacity: 0, y: 50 }}
@@ -135,15 +135,15 @@ export default function NotFound() {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <motion.div
-                className="text-[180px] md:text-[250px] font-extrabold leading-none text-center lg:text-left"
+                className="text-[120px] sm:text-[180px] md:text-[220px] lg:text-[250px] font-extrabold leading-none text-center lg:text-left"
                 style={{
                   textShadow: "6px 6px 0px rgba(250, 204, 21, 0.5)",
                   WebkitTextStroke: "2px rgba(250, 204, 21, 0.8)",
                   color: "transparent",
                 }}
                 animate={{
-                  x: mousePosition.x * 20,
-                  y: mousePosition.y * 20,
+                  x: mousePosition.x * (windowSize.width < 768 ? 10 : 20),
+                  y: mousePosition.y * (windowSize.width < 768 ? 10 : 20),
                 }}
                 transition={{ type: "spring", stiffness: 75, damping: 30 }}
               >
@@ -151,7 +151,7 @@ export default function NotFound() {
               </motion.div>
 
               <motion.div
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-yellow-400/20 blur-3xl"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-yellow-400/20 blur-3xl"
                 animate={{
                   scale: [1, 1.2, 1],
                   opacity: [0.5, 0.8, 0.5],
@@ -164,13 +164,13 @@ export default function NotFound() {
               />
 
               <motion.div
-                className="absolute -bottom-10 left-1/2 transform -translate-x-1/2"
+                className="absolute -bottom-8 sm:-bottom-10 left-1/2 transform -translate-x-1/2"
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
               >
                 <motion.div
-                  className="relative flex items-center justify-center w-32 h-32"
+                  className="relative flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                 >
@@ -178,7 +178,7 @@ export default function NotFound() {
                 </motion.div>
 
                 <motion.div
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl"
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-5xl sm:text-6xl"
                   animate={{
                     rotate: [0, 10, 0, -10, 0],
                     scale: [1, 1.1, 1, 1.1, 1],
@@ -206,13 +206,13 @@ export default function NotFound() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="inline-block px-4 py-1 rounded-full bg-yellow-400/20 text-yellow-500 text-sm font-medium mb-6"
+              className="inline-block px-3 py-1 sm:px-4 sm:py-1 rounded-full bg-yellow-400/20 text-yellow-500 text-sm font-medium mb-4 sm:mb-6"
             >
               Page introuvable
             </motion.div>
 
             <motion.h1
-              className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
@@ -221,7 +221,7 @@ export default function NotFound() {
             </motion.h1>
 
             <motion.p
-              className="text-lg text-gray-600 dark:text-gray-300 mb-8"
+              className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
@@ -235,9 +235,9 @@ export default function NotFound() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.6 }}
             >
-              <h3 className="text-lg font-medium mb-4 text-gray-800 dark:text-gray-200">Pages populaires</h3>
+              <h3 className="text-base sm:text-lg font-medium mb-3 sm:mb-4 text-gray-800 dark:text-gray-200">Pages populaires</h3>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap justify-center lg:justify-start gap-2 sm:gap-3">
                 {popularPages.map((page, index) => (
                   <motion.div
                     key={page.path}
@@ -246,15 +246,15 @@ export default function NotFound() {
                     transition={{ delay: 0.8 + index * 0.1, duration: 0.5 }}
                   >
                     <Link href={page.path}>
-                      <span className="inline-flex items-center px-4 py-2 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-yellow-50 dark:hover:bg-gray-700 hover:text-yellow-500 dark:hover:text-yellow-400 hover:border-yellow-200 dark:hover:border-yellow-800 transition-all">
+                      <span className="inline-flex items-center px-3 py-1 sm:px-4 sm:py-2 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:bg-yellow-50 dark:hover:bg-gray-700 hover:text-yellow-500 dark:hover:text-yellow-400 hover:border-yellow-200 dark:hover:border-yellow-800 transition-all">
                         {page.name === "Accueil" ? (
-                          <Home className="mr-2" size={16} />
+                          <Home className="mr-1 sm:mr-2" size={14} />
                         ) : page.name === "Produits" ? (
-                          <Compass className="mr-2" size={16} />
+                          <Compass className="mr-1 sm:mr-2" size={14} />
                         ) : page.name === "Contact" ? (
-                          <MapPin className="mr-2" size={16} />
+                          <MapPin className="mr-1 sm:mr-2" size={14} />
                         ) : (
-                          <div className="w-4 mr-2" />
+                          <div className="w-3 sm:w-4 mr-1 sm:mr-2" />
                         )}
                         {page.name}
                       </span>
@@ -266,21 +266,21 @@ export default function NotFound() {
 
             {/* Back button */}
             <motion.div
-              className="mt-10"
+              className="mt-8 sm:mt-10 flex justify-center lg:justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, duration: 0.6 }}
             >
               <Link href="/">
                 <motion.button
-                  className="group relative px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-medium rounded-full transition-all transform hover:scale-105 shadow-lg hover:shadow-yellow-400/30"
+                  className="group relative px-5 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-medium rounded-full transition-all transform hover:scale-105 shadow-lg hover:shadow-yellow-400/30 text-sm sm:text-base"
                   onMouseEnter={() => setIsHoveringButton(true)}
                   onMouseLeave={() => setIsHoveringButton(false)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <span className="relative z-10 flex items-center">
-                    <ArrowLeft className="mr-2 h-5 w-5 transition-transform group-hover:-translate-x-1" />
+                    <ArrowLeft className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:-translate-x-1" />
                     Retour à l'accueil
                   </span>
                 </motion.button>
