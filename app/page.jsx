@@ -2,7 +2,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import logo from "../public/logo.png"
-import { ArrowRight, CheckCircle, TrendingUp, Award, ChevronRight, Star, ShoppingCart, Truck } from "lucide-react"
+import { ArrowRight, CheckCircle, TrendingUp, Award, ChevronRight, Star, ShoppingCart, Truck, Sparkles } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
 import { MessageSquare, X, Send, ChevronDown, Lightbulb, RefreshCw, CreditCard, Phone, Tag } from "lucide-react"
@@ -609,52 +609,95 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Categories Section - Grille responsive améliorée */}
-        <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
+        <section className="py-20 md:py-28 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+            <div className="text-center mb-16">
+              <span className="inline-block px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-full text-yellow-600 dark:text-yellow-400 text-sm font-medium mb-4">
+                Explorez nos collections
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white font-sans tracking-tight">
                 Nos <span className="text-yellow-500">Catégories</span>
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Explorez notre large sélection de produits pour tous vos besoins en fitness et arts martiaux
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
+                Découvrez notre sélection d'équipements premium pour tous vos besoins fitness
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
               {categories.map((category, index) => (
                 <motion.div
                   key={category.id}
-                  className="group relative rounded-xl overflow-hidden h-60 sm:h-64 md:h-72 bg-gray-800 hover:shadow-lg transition-shadow"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="group relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col h-full border border-gray-100 dark:border-gray-700"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10"></div>
-                  <Image
-                    src={category.image || "/placeholder.svg?height=300&width=400"}
-                    alt={category.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    priority={index < 2}
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-20">
-                    <h3 className="text-white font-medium text-xl mb-2 group-hover:text-yellow-400 transition-colors">
+                  <div className="relative h-56 overflow-hidden">
+                    <Image
+                      src={category.image || "/placeholder.svg?height=300&width=400"}
+                      alt={category.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      priority={index < 2}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-70 transition-opacity duration-300"></div>
+
+                    {/* Icône de catégorie */}
+                    <div className="absolute top-4 right-4 w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 group-hover:rotate-0 transition-transform duration-300">
+                      {category.id === "musculation" && <Dumbbell className="h-6 w-6 text-yellow-500" />}
+                      {category.id === "cardio" && <Heart className="h-6 w-6 text-yellow-500" />}
+                      {category.id === "crossfit" && <Activity className="h-6 w-6 text-yellow-500" />}
+                      {category.id === "boxe" && <Flame className="h-6 w-6 text-yellow-500" />}
+                      {category.id === "accessoires" && <Package className="h-6 w-6 text-yellow-500" />}
+                      {category.id === "nutrition" && <Apple className="h-6 w-6 text-yellow-500" />}
+                      {!["musculation", "cardio", "crossfit", "boxe", "accessoires", "nutrition"].includes(
+                        category.id,
+                      ) && <Sparkles className="h-6 w-6 text-yellow-500" /> && (
+                          <Sparkles className="h-6 w-6 text-yellow-500" />
+                        )}
+                    </div>
+                  </div>
+
+                  <div className="p-6 flex flex-col flex-grow">
+                    <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-yellow-500 transition-colors duration-300">
                       {category.name}
                     </h3>
-                    <p className="text-gray-300 text-sm mb-4 line-clamp-2 opacity-80 group-hover:opacity-100 transition-opacity">
-                      {category.description || "Découvrez notre sélection de produits"}
+                    <p className="text-gray-600 dark:text-gray-400 mb-5 line-clamp-3 flex-grow">
+                      {category.description ||
+                        "Découvrez notre sélection de produits de qualité professionnelle pour tous vos besoins."}
                     </p>
+
                     <Link
                       href={category.href}
-                      className="inline-flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-medium group"
+                      className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium group/link mt-auto"
                     >
-                      Découvrir
-                      <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      <span>Explorer la catégorie</span>
+                      <ArrowRight className="ml-2 h-4 w-4 transform group-hover/link:translate-x-1 transition-transform" />
                     </Link>
+                  </div>
+
+                  {/* Badge nombre de produits */}
+                  <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-sm text-white text-xs font-medium px-3 py-1 rounded-full">
+                    {category.productCount || "12+"} produits
                   </div>
                 </motion.div>
               ))}
+            </div>
+
+            <div className="mt-16 text-center">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500/10 font-medium rounded-xl"
+              >
+                <Link href="/categories">
+                  Voir toutes les catégories
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
