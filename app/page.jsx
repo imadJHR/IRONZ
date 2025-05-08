@@ -1,52 +1,26 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  ArrowRight,
-  CheckCircle,
-  TrendingUp,
-  Award,
-  ChevronRight,
-  Star,
-  ShoppingCart,
-  Badge,
-  Truck,
-} from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
-import {
-  MessageSquare,
-  X,
-  Send,
-  Bot,
-  ChevronDown,
-  Lightbulb,
-  RefreshCw,
-  CreditCard,
-  Phone,
-  Tag,
-} from "lucide-react";
+"use client"
+import Image from "next/image"
+import Link from "next/link"
+import logo from "../public/logo.png"
+import { ArrowRight, CheckCircle, TrendingUp, Award, ChevronRight, Star, ShoppingCart, Truck } from "lucide-react"
+import { AnimatePresence, motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { MessageSquare, X, Send, ChevronDown, Lightbulb, RefreshCw, CreditCard, Phone, Tag } from "lucide-react"
 
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import BrandsMarquee from "@/components/brands-marquee";
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import BrandsMarquee from "@/components/brands-marquee"
 
-import { categories, brands, productUtils } from "@/data/product";
-import { useCart } from "@/context/cart-context";
-import { useFavorites } from "@/context/favorites-context";
-import { cn } from "@/lib/utils";
-import { Heart } from "lucide-react";
+import { categories, brands, productUtils } from "@/data/product"
+import { useCart } from "@/context/cart-context"
+import { useFavorites } from "@/context/favorites-context"
+import { cn } from "@/lib/utils"
+import { Heart } from "lucide-react"
 
 const faqs = [
   {
-    question:
-      "Comment choisir le bon équipement pour ma salle de sport à domicile ?",
+    question: "Comment choisir le bon équipement pour ma salle de sport à domicile ?",
     answer:
       "Pour choisir le bon équipement, considérez d'abord vos objectifs fitness, l'espace disponible et votre budget. Nous recommandons de commencer par des équipements polyvalents comme un banc réglable, des haltères ajustables et un tapis de sol. N'hésitez pas à contacter notre équipe pour des conseils personnalisés.",
   },
@@ -66,30 +40,23 @@ const faqs = [
       "Nous offrons une garantie de satisfaction de 30 jours. Si vous n'êtes pas satisfait de votre achat, vous pouvez retourner le produit dans son emballage d'origine pour un remboursement complet ou un échange. Les frais de retour sont à la charge du client, sauf en cas de produit défectueux.",
   },
   {
-    question:
-      "Vos suppléments sont-ils testés pour les substances interdites ?",
+    question: "Vos suppléments sont-ils testés pour les substances interdites ?",
     answer:
       "Absolument. Tous nos suppléments nutritionnels sont fabriqués dans des installations certifiées et sont testés par des laboratoires indépendants pour garantir leur pureté et l'absence de substances interdites. Nous fournissons des certificats d'analyse sur demande.",
   },
-];
+]
 
 const ChatBot = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
-  const messagesEndRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false)
+  const [messages, setMessages] = useState([])
+  const [inputValue, setInputValue] = useState("")
+  const [isTyping, setIsTyping] = useState(false)
+  const [isMinimized, setIsMinimized] = useState(false)
+  const messagesEndRef = useRef(null)
 
   const knowledgeBase = {
     returns: {
-      triggers: [
-        "retour",
-        "remboursement",
-        "garantie",
-        "échanger",
-        "défectueux",
-      ],
+      triggers: ["retour", "remboursement", "garantie", "échanger", "défectueux"],
       response: `Nous offrons une politique de retour flexible :
 
 🔄 **Retours standards** : 30 jours pour un remboursement complet (produit non utilisé, dans son emballage d'origine)
@@ -99,14 +66,7 @@ const ChatBot = () => {
 Pour initier un retour, veuillez visiter notre [portail de retours](https://ironz.ma/retours) ou répondre à ce message avec votre numéro de commande.`,
     },
     delivery: {
-      triggers: [
-        "livraison",
-        "délai",
-        "expédition",
-        "recevoir",
-        "temps",
-        "commande",
-      ],
+      triggers: ["livraison", "délai", "expédition", "recevoir", "temps", "commande"],
       response: `🚚 **Options de livraison disponibles** :
 
 1. **Standard** : 2-3 jours ouvrés (gratuite à partir de 500 DH)
@@ -116,14 +76,7 @@ Pour initier un retour, veuillez visiter notre [portail de retours](https://iron
 📦 **Suivi en temps réel** : Vous recevrez un lien de suivi par SMS/email dès l'expédition. Notre système intelligent peut prédire votre heure de livraison à ±30 minutes près !`,
     },
     products: {
-      triggers: [
-        "équipement",
-        "choisir",
-        "produit",
-        "conseil",
-        "recommander",
-        "suggestion",
-      ],
+      triggers: ["équipement", "choisir", "produit", "conseil", "recommander", "suggestion"],
       response: `Pour une recommandation personnalisée, j'ai besoin de savoir :
 
 1. **Type d'activité** : Musculation, cardio, cross-training, etc.
@@ -148,14 +101,7 @@ Pour initier un retour, veuillez visiter notre [portail de retours](https://iron
 🔒 **Sécurité** : Tous les paiements sont cryptés et protégés par notre système de détection de fraude IA.`,
     },
     contact: {
-      triggers: [
-        "contact",
-        "service client",
-        "appeler",
-        "email",
-        "adresse",
-        "téléphone",
-      ],
+      triggers: ["contact", "service client", "appeler", "email", "adresse", "téléphone"],
       response: `📞 **Contactez-nous facilement** :
 
 - **Chat live** : Disponible 24/7 sur notre app
@@ -174,7 +120,7 @@ Pour initier un retour, veuillez visiter notre [portail de retours](https://iron
 
 🔔 **Conseil pro** : Abonnez-vous à notre newsletter pour recevoir des offres exclusives avant tout le monde !`,
     },
-  };
+  }
 
   const suggestedQuestions = [
     "Comment faire un retour ?",
@@ -182,7 +128,7 @@ Pour initier un retour, veuillez visiter notre [portail de retours](https://iron
     "Quel équipement pour débutant ?",
     "Avez-vous des promotions ?",
     "Comment contacter le service client ?",
-  ];
+  ]
 
   useEffect(() => {
     setMessages([
@@ -201,52 +147,55 @@ Essayez de me demander : "Quel équipement pour perdre du poids ?" ou "Comment s
         sender: "bot",
         timestamp: new Date(),
       },
-    ]);
-  }, []);
+    ])
+  }, [])
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isMinimized]);
+    scrollToBottom()
+  }, [messages, isMinimized])
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
   const handleSendMessage = () => {
-    if (inputValue.trim() === "") return;
+    if (inputValue.trim() === "") return
 
     const newUserMessage = {
       id: messages.length + 1,
       text: inputValue,
       sender: "user",
       timestamp: new Date(),
-    };
+    }
 
-    setMessages((prev) => [...prev, newUserMessage]);
-    setInputValue("");
-    setIsTyping(true);
+    setMessages((prev) => [...prev, newUserMessage])
+    setInputValue("")
+    setIsTyping(true)
 
-    setTimeout(() => {
-      const botResponse = generateEnhancedResponse(inputValue);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: messages.length + 2,
-          text: botResponse,
-          sender: "bot",
-          timestamp: new Date(),
-        },
-      ]);
-      setIsTyping(false);
-    }, 800 + Math.random() * 1500);
-  };
+    setTimeout(
+      () => {
+        const botResponse = generateEnhancedResponse(inputValue)
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: messages.length + 2,
+            text: botResponse,
+            sender: "bot",
+            timestamp: new Date(),
+          },
+        ])
+        setIsTyping(false)
+      },
+      800 + Math.random() * 1500,
+    )
+  }
 
   const generateEnhancedResponse = (userInput) => {
-    const input = userInput.toLowerCase();
+    const input = userInput.toLowerCase()
 
     for (const [topic, data] of Object.entries(knowledgeBase)) {
       if (data.triggers.some((trigger) => input.includes(trigger))) {
-        return data.response;
+        return data.response
       }
     }
 
@@ -257,7 +206,7 @@ Essayez de me demander : "Quel équipement pour perdre du poids ?" ou "Comment s
 - **Obtenir un guide gratuit** sur l'entraînement à domicile
 - **Réserver une consultation** avec nos coachs certifiés
 
-Comment puis-je continuer à vous aider ?`;
+Comment puis-je continuer à vous aider ?`
     } else if (input.includes("bonjour") || input.includes("salut")) {
       return `Bonjour à vous ! 🌞 Je suis ravi de vous aider aujourd'hui. Pour gagner du temps, voici quelques demandes fréquentes que je peux traiter instantanément :
 
@@ -265,7 +214,7 @@ Comment puis-je continuer à vous aider ?`;
 2. "Je veux retourner un article"
 3. "Quels accessoires pour compléter mon home gym ?"
 
-Dites-moi simplement ce dont vous avez besoin !`;
+Dites-moi simplement ce dont vous avez besoin !`
     } else if (input.includes("urgence") || input.includes("important")) {
       return `🚨 Pour les questions urgentes, je peux :
 
@@ -273,7 +222,7 @@ Dites-moi simplement ce dont vous avez besoin !`;
 2. Envoyer un SMS de rappel avec les informations critiques
 3. Vous donner le numéro direct du responsable de service
 
-Dites "rappeler" ou "urgence" pour activer le mode prioritaire.`;
+Dites "rappeler" ou "urgence" pour activer le mode prioritaire.`
     } else {
       return `🤖 **Je veux m'assurer de bien comprendre votre demande**
 
@@ -285,51 +234,45 @@ Pouvez-vous préciser votre question ou choisir parmi ces options :
 4. Questions sur les paiements
 5. Autre demande
 
-Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous offrir un service toujours plus pertinent !`;
+Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous offrir un service toujours plus pertinent !`
     }
-  };
+  }
 
   const handleQuickReply = (question) => {
-    setInputValue(question);
-  };
+    setInputValue(question)
+  }
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
+      e.preventDefault()
+      handleSendMessage()
     }
-  };
+  }
 
   const toggleChat = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(!isOpen)
     if (isOpen) {
-      setIsMinimized(false);
+      setIsMinimized(false)
     }
-  };
+  }
 
   const toggleMinimize = () => {
-    setIsMinimized(!isMinimized);
-  };
+    setIsMinimized(!isMinimized)
+  }
 
   const formatTime = (date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  }
 
   const getIconForMessage = (text) => {
-    if (text.includes("livraison") || text.includes("délai"))
-      return <Truck size={16} className="mr-1" />;
-    if (text.includes("retour") || text.includes("remboursement"))
-      return <RefreshCw size={16} className="mr-1" />;
-    if (text.includes("paiement") || text.includes("payer"))
-      return <CreditCard size={16} className="mr-1" />;
-    if (text.includes("contact") || text.includes("appeler"))
-      return <Phone size={16} className="mr-1" />;
-    if (text.includes("promo") || text.includes("réduction"))
-      return <Tag size={16} className="mr-1" />;
-    if (text.includes("produit") || text.includes("équipement"))
-      return <ShoppingCart size={16} className="mr-1" />;
-    return <Lightbulb size={16} className="mr-1" />;
-  };
+    if (text.includes("livraison") || text.includes("délai")) return <Truck size={16} className="mr-1" />
+    if (text.includes("retour") || text.includes("remboursement")) return <RefreshCw size={16} className="mr-1" />
+    if (text.includes("paiement") || text.includes("payer")) return <CreditCard size={16} className="mr-1" />
+    if (text.includes("contact") || text.includes("appeler")) return <Phone size={16} className="mr-1" />
+    if (text.includes("promo") || text.includes("réduction")) return <Tag size={16} className="mr-1" />
+    if (text.includes("produit") || text.includes("équipement")) return <ShoppingCart size={16} className="mr-1" />
+    return <Lightbulb size={16} className="mr-1" />
+  }
 
   return (
     <>
@@ -342,14 +285,14 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
       >
         <button
           onClick={toggleChat}
-          className="bg-gradient-to-br from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-white rounded-full p-4 shadow-xl flex items-center justify-center transition-all duration-300 ring-2 ring-white/20 hover:ring-4 hover:ring-white/30"
+          className="bg-black rounded-full p-4 shadow-xl flex items-center justify-center transition-all duration-300 ring-2 ring-white/20 hover:ring-4 hover:ring-white/30"
           aria-label="Ouvrir le chat"
         >
-          <MessageSquare className="h-6 w-6" />
+         <Image src={logo} alt="logo" className="w-8 h-8"/>
           <motion.span
-            className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-2 py-1 shadow"
+            className="absolute -top-2 -right-2 bg-yellow-500 text-xs rounded-full px-2 py-1 shadow"
             animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
           >
             BOT
           </motion.span>
@@ -370,7 +313,7 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
             className="fixed bottom-8 right-8 z-50 w-full max-w-md"
           >
             <div
-              className={`bg-white ml-16 dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-200  flex flex-col h-full transition-all duration-300 ${
+              className={`bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col h-full transition-all duration-300 ${
                 isMinimized ? "min-h-[60px]" : "min-h-[550px]"
               }`}
             >
@@ -379,43 +322,33 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                 onClick={toggleMinimize}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="relative">
-                    <Bot className="h-7 w-7 text-white" />
+                  <div className="relative h-8 w-8 rounded-full overflow-hidden">
+                    <Image src="/logo.png" alt="IronzBot Logo" width={32} height={32} className="object-cover" />
                     <motion.div
                       className="absolute -bottom-1 -right-1 bg-green-400 rounded-full w-3 h-3 border-2 border-yellow-600"
                       animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
+                      transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
                     />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white">
-                      IronzBot Assistant IA
-                    </h3>
-                    {!isMinimized && (
-                      <p className="text-xs text-yellow-100">
-                        En ligne • Prêt à vous aider
-                      </p>
-                    )}
+                    <h3 className="font-bold text-white">IronzBot Assistant IA</h3>
+                    {!isMinimized && <p className="text-xs text-yellow-100">En ligne • Prêt à vous aider</p>}
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={(e) => {
-                      e.stopPropagation();
-                      toggleMinimize();
+                      e.stopPropagation()
+                      toggleMinimize()
                     }}
                     className="text-white hover:text-gray-200 transition-transform"
                   >
-                    <ChevronDown
-                      className={`h-5 w-5 transition-transform ${
-                        isMinimized ? "rotate-180" : ""
-                      }`}
-                    />
+                    <ChevronDown className={`h-5 w-5 transition-transform ${isMinimized ? "rotate-180" : ""}`} />
                   </button>
                   <button
                     onClick={(e) => {
-                      e.stopPropagation();
-                      toggleChat();
+                      e.stopPropagation()
+                      toggleChat()
                     }}
                     className="text-white hover:text-gray-200"
                     aria-label="Fermer le chat"
@@ -437,11 +370,7 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                         }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
-                        className={`flex ${
-                          message.sender === "user"
-                            ? "justify-end"
-                            : "justify-start"
-                        }`}
+                        className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
                       >
                         <div
                           className={`max-w-xs md:max-w-md rounded-2xl px-4 py-3 ${
@@ -452,20 +381,28 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                         >
                           {message.sender === "bot" && (
                             <div className="flex items-center mb-1">
-                              {getIconForMessage(message.text)}
-                              <span className="text-xs font-semibold text-yellow-600 dark:text-yellow-400">
-                                IronzBot
-                              </span>
+                              {message.sender === "bot" && (
+                                <div className="flex items-center mb-1">
+                                  <div className="h-5 w-5 mr-2 relative rounded-full overflow-hidden">
+                                    <Image
+                                      src="/logo.png"
+                                      alt="IronzBot"
+                                      width={20}
+                                      height={20}
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                  <span className="text-xs font-semibold text-yellow-600 dark:text-yellow-400">
+                                    IronzBot
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           )}
-                          <div className="text-sm whitespace-pre-line">
-                            {message.text}
-                          </div>
+                          <div className="text-sm whitespace-pre-line">{message.text}</div>
                           <div
                             className={`text-xs mt-1 flex justify-end ${
-                              message.sender === "user"
-                                ? "text-yellow-100/80"
-                                : "text-gray-500 dark:text-gray-400"
+                              message.sender === "user" ? "text-yellow-100/80" : "text-gray-500 dark:text-gray-400"
                             }`}
                           >
                             {formatTime(message.timestamp)}
@@ -477,8 +414,8 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                       <div className="flex justify-start">
                         <div className="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-2xl rounded-bl-none px-4 py-3 border border-gray-200 dark:border-gray-600">
                           <div className="flex items-center space-x-2">
-                            <div className="relative">
-                              <Bot className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+                            <div className="relative h-5 w-5 rounded-full overflow-hidden">
+                              <Image src="/logo.png" alt="IronzBot" width={20} height={20} className="object-cover" />
                             </div>
                             <div className="flex space-x-1">
                               <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"></div>
@@ -505,9 +442,7 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                       transition={{ delay: 0.5 }}
                       className="px-4 pb-2"
                     >
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                        Essayez de demander :
-                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Essayez de demander :</div>
                       <div className="flex flex-wrap gap-2">
                         {suggestedQuestions.map((question, index) => (
                           <motion.button
@@ -537,12 +472,8 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                       <motion.button
                         onClick={handleSendMessage}
                         disabled={inputValue.trim() === ""}
-                        whileHover={
-                          inputValue.trim() !== "" ? { scale: 1.05 } : {}
-                        }
-                        whileTap={
-                          inputValue.trim() !== "" ? { scale: 0.95 } : {}
-                        }
+                        whileHover={inputValue.trim() !== "" ? { scale: 1.05 } : {}}
+                        whileTap={inputValue.trim() !== "" ? { scale: 0.95 } : {}}
                         className={`bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-full p-3 ${
                           inputValue.trim() === ""
                             ? "opacity-50 cursor-not-allowed"
@@ -561,39 +492,39 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
         )}
       </AnimatePresence>
     </>
-  );
-};
+  )
+}
 
 export default function Home() {
-  const { addToCart } = useCart();
-  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
-  const featuredProducts = productUtils.getFeaturedProducts().slice(0, 8);
-  const newArrivals = productUtils.getNewProducts().slice(0, 8);
-  const bestSellers = productUtils.getFeaturedProducts().slice(0, 8);
-  const specialOffers = productUtils.getDiscountedProducts().slice(0, 6);
+  const { addToCart } = useCart()
+  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites()
+  const featuredProducts = productUtils.getFeaturedProducts().slice(0, 8)
+  const newArrivals = productUtils.getNewProducts().slice(0, 8)
+  const bestSellers = productUtils.getFeaturedProducts().slice(0, 8)
+  const specialOffers = productUtils.getDiscountedProducts().slice(0, 6)
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
       currency: "MAD",
-    }).format(price);
-  };
+    }).format(price)
+  }
 
   const toggleFavorite = (product) => {
     if (isInFavorites(product.id)) {
-      removeFromFavorites(product.id);
+      removeFromFavorites(product.id)
     } else {
-      addToFavorites(product);
+      addToFavorites(product)
     }
-  };
+  }
 
-  const featuredProduct =
-    specialOffers.length > 0 ? specialOffers[0] : featuredProducts[0];
+  const featuredProduct = specialOffers.length > 0 ? specialOffers[0] : featuredProducts[0]
 
   return (
     <>
-      <main className="min-h-screen py- bg-gray-50">
-        <section className="relative pt-16 pb-20 md:pt-24 md:pb-32 bg-black text-white overflow-hidden">
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        {/* Hero Section - Amélioré pour une meilleure responsivité */}
+        <section className="relative pt-20 pb-24 md:pt-28 md:pb-32 lg:pt-32 lg:pb-40 bg-black text-white overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image
               src="/placeholder.svg?height=1200&width=2000"
@@ -607,98 +538,119 @@ export default function Home() {
 
           <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
-                Équipement de Fitness{""}
-                <span className="text-yellow-400">Professionnel</span> pour Tous
+              <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight">
+                Équipement de Fitness <span className="text-yellow-400">Professionnel</span> pour Tous
               </h1>
-              <p className="text-xl text-gray-300 mb-8">
-                Découvrez notre gamme complète d'équipements de fitness,
-                suppléments alimentaires et accessoires de musculation et d'arts
-                martiaux de qualité professionnelle.
+              <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl">
+                Découvrez notre gamme complète d'équipements de fitness, suppléments alimentaires et accessoires de
+                musculation et d'arts martiaux de qualité professionnelle.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button
                   asChild
-                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6"
+                  size="lg"
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium px-8 py-6 text-lg rounded-xl"
                 >
-                  <Link href="/product">Découvrir nos produits</Link>
+                  <Link href="/product">
+                    Découvrir nos produits
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
                 </Button>
                 <Button
                   asChild
-                  className="border-yellow-400 bg-white text-yellow-400 hover:bg-yellow-400/10 font-medium text-lg px-8 py-6"
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400/10 font-medium px-8 py-6 text-lg rounded-xl"
                 >
                   <Link href="/promotions">Nos promotions</Link>
                 </Button>
               </div>
             </div>
           </div>
+
+          {/* Animated scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:block">
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
+              className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-1"
+            >
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, delay: 0.2 }}
+                className="w-1.5 h-1.5 bg-yellow-400 rounded-full"
+              />
+            </motion.div>
+          </div>
         </section>
 
-        <section className="py-6 bg-gradient-to-r from-yellow-500 to-yellow-400">
+        {/* Promotion Banner - Optimisé pour mobile */}
+        <section className="py-6 md:py-8 bg-gradient-to-r from-yellow-500 to-yellow-400">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="flex items-center mb-4 md:mb-0">
-                <div className="bg-white rounded-full p-2 mr-4">
-                  <TrendingUp className="h-6 w-6 text-yellow-500" />
+                <div className="bg-white rounded-full p-2 md:p-3 mr-3 md:mr-4 shadow-md">
+                  <TrendingUp className="h-5 w-5 md:h-6 md:w-6 text-yellow-500" />
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-black text-xl">
-                    Offres Spéciales
-                  </h3>
-                  <p className="text-black/80">
+                  <h3 className="font-bold text-black text-lg md:text-xl">Offres Spéciales</h3>
+                  <p className="text-black/80 text-sm md:text-base">
                     Jusqu'à 30% de réduction sur une sélection de produits
                   </p>
                 </div>
               </div>
-              <Button asChild className="bg-black hover:bg-gray-800 text-white">
-                <Link href="/promotions">Voir toutes les offres</Link>
+              <Button asChild className="bg-black hover:bg-gray-800 text-white shadow-md">
+                <Link href="/promotions">
+                  Voir toutes les offres
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </div>
         </section>
 
-        <section className="py-16 md:py-24 bg-white text-white">
+        {/* Categories Section - Grille responsive améliorée */}
+        <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-yellow-400">
-                Nos Catégories
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+                Nos <span className="text-yellow-500">Catégories</span>
               </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
-                Explorez notre large sélection de produits pour tous vos besoins
-                en fitness et arts martiaux
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Explorez notre large sélection de produits pour tous vos besoins en fitness et arts martiaux
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {categories.map((category, index) => (
                 <motion.div
                   key={category.id}
-                  className="group relative rounded-xl overflow-hidden h-60 bg-gray-800 hover:shadow-lg transition-shadow"
-                  whileHover={{ scale: 1.05 }}
+                  className="group relative rounded-xl overflow-hidden h-60 sm:h-64 md:h-72 bg-gray-800 hover:shadow-lg transition-shadow"
+                  whileHover={{ scale: 1.03 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10"></div>
                   <Image
-                    src={category.image}
+                    src={category.image || "/placeholder.svg?height=300&width=400"}
                     alt={category.name}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     priority={index < 2}
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                    <h3 className="text-white font-medium text-xl mb-2">
+                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-20">
+                    <h3 className="text-white font-medium text-xl mb-2 group-hover:text-yellow-400 transition-colors">
                       {category.name}
                     </h3>
-                    <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-                      {category.description ||
-                        "Découvrez notre sélection de produits"}
+                    <p className="text-gray-300 text-sm mb-4 line-clamp-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                      {category.description || "Découvrez notre sélection de produits"}
                     </p>
                     <Link
                       href={category.href}
-                      className="inline-flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-medium"
+                      className="inline-flex items-center text-yellow-400 hover:text-yellow-300 text-sm font-medium group"
                     >
                       Découvrir
-                      <ChevronRight className="ml-1 h-4 w-4" />
+                      <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </div>
                 </motion.div>
@@ -707,11 +659,12 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
+        {/* Products Section - Tabs responsives et cartes de produits améliorées */}
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl text-yellow-400 font-heading font-bold mb-4">
-                Nos Produits
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+                Nos <span className="text-yellow-500">Produits</span>
               </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                 Découvrez notre sélection de produits de qualité professionnelle
@@ -720,29 +673,23 @@ export default function Home() {
 
             <Tabs defaultValue="featured" className="w-full">
               <div className="flex justify-center mb-8 overflow-x-auto pb-2">
-                <TabsList className="bg-gray-100 dark:bg-gray-800 flex-nowrap">
+                <TabsList className="bg-white dark:bg-gray-700 shadow-md rounded-full p-1 border border-gray-100 dark:border-gray-600">
                   <TabsTrigger
                     value="featured"
-                    className="text-sm md:text-base whitespace-nowrap"
+                    className="text-sm md:text-base whitespace-nowrap rounded-full px-4 py-2"
                   >
                     Populaires
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="new"
-                    className="text-sm md:text-base whitespace-nowrap"
-                  >
+                  <TabsTrigger value="new" className="text-sm md:text-base whitespace-nowrap rounded-full px-4 py-2">
                     Nouveautés
                   </TabsTrigger>
                   <TabsTrigger
                     value="bestsellers"
-                    className="text-sm md:text-base whitespace-nowrap"
+                    className="text-sm md:text-base whitespace-nowrap rounded-full px-4 py-2"
                   >
                     Meilleures Ventes
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="offers"
-                    className="text-sm md:text-base whitespace-nowrap"
-                  >
+                  <TabsTrigger value="offers" className="text-sm md:text-base whitespace-nowrap rounded-full px-4 py-2">
                     Offres Spéciales
                   </TabsTrigger>
                 </TabsList>
@@ -751,61 +698,49 @@ export default function Home() {
               <TabsContent value="featured">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                   {featuredProducts.map((product) => (
-                    <div
+                    <motion.div
                       key={product.id}
-                      className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
+                      whileHover={{ y: -5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
                     >
-                      <div className="relative h-48 overflow-hidden group">
+                      <div className="relative h-48 sm:h-52 overflow-hidden group">
                         <Image
-                          src={
-                            product.image ||
-                            "/placeholder.svg?height=192&width=256"
-                          }
+                          src={product.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
                           alt={product.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         />
                         <div className="absolute top-2 right-2 z-10">
                           <button
                             onClick={() => toggleFavorite(product)}
                             className={cn(
-                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
+                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
                             )}
-                            aria-label={
-                              isInFavorites(product.id)
-                                ? "Retirer des favoris"
-                                : "Ajouter aux favoris"
-                            }
+                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
                           >
-                            <Heart
-                              className={cn(
-                                "h-4 w-4",
-                                isInFavorites(product.id) && "fill-red-500"
-                              )}
-                            />
+                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
                           </button>
                         </div>
                         {product.isNew && (
-                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
                             Nouveau
                           </div>
                         )}
                         {product.discount > 0 && (
-                          <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
                             -{product.discount}%
                           </div>
                         )}
                       </div>
                       <div className="p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                          {product.category}
-                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
                         <Link href={`/product/${product.slug}`}>
-                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
+                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-12">
                             {product.name}
                           </h3>
                         </Link>
@@ -817,22 +752,22 @@ export default function Home() {
                                 "h-4 w-4",
                                 i < Math.floor(product.rating)
                                   ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300"
+                                  : "text-gray-300 dark:text-gray-600",
                               )}
                             />
                           ))}
-                          <span className="text-xs text-gray-500 ml-1">
+                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
                             ({product.reviewCount || 0})
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
                             {product.oldPrice ? (
-                              <div className="flex items-center">
+                              <div className="flex flex-col">
                                 <span className="font-bold text-gray-900 dark:text-white">
                                   {formatPrice(product.price)}
                                 </span>
-                                <span className="text-sm text-gray-500 line-through ml-2">
+                                <span className="text-sm text-gray-500 line-through">
                                   {formatPrice(product.oldPrice)}
                                 </span>
                               </div>
@@ -845,13 +780,13 @@ export default function Home() {
                           <Button
                             size="sm"
                             onClick={() => addToCart(product)}
-                            className="h-8 bg-yellow-500 w-8 p-0 rounded-full"
+                            className="h-9 w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
                           >
                             <ShoppingCart className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </TabsContent>
@@ -859,59 +794,47 @@ export default function Home() {
               <TabsContent value="new">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                   {newArrivals.map((product) => (
-                    <div
+                    <motion.div
                       key={product.id}
-                      className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
+                      whileHover={{ y: -5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
                     >
-                      <div className="relative h-48 overflow-hidden group">
+                      <div className="relative h-48 sm:h-52 overflow-hidden group">
                         <Image
-                          src={
-                            product.image ||
-                            "/placeholder.svg?height=192&width=256"
-                          }
+                          src={product.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
                           alt={product.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         />
                         <div className="absolute top-2 right-2 z-10">
                           <button
                             onClick={() => toggleFavorite(product)}
                             className={cn(
-                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
+                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
                             )}
-                            aria-label={
-                              isInFavorites(product.id)
-                                ? "Retirer des favoris"
-                                : "Ajouter aux favoris"
-                            }
+                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
                           >
-                            <Heart
-                              className={cn(
-                                "h-4 w-4",
-                                isInFavorites(product.id) && "fill-red-500"
-                              )}
-                            />
+                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
                           </button>
                         </div>
-                        <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
                           Nouveau
                         </div>
                         {product.discount > 0 && (
-                          <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
                             -{product.discount}%
                           </div>
                         )}
                       </div>
                       <div className="p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                          {product.category}
-                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
                         <Link href={`/produits/${product.slug}`}>
-                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
+                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-12">
                             {product.name}
                           </h3>
                         </Link>
@@ -923,22 +846,22 @@ export default function Home() {
                                 "h-4 w-4",
                                 i < Math.floor(product.rating)
                                   ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300"
+                                  : "text-gray-300 dark:text-gray-600",
                               )}
                             />
                           ))}
-                          <span className="text-xs text-gray-500 ml-1">
+                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
                             ({product.reviewCount || 0})
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
                             {product.oldPrice ? (
-                              <div className="flex items-center">
+                              <div className="flex flex-col">
                                 <span className="font-bold text-gray-900 dark:text-white">
                                   {formatPrice(product.price)}
                                 </span>
-                                <span className="text-sm text-gray-500 line-through ml-2">
+                                <span className="text-sm text-gray-500 line-through">
                                   {formatPrice(product.oldPrice)}
                                 </span>
                               </div>
@@ -951,13 +874,13 @@ export default function Home() {
                           <Button
                             size="sm"
                             onClick={() => addToCart(product)}
-                            className="h-8 bg-yellow-500 w-8 p-0 rounded-full"
+                            className="h-9 w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
                           >
                             <ShoppingCart className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </TabsContent>
@@ -965,61 +888,49 @@ export default function Home() {
               <TabsContent value="bestsellers">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                   {bestSellers.map((product) => (
-                    <div
+                    <motion.div
                       key={product.id}
-                      className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
+                      whileHover={{ y: -5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
                     >
-                      <div className="relative h-48 overflow-hidden group">
+                      <div className="relative h-48 sm:h-52 overflow-hidden group">
                         <Image
-                          src={
-                            product.image ||
-                            "/placeholder.svg?height=192&width=256"
-                          }
+                          src={product.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
                           alt={product.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         />
                         <div className="absolute top-2 right-2 z-10">
                           <button
                             onClick={() => toggleFavorite(product)}
                             className={cn(
-                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
+                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
                             )}
-                            aria-label={
-                              isInFavorites(product.id)
-                                ? "Retirer des favoris"
-                                : "Ajouter aux favoris"
-                            }
+                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
                           >
-                            <Heart
-                              className={cn(
-                                "h-4 w-4",
-                                isInFavorites(product.id) && "fill-red-500"
-                              )}
-                            />
+                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
                           </button>
                         </div>
                         {product.isNew && (
-                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
                             Nouveau
                           </div>
                         )}
                         {product.discount > 0 && (
-                          <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
                             -{product.discount}%
                           </div>
                         )}
                       </div>
                       <div className="p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                          {product.category}
-                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
                         <Link href={`/produits/${product.slug}`}>
-                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
+                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-12">
                             {product.name}
                           </h3>
                         </Link>
@@ -1031,22 +942,22 @@ export default function Home() {
                                 "h-4 w-4",
                                 i < Math.floor(product.rating)
                                   ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300"
+                                  : "text-gray-300 dark:text-gray-600",
                               )}
                             />
                           ))}
-                          <span className="text-xs text-gray-500 ml-1">
+                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
                             ({product.reviewCount || 0})
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
                             {product.oldPrice ? (
-                              <div className="flex items-center">
+                              <div className="flex flex-col">
                                 <span className="font-bold text-gray-900 dark:text-white">
                                   {formatPrice(product.price)}
                                 </span>
-                                <span className="text-sm text-gray-500 line-through ml-2">
+                                <span className="text-sm text-gray-500 line-through">
                                   {formatPrice(product.oldPrice)}
                                 </span>
                               </div>
@@ -1059,13 +970,13 @@ export default function Home() {
                           <Button
                             size="sm"
                             onClick={() => addToCart(product)}
-                            className="h-8 bg-yellow-500 w-8 p-0 rounded-full"
+                            className="h-9 w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
                           >
                             <ShoppingCart className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </TabsContent>
@@ -1073,59 +984,47 @@ export default function Home() {
               <TabsContent value="offers">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                   {specialOffers.map((product) => (
-                    <div
+                    <motion.div
                       key={product.id}
-                      className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
+                      whileHover={{ y: -5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
                     >
-                      <div className="relative h-48 overflow-hidden group">
+                      <div className="relative h-48 sm:h-52 overflow-hidden group">
                         <Image
-                          src={
-                            product.image ||
-                            "/placeholder.svg?height=192&width=256"
-                          }
+                          src={product.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
                           alt={product.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                         <div className="absolute top-2 right-2 z-10">
                           <button
                             onClick={() => toggleFavorite(product)}
                             className={cn(
-                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
+                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
                             )}
-                            aria-label={
-                              isInFavorites(product.id)
-                                ? "Retirer des favoris"
-                                : "Ajouter aux favoris"
-                            }
+                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
                           >
-                            <Heart
-                              className={cn(
-                                "h-4 w-4",
-                                isInFavorites(product.id) && "fill-red-500"
-                              )}
-                            />
+                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
                           </button>
                         </div>
                         {product.isNew && (
-                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
                             Nouveau
                           </div>
                         )}
-                        <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
                           -{product.discount}%
                         </div>
                       </div>
                       <div className="p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                          {product.category}
-                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
                         <Link href={`/produits/${product.slug}`}>
-                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
+                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-12">
                             {product.name}
                           </h3>
                         </Link>
@@ -1137,48 +1036,48 @@ export default function Home() {
                                 "h-4 w-4",
                                 i < Math.floor(product.rating)
                                   ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300"
+                                  : "text-gray-300 dark:text-gray-600",
                               )}
                             />
                           ))}
-                          <span className="text-xs text-gray-500 ml-1">
+                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
                             ({product.reviewCount || 0})
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>
-                            <div className="flex items-center">
+                            <div className="flex flex-col">
                               <span className="font-bold text-gray-900 dark:text-white">
                                 {formatPrice(product.price)}
                               </span>
-                              <span className="text-sm text-gray-500 line-through ml-2">
+                              <span className="text-sm text-gray-500 line-through">
                                 {formatPrice(product.oldPrice)}
                               </span>
                             </div>
-                            <div className="text-xs text-green-600 font-medium">
-                              Économisez{" "}
-                              {formatPrice(product.oldPrice - product.price)}
+                            <div className="text-xs text-green-600 dark:text-green-400 font-medium">
+                              Économisez {formatPrice(product.oldPrice - product.price)}
                             </div>
                           </div>
                           <Button
                             size="sm"
                             onClick={() => addToCart(product)}
-                            className="h-8 bg-yellow-500 w-8 p-0 rounded-full"
+                            className="h-9 w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
                           >
                             <ShoppingCart className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </TabsContent>
             </Tabs>
 
-            <div className="text-center mt-10">
+            <div className="text-center mt-12">
               <Button
                 asChild
-                className="bg-yellow-400 hover:bg-yellow-500 text-black"
+                size="lg"
+                className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-xl shadow-md"
               >
                 <Link href="/product">
                   Voir tous les produits
@@ -1189,25 +1088,30 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Featured Product Section - Mise en page améliorée */}
         <section className="py-16 md:py-24 bg-black text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+              <div className="relative h-[350px] sm:h-[400px] md:h-[500px] rounded-xl overflow-hidden group shadow-2xl order-1 md:order-1">
                 <Image
-                  src={
-                    featuredProduct.image ||
-                    "/placeholder.svg?height=1000&width=800"
-                  }
+                  src={featuredProduct.image || "/placeholder.svg?height=1000&width=800" || "/placeholder.svg"}
                   alt={featuredProduct.name}
                   fill
-                  className="object-cover"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                {featuredProduct.discount > 0 && (
+                  <div className="absolute top-4 left-4 bg-red-500 text-white font-bold px-3 py-1 rounded-md shadow-lg">
+                    -{featuredProduct.discount}% OFF
+                  </div>
+                )}
               </div>
-              <div>
-                <span className="inline-block bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium mb-4">
+              <div className="order-2 md:order-2">
+                <span className="inline-block bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium mb-4 shadow-md">
                   Produit Vedette
                 </span>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
                   {featuredProduct.name}
                 </h2>
                 <div className="flex items-center mb-4">
@@ -1217,30 +1121,22 @@ export default function Home() {
                         key={i}
                         className={cn(
                           "h-5 w-5",
-                          i < Math.floor(featuredProduct.rating)
-                            ? "text-yellow-400 fill-yellow-400"
-                            : "text-gray-600"
+                          i < Math.floor(featuredProduct.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-600",
                         )}
                       />
                     ))}
                   </div>
-                  <span className="text-gray-400 ml-2">
-                    ({featuredProduct.reviewCount || 0} avis)
-                  </span>
+                  <span className="text-gray-400 ml-2">({featuredProduct.reviewCount || 0} avis)</span>
                 </div>
-                <p className="text-gray-300 mb-6">
-                  {featuredProduct.description}
-                </p>
+                <p className="text-gray-300 mb-6">{featuredProduct.description}</p>
                 <ul className="space-y-2 mb-6">
                   {featuredProduct.features &&
-                    featuredProduct.features
-                      .slice(0, 4)
-                      .map((feature, index) => (
-                        <li key={index} className="flex items-start">
-                          <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
+                    featuredProduct.features.slice(0, 4).map((feature, index) => (
+                      <li key={index} className="flex items-start">
+                        <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
                 </ul>
                 <div className="flex items-center mb-6">
                   {featuredProduct.oldPrice && (
@@ -1248,38 +1144,47 @@ export default function Home() {
                       {formatPrice(featuredProduct.oldPrice)}
                     </span>
                   )}
-                  <span className="text-3xl font-bold text-white">
-                    {formatPrice(featuredProduct.price)}
-                  </span>
+                  <span className="text-3xl font-bold text-white">{formatPrice(featuredProduct.price)}</span>
+
+                  {featuredProduct.oldPrice && (
+                    <span className="ml-3 bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
+                      Économisez {formatPrice(featuredProduct.oldPrice - featuredProduct.price)}
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
-                    className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium text-lg px-8 py-6 rounded-xl shadow-md"
                     onClick={() => addToCart(featuredProduct)}
                   >
                     <ShoppingCart className="h-5 w-5 mr-2" />
                     Ajouter au panier
                   </Button>
                   <Button
-                    variant="outline"
+                   
                     asChild
-                    className="border-white text-white hover:bg-white/10 font-medium text-lg px-8 py-6"
-                  ></Button>
+                    className="border-2 border-white text-white hover:bg-white/10 font-medium text-lg px-8 py-6 rounded-xl"
+                  >
+                    <Link href={`/product/${featuredProduct.slug}`}>
+                      Voir les détails
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="py-16 md:py-20 bg-gray-100">
+        {/* Brands Section */}
+        <section className="py-16 md:py-20 bg-gray-100 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-4">
-                Nos Marques Partenaires
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+                Nos <span className="text-yellow-500">Marques Partenaires</span>
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Nous collaborons avec les meilleures marques du marché pour vous
-                offrir des produits d'exception
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Nous collaborons avec les meilleures marques du marché pour vous offrir des produits d'exception
               </p>
             </div>
 
@@ -1287,93 +1192,102 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24">
+        {/* Why Choose Us Section - Cartes améliorées */}
+        <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
                 Pourquoi Choisir <span className="text-yellow-500">IRONZ</span>
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Nous nous engageons à vous offrir les meilleurs produits et
-                services pour atteindre vos objectifs
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Nous nous engageons à vous offrir les meilleurs produits et services pour atteindre vos objectifs
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle className="h-6 w-6 text-yellow-600" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              <motion.div
+                whileHover={{ y: -10 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700"
+              >
+                <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
+                  <CheckCircle className="h-7 w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">
-                  Qualité Garantie
-                </h3>
-                <p className="text-gray-600">
-                  Tous nos produits sont sélectionnés avec soin et testés pour
-                  garantir une qualité professionnelle.
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Qualité Garantie</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Tous nos produits sont sélectionnés avec soin et testés pour garantir une qualité professionnelle.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-                  <TrendingUp className="h-6 w-6 text-yellow-600" />
+              <motion.div
+                whileHover={{ y: -10 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700"
+              >
+                <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
+                  <TrendingUp className="h-7 w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">
-                  Expertise Fitness
-                </h3>
-                <p className="text-gray-600">
-                  Notre équipe d'experts est là pour vous conseiller et vous
-                  aider à choisir les produits adaptés à vos besoins.
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Expertise Fitness</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Notre équipe d'experts est là pour vous conseiller et vous aider à choisir les produits adaptés à vos
+                  besoins.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-                  <Award className="h-6 w-6 text-yellow-600" />
+              <motion.div
+                whileHover={{ y: -10 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700"
+              >
+                <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
+                  <Award className="h-7 w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">
-                  Marques Premium
-                </h3>
-                <p className="text-gray-600">
-                  Nous collaborons avec les meilleures marques du marché pour
-                  vous offrir des produits d'exception.
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Marques Premium</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Nous collaborons avec les meilleures marques du marché pour vous offrir des produits d'exception.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-                  <Truck className="h-6 w-6 text-yellow-600" />
+              <motion.div
+                whileHover={{ y: -10 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700"
+              >
+                <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
+                  <Truck className="h-7 w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">
-                  Livraison Rapide
-                </h3>
-                <p className="text-gray-600">
-                  Livraison rapide et sécurisée partout en Maroc.
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Livraison Rapide</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Livraison rapide et sécurisée partout au Maroc avec suivi en temps réel.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="bg-white p-6 rounded-xl shadow-md">
-                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle className="h-6 w-6 text-yellow-600" />
+              <motion.div
+                whileHover={{ y: -10 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700"
+              >
+                <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
+                  <CheckCircle className="h-7 w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-xl font-heading font-bold mb-2">
-                  Satisfaction Client
-                </h3>
-                <p className="text-gray-600">
-                  Votre satisfaction est notre priorité, avec un service client
-                  disponible 7j/7.
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Satisfaction Client</h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Votre satisfaction est notre priorité, avec un service client disponible 7j/7 et une garantie de 30
+                  jours.
                 </p>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
 
-        <section className="py-16 md:py-24 bg-white">
+        {/* FAQ Section - Accordéon amélioré */}
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl text-yellow-400 font-heading font-bold mb-4">
-                Questions Fréquentes
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+                Questions <span className="text-yellow-500">Fréquentes</span>
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                 Trouvez rapidement des réponses à vos questions
               </p>
             </div>
@@ -1381,33 +1295,41 @@ export default function Home() {
             <div className="max-w-3xl mx-auto">
               <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, index) => (
-                  <AccordionItem key={index} value={`item-${index}`}>
-                    <AccordionTrigger className="text-left font-heading font-medium text-lg">
+                  <AccordionItem
+                    key={index}
+                    value={`item-${index}`}
+                    className="bg-white dark:bg-gray-700 mb-4 rounded-xl border border-gray-100 dark:border-gray-600 shadow-sm"
+                  >
+                    <AccordionTrigger className="text-left font-medium text-lg px-6 py-4 text-gray-900 dark:text-white">
                       {faq.question}
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-600">
+                    <AccordionContent className="text-gray-600 dark:text-gray-300 px-6 pb-4">
                       {faq.answer}
                     </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
 
-              <div className="mt-8 text-center">
-                <p className="text-gray-600 mb-4">
+              <div className="mt-10 text-center">
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
                   Vous ne trouvez pas la réponse à votre question ?
                 </p>
                 <Button
                   asChild
-                  className="bg-yellow-400 hover:bg-yellow-500 text-black"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-xl shadow-md"
                 >
-                  <Link href="/contact">Contactez-nous</Link>
+                  <Link href="/contact">
+                    Contactez-nous
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
                 </Button>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="py-16 sm:py-20 md:py-32 bg-white dark:bg-gray-950">
+        {/* Newsletter Section - Design amélioré */}
+        <section className="py-16 sm:py-20 md:py-24 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -1416,17 +1338,14 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="max-w-4xl mx-auto text-center"
             >
-              <div className="flex justify-center items-center space-x-2">
-                <span className="text-yellow-400 font-medium">
-                  Restez informé
-                </span>
+              <div className="inline-flex items-center px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-full text-yellow-600 dark:text-yellow-400 text-sm font-medium mb-4">
+                <span>Restez informé</span>
               </div>
-              <h2 className="text-2xl  sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6  dark:text-white">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
                 Abonnez-vous à notre newsletter
               </h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">
-                Recevez nos dernières offres, nouveautés et conseils fitness
-                directement dans votre boîte mail.
+              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-8">
+                Recevez nos dernières offres, nouveautés et conseils fitness directement dans votre boîte mail.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-2xl mx-auto">
@@ -1434,21 +1353,23 @@ export default function Home() {
                   type="email"
                   placeholder="Votre adresse email"
                   aria-label="Votre adresse email"
-                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="flex-1 px-6 py-4 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 shadow-sm"
                 />
-                <Button className="bg-yellow-400 hover:bg-yellow-500 text-black rounded-full px-6 sm:px-8 py-3 sm:py-4">
+                <Button className="bg-yellow-500 hover:bg-yellow-600 text-black rounded-xl px-8 py-4 shadow-md">
                   S'abonner
                 </Button>
               </div>
-              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-3 sm:mt-4">
-                En vous inscrivant, vous acceptez notre politique de
-                confidentialité. Vous pouvez vous désinscrire à tout moment.
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+                En vous inscrivant, vous acceptez notre politique de confidentialité. Vous pouvez vous désinscrire à
+                tout moment.
               </p>
             </motion.div>
           </div>
         </section>
+
+        {/* ChatBot avec logo personnalisé */}
         <ChatBot />
       </main>
     </>
-  );
+  )
 }
