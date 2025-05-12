@@ -2,34 +2,21 @@
 
 import { createContext, useContext, useState, useEffect } from "react"
 
-// Create the cart context
 const CartContext = createContext()
 
-// Custom hook to use the cart context
-export const useCart = () => {
-  const context = useContext(CartContext)
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider")
-  }
-  return context
-}
-
-// Cart provider component
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([])
   const [cartOpen, setCartOpen] = useState(false)
   const [itemCount, setItemCount] = useState(0)
-  const [cartTotal, setCartTotal] = useState(0)
 
-  // Initialize cart from localStorage on client side
+  // Load cart from localStorage on client side
   useEffect(() => {
     const storedCart = localStorage.getItem("cart")
     if (storedCart) {
       try {
         setCart(JSON.parse(storedCart))
-      } catch (error) {
-        console.error("Failed to parse cart from localStorage:", error)
-        setCart([])
+      } catch (e) {
+        console.error("Failed to parse cart from localStorage")
       }
     }
   }, [])
@@ -40,73 +27,94 @@ export function CartProvider({ children }) {
       localStorage.setItem("cart", JSON.stringify(cart))
     }
 
-    // Calculate item count and total
+    // Calculate total items
     const count = cart.reduce((total, item) => total + item.quantity, 0)
     setItemCount(count)
-
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    setCartTotal(total)
   }, [cart])
 
-  // Toggle cart open/close
-  const toggleCart = () => {
-    setCartOpen(!cartOpen)
-  }
-
-  // Add item to cart
-  const addToCart = (product, quantity = 1) => {
+  function addToCart(product, quantity = 1, selectedColor = null) {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id)
+      // Vérifier si le produit avec la même couleur existe déjà dans le panier
+      const existingItemIndex = prevCart.findIndex(
+        (item) => item.id === product.id && item.selectedColor === selectedColor,
+      )
 
-      if (existingItem) {
-        // Update quantity if item already exists
-        return prevCart.map((item) => (item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item))
+      if (existingItemIndex !== -1) {
+        // Si le produit existe déjà, mettre à jour la quantité
+        const updatedCart = [...prevCart]
+        updatedCart[existingItemIndex].quantity += quantity
+        localStorage.setItem("cart", JSON.stringify(updatedCart))
+        return updatedCart
       } else {
-        // Add new item
-        return [...prevCart, { ...product, quantity }]
+        // Sinon, ajouter le nouveau produit
+        const newItem = {
+          ...product,
+          quantity,
+          selectedColor,
+        }
+        const updatedCart = [...prevCart, newItem]
+        localStorage.setItem("cart", JSON.stringify(updatedCart))
+        return updatedCart
       }
     })
   }
 
-  // Update item quantity
-  const updateQuantity = (id, quantity) => {
-    if (quantity <= 0) {
-      removeFromCart(id)
-      return
-    }
+  const updateQuantity = (productId, selectedColor, quantity) => {
+    if (quantity < 1) return
 
-    setCart((prevCart) => prevCart.map((item) => (item.id === id ? { ...item, quantity } : item)))
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === productId && item.selectedColor === selectedColor ? { ...item, quantity } : item,
+      ),
+    )
   }
 
-  // Remove item from cart
-  const removeFromCart = (id) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id))
-
-    // Remove from localStorage if cart becomes empty
-    if (cart.length === 1) {
-      localStorage.removeItem("cart")
-    }
+  const removeFromCart = (productId, selectedColor) => {
+    setCart((prevCart) => {
+      // Si une couleur est spécifiée, on supprime uniquement le produit avec cette couleur
+      if (selectedColor) {
+        return prevCart.filter((item) => !(item.id === productId && item.selectedColor === selectedColor))
+      }
+      // Sinon, on supprime toutes les variantes du produit (comportement par défaut)
+      return prevCart.filter((item) => item.id !== productId)
+    })
   }
 
-  // Clear cart
   const clearCart = () => {
     setCart([])
     localStorage.removeItem("cart")
   }
 
-  // Context value
-  const value = {
-    cart,
-    cartOpen,
-    itemCount,
-    cartTotal,
-    toggleCart,
-    addToCart,
-    updateQuantity,
-    removeFromCart,
-    clearCart,
+  const toggleCart = () => {
+    setCartOpen((prev) => !prev)
   }
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>
+  const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0)
+
+  return (
+    <CartContext.Provider
+      value={{
+        cart,
+        cartOpen,
+        itemCount,
+        cartTotal,
+        addToCart,
+        updateQuantity,
+        removeFromCart,
+        clearCart,
+        toggleCart,
+        setCartOpen,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  )
 }
 
+export function useCart() {
+  const context = useContext(CartContext)
+  if (context === undefined) {
+    throw new Error("useCart must be used within a CartProvider")
+  }
+  return context
+}

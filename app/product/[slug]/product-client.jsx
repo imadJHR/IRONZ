@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ChevronRight,
   Star,
@@ -21,23 +21,83 @@ import {
   Linkedin,
   PhoneIcon as Whatsapp,
   PinIcon as Pinterest,
-} from "lucide-react"
-import { useCart } from "@/context/cart-context"
-import { useFavorites } from "@/context/favorites-context"
-import { cn } from "@/lib/utils"
+  CircleCheck,
+} from "lucide-react";
+import { useCart } from "@/context/cart-context";
+import { useFavorites } from "@/context/favorites-context";
+import { cn } from "@/lib/utils";
 
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-import { products, categories } from "@/data/product"
+import { products, categories, colorMap } from "@/data/product";
+
+// Composant de sélection de couleur
+function ColorSelector({ colors, selectedColor, onChange }) {
+  if (!colors || colors.length === 0) return null;
+
+  return (
+    <div className="mb-6">
+      <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+        Couleur:{" "}
+        {selectedColor && <span className="font-bold">{selectedColor}</span>}
+      </h3>
+      <div className="flex flex-wrap gap-3">
+        {colors.map((color) => {
+          const bgColor = colorMap[color] || "#808080";
+          const isSelected = color === selectedColor;
+          const isMulticolor = color === "Multicolore";
+          const textColor =
+            color === "Blanc" || color === "Jaune"
+              ? "text-black"
+              : "text-white";
+
+          return (
+            <button
+              key={color}
+              onClick={() => onChange(color)}
+              className={cn(
+                "relative w-10 h-10 rounded-full transition-all duration-200 flex items-center justify-center",
+                isSelected
+                  ? "ring-2 ring-offset-2 ring-yellow-500 scale-110"
+                  : "hover:scale-105"
+              )}
+              aria-label={`Couleur ${color}`}
+              title={color}
+            >
+              <span
+                className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600"
+                style={{
+                  background: isMulticolor
+                    ? "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)"
+                    : bgColor,
+                }}
+              />
+              {isSelected && (
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <CircleCheck className={`h-4 w-4 ${textColor}`} />
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 // Ajout du schéma JSON-LD directement dans le composant client
 function ProductJsonLd({ product }) {
-  if (!product) return null
+  if (!product) return null;
 
   const schemaData = {
     "@context": "https://schema.org",
@@ -50,90 +110,126 @@ function ProductJsonLd({ product }) {
       "@type": "Offer",
       price: product.price,
       priceCurrency: "MAD",
-      availability: product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      availability: product.inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
     },
-  }
+  };
 
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+    />
+  );
 }
 
 export default function ProductPageClient({ slug }) {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [selectedImage, setSelectedImage] = useState(0)
-  const [quantity, setQuantity] = useState(1)
-  const [relatedProducts, setRelatedProducts] = useState([])
-  const [error, setError] = useState(null)
-  const [categoryInfo, setCategoryInfo] = useState(null)
-  const [showShareDropdown, setShowShareDropdown] = useState(false)
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [error, setError] = useState(null);
+  const [categoryInfo, setCategoryInfo] = useState(null);
+  const [showShareDropdown, setShowShareDropdown] = useState(false);
+  // État pour la couleur sélectionnée
+  const [selectedColor, setSelectedColor] = useState("");
 
-  const { addToCart } = useCart()
-  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites()
+  const { addToCart } = useCart();
+  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
   useEffect(() => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
 
     try {
-      const foundProduct = findProductBySlug(slug)
+      const foundProduct = findProductBySlug(slug);
 
       if (foundProduct) {
-        setProduct(foundProduct)
-        setSelectedImage(0)
+        setProduct(foundProduct);
+        setSelectedImage(0);
 
-        const catInfo = getCategoryInfo(foundProduct.categoryId)
-        setCategoryInfo(catInfo)
+        // Définir la couleur par défaut si disponible
+        if (foundProduct.colors && foundProduct.colors.length > 0) {
+          setSelectedColor(foundProduct.colors[0]);
+        }
 
-        const related = getRelatedProducts(foundProduct)
-        setRelatedProducts(related)
+        const catInfo = getCategoryInfo(foundProduct.categoryId);
+        setCategoryInfo(catInfo);
 
-        setLoading(false)
+        const related = getRelatedProducts(foundProduct);
+        setRelatedProducts(related);
+
+        setLoading(false);
       } else {
-        setError("Produit non trouvé")
-        setLoading(false)
+        setError("Produit non trouvé");
+        setLoading(false);
       }
     } catch (err) {
-      console.error("Erreur lors de la recherche du produit:", err)
-      setError("Une erreur s'est produite lors du chargement du produit")
-      setLoading(false)
+      console.error("Erreur lors de la recherche du produit:", err);
+      setError("Une erreur s'est produite lors du chargement du produit");
+      setLoading(false);
     }
-  }, [slug, router])
+  }, [slug, router]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showShareDropdown && !event.target.closest(".share-dropdown-container")) {
-        setShowShareDropdown(false)
+      if (
+        showShareDropdown &&
+        !event.target.closest(".share-dropdown-container")
+      ) {
+        setShowShareDropdown(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [showShareDropdown])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showShareDropdown]);
 
   const handleQuantityChange = (value) => {
-    const newQuantity = Math.max(1, Math.min(99, value))
-    setQuantity(newQuantity)
-  }
+    const newQuantity = Math.max(1, Math.min(99, value));
+    setQuantity(newQuantity);
+  };
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product, quantity)
+      // Vérifier si une couleur est sélectionnée
+      if (product.colors && product.colors.length > 0 && !selectedColor) {
+        alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
+        return;
+      }
+
+      // Ajouter la couleur sélectionnée au produit
+      const productWithColor = {
+        ...product,
+        selectedColor: selectedColor,
+      };
+
+      addToCart(productWithColor, quantity);
+
+      // Notification
+      alert(
+        `${product.name} ${
+          selectedColor ? `(${selectedColor})` : ""
+        } ajouté au panier`
+      );
     }
-  }
+  };
 
   const toggleFavorite = () => {
     if (product) {
       if (isInFavorites(product.id)) {
-        removeFromFavorites(product.id)
+        removeFromFavorites(product.id);
       } else {
-        addToFavorites(product)
+        addToFavorites(product);
       }
     }
-  }
+  };
 
   const handleShare = () => {
     if (navigator.share) {
@@ -143,17 +239,17 @@ export default function ProductPageClient({ slug }) {
           text: product.description,
           url: window.location.href,
         })
-        .catch((err) => console.log("Error sharing:", err))
+        .catch((err) => console.log("Error sharing:", err));
     } else {
-      setShowShareDropdown(!showShareDropdown)
+      setShowShareDropdown(!showShareDropdown);
     }
-  }
+  };
 
   const getShareLinks = () => {
-    const url = encodeURIComponent(window.location.href)
-    const title = encodeURIComponent(product.name)
-    const text = encodeURIComponent(product.description)
-    const image = product.image ? encodeURIComponent(product.image) : ""
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent(product.name);
+    const text = encodeURIComponent(product.description);
+    const image = product.image ? encodeURIComponent(product.image) : "";
 
     return [
       {
@@ -192,29 +288,32 @@ export default function ProductPageClient({ slug }) {
         url: `mailto:?subject=${title}&body=${text}%0D%0A%0D%0A${url}`,
         label: "Partager par email",
       },
-    ]
-  }
+    ];
+  };
 
   const findProductBySlug = (slug) => {
-    const searchSlug = String(slug).toLowerCase()
-    return products.find((product) => product.slug && String(product.slug).toLowerCase() === searchSlug)
-  }
+    const searchSlug = String(slug).toLowerCase();
+    return products.find(
+      (product) =>
+        product.slug && String(product.slug).toLowerCase() === searchSlug
+    );
+  };
 
   const getCategoryInfo = (categoryId) => {
-    return categories.find((cat) => cat.id === categoryId)
-  }
+    return categories.find((cat) => cat.id === categoryId);
+  };
 
   const getRelatedProducts = (product, limit = 4) => {
-    if (!product || !product.categoryId) return []
+    if (!product || !product.categoryId) return [];
     return products
       .filter((p) => {
         if (product.relatedProducts && product.relatedProducts.includes(p.id)) {
-          return true
+          return true;
         }
-        return p.categoryId === product.categoryId && p.id !== product.id
+        return p.categoryId === product.categoryId && p.id !== product.id;
       })
-      .slice(0, limit)
-  }
+      .slice(0, limit);
+  };
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("fr-FR", {
@@ -222,25 +321,38 @@ export default function ProductPageClient({ slug }) {
       currency: "MAD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(price)
-  }
+    }).format(price);
+  };
 
   const renderRating = (rating) => {
-    if (!rating) return null
-    const fullStars = Math.floor(rating)
-    const hasHalfStar = rating % 1 >= 0.5
+    if (!rating) return null;
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
     return (
       <div className="flex items-center" aria-label={`Note: ${rating} sur 5`}>
         {[...Array(fullStars)].map((_, i) => (
-          <Star key={`star-${i}`} className="w-4 h-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />
+          <Star
+            key={`star-${i}`}
+            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+            aria-hidden="true"
+          />
         ))}
-        {hasHalfStar && <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />}
+        {hasHalfStar && (
+          <Star
+            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+            aria-hidden="true"
+          />
+        )}
         {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
-          <Star key={`empty-star-${i}`} className="w-4 h-4 text-gray-300" aria-hidden="true" />
+          <Star
+            key={`empty-star-${i}`}
+            className="w-4 h-4 text-gray-300"
+            aria-hidden="true"
+          />
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   if (loading) {
     return (
@@ -251,7 +363,10 @@ export default function ProductPageClient({ slug }) {
               <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
               <div className="flex space-x-2">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-20 w-20 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                  <div
+                    key={i}
+                    className="h-20 w-20 bg-gray-200 dark:bg-gray-700 rounded-lg"
+                  ></div>
                 ))}
               </div>
             </div>
@@ -267,19 +382,22 @@ export default function ProductPageClient({ slug }) {
         </div>
         <div className="sr-only">Chargement du produit...</div>
       </div>
-    )
+    );
   }
 
   if (error || !product) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-2xl font-bold mb-4">Produit non trouvé</h1>
-        <p className="mb-8">{error || "Le produit que vous recherchez n'existe pas ou a été supprimé."}</p>
+        <p className="mb-8">
+          {error ||
+            "Le produit que vous recherchez n'existe pas ou a été supprimé."}
+        </p>
         <Button asChild>
           <Link href="/produits">Voir tous les produits</Link>
         </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -289,12 +407,21 @@ export default function ProductPageClient({ slug }) {
 
       <main className="bg-gray-50 dark:bg-gray-900 pt-8 pb-16">
         <div className="container mx-auto px-4 mb-6">
-          <nav className="flex items-center text-sm text-gray-500 dark:text-gray-400" aria-label="Fil d'Ariane">
-            <Link href="/" className="hover:text-gray-900 dark:hover:text-white">
+          <nav
+            className="flex items-center text-sm text-gray-500 dark:text-gray-400"
+            aria-label="Fil d'Ariane"
+          >
+            <Link
+              href="/"
+              className="hover:text-gray-900 dark:hover:text-white"
+            >
               Accueil
             </Link>
             <ChevronRight className="h-4 w-4 mx-2" aria-hidden="true" />
-            <Link href="/produits" className="hover:text-gray-900 dark:hover:text-white">
+            <Link
+              href="/produits"
+              className="hover:text-gray-900 dark:hover:text-white"
+            >
               Produits
             </Link>
             <ChevronRight className="h-4 w-4 mx-2" aria-hidden="true" />
@@ -309,7 +436,10 @@ export default function ProductPageClient({ slug }) {
                 <ChevronRight className="h-4 w-4 mx-2" aria-hidden="true" />
               </>
             )}
-            <span className="text-gray-900 dark:text-white font-medium truncate" aria-current="page">
+            <span
+              className="text-gray-900 dark:text-white font-medium truncate"
+              aria-current="page"
+            >
               {product.name}
             </span>
           </nav>
@@ -325,6 +455,7 @@ export default function ProductPageClient({ slug }) {
                       product.gallery?.[selectedImage] ||
                       product.image ||
                       "/placeholder.svg?height=384&width=384" ||
+                      "/placeholder.svg" ||
                       "/placeholder.svg" ||
                       "/placeholder.svg"
                     }
@@ -360,7 +491,7 @@ export default function ProductPageClient({ slug }) {
                           "relative h-20 w-20 flex-shrink-0 rounded-lg overflow-hidden border-2",
                           selectedImage === index
                             ? "border-yellow-500 dark:border-yellow-400"
-                            : "border-transparent hover:border-gray-300 dark:hover:border-gray-600",
+                            : "border-transparent hover:border-gray-300 dark:hover:border-gray-600"
                         )}
                         aria-label={`Image ${index + 1} du produit`}
                         aria-pressed={selectedImage === index}
@@ -399,18 +530,27 @@ export default function ProductPageClient({ slug }) {
                                 "p-2 rounded-full transition-colors",
                                 isInFavorites(product.id)
                                   ? "bg-red-50 text-red-500 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30"
-                                  : "bg-gray-100 text-gray-500 hover:text-red-500 hover:bg-red-50 dark:bg-gray-700 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/20",
+                                  : "bg-gray-100 text-gray-500 hover:text-red-500 hover:bg-red-50 dark:bg-gray-700 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/20"
                               )}
-                              aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                              aria-label={
+                                isInFavorites(product.id)
+                                  ? "Retirer des favoris"
+                                  : "Ajouter aux favoris"
+                              }
                             >
                               <Heart
-                                className={cn("h-5 w-5", isInFavorites(product.id) && "fill-red-500")}
+                                className={cn(
+                                  "h-5 w-5",
+                                  isInFavorites(product.id) && "fill-red-500"
+                                )}
                                 aria-hidden="true"
                               />
                             </button>
                           </TooltipTrigger>
                           <TooltipContent>
-                            {isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            {isInFavorites(product.id)
+                              ? "Retirer des favoris"
+                              : "Ajouter aux favoris"}
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -426,7 +566,10 @@ export default function ProductPageClient({ slug }) {
                                 aria-expanded={showShareDropdown}
                                 aria-haspopup="true"
                               >
-                                <Share2 className="h-5 w-5" aria-hidden="true" />
+                                <Share2
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
                               </button>
 
                               {showShareDropdown && (
@@ -444,7 +587,9 @@ export default function ProductPageClient({ slug }) {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                        onClick={() => setShowShareDropdown(false)}
+                                        onClick={() =>
+                                          setShowShareDropdown(false)
+                                        }
                                         aria-label={platform.label}
                                         role="menuitem"
                                       >
@@ -463,7 +608,9 @@ export default function ProductPageClient({ slug }) {
                     </div>
                   </div>
 
-                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-2">{product.name}</h1>
+                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-2">
+                    {product.name}
+                  </h1>
 
                   <div className="flex items-center mt-2 space-x-4">
                     {product.rating && (
@@ -481,7 +628,7 @@ export default function ProductPageClient({ slug }) {
                         "text-xs font-medium",
                         product.inStock
                           ? "border-green-500 text-green-600 dark:border-green-500 dark:text-green-400"
-                          : "border-red-500 text-red-600 dark:border-red-500 dark:text-red-400",
+                          : "border-red-500 text-red-600 dark:border-red-500 dark:text-red-400"
                       )}
                     >
                       {product.inStock ? "En stock" : "Rupture de stock"}
@@ -495,13 +642,16 @@ export default function ProductPageClient({ slug }) {
                       {formatPrice(product.price)}
                     </span>
                     {product.oldPrice && (
-                      <span className="ml-3 text-lg text-gray-500 line-through">{formatPrice(product.oldPrice)}</span>
+                      <span className="ml-3 text-lg text-gray-500 line-through">
+                        {formatPrice(product.oldPrice)}
+                      </span>
                     )}
                   </div>
 
                   {product.discount > 0 && product.oldPrice && (
                     <div className="text-sm text-green-600 dark:text-green-400 font-medium">
-                      Économisez {formatPrice(product.oldPrice - product.price)} ({product.discount}%)
+                      Économisez {formatPrice(product.oldPrice - product.price)}{" "}
+                      ({product.discount}%)
                     </div>
                   )}
                 </div>
@@ -509,16 +659,25 @@ export default function ProductPageClient({ slug }) {
                 <Separator />
 
                 <div className="space-y-4">
-                  <p className="text-gray-600 dark:text-gray-300">{product.description}</p>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {product.description}
+                  </p>
 
                   {product.features && product.features.length > 0 && (
                     <div className="space-y-2">
-                      <h3 className="font-medium text-gray-900 dark:text-white">Caractéristiques principales:</h3>
+                      <h3 className="font-medium text-gray-900 dark:text-white">
+                        Caractéristiques principales:
+                      </h3>
                       <ul className="space-y-1">
                         {product.features.map((feature, index) => (
                           <li key={index} className="flex items-start">
-                            <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                            <span className="text-gray-600 dark:text-gray-300">{feature}</span>
+                            <Check
+                              className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5"
+                              aria-hidden="true"
+                            />
+                            <span className="text-gray-600 dark:text-gray-300">
+                              {feature}
+                            </span>
                           </li>
                         ))}
                       </ul>
@@ -527,6 +686,14 @@ export default function ProductPageClient({ slug }) {
                 </div>
 
                 <Separator />
+
+                {product.colors && product.colors.length > 0 && (
+                  <ColorSelector
+                    colors={product.colors}
+                    selectedColor={selectedColor}
+                    onChange={setSelectedColor}
+                  />
+                )}
 
                 <div className="space-y-4">
                   <div className="flex items-center space-x-4">
@@ -544,7 +711,11 @@ export default function ProductPageClient({ slug }) {
                         min="1"
                         max="99"
                         value={quantity}
-                        onChange={(e) => handleQuantityChange(Number.parseInt(e.target.value) || 1)}
+                        onChange={(e) =>
+                          handleQuantityChange(
+                            Number.parseInt(e.target.value) || 1
+                          )
+                        }
                         className="w-12 text-center border-0 focus:ring-0 text-gray-900 dark:text-white bg-transparent"
                         aria-label="Quantité"
                       />
@@ -560,23 +731,43 @@ export default function ProductPageClient({ slug }) {
                     <Button
                       onClick={handleAddToCart}
                       className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
-                      disabled={!product.inStock}
+                      disabled={
+                        !product.inStock ||
+                        (product.colors &&
+                          product.colors.length > 0 &&
+                          !selectedColor)
+                      }
                       aria-label="Ajouter au panier"
                     >
-                      <ShoppingCart className="h-5 w-5 mr-2" aria-hidden="true" />
+                      <ShoppingCart
+                        className="h-5 w-5 mr-2"
+                        aria-hidden="true"
+                      />
                       Ajouter au panier
                     </Button>
                   </div>
-
                   {!product.inStock && (
                     <Alert variant="destructive">
                       <Info className="h-4 w-4 mr-2" aria-hidden="true" />
                       <AlertDescription>
-                        Ce produit est actuellement en rupture de stock. Vous pouvez l'ajouter à vos favoris pour être
-                        notifié lorsqu'il sera à nouveau disponible.
+                        Ce produit est actuellement en rupture de stock. Vous
+                        pouvez l'ajouter à vos favoris pour être notifié
+                        lorsqu'il sera à nouveau disponible.
                       </AlertDescription>
                     </Alert>
                   )}
+
+                  {product.colors &&
+                    product.colors.length > 0 &&
+                    !selectedColor && (
+                      <Alert>
+                        <Info className="h-4 w-4 mr-2" aria-hidden="true" />
+                        <AlertDescription>
+                          Veuillez sélectionner une couleur avant d'ajouter au
+                          panier.
+                        </AlertDescription>
+                      </Alert>
+                    )}
                 </div>
               </div>
             </div>
@@ -589,16 +780,25 @@ export default function ProductPageClient({ slug }) {
                 </TabsList>
 
                 <TabsContent value="details" className="space-y-4">
-                  <p className="text-gray-600 dark:text-gray-300">{product.description}</p>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {product.description}
+                  </p>
 
                   {product.features && product.features.length > 0 && (
                     <div className="mt-6">
-                      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Caractéristiques</h3>
+                      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                        Caractéristiques
+                      </h3>
                       <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
                         {product.features.map((feature, index) => (
                           <li key={index} className="flex items-start">
-                            <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                            <span className="text-gray-600 dark:text-gray-300">{feature}</span>
+                            <Check
+                              className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5"
+                              aria-hidden="true"
+                            />
+                            <span className="text-gray-600 dark:text-gray-300">
+                              {feature}
+                            </span>
                           </li>
                         ))}
                       </ul>
@@ -614,18 +814,79 @@ export default function ProductPageClient({ slug }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {product.colors && product.colors.length > 0 && (
                         <div className="space-y-2">
-                          <h4 className="font-medium text-gray-900 dark:text-white">Couleurs disponibles</h4>
+                          <h4 className="font-medium text-gray-900 dark:text-white">
+                            Couleurs disponibles
+                          </h4>
                           <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
                             <div className="flex flex-wrap gap-2">
                               {product.colors.map((color, index) => (
-                                <Badge key={index} variant="outline" className="bg-white dark:bg-gray-700">
-                                  {color}
-                                </Badge>
+                                <div
+                                  key={index}
+                                  className="flex items-center space-x-2"
+                                >
+                                  <div
+                                    className="w-4 h-4 rounded-full border border-gray-300 dark:border-gray-600"
+                                    style={{
+                                      background:
+                                        color === "Multicolore"
+                                          ? "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)"
+                                          : colorMap[color] || "#808080",
+                                    }}
+                                  />
+                                  <Badge
+                                    variant="outline"
+                                    className="bg-white dark:bg-gray-700"
+                                  >
+                                    {color}
+                                  </Badge>
+                                </div>
                               ))}
                             </div>
                           </div>
                         </div>
                       )}
+
+                      <div className="space-y-2">
+                        <h4 className="font-medium text-gray-900 dark:text-white">
+                          Informations produit
+                        </h4>
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                          <ul className="space-y-2">
+                            <li className="flex justify-between">
+                              <span className="text-gray-600 dark:text-gray-400">
+                                Marque:
+                              </span>
+                              <span className="font-medium text-gray-900 dark:text-white">
+                                {product.brand}
+                              </span>
+                            </li>
+                            <li className="flex justify-between">
+                              <span className="text-gray-600 dark:text-gray-400">
+                                Catégorie:
+                              </span>
+                              <span className="font-medium text-gray-900 dark:text-white">
+                                {product.category}
+                              </span>
+                            </li>
+                            <li className="flex justify-between">
+                              <span className="text-gray-600 dark:text-gray-400">
+                                Référence:
+                              </span>
+                              <span className="font-medium text-gray-900 dark:text-white">
+                                REF-{product.id}
+                              </span>
+                            </li>
+                            <li className="flex justify-between">
+                              <span className="text-gray-600 dark:text-gray-400">
+                                Garantie:
+                              </span>
+                              <span className="font-medium text-gray-900 dark:text-white">
+                                2 ans
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </TabsContent>
@@ -635,8 +896,14 @@ export default function ProductPageClient({ slug }) {
         </div>
 
         {relatedProducts.length > 0 && (
-          <section className="container mx-auto px-4 mt-16" aria-labelledby="related-products-heading">
-            <h2 id="related-products-heading" className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+          <section
+            className="container mx-auto px-4 mt-16"
+            aria-labelledby="related-products-heading"
+          >
+            <h2
+              id="related-products-heading"
+              className="text-2xl font-bold text-gray-900 dark:text-white mb-6"
+            >
               Produits similaires
             </h2>
 
@@ -648,7 +915,11 @@ export default function ProductPageClient({ slug }) {
                 >
                   <div className="relative h-48 overflow-hidden">
                     <Image
-                      src={relatedProduct.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
+                      src={
+                        relatedProduct.image ||
+                        "/placeholder.svg?height=192&width=256" ||
+                        "/placeholder.svg"
+                      }
                       alt={relatedProduct.name}
                       fill
                       className="object-cover"
@@ -661,15 +932,23 @@ export default function ProductPageClient({ slug }) {
                     )}
                   </div>
                   <div className="p-4">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{relatedProduct.category}</div>
-                    <Link href={`/produits/${relatedProduct.slug || relatedProduct.id}`}>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                      {relatedProduct.category}
+                    </div>
+                    <Link
+                      href={`/produits/${
+                        relatedProduct.slug || relatedProduct.id
+                      }`}
+                    >
                       <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
                         {relatedProduct.name}
                       </h3>
                     </Link>
                     <div className="flex items-center mb-2">
                       {renderRating(relatedProduct.rating)}
-                      <span className="text-xs text-gray-500 ml-1">({relatedProduct.reviewCount || 0})</span>
+                      <span className="text-xs text-gray-500 ml-1">
+                        ({relatedProduct.reviewCount || 0})
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div>
@@ -690,9 +969,15 @@ export default function ProductPageClient({ slug }) {
                       </div>
                       <Button
                         size="sm"
-                        onClick={() => addToCart(relatedProduct)}
+                        onClick={() =>
+                          router.push(
+                            `/produits/${
+                              relatedProduct.slug || relatedProduct.id
+                            }`
+                          )
+                        }
                         className="h-8 w-8 p-0 rounded-full bg-yellow-500 hover:bg-yellow-600 text-black"
-                        aria-label={`Ajouter ${relatedProduct.name} au panier`}
+                        aria-label={`Voir ${relatedProduct.name}`}
                       >
                         <ShoppingCart className="h-4 w-4" aria-hidden="true" />
                       </Button>
@@ -714,5 +999,5 @@ export default function ProductPageClient({ slug }) {
         </div>
       </main>
     </>
-  )
+  );
 }

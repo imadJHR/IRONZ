@@ -8,11 +8,8 @@ import img66 from "../public/panatta.png";
 import topgym from "../public/topgym.png";
 import teslaa from "../public/teslaa.png";
 import sup from "../public/14.png";
-import a1 from "../public/a1.jpeg";
-import a2 from "../public/a2.jpeg";
-import a3 from "../public/a3.jpeg";
-import a4 from "../public/a4.jpeg";
-import a5 from "../public/a5.jpeg";
+import a1 from "../public/a1.jpg";
+import a5 from "../public/a5.jpg";
 import a6 from "../public/a6.jpeg";
 import a7 from "../public/a7.jpeg";
 import a8 from "../public/a8.jpeg";
@@ -21,10 +18,10 @@ import a10 from "../public/a10.jpeg";
 import a11 from "../public/a11.jpeg";
 import a12 from "../public/a12.jpeg";
 import a13 from "../public/a13.jpeg";
-import a14 from "../public/a14.jpeg";
-import a15 from "../public/a15.jpeg";
-import a16 from "../public/a16.jpeg";
-import a17 from "../public/a17.jpeg";
+import a14 from "../public/a14.jpg";
+import a15 from "../public/a15.jpg";
+import a16 from "../public/a16.jpg";
+import a17 from "../public/a17.jpg";
 import a18 from "../public/a18.jpeg";
 import a19 from "../public/a19.jpeg";
 import a20 from "../public/a20.jpeg";
@@ -142,7 +139,21 @@ export const categories = [
     description: "Accessoires indispensables pour le sport et le bien-être",
   },
 ];
-
+export const colorMap = {
+  Noir: "#000000",
+  Blanc: "#FFFFFF",
+  Gris: "#808080",
+  Rouge: "#FF0000",
+  Bleu: "#0000FF",
+  Vert: "#008000",
+  Jaune: "#FFFF00",
+  Orange: "#FFA500",
+  Violet: "#800080",
+  Rose: "#FFC0CB",
+  Chrome: "#C0C0C0",
+  "Bois naturel": "#D2B48C",
+  Multicolore: "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)",
+}
 export const products = [
   {
     id: "1",
@@ -163,7 +174,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: a1,
-    gallery: [a2, a3, a4, a1],
+    gallery: [a1],
     category: "Home Gym",
     categoryId: "1",
     rating: 4.7,
