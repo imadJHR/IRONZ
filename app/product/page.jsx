@@ -1,20 +1,36 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Search, Filter, ChevronDown, Heart, ShoppingCart, X, Check, ArrowUpDown, Star, StarHalf } from "lucide-react"
-import { motion } from "framer-motion"
-import { useCart } from "@/context/cart-context"
-import { useFavorites } from "@/context/favorites-context"
-import { cn } from "@/lib/utils"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Search,
+  Filter,
+  ChevronDown,
+  Heart,
+  ShoppingCart,
+  X,
+  Check,
+  ArrowUpDown,
+  Star,
+  StarHalf,
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { useCart } from "@/context/cart-context";
+import { useFavorites } from "@/context/favorites-context";
+import { cn } from "@/lib/utils";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Slider } from "@/components/ui/slider"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -23,8 +39,8 @@ import {
   SheetTrigger,
   SheetClose,
   SheetFooter,
-} from "@/components/ui/sheet"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 import {
   Pagination,
   PaginationContent,
@@ -32,10 +48,10 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
+} from "@/components/ui/pagination";
 
 // Import product data
-import { products, categories, filters } from "@/data/product"
+import { products, categories, filters } from "@/data/product";
 
 // SEO component for client components
 function ProductSEO() {
@@ -50,202 +66,225 @@ function ProductSEO() {
         name="keywords"
         content="produits sportifs, équipement sportif, aménagement sportif, loisirs, fitness, musculation"
       />
-      <meta property="og:title" content="Tous nos produits - Votre Boutique de Sport" />
+      <meta
+        property="og:title"
+        content="Tous nos produits - Votre Boutique de Sport"
+      />
       <meta
         property="og:description"
         content="Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de loisirs."
       />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://votreboutique.com/produits" />
-      <meta property="og:image" content="https://votreboutique.com/og-image.jpg" />
+      <meta
+        property="og:image"
+        content="https://votreboutique.com/og-image.jpg"
+      />
       <link rel="canonical" href="https://votreboutique.com/produits" />
     </>
-  )
+  );
 }
 
 export default function ProductsPage() {
-  const [filteredProducts, setFilteredProducts] = useState([])
-  const [displayedProducts, setDisplayedProducts] = useState([])
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategories, setSelectedCategories] = useState([])
-  const [priceRange, setPriceRange] = useState([filters.price.min, filters.price.max])
-  const [sortOption, setSortOption] = useState("featured")
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [viewMode, setViewMode] = useState("grid") // grid or list
-  const [currentPage, setCurrentPage] = useState(1)
-  const [productsPerPage] = useState(12) // Number of products per page
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [displayedProducts, setDisplayedProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [priceRange, setPriceRange] = useState([
+    filters.price.min,
+    filters.price.max,
+  ]);
+  const [sortOption, setSortOption] = useState("featured");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [viewMode, setViewMode] = useState("grid"); // grid or list
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(12); // Number of products per page
 
-  const { addToCart } = useCart()
-  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites()
+  const { addToCart } = useCart();
+  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
   // Simulate loading
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 800) // Reduced loading time for better UX
-    return () => clearTimeout(timer)
-  }, [])
+      setIsLoading(false);
+    }, 800); // Reduced loading time for better UX
+    return () => clearTimeout(timer);
+  }, []);
 
   // Filter and sort products
   useEffect(() => {
-    let result = [...products]
+    let result = [...products];
 
     // Apply search filter
     if (searchQuery) {
-      const query = searchQuery.toLowerCase()
+      const query = searchQuery.toLowerCase();
       result = result.filter(
         (product) =>
           product.name.toLowerCase().includes(query) ||
           product.description.toLowerCase().includes(query) ||
-          (product.category && product.category.toLowerCase().includes(query)) ||
-          (product.tags && product.tags.some((tag) => tag.toLowerCase().includes(query))),
-      )
+          (product.category &&
+            product.category.toLowerCase().includes(query)) ||
+          (product.tags &&
+            product.tags.some((tag) => tag.toLowerCase().includes(query)))
+      );
     }
 
     // Apply category filter
     if (selectedCategories.length > 0) {
-      result = result.filter((product) => selectedCategories.includes(product.category))
+      result = result.filter((product) =>
+        selectedCategories.includes(product.category)
+      );
     }
 
     // Apply price filter
     result = result.filter(
       (product) =>
-        Number.parseFloat(product.price) >= priceRange[0] && Number.parseFloat(product.price) <= priceRange[1],
-    )
+        Number.parseFloat(product.price) >= priceRange[0] &&
+        Number.parseFloat(product.price) <= priceRange[1]
+    );
 
     // Apply sorting
     switch (sortOption) {
       case "price-asc":
-        result.sort((a, b) => Number.parseFloat(a.price) - Number.parseFloat(b.price))
-        break
+        result.sort(
+          (a, b) => Number.parseFloat(a.price) - Number.parseFloat(b.price)
+        );
+        break;
       case "price-desc":
-        result.sort((a, b) => Number.parseFloat(b.price) - Number.parseFloat(a.price))
-        break
+        result.sort(
+          (a, b) => Number.parseFloat(b.price) - Number.parseFloat(a.price)
+        );
+        break;
       case "newest":
         result.sort((a, b) => {
-          if (a.isNew && !b.isNew) return -1
-          if (!a.isNew && b.isNew) return 1
-          return 0
-        })
-        break
+          if (a.isNew && !b.isNew) return -1;
+          if (!a.isNew && b.isNew) return 1;
+          return 0;
+        });
+        break;
       case "rating":
-        result.sort((a, b) => b.rating - a.rating)
-        break
+        result.sort((a, b) => b.rating - a.rating);
+        break;
       case "discount":
-        result.sort((a, b) => (b.discount || 0) - (a.discount || 0))
-        break
+        result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
+        break;
       // featured is default, no sorting needed
       default:
         result.sort((a, b) => {
-          if (a.isFeatured && !b.isFeatured) return -1
-          if (!a.isFeatured && b.isFeatured) return 1
-          return 0
-        })
-        break
+          if (a.isFeatured && !b.isFeatured) return -1;
+          if (!a.isFeatured && b.isFeatured) return 1;
+          return 0;
+        });
+        break;
     }
 
-    setFilteredProducts(result)
-    setCurrentPage(1) // Reset to first page when filters change
-  }, [searchQuery, selectedCategories, priceRange, sortOption])
+    setFilteredProducts(result);
+    setCurrentPage(1); // Reset to first page when filters change
+  }, [searchQuery, selectedCategories, priceRange, sortOption]);
 
   // Pagination logic
   useEffect(() => {
     // Calculate current products
-    const indexOfLastProduct = currentPage * productsPerPage
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage
-    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct)
-    setDisplayedProducts(currentProducts)
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(
+      indexOfFirstProduct,
+      indexOfLastProduct
+    );
+    setDisplayedProducts(currentProducts);
 
     // Scroll to top when page changes
     if (typeof window !== "undefined") {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
-      })
+      });
     }
-  }, [currentPage, filteredProducts, productsPerPage])
+  }, [currentPage, filteredProducts, productsPerPage]);
 
   const handleCategoryToggle = (category) => {
     setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category],
-    )
-  }
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
 
   const handlePriceChange = (value) => {
-    setPriceRange(value)
-  }
+    setPriceRange(value);
+  };
 
   const clearFilters = () => {
-    setSearchQuery("")
-    setSelectedCategories([])
-    setPriceRange([filters.price.min, filters.price.max])
-    setSortOption("featured")
-  }
+    setSearchQuery("");
+    setSelectedCategories([]);
+    setPriceRange([filters.price.min, filters.price.max]);
+    setSortOption("featured");
+  };
 
   const toggleFavorite = (product) => {
     if (isInFavorites(product.id)) {
-      removeFromFavorites(product.id)
+      removeFromFavorites(product.id);
     } else {
-      addToFavorites(product)
+      addToFavorites(product);
     }
-  }
+  };
 
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // Calculate total pages
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   // Generate page numbers for pagination
   const getPageNumbers = () => {
-    const pageNumbers = []
-    const maxVisiblePages = 5 // Maximum number of visible page buttons
+    const pageNumbers = [];
+    const maxVisiblePages = 5; // Maximum number of visible page buttons
 
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i)
+        pageNumbers.push(i);
       }
     } else {
       // Always show first page
-      pageNumbers.push(1)
+      pageNumbers.push(1);
 
       // Calculate start and end pages
-      let startPage = Math.max(2, currentPage - 1)
-      let endPage = Math.min(totalPages - 1, currentPage + 1)
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
 
       // Adjust if we're at the beginning
       if (currentPage <= 3) {
-        endPage = Math.min(4, totalPages - 1)
+        endPage = Math.min(4, totalPages - 1);
       }
       // Adjust if we're at the end
       else if (currentPage >= totalPages - 2) {
-        startPage = Math.max(totalPages - 3, 2)
+        startPage = Math.max(totalPages - 3, 2);
       }
 
       // Add ellipsis if needed after first page
       if (startPage > 2) {
-        pageNumbers.push("...")
+        pageNumbers.push("...");
       }
 
       // Add middle pages
       for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(i)
+        pageNumbers.push(i);
       }
 
       // Add ellipsis if needed before last page
       if (endPage < totalPages - 1) {
-        pageNumbers.push("...")
+        pageNumbers.push("...");
       }
 
       // Always show last page
       if (totalPages > 1) {
-        pageNumbers.push(totalPages)
+        pageNumbers.push(totalPages);
       }
     }
 
-    return pageNumbers
-  }
+    return pageNumbers;
+  };
 
   // Animation variants
   const containerVariants = {
@@ -256,7 +295,7 @@ export default function ProductsPage() {
         staggerChildren: 0.05, // Reduced for better performance
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -269,7 +308,7 @@ export default function ProductsPage() {
         damping: 15,
       },
     },
-  }
+  };
 
   // Format price
   const formatPrice = (price) => {
@@ -278,27 +317,40 @@ export default function ProductsPage() {
       currency: "MAD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(price)
-  }
+    }).format(price);
+  };
 
   // Render star rating
   const renderRating = (rating) => {
-    const fullStars = Math.floor(rating)
-    const hasHalfStar = rating % 1 >= 0.5
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
 
     return (
       <div className="flex items-center" aria-label={`Note: ${rating} sur 5`}>
         {[...Array(fullStars)].map((_, i) => (
-          <Star key={`star-${i}`} className="w-4 h-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />
+          <Star
+            key={`star-${i}`}
+            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+            aria-hidden="true"
+          />
         ))}
-        {hasHalfStar && <StarHalf className="w-4 h-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />}
+        {hasHalfStar && (
+          <StarHalf
+            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+            aria-hidden="true"
+          />
+        )}
         {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
-          <Star key={`empty-star-${i}`} className="w-4 h-4 text-gray-300" aria-hidden="true" />
+          <Star
+            key={`empty-star-${i}`}
+            className="w-4 h-4 text-gray-300"
+            aria-hidden="true"
+          />
         ))}
         <span className="ml-1 text-xs text-gray-500">({rating})</span>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -306,10 +358,12 @@ export default function ProductsPage() {
       <main className="container mx-auto px-4 py-20 sm:py-24 md:py-28">
         {/* Header */}
         <header className="mb-8">
-          <h1 className="text-2xl sm:text-3xl text-yellow-500 font-bold mb-2">Tous nos produits</h1>
+          <h1 className="text-2xl sm:text-3xl text-yellow-500 font-bold mb-2">
+            Tous nos produits
+          </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-3xl">
-            Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de
-            loisirs.
+            Découvrez notre gamme complète de produits pour l'aménagement et
+            l'équipement de vos espaces sportifs et de loisirs.
           </p>
         </header>
 
@@ -320,12 +374,18 @@ export default function ProductsPage() {
             {/* Mobile Filter Button */}
             <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" className="md:hidden flex items-center gap-2 h-10">
+                <Button
+                  variant="outline"
+                  className="md:hidden flex items-center gap-2 h-10"
+                >
                   <Filter className="h-4 w-4" />
                   Filtres
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[85vw] max-w-[350px] overflow-y-auto">
+              <SheetContent
+                side="left"
+                className="w-[85vw] max-w-[350px] overflow-y-auto"
+              >
                 <SheetHeader>
                   <SheetTitle>Filtres</SheetTitle>
                 </SheetHeader>
@@ -334,11 +394,13 @@ export default function ProductsPage() {
                     <h3 className="font-medium mb-3">Catégories</h3>
                     <div className="space-y-3">
                       {categories.map((category) => (
-                        <div key={category.id} className="flex items-center">
+                        <div key={category.id} className="flex  items-center">
                           <Checkbox
                             id={`mobile-category-${category.id}`}
                             checked={selectedCategories.includes(category.name)}
-                            onCheckedChange={() => handleCategoryToggle(category.name)}
+                            onCheckedChange={() =>
+                              handleCategoryToggle(category.name)
+                            }
                           />
                           <label
                             htmlFor={`mobile-category-${category.id}`}
@@ -364,8 +426,12 @@ export default function ProductsPage() {
                         className="mb-6"
                       />
                       <div className="flex items-center justify-between">
-                        <span className="text-sm">{formatPrice(priceRange[0])}</span>
-                        <span className="text-sm">{formatPrice(priceRange[1])}</span>
+                        <span className="text-sm">
+                          {formatPrice(priceRange[0])}
+                        </span>
+                        <span className="text-sm">
+                          {formatPrice(priceRange[1])}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -376,7 +442,9 @@ export default function ProductsPage() {
                       Réinitialiser
                     </Button>
                     <SheetClose asChild>
-                      <Button className="bg-yellow-500 hover:bg-yellow-600">Appliquer</Button>
+                      <Button className="bg-yellow-500 hover:bg-yellow-600">
+                        Appliquer
+                      </Button>
                     </SheetClose>
                   </div>
                 </SheetFooter>
@@ -411,7 +479,10 @@ export default function ProductsPage() {
             {/* Sort Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2 h-10 whitespace-nowrap">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 h-10 whitespace-nowrap"
+                >
                   <ArrowUpDown className="h-4 w-4" />
                   <span className="hidden xs:inline">Trier par</span>
                   <ChevronDown className="h-4 w-4 ml-0 xs:ml-1" />
@@ -419,10 +490,15 @@ export default function ProductsPage() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[200px]">
                 {filters.sortOptions.map((option) => (
-                  <DropdownMenuItem key={option.value} onClick={() => setSortOption(option.value)}>
+                  <DropdownMenuItem
+                    key={option.value}
+                    onClick={() => setSortOption(option.value)}
+                  >
                     <span className="flex items-center w-full">
                       {option.label}
-                      {sortOption === option.value && <Check className="ml-auto h-4 w-4" />}
+                      {sortOption === option.value && (
+                        <Check className="ml-auto h-4 w-4" />
+                      )}
                     </span>
                   </DropdownMenuItem>
                 ))}
@@ -437,7 +513,7 @@ export default function ProductsPage() {
                   "p-2 transition-colors",
                   viewMode === "grid"
                     ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200",
+                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 )}
                 aria-label="Vue en grille"
                 aria-pressed={viewMode === "grid"}
@@ -455,7 +531,7 @@ export default function ProductsPage() {
                   "p-2 transition-colors",
                   viewMode === "list"
                     ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200",
+                    : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 )}
                 aria-label="Vue en liste"
                 aria-pressed={viewMode === "list"}
@@ -475,20 +551,32 @@ export default function ProductsPage() {
             priceRange[1] < filters.price.max ||
             searchQuery) && (
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-gray-500 dark:text-gray-400 mr-1">Filtres:</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400 mr-1">
+                Filtres:
+              </span>
 
               <div className="flex flex-wrap gap-2 flex-1">
                 {searchQuery && (
-                  <Badge variant="outline" className="flex items-center gap-1 max-w-full">
+                  <Badge
+                    variant="outline"
+                    className="flex items-center gap-1 max-w-full"
+                  >
                     <span className="truncate">Recherche: {searchQuery}</span>
-                    <button onClick={() => setSearchQuery("")} aria-label="Supprimer le filtre de recherche">
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      aria-label="Supprimer le filtre de recherche"
+                    >
                       <X className="h-3 w-3 flex-shrink-0" />
                     </button>
                   </Badge>
                 )}
 
                 {selectedCategories.map((category) => (
-                  <Badge key={category} variant="outline" className="flex items-center gap-1 max-w-full">
+                  <Badge
+                    key={category}
+                    variant="outline"
+                    className="flex items-center gap-1 max-w-full"
+                  >
                     <span className="truncate">{category}</span>
                     <button
                       onClick={() => handleCategoryToggle(category)}
@@ -499,13 +587,20 @@ export default function ProductsPage() {
                   </Badge>
                 ))}
 
-                {(priceRange[0] > filters.price.min || priceRange[1] < filters.price.max) && (
-                  <Badge variant="outline" className="flex items-center gap-1 max-w-full">
+                {(priceRange[0] > filters.price.min ||
+                  priceRange[1] < filters.price.max) && (
+                  <Badge
+                    variant="outline"
+                    className="flex items-center gap-1 max-w-full"
+                  >
                     <span className="truncate">
-                      Prix: {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+                      Prix: {formatPrice(priceRange[0])} -{" "}
+                      {formatPrice(priceRange[1])}
                     </span>
                     <button
-                      onClick={() => setPriceRange([filters.price.min, filters.price.max])}
+                      onClick={() =>
+                        setPriceRange([filters.price.min, filters.price.max])
+                      }
                       aria-label="Supprimer le filtre de prix"
                     >
                       <X className="h-3 w-3 flex-shrink-0" />
@@ -514,7 +609,12 @@ export default function ProductsPage() {
                 )}
               </div>
 
-              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-xs ml-auto">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="text-xs ml-auto"
+              >
                 Effacer tout
               </Button>
             </div>
@@ -533,7 +633,9 @@ export default function ProductsPage() {
                       <Checkbox
                         id={`category-${category.id}`}
                         checked={selectedCategories.includes(category.name)}
-                        onCheckedChange={() => handleCategoryToggle(category.name)}
+                        onCheckedChange={() =>
+                          handleCategoryToggle(category.name)
+                        }
                       />
                       <label
                         htmlFor={`category-${category.id}`}
@@ -561,15 +663,23 @@ export default function ProductsPage() {
                     className="mb-6"
                   />
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">{formatPrice(priceRange[0])}</span>
-                    <span className="text-sm">{formatPrice(priceRange[1])}</span>
+                    <span className="text-sm">
+                      {formatPrice(priceRange[0])}
+                    </span>
+                    <span className="text-sm">
+                      {formatPrice(priceRange[1])}
+                    </span>
                   </div>
                 </div>
               </div>
 
               <Separator />
 
-              <Button variant="outline" onClick={clearFilters} className="w-full">
+              <Button
+                variant="outline"
+                onClick={clearFilters}
+                className="w-full"
+              >
                 Réinitialiser les filtres
               </Button>
             </div>
@@ -599,11 +709,15 @@ export default function ProductsPage() {
                 <div className="mb-4 text-gray-400">
                   <Search className="h-12 w-12 mx-auto" aria-hidden="true" />
                 </div>
-                <h3 className="text-lg font-medium mb-2">Aucun produit trouvé</h3>
+                <h3 className="text-lg font-medium mb-2">
+                  Aucun produit trouvé
+                </h3>
                 <p className="text-gray-500 dark:text-gray-400 mb-4">
                   Essayez de modifier vos filtres ou votre recherche.
                 </p>
-                <Button onClick={clearFilters}>Réinitialiser les filtres</Button>
+                <Button onClick={clearFilters}>
+                  Réinitialiser les filtres
+                </Button>
               </div>
             ) : viewMode === "grid" ? (
               <motion.div
@@ -620,7 +734,11 @@ export default function ProductsPage() {
                   >
                     <div className="relative h-40 xs:h-48 overflow-hidden group">
                       <Image
-                        src={product.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
+                        src={
+                          product.image ||
+                          "/placeholder.svg?height=192&width=256" ||
+                          "/placeholder.svg"
+                        }
                         alt={product.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -634,15 +752,26 @@ export default function ProductsPage() {
                             "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
                             isInFavorites(product.id)
                               ? "bg-red-50 text-red-500 hover:bg-red-100"
-                              : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                              : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                           )}
-                          aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                          aria-label={
+                            isInFavorites(product.id)
+                              ? "Retirer des favoris"
+                              : "Ajouter aux favoris"
+                          }
                         >
-                          <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                          <Heart
+                            className={cn(
+                              "h-4 w-4",
+                              isInFavorites(product.id) && "fill-red-500"
+                            )}
+                          />
                         </button>
                       </div>
                       {product.isNew && (
-                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">Nouveau</Badge>
+                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">
+                          Nouveau
+                        </Badge>
                       )}
                       {product.discount > 0 && (
                         <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600">
@@ -651,8 +780,13 @@ export default function ProductsPage() {
                       )}
                     </div>
                     <div className="p-3 xs:p-4 flex flex-col flex-grow">
-                      <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">{product.category}</div>
-                      <Link href={`/product/${product.slug || product.id}`} className="group">
+                      <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
+                        {product.category}
+                      </div>
+                      <Link
+                        href={`/product/${product.slug || product.id}`}
+                        className="group"
+                      >
                         <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors line-clamp-2 text-sm xs:text-base">
                           {product.name}
                         </h2>
@@ -683,7 +817,12 @@ export default function ProductsPage() {
                 ))}
               </motion.div>
             ) : (
-              <motion.div className="space-y-4" variants={containerVariants} initial="hidden" animate="visible">
+              <motion.div
+                className="space-y-4"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
                 {displayedProducts.map((product) => (
                   <motion.article
                     key={product.id}
@@ -692,7 +831,11 @@ export default function ProductsPage() {
                   >
                     <div className="relative h-48 sm:h-auto sm:w-48 overflow-hidden">
                       <Image
-                        src={product.image || "/placeholder.svg?height=192&width=192" || "/placeholder.svg"}
+                        src={
+                          product.image ||
+                          "/placeholder.svg?height=192&width=192" ||
+                          "/placeholder.svg"
+                        }
                         alt={product.name}
                         fill
                         className="object-cover"
@@ -700,7 +843,9 @@ export default function ProductsPage() {
                         priority={currentPage === 1 && product.id <= 4}
                       />
                       {product.isNew && (
-                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">Nouveau</Badge>
+                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">
+                          Nouveau
+                        </Badge>
                       )}
                       {product.discount > 0 && (
                         <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600">
@@ -709,8 +854,13 @@ export default function ProductsPage() {
                       )}
                     </div>
                     <div className="flex-1 p-4 flex flex-col">
-                      <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">{product.category}</div>
-                      <Link href={`/product/${product.slug || product.id}`} className="group">
+                      <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
+                        {product.category}
+                      </div>
+                      <Link
+                        href={`/product/${product.slug || product.id}`}
+                        className="group"
+                      >
                         <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">
                           {product.name}
                         </h2>
@@ -744,11 +894,20 @@ export default function ProductsPage() {
                             className={cn(
                               "h-8 w-8 p-0",
                               isInFavorites(product.id) &&
-                                "text-red-500 border-red-200 hover:text-red-600 hover:border-red-300",
+                                "text-red-500 border-red-200 hover:text-red-600 hover:border-red-300"
                             )}
-                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            aria-label={
+                              isInFavorites(product.id)
+                                ? "Retirer des favoris"
+                                : "Ajouter aux favoris"
+                            }
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </Button>
                           <Button
                             size="sm"
@@ -771,7 +930,8 @@ export default function ProductsPage() {
               <div className="mt-8">
                 <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                   Affichage de {displayedProducts.length} produit
-                  {displayedProducts.length > 1 ? "s" : ""} sur {filteredProducts.length}
+                  {displayedProducts.length > 1 ? "s" : ""} sur{" "}
+                  {filteredProducts.length}
                 </div>
 
                 {/* Pagination */}
@@ -781,8 +941,14 @@ export default function ProductsPage() {
                       <PaginationContent className="flex flex-wrap justify-center">
                         <PaginationItem>
                           <PaginationPrevious
-                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                            className={cn("cursor-pointer", currentPage === 1 && "pointer-events-none opacity-50")}
+                            onClick={() =>
+                              setCurrentPage((prev) => Math.max(prev - 1, 1))
+                            }
+                            className={cn(
+                              "cursor-pointer",
+                              currentPage === 1 &&
+                                "pointer-events-none opacity-50"
+                            )}
                             aria-disabled={currentPage === 1}
                           />
                         </PaginationItem>
@@ -790,7 +956,9 @@ export default function ProductsPage() {
                         {/* On small screens, show fewer page numbers */}
                         {getPageNumbers().map((pageNumber, index) => {
                           // On very small screens, only show current page, first and last
-                          const isMobile = typeof window !== "undefined" && window.innerWidth < 480
+                          const isMobile =
+                            typeof window !== "undefined" &&
+                            window.innerWidth < 480;
                           if (
                             isMobile &&
                             pageNumber !== 1 &&
@@ -798,7 +966,7 @@ export default function ProductsPage() {
                             pageNumber !== currentPage &&
                             pageNumber !== "..."
                           ) {
-                            return null
+                            return null;
                           }
 
                           return pageNumber === "..." ? (
@@ -811,20 +979,29 @@ export default function ProductsPage() {
                                 onClick={() => paginate(pageNumber)}
                                 isActive={currentPage === pageNumber}
                                 className="cursor-pointer"
-                                aria-current={currentPage === pageNumber ? "page" : undefined}
+                                aria-current={
+                                  currentPage === pageNumber
+                                    ? "page"
+                                    : undefined
+                                }
                               >
                                 {pageNumber}
                               </PaginationLink>
                             </PaginationItem>
-                          )
+                          );
                         })}
 
                         <PaginationItem>
                           <PaginationNext
-                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                            onClick={() =>
+                              setCurrentPage((prev) =>
+                                Math.min(prev + 1, totalPages)
+                              )
+                            }
                             className={cn(
                               "cursor-pointer",
-                              currentPage === totalPages && "pointer-events-none opacity-50",
+                              currentPage === totalPages &&
+                                "pointer-events-none opacity-50"
                             )}
                             aria-disabled={currentPage === totalPages}
                           />
@@ -839,5 +1016,5 @@ export default function ProductsPage() {
         </div>
       </main>
     </>
-  )
+  );
 }

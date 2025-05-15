@@ -461,7 +461,7 @@ export const products = [
   {
     id: "10",
     name: "Step Aérobic Top Gym",
-    slug: "step-aérobic",
+    slug: "step",
     description:
       "Cette plateforme de step Top Gym est idéale pour vos entraînements de fitness et de cardio. Compacte, légère et robuste, elle s'adapte parfaitement à tous les niveaux de condition physique.",
     features: [

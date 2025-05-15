@@ -28,7 +28,6 @@ import {
   Mail,
   MapPin,
   ArrowRight,
-  Search,
   ArrowUp,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -450,32 +449,10 @@ function Navbar({ language, toggleLanguage }) {
                   {language === "fr" ? "Demande devis" : "Request Quote"}
                 </button>
               </Link>
-
-              {/* Search button */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setSearchOpen(true)}
-                className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors ml-2"
-                aria-label="Rechercher"
-              >
-                <Search className="h-5 w-5" />
-              </motion.button>
             </div>
 
             {/* Right side icons */}
             <div className="flex items-center space-x-3">
-              {/* Search button (mobile) */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setSearchOpen(true)}
-                className="lg:hidden p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
-                aria-label="Rechercher"
-              >
-                <Search className="h-5 w-5" />
-              </motion.button>
-
               {/* Favorites button with animation */}
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -854,22 +831,6 @@ function Navbar({ language, toggleLanguage }) {
                       {favoritesCount > 0 && (
                         <span className="ml-auto px-2 py-1 text-xs font-medium rounded-full bg-red-500 text-white">
                           {favoritesCount}
-                        </span>
-                      )}
-                    </Link>
-
-                    <Link
-                      href="/panier"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      <div className="flex items-center">
-                        <ShoppingCart className="h-5 w-5 mr-3" />
-                        {language === "fr" ? "Mon panier" : "My Cart"}
-                      </div>
-                      {itemCount > 0 && (
-                        <span className="ml-auto px-2 py-1 text-xs font-medium rounded-full bg-yellow-500 text-white">
-                          {itemCount}
                         </span>
                       )}
                     </Link>
