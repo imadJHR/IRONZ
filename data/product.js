@@ -152,8 +152,9 @@ export const colorMap = {
   Rose: "#FFC0CB",
   Chrome: "#C0C0C0",
   "Bois naturel": "#D2B48C",
-  Multicolore: "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)",
-}
+  Multicolore:
+    "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)",
+};
 export const products = [
   {
     id: "1",
@@ -185,6 +186,7 @@ export const products = [
     stockQuantity: 45,
     tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
     relatedProducts: ["3", "7", "9"],
+    colors: ["Bleu", "Gris", "Vert", "Violet"],
   },
   {
     id: "2",
@@ -212,7 +214,6 @@ export const products = [
     inStock: true,
     stockQuantity: 120,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     materials: ["TPE écologique", "Caoutchouc naturel"],
     relatedProducts: ["8", "12"],
   },
@@ -240,6 +241,7 @@ export const products = [
     isFeatured: true,
     inStock: true,
     stockQuantity: 35,
+    colors: ["Rouge", "Jaune", "Blanc", "Noir"],
     relatedProducts: ["17", "67", "69"],
   },
   {

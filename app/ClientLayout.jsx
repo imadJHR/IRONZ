@@ -918,7 +918,6 @@ function Navbar({ language, toggleLanguage }) {
         )}
       </AnimatePresence>
 
-      {/* Cart dropdown */}
       <AnimatePresence>
         {cartOpen && (
           <motion.div
@@ -976,12 +975,10 @@ function Navbar({ language, toggleLanguage }) {
                 <div className="max-h-[60vh] overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800">
                   {cart.map((item) => (
                     <div
-                      key={item.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
+                      key={`${item.id}-${item.selectedColor || "default"}`}
                       className="p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
                     >
+                      {/* Image produit */}
                       <div className="w-16 h-16 relative flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
                         <Image
                           src={item.image || "/placeholder.svg"}
@@ -991,7 +988,10 @@ function Navbar({ language, toggleLanguage }) {
                           sizes="64px"
                         />
                       </div>
+
+                      {/* Infos produit */}
                       <div className="ml-3 flex-1 min-w-0">
+                        {/* Nom du produit */}
                         <Link
                           href={`/product/${item.slug}`}
                           onClick={toggleCart}
@@ -999,15 +999,39 @@ function Navbar({ language, toggleLanguage }) {
                         >
                           {item.name}
                         </Link>
+
+                        {/* Couleur sélectionnée */}
+                        {item.selectedColor && (
+                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-1">
+                            Couleur :
+                            <span
+                              className="inline-block w-3 h-3 rounded-full border border-gray-300 dark:border-gray-700"
+                              style={{ backgroundColor: item.selectedColor }}
+                            ></span>
+                            <span>{item.selectedColor}</span>
+                          </p>
+                        )}
+
+                        {/* Prix unitaire × quantité */}
                         <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           {item.price} MAD × {item.quantity}
                         </p>
+
+                        {/* Contrôles de quantité */}
                         <div className="flex items-center mt-2">
                           <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-full">
                             <button
-                              onClick={() =>
-                                updateQuantity(item.id, item.quantity - 1)
-                              }
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (item.quantity > 1) {
+                                  updateQuantity(
+                                    item.id,
+                                    item.selectedColor,
+                                    item.quantity - 1
+                                  );
+                                }
+                              }}
                               className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-l-full hover:bg-gray-100 dark:hover:bg-gray-800"
                               disabled={item.quantity <= 1}
                             >
@@ -1017,9 +1041,15 @@ function Navbar({ language, toggleLanguage }) {
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() =>
-                                updateQuantity(item.id, item.quantity + 1)
-                              }
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                updateQuantity(
+                                  item.id,
+                                  item.selectedColor,
+                                  item.quantity + 1
+                                );
+                              }}
                               className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-r-full hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
                               <Plus className="h-3 w-3" />
@@ -1027,12 +1057,18 @@ function Navbar({ language, toggleLanguage }) {
                           </div>
                         </div>
                       </div>
+
+                      {/* Total & bouton supprimer */}
                       <div className="ml-2 text-right">
                         <p className="text-sm font-medium text-gray-900 dark:text-white">
                           {(item.price * item.quantity).toFixed(2)} MAD
                         </p>
                         <button
-                          onClick={() => removeFromCart(item.id)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            removeFromCart(item.id, item.selectedColor);
+                          }}
                           className="mt-1 p-1 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
                         >
                           <Trash2 className="h-4 w-4 text-red-500" />
@@ -1041,6 +1077,7 @@ function Navbar({ language, toggleLanguage }) {
                     </div>
                   ))}
                 </div>
+
                 <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
                   <div className="space-y-3 mb-4">
                     <div className="flex justify-between">
@@ -1091,7 +1128,6 @@ function Navbar({ language, toggleLanguage }) {
         )}
       </AnimatePresence>
 
-      {/* Favorites dropdown */}
       <AnimatePresence>
         {favoritesOpen && (
           <motion.div
