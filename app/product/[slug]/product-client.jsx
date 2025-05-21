@@ -419,7 +419,7 @@ export default function ProductPageClient({ slug }) {
             </Link>
             <ChevronRight className="h-4 w-4 mx-2" aria-hidden="true" />
             <Link
-              href="/produits"
+              href="/product"
               className="hover:text-gray-900 dark:hover:text-white"
             >
               Produits

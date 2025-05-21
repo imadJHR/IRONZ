@@ -27,44 +27,37 @@ import a19 from "../public/a19.jpg";
 import a20 from "../public/a20.jpg";
 import a21 from "../public/a21.jpeg";
 import a22 from "../public/a22.jpeg";
-import a23 from "../public/a23.jpeg";
+import a23 from "../public/a23.jpg";
 import a24 from "../public/a24.jpeg";
 import a25 from "../public/a25.jpeg";
 import a26 from "../public/a26.jpeg";
 import a27 from "../public/a27.jpeg";
-import a28 from "../public/a28.jpeg";
-import a29 from "../public/a29.jpeg";
-import a30 from "../public/a30.jpeg";
+import a28 from "../public/a28.jpg";
 import a31 from "../public/a31.jpeg";
 import a32 from "../public/a32.jpeg";
 import a33 from "../public/a33.jpeg";
 import a34 from "../public/a34.jpeg";
 import a35 from "../public/a35.jpeg";
-import a36 from "../public/a36.jpeg";
-import a37 from "../public/a37.jpeg";
-import a38 from "../public/a38.jpeg";
+import a36 from "../public/a36.jpg";
+import a38 from "../public/a38.jpg";
 import a39 from "../public/a39.jpeg";
 import a40 from "../public/a40.jpeg";
 import a41 from "../public/a41.jpeg";
 import a42 from "../public/a42.jpeg";
 import a43 from "../public/a43.jpeg";
 import a44 from "../public/a44.jpeg";
-import a45 from "../public/a45.jpeg";
-import a46 from "../public/a46.jpeg";
-import a47 from "../public/a47.jpeg";
-import a48 from "../public/a48.jpeg";
-import a49 from "../public/a49.jpeg";
-import a50 from "../public/a50.jpeg";
+import a45 from "../public/a45.jpg";
+import a47 from "../public/a47.jpg";
 import a51 from "../public/a51.jpeg";
 import a52 from "../public/a52.jpeg";
-import a53 from "../public/a53.jpeg";
-import a54 from "../public/a54.jpeg";
+import a53 from "../public/a53.jpg";
+import a54 from "../public/a54.jpg";
 import a55 from "../public/a55.jpeg";
 import a56 from "../public/a56.jpeg";
 import a57 from "../public/a57.jpeg";
-import a58 from "../public/a58.jpeg";
-import a59 from "../public/a59.jpeg";
-import a60 from "../public/a60.jpeg";
+import a58 from "../public/a58.jpg";
+import a59 from "../public/a59.jpg";
+import a60 from "../public/a60.jpg";
 import a61 from "../public/a61.jpeg";
 import a62 from "../public/a62.jpeg";
 import a63 from "../public/a63.jpeg";
@@ -524,7 +517,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: a28,
-    gallery: [a28, a29, a30],
+    gallery: [a28],
     category: "équipement",
     categoryId: "2",
     rating: 4.7,
@@ -614,7 +607,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: a36,
-    gallery: [a36, a37],
+    gallery: [a36,],
     category: "Supplément",
     categoryId: "3",
     rating: 4.7,
@@ -671,7 +664,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: a45,
-    gallery: [a45, a46],
+    gallery: [a45],
     category: "Supplément",
     categoryId: "3",
     rating: 4.7,
@@ -728,7 +721,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: a47,
-    gallery: [a47, a48, a49, a50],
+    gallery: [a47],
     category: "Supplément",
     categoryId: "3",
     rating: 4.7,
