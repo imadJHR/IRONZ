@@ -488,7 +488,6 @@ export const products = [
       depth: 60,
       weight: 25,
     },
-    colors: ["Gris", "Violet", "Vert", "Bleu"],
     materials: ["Acier", "Mousse haute densité", "Similicuir"],
     warranty: "2 ans",
     shipping: {

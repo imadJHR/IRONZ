@@ -252,20 +252,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
               commande.
             </p>
 
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6 text-left">
-              <div className="flex">
-                <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-medium text-yellow-800 dark:text-yellow-300 mb-1">
-                    Paiement à la livraison
-                  </h3>
-                  <p className="text-sm text-yellow-700 dark:text-yellow-400">
-                    Veuillez préparer le montant exact de {formatPrice(total)}{" "}
-                    en espèces pour le livreur.
-                  </p>
-                </div>
-              </div>
-            </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/">
@@ -596,22 +582,7 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between space-x-2 p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="express" id="shipping-express" />
-                        <Label
-                          htmlFor="shipping-express"
-                          className="font-medium cursor-pointer"
-                        >
-                          Livraison express (24h)
-                        </Label>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="font-medium text-gray-900 dark:text-white">
-                          {formatPrice(shippingCosts.express)}
-                        </span>
-                      </div>
-                    </div>
+                 
                   </RadioGroup>
                 </div>
 

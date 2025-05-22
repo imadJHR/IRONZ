@@ -38,7 +38,7 @@ export default function ProductPage({ params }) {
   )
 }
 
-// Composant de chargement pour la Suspense
+
 function ProductLoading() {
   return (
     <div className="container mx-auto px-4 py-16">
