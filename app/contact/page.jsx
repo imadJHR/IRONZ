@@ -14,6 +14,7 @@ import {
   AlertCircle,
   MessageSquare,
 } from "lucide-react";
+import { IoLogoWhatsapp } from "react-icons/io";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -153,7 +154,7 @@ ${data.message}`;
               onClick={contactViaWhatsApp}
               className="bg-green-500 hover:bg-green-600 text-white font-medium"
             >
-              <MessageSquare className="mr-2 h-5 w-5" />
+              <IoLogoWhatsapp />
               Nous contacter sur WhatsApp
             </Button>
           </motion.div>
@@ -213,7 +214,7 @@ ${data.message}`;
               className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-700"
             >
               <div className="w-12 h-12 bg-yellow-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
-                <MessageSquare className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
+                <IoLogoWhatsapp className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
               </div>
               <h3 className="text-lg font-medium mb-2">WhatsApp</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
@@ -413,7 +414,8 @@ ${data.message}`;
                         </>
                       ) : (
                         <>
-                          <MessageSquare className="mr-2 h-4 w-4" />
+                          <IoLogoWhatsapp className="mr-2 h-4 w-4" />
+
                           Envoyer sur WhatsApp
                         </>
                       )}
@@ -428,7 +430,7 @@ ${data.message}`;
         {/* FAQ Section */}
         <div className="container mx-auto px-4 mt-16">
           <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            <h2 className="text-2xl text-yellow-400 md:text-3xl font-bold mb-4">
               Questions fréquentes
             </h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -567,7 +569,8 @@ ${data.message}`;
                 className="bg-white text-orange-600"
                 onClick={contactViaWhatsApp}
               >
-                <MessageSquare className="mr-2 h-4 w-4" />
+                <IoLogoWhatsapp className="mr-2 h-4 w-4"  />
+
                 Discuter sur WhatsApp
               </Button>
               <Button

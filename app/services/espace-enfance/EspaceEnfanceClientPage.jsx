@@ -18,9 +18,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Marquee, MarqueeItem } from "@/components/ui/marquee";
+import img1 from "../../../public/enfant1.webp";
 
 const FadeInWhenVisible = ({ children, delay = 0 }) => {
   const controls = useAnimation();
@@ -179,44 +177,11 @@ export default function EspaceEnfanceClientPage() {
       title: "Parcours moteur",
       description:
         "Des parcours ludiques qui développent l'équilibre, la coordination et la motricité des enfants.",
-      image: "/placeholder.svg?height=400&width=600&text=Parcours+moteur",
+      image: img1,
       features: [
         "Modules modulables et évolutifs",
         "Différents niveaux de difficulté",
         "Matériaux souples et sécurisés",
-      ],
-    },
-    minigym: {
-      title: "Mini gym",
-      description:
-        "Des équipements de fitness adaptés à la morphologie et aux capacités des enfants.",
-      image: "/placeholder.svg?height=400&width=600&text=Mini+gym",
-      features: [
-        "Appareils cardio taille enfant",
-        "Poids et résistances adaptés",
-        "Design coloré et attrayant",
-      ],
-    },
-    escalade: {
-      title: "Murs d'escalade",
-      description:
-        "Des structures d'escalade sécurisées qui développent la force, la coordination et la confiance en soi.",
-      image: "/placeholder.svg?height=400&width=600&text=Murs+d'escalade",
-      features: [
-        "Hauteurs adaptées aux enfants",
-        "Prises colorées et thématiques",
-        "Matelas de réception sécurisés",
-      ],
-    },
-    interactif: {
-      title: "Zones interactives",
-      description:
-        "Des espaces qui combinent technologie et activité physique pour une expérience immersive et motivante.",
-      image: "/placeholder.svg?height=400&width=600&text=Zones+interactives",
-      features: [
-        "Jeux vidéo actifs",
-        "Sols et murs interactifs",
-        "Défis et récompenses virtuels",
       ],
     },
   };
@@ -227,13 +192,13 @@ export default function EspaceEnfanceClientPage() {
       <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-black text-white overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-40">
           <Image
-            src="/placeholder.svg?height=1200&width=2000"
+            src={img1}
             alt="Espace enfance"
             fill
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+          <div className="absolute inset-0 " />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
@@ -442,7 +407,7 @@ export default function EspaceEnfanceClientPage() {
           <FadeInWhenVisible>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
-                Nos <span className="gradient-text">solutions</span> pour les
+                Nos <span className="gradient-text ">solutions</span> pour les
                 enfants
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -505,9 +470,11 @@ export default function EspaceEnfanceClientPage() {
                       </li>
                     ))}
                   </ul>
-                  <Button className="self-start bg-yellow-400 hover:bg-yellow-500 text-black btn-3d">
-                    En savoir plus
-                  </Button>
+                  <Link href="/demande-devis">
+                    <Button className="self-start bg-yellow-400 hover:bg-yellow-500 text-black btn-3d">
+                      Ddemander un devis
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -515,9 +482,6 @@ export default function EspaceEnfanceClientPage() {
         </div>
       </section>
 
-      
-
-      {/* Benefits Section */}
       <section className="py-16 md:py-24 bg-white dark:bg-gray-950 relative overflow-hidden">
         <div className="absolute -right-20 top-20 w-40 h-40 bg-yellow-200 dark:bg-yellow-900/20 rounded-full opacity-30 blob" />
 

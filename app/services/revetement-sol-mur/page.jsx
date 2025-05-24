@@ -22,15 +22,14 @@ export default function RevetementSolMurPage() {
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-black text-white overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-40">
+        <div className="">
           <Image
-            src="/placeholder.svg?height=1200&width=2000"
+            src={img6}
             alt="Revêtement sol et mur"
             fill
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
         </div>
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
