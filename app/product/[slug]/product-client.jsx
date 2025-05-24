@@ -394,7 +394,7 @@ export default function ProductPageClient({ slug }) {
             "Le produit que vous recherchez n'existe pas ou a été supprimé."}
         </p>
         <Button asChild>
-          <Link href="/produits">Voir tous les produits</Link>
+          <Link href="/product">Voir tous les produits</Link>
         </Button>
       </div>
     );
@@ -936,7 +936,7 @@ export default function ProductPageClient({ slug }) {
                       {relatedProduct.category}
                     </div>
                     <Link
-                      href={`/produits/${
+                      href={`/product/${
                         relatedProduct.slug || relatedProduct.id
                       }`}
                     >
@@ -971,7 +971,7 @@ export default function ProductPageClient({ slug }) {
                         size="sm"
                         onClick={() =>
                           router.push(
-                            `/produits/${
+                            `/product/${
                               relatedProduct.slug || relatedProduct.id
                             }`
                           )
@@ -991,7 +991,7 @@ export default function ProductPageClient({ slug }) {
 
         <div className="container mx-auto px-4 mt-12">
           <Button variant="outline" asChild className="flex items-center">
-            <Link href="/produits">
+            <Link href="/product">
               <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" />
               Retour aux produits
             </Link>
