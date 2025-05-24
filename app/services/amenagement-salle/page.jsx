@@ -508,7 +508,7 @@ export default function AmenagementSallePage() {
                     <div className="ml-4">
                       <h3 className="text-lg font-medium">Téléphone</h3>
                       <p className="mt-1 text-gray-600 dark:text-gray-400">
-                        +33 1 23 45 67 89
+                        +212 674-114446
                       </p>
                     </div>
                   </div>
@@ -532,7 +532,7 @@ export default function AmenagementSallePage() {
                     <div className="ml-4">
                       <h3 className="text-lg font-medium">Email</h3>
                       <p className="mt-1 text-gray-600 dark:text-gray-400">
-                        amenagement@ironzpro.com
+                        muscleironz2019@gmail.com
                       </p>
                     </div>
                   </div>
@@ -562,7 +562,7 @@ export default function AmenagementSallePage() {
                     <div className="ml-4">
                       <h3 className="text-lg font-medium">Adresse</h3>
                       <p className="mt-1 text-gray-600 dark:text-gray-400">
-                        123 Avenue des Champs-Élysées, 75008 Paris
+                        SAHARA MALL 1 ÈRE ÉTAGE C169 & C120
                       </p>
                     </div>
                   </div>

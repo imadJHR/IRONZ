@@ -368,8 +368,7 @@ function Navbar({ language, toggleLanguage }) {
                 </div>
               </div>
 
-              {/* Promotions dropdown */}
-              <div className="relative group">
+              {/* <div className="relative group">
                 <button
                   className={cn(
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
@@ -402,9 +401,7 @@ function Navbar({ language, toggleLanguage }) {
                       : "All Promotions"}
                   </Link>
                 </div>
-              </div>
-
-              {/* Services dropdown */}
+              </div> */}
               <div className="relative group">
                 <button
                   className={cn(
@@ -650,8 +647,7 @@ function Navbar({ language, toggleLanguage }) {
 
                   <div className="h-px bg-gray-100 dark:bg-gray-800 my-4" />
 
-                  {/* Promotions dropdown for mobile */}
-                  <div>
+                  {/*  <div>
                     <div
                       className="flex items-center justify-between px-3 mb-2 cursor-pointer"
                       onClick={() =>
@@ -716,7 +712,7 @@ function Navbar({ language, toggleLanguage }) {
                         {language === "fr" ? "Promotions" : "Promotions"}
                       </Link>
                     )}
-                  </div>
+                  </div> */}
 
                   <div className="h-px bg-gray-100 dark:bg-gray-800 my-4" />
 
