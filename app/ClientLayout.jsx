@@ -914,215 +914,217 @@ function Navbar({ language, toggleLanguage }) {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {cartOpen && (
-          <motion.div
-            ref={cartRef}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={dropdownVariants}
-            className="fixed md:right-4 top-20 w-full max-w-md bg-white dark:bg-gray-900 rounded-xl shadow-xl z-[101] border border-gray-200 dark:border-gray-800 overflow-hidden"
+    {/* Cart dropdown */}
+<AnimatePresence>
+  {cartOpen && (
+    <motion.div
+      ref={cartRef}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={dropdownVariants}
+      className="fixed md:right-4 top-20 w-full max-w-md bg-white dark:bg-gray-900 rounded-xl shadow-xl z-[101] border border-gray-200 dark:border-gray-800 overflow-hidden"
+    >
+      <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+        <h3 className="font-medium text-lg text-gray-900 dark:text-white flex items-center">
+          <ShoppingCart className="h-6 w-6 mr-2 text-yellow-500" />
+          {language === "fr" ? "Votre Panier" : "Your Cart"}
+          {itemCount > 0 && (
+            <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-yellow-500 text-white">
+              {itemCount}
+            </span>
+          )}
+        </h3>
+        <button
+          onClick={toggleCart}
+          className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        >
+          <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+        </button>
+      </div>
+
+      {cart.length === 0 ? (
+        <div className="p-8 text-center">
+          <div className="mx-auto w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+            <ShoppingCart className="h-8 w-8 ml-6 text-gray-400 dark:text-gray-500" />
+          </div>
+          <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            {language === "fr"
+              ? "Votre panier est vide"
+              : "Your cart is empty"}
+          </h4>
+          <p className="text-gray-500 dark:text-gray-400 mb-6">
+            {language === "fr"
+              ? "Commencez à ajouter des produits"
+              : "Start adding products"}
+          </p>
+          <button
+            onClick={toggleCart}
+            className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
-            <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
-              <h3 className="font-medium text-lg text-gray-900 dark:text-white flex items-center">
-                <ShoppingCart className="h-6 w-6 mr-2 text-yellow-500" />
-                {language === "fr" ? "Votre Panier" : "Your Cart"}
-                {itemCount > 0 && (
-                  <span className="ml-2 px-2 py-1 text-xs font-medium rounded-full bg-yellow-500 text-white">
-                    {itemCount}
-                  </span>
-                )}
-              </h3>
+            {language === "fr"
+              ? "Continuer vos achats"
+              : "Continue Shopping"}
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="max-h-[60vh] overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800">
+        {cart.map((item) => (
+  <div
+    key={`${item.id}-${item.selectedColor || "default"}`}
+    className="p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+  >
+    {/* Product image */}
+    <div className="w-16 h-16 relative flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+      <Image
+        src={item.image || "/placeholder.svg"}
+        alt={item.name}
+        fill
+        className="object-cover"
+        sizes="64px"
+      />
+    </div>
+
+    {/* Product info */}
+    <div className="ml-3 flex-1 min-w-0">
+      {/* Product name */}
+      <Link
+        href={`/product/${item.slug}`}
+        onClick={toggleCart}
+        className="text-sm font-medium text-gray-900 dark:text-white hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-1"
+      >
+        {item.name}
+      </Link>
+
+      {/* Selected color */}
+      {item.selectedColor && (
+        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-1">
+          {language === "fr" ? "Couleur" : "Color"}:
+          <span
+            className="inline-block w-3 h-3 rounded-full border border-gray-300 dark:border-gray-700"
+            style={{ backgroundColor: colorMap[item.selectedColor] || item.selectedColor }}
+          ></span>
+          <span>{item.selectedColor}</span>
+        </p>
+      )}
+
+      {/* Unit price × quantity */}
+      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        {item.price} MAD × {item.quantity}
+      </p>
+
+      {/* Quantity controls */}
+      <div className="flex items-center mt-2">
+        <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-full">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (item.quantity > 1) {
+                updateQuantity(
+                  item.id,
+                  item.selectedColor,
+                  item.quantity - 1
+                );
+              }
+            }}
+            className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-l-full hover:bg-gray-100 dark:hover:bg-gray-800"
+            disabled={item.quantity <= 1}
+          >
+            <Minus className="h-3 w-3" />
+          </button>
+          <span className="mx-2 text-xs font-medium w-5 text-center">
+            {item.quantity}
+          </span>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              updateQuantity(
+                item.id,
+                item.selectedColor,
+                item.quantity + 1
+              );
+            }}
+            className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-r-full hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            <Plus className="h-3 w-3" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Total & delete button */}
+    <div className="ml-2 text-right">
+      <p className="text-sm font-medium text-gray-900 dark:text-white">
+        {(item.price * item.quantity).toFixed(2)} MAD
+      </p>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          removeFromCart(item.id, item.selectedColor);
+        }}
+        className="mt-1 p-1 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+      >
+        <Trash2 className="h-4 w-4 text-red-500" />
+      </button>
+    </div>
+  </div>
+))}
+
+          </div>
+
+          <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
+            <div className="space-y-3 mb-4">
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  {language === "fr" ? "Sous-total:" : "Subtotal:"}
+                </span>
+                <span className="font-medium text-gray-900 dark:text-white">
+                  {cartTotal.toFixed(2)} MAD
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">
+                  {language === "fr" ? "Livraison:" : "Shipping:"}
+                </span>
+                <span className="text-gray-900 dark:text-white">
+                  {language === "fr"
+                    ? "Calculé à la commande"
+                    : "Calculated at checkout"}
+                </span>
+              </div>
+              <div className="h-px bg-gray-200 dark:bg-gray-700" />
+              <div className="flex justify-between text-lg font-medium">
+                <span className="text-gray-900 dark:text-white">
+                  {language === "fr" ? "Total:" : "Total:"}
+                </span>
+                <span className="text-gray-900 dark:text-white">
+                  {cartTotal.toFixed(2)} MAD
+                </span>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={toggleCart}
-                className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
-                <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                {language === "fr" ? "Continuer" : "Continue"}
               </button>
-            </div>
-
-            {cart.length === 0 ? (
-              <div className="p-8 text-center">
-                <div className="mx-auto w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
-                  <ShoppingCart className="h-8 w-8 ml-6 text-gray-400 dark:text-gray-500" />
-                </div>
-                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                  {language === "fr"
-                    ? "Votre panier est vide"
-                    : "Your cart is empty"}
-                </h4>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">
-                  {language === "fr"
-                    ? "Commencez à ajouter des produits"
-                    : "Start adding products"}
-                </p>
-                <button
-                  onClick={toggleCart}
-                  className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                >
-                  {language === "fr"
-                    ? "Continuer vos achats"
-                    : "Continue Shopping"}
+              <Link href="/checkout" onClick={toggleCart}>
+                <button className="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
+                  {language === "fr" ? "Commander" : "Checkout"}
                 </button>
-              </div>
-            ) : (
-              <>
-                <div className="max-h-[60vh] overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800">
-                  {cart.map((item) => (
-                    <div
-                      key={`${item.id}-${item.selectedColor || "default"}`}
-                      className="p-4 flex items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-                    >
-                      {/* Image produit */}
-                      <div className="w-16 h-16 relative flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-                        <Image
-                          src={item.image || "/placeholder.svg"}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                          sizes="64px"
-                        />
-                      </div>
-
-                      {/* Infos produit */}
-                      <div className="ml-3 flex-1 min-w-0">
-                        {/* Nom du produit */}
-                        <Link
-                          href={`/product/${item.slug}`}
-                          onClick={toggleCart}
-                          className="text-sm font-medium text-gray-900 dark:text-white hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-1"
-                        >
-                          {item.name}
-                        </Link>
-
-                        {/* Couleur sélectionnée */}
-                        {item.selectedColor && (
-                          <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 flex items-center gap-1">
-                            Couleur :
-                            <span
-                              className="inline-block w-3 h-3 rounded-full border border-gray-300 dark:border-gray-700"
-                              style={{ backgroundColor: item.selectedColor }}
-                            ></span>
-                            <span>{item.selectedColor}</span>
-                          </p>
-                        )}
-
-                        {/* Prix unitaire × quantité */}
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {item.price} MAD × {item.quantity}
-                        </p>
-
-                        {/* Contrôles de quantité */}
-                        <div className="flex items-center mt-2">
-                          <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-full">
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                if (item.quantity > 1) {
-                                  updateQuantity(
-                                    item.id,
-                                    item.selectedColor,
-                                    item.quantity - 1
-                                  );
-                                }
-                              }}
-                              className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-l-full hover:bg-gray-100 dark:hover:bg-gray-800"
-                              disabled={item.quantity <= 1}
-                            >
-                              <Minus className="h-3 w-3" />
-                            </button>
-                            <span className="mx-2 text-xs font-medium w-5 text-center">
-                              {item.quantity}
-                            </span>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                updateQuantity(
-                                  item.id,
-                                  item.selectedColor,
-                                  item.quantity + 1
-                                );
-                              }}
-                              className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white rounded-r-full hover:bg-gray-100 dark:hover:bg-gray-800"
-                            >
-                              <Plus className="h-3 w-3" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Total & bouton supprimer */}
-                      <div className="ml-2 text-right">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">
-                          {(item.price * item.quantity).toFixed(2)} MAD
-                        </p>
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            removeFromCart(item.id, item.selectedColor);
-                          }}
-                          className="mt-1 p-1 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-                        >
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
-                  <div className="space-y-3 mb-4">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">
-                        {language === "fr" ? "Sous-total:" : "Subtotal:"}
-                      </span>
-                      <span className="font-medium text-gray-900 dark:text-white">
-                        {cartTotal.toFixed(2)} MAD
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">
-                        {language === "fr" ? "Livraison:" : "Shipping:"}
-                      </span>
-                      <span className="text-gray-900 dark:text-white">
-                        {language === "fr"
-                          ? "Calculé à la commande"
-                          : "Calculated at checkout"}
-                      </span>
-                    </div>
-                    <div className="h-px bg-gray-200 dark:bg-gray-700" />
-                    <div className="flex justify-between text-lg font-medium">
-                      <span className="text-gray-900 dark:text-white">
-                        {language === "fr" ? "Total:" : "Total:"}
-                      </span>
-                      <span className="text-gray-900 dark:text-white">
-                        {cartTotal.toFixed(2)} MAD
-                      </span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      onClick={toggleCart}
-                      className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      {language === "fr" ? "Continuer" : "Continue"}
-                    </button>
-                    <Link href="/checkout" onClick={toggleCart}>
-                      <button className="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
-                        {language === "fr" ? "Commander" : "Checkout"}
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
+    </motion.div>
+  )}
+</AnimatePresence>
 
       <AnimatePresence>
         {favoritesOpen && (

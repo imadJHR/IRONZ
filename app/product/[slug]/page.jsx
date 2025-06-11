@@ -1,22 +1,28 @@
-import { Suspense } from "react"
-import ProductPageClient from "./product-client"
-import { products } from "@/data/product"
+import { Suspense } from "react";
+import ProductPageClient from "./product-client";
+import { products } from "@/data/product";
 
 // Version simplifiée des métadonnées pour éviter les erreurs de type
 export async function generateMetadata({ params }) {
-  const product = products.find((p) => p.slug && String(p.slug).toLowerCase() === String(params.slug).toLowerCase())
+  const product = products.find(
+    (p) =>
+      p.slug &&
+      String(p.slug).toLowerCase() === String(params.slug).toLowerCase()
+  );
 
   if (!product) {
     return {
       title: "Produit non trouvé - IRONZ",
-    }
+    };
   }
 
   // Métadonnées basiques sans structures complexes
   return {
     title: `${product.name} - IRONZ`,
-    description: product.description ? product.description.substring(0, 160) : "Découvrez nos produits",
-  }
+    description: product.description
+      ? product.description.substring(0, 160)
+      : "Découvrez nos produits",
+  };
 }
 
 // Génération des routes statiques pour améliorer les performances
@@ -25,19 +31,18 @@ export async function generateStaticParams() {
     .filter((product) => product.slug)
     .map((product) => ({
       slug: product.slug,
-    }))
+    }));
 }
 
 export default function ProductPage({ params }) {
-  const { slug } = params
+  const { slug } = params;
 
   return (
     <Suspense fallback={<ProductLoading />}>
       <ProductPageClient slug={slug} />
     </Suspense>
-  )
+  );
 }
-
 
 function ProductLoading() {
   return (
@@ -48,7 +53,10 @@ function ProductLoading() {
             <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
             <div className="flex space-x-2">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-20 w-20 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                <div
+                  key={i}
+                  className="h-20 w-20 bg-gray-200 dark:bg-gray-700 rounded-lg"
+                ></div>
               ))}
             </div>
           </div>
@@ -63,5 +71,5 @@ function ProductLoading() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -913,7 +913,9 @@ export default function ProductsPage() {
                             size="sm"
                             className="bg-yellow-500 hover:bg-yellow-600"
                             onClick={() => addToCart(product)}
-                            aria-label={`Ajouter ${product.name} au panier`}
+                            aria-label={`
+                              
+                              ${product.name} au panier`}
                           >
                             <ShoppingCart className="h-4 w-4 mr-2" />
                             Ajouter

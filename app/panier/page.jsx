@@ -8,4 +8,3 @@ export const metadata = {
 export default function CartPage() {
   return <CartPageClient />
 }
-

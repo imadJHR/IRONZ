@@ -27,7 +27,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart, updateQuantity, removeFromCart, cartTotal, clearCart } =
+  const { cart, updateQuantity, removeFromCart, cartTotal, clearCart, color } =
     useCart();
   const [mounted, setMounted] = useState(false);
 
@@ -251,7 +251,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
               Un message WhatsApp a été envoyé avec les détails de votre
               commande.
             </p>
-
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/">
@@ -581,8 +580,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                         </span>
                       </div>
                     </div>
-
-                 
                   </RadioGroup>
                 </div>
 

@@ -41,7 +41,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import { products, categories, colorMap } from "@/data/product";
 
-// Composant de sélection de couleur
 function ColorSelector({ colors, selectedColor, onChange }) {
   if (!colors || colors.length === 0) return null;
 
@@ -135,7 +134,6 @@ export default function ProductPageClient({ slug }) {
   const [error, setError] = useState(null);
   const [categoryInfo, setCategoryInfo] = useState(null);
   const [showShareDropdown, setShowShareDropdown] = useState(false);
-  // État pour la couleur sélectionnée
   const [selectedColor, setSelectedColor] = useState("");
 
   const { addToCart } = useCart();
@@ -196,30 +194,33 @@ export default function ProductPageClient({ slug }) {
     setQuantity(newQuantity);
   };
 
-  const handleAddToCart = () => {
-    if (product) {
-      // Vérifier si une couleur est sélectionnée
-      if (product.colors && product.colors.length > 0 && !selectedColor) {
-        alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
-        return;
-      }
-
-      // Ajouter la couleur sélectionnée au produit
-      const productWithColor = {
-        ...product,
-        selectedColor: selectedColor,
-      };
-
-      addToCart(productWithColor, quantity);
-
-      // Notification
-      alert(
-        `${product.name} ${
-          selectedColor ? `(${selectedColor})` : ""
-        } ajouté au panier`
-      );
+const handleAddToCart = () => {
+  if (product) {
+    // Check if a color is selected if the product has colors
+    if (product.colors && product.colors.length > 0 && !selectedColor) {
+      alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
+      return;
     }
-  };
+
+    // Create a product object with all necessary data
+    const productWithColor = {
+      ...product,
+      selectedColor: selectedColor,
+      quantity: quantity,
+    };
+
+    // Add the product to the cart
+    addToCart(productWithColor);
+
+    // Notification
+    alert(
+      `${product.name} ${
+        selectedColor ? `(${selectedColor})` : ""
+      } ajouté au panier`
+    );
+  }
+};
+
 
   const toggleFavorite = () => {
     if (product) {

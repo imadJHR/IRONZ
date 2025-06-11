@@ -1,340 +1,54 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
+import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
-import {
-  ChevronRight,
-  Star,
-  Heart,
-  ShoppingCart,
-  Share2,
-  Check,
-  ArrowLeft,
-  Plus,
-  Minus,
-  Info,
-  Facebook,
-  Twitter,
-  Mail,
-  Linkedin,
-  PhoneIcon as Whatsapp,
-  PinIcon as Pinterest,
-  AlertCircle,
-  X,
-} from "lucide-react"
+import { ShoppingCart, Minus, Plus, Trash2, ArrowLeft, ShoppingBag, AlertTriangle } from "lucide-react"
 import { useCart } from "@/context/cart-context"
-import { useFavorites } from "@/context/favorites-context"
 import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { colorMap } from "@/data/product"
 
-import { products, categories, colorMap } from "@/data/product"
-
-// Toast component
-const Toast = ({ message, type, onClose }) => {
-  const bgColor = {
-    success: "bg-green-500",
-    error: "bg-red-500",
-    warning: "bg-yellow-500",
-    info: "bg-blue-500",
-  }[type]
-
-  return (
-    <div className="fixed bottom-4 right-4 z-50">
-      <div className={`${bgColor} text-white px-4 py-3 rounded-md shadow-lg flex items-center justify-between min-w-[300px]`}>
-        <div className="flex items-center">
-          {type === "success" && <Check className="h-5 w-5 mr-2" />}
-          {type === "error" && <X className="h-5 w-5 mr-2" />}
-          {type === "warning" && <AlertCircle className="h-5 w-5 mr-2" />}
-          {type === "info" && <Info className="h-5 w-5 mr-2" />}
-          <span>{message}</span>
-        </div>
-        <button onClick={onClose} className="ml-4">
-          <X className="h-5 w-5" />
-        </button>
-      </div>
-    </div>
-  )
-}
-
-// Toast hook
-const useToast = () => {
-  const [toast, setToast] = useState(null)
-
-  const showToast = ({ title, description, type = "info" }) => {
-    setToast({ title, description, type })
-    setTimeout(() => setToast(null), 5000)
-  }
-
-  const ToastComponent = () => {
-    if (!toast) return null
-    return (
-      <Toast
-        message={toast.description || toast.title}
-        type={toast.type}
-        onClose={() => setToast(null)}
-      />
-    )
-  }
-
-  return { toast: showToast, ToastComponent }
-}
-
-// Ajout du schéma JSON-LD directement dans le composant client
-function ProductJsonLd({ product }) {
-  if (!product) return null
-
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: product.description,
-    image: product.image || "/placeholder.svg",
-    sku: String(product.id),
-    offers: {
-      "@type": "Offer",
-      price: product.price,
-      priceCurrency: "MAD",
-      availability: product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-    },
-  }
-
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
-}
-
-// Composant de sélection de couleur
-function ColorSelector({ colors, selectedColor, onChange }) {
-  if (!colors || colors.length === 0) return null
-
-  return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <h4 className="font-medium text-gray-900 dark:text-white">Couleur</h4>
-        {selectedColor && (
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            Sélectionné: <span className="font-medium">{selectedColor}</span>
-          </span>
-        )}
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {colors.map((color) => {
-          const isSelected = color === selectedColor
-          const colorHex = colorMap[color] || "#808080"
-          const isLightColor = colorHex === "#FFFFFF" || colorHex === "#F5F5DC" || colorHex === "#FFFF00"
-
-          return (
-            <button
-              key={color}
-              type="button"
-              onClick={() => onChange(color)}
-              className={cn(
-                "relative h-10 w-10 rounded-full border-2 flex items-center justify-center transition-all",
-                isSelected
-                  ? "border-yellow-500 dark:border-yellow-400 ring-2 ring-yellow-500/50 dark:ring-yellow-400/50"
-                  : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500",
-              )}
-              style={{
-                background:
-                  color === "Multicolore"
-                    ? "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)"
-                    : colorHex,
-              }}
-              aria-label={`Couleur: ${color}`}
-              aria-pressed={isSelected}
-            >
-              {isSelected && (
-                <Check className={cn("h-5 w-5", isLightColor ? "text-black" : "text-white")} aria-hidden="true" />
-              )}
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-export default function ProductPageClient({ slug }) {
+export default function CartPageClient() {
   const router = useRouter()
-  const { toast, ToastComponent } = useToast()
+  const { cart, removeFromCart, updateQuantity, totalItems, totalPrice, clearCart } = useCart()
+  const [couponCode, setCouponCode] = useState("")
+  const [couponError, setCouponError] = useState(null)
+  const [couponSuccess, setCouponSuccess] = useState(null)
+  const [discount, setDiscount] = useState(0)
 
-  const [product, setProduct] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [selectedImage, setSelectedImage] = useState(0)
-  const [quantity, setQuantity] = useState(1)
-  const [selectedColor, setSelectedColor] = useState(null)
-  const [relatedProducts, setRelatedProducts] = useState([])
-  const [error, setError] = useState(null)
-  const [categoryInfo, setCategoryInfo] = useState(null)
-  const [showShareDropdown, setShowShareDropdown] = useState(false)
-
-  const { addToCart } = useCart()
-  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites()
-
-  useEffect(() => {
-    setLoading(true)
-    setError(null)
-    setSelectedColor(null)
-
-    try {
-      const foundProduct = findProductBySlug(slug)
-
-      if (foundProduct) {
-        setProduct(foundProduct)
-        setSelectedImage(0)
-
-        const catInfo = getCategoryInfo(foundProduct.categoryId)
-        setCategoryInfo(catInfo)
-
-        const related = getRelatedProducts(foundProduct)
-        setRelatedProducts(related)
-
-        setLoading(false)
-      } else {
-        setError("Produit non trouvé")
-        setLoading(false)
-      }
-    } catch (err) {
-      console.error("Erreur lors de la recherche du produit:", err)
-      setError("Une erreur s'est produite lors du chargement du produit")
-      setLoading(false)
-    }
-  }, [slug, router])
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showShareDropdown && !event.target.closest(".share-dropdown-container")) {
-        setShowShareDropdown(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [showShareDropdown])
-
-  const handleQuantityChange = (value) => {
-    const newQuantity = Math.max(1, Math.min(99, value))
-    setQuantity(newQuantity)
-  }
-
-  const handleAddToCart = () => {
-    if (product) {
-      if (product.colors && product.colors.length > 0 && !selectedColor) {
-        toast({
-          title: "Sélection requise",
-          description: "Veuillez sélectionner une couleur avant d'ajouter au panier",
-          type: "error",
-        })
-        return
-      }
-
-      addToCart(product, quantity, selectedColor)
-
-      toast({
-        title: "Produit ajouté au panier",
-        description: `${product.name}${selectedColor ? ` - ${selectedColor}` : ""} a été ajouté à votre panier`,
-        type: "success",
-      })
+  const handleQuantityChange = (id, selectedColor, newQuantity) => {
+    if (newQuantity >= 1 && newQuantity <= 99) {
+      updateQuantity(id, newQuantity, selectedColor)
     }
   }
 
-  const toggleFavorite = () => {
-    if (product) {
-      if (isInFavorites(product.id)) {
-        removeFromFavorites(product.id)
-      } else {
-        addToFavorites(product)
-      }
-    }
+  const handleRemoveItem = (id, selectedColor) => {
+    removeFromCart(id, selectedColor)
   }
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: product.name,
-          text: product.description,
-          url: window.location.href,
-        })
-        .catch((err) => console.log("Error sharing:", err))
+  const handleCouponSubmit = (e) => {
+    e.preventDefault()
+
+    // Réinitialiser les messages
+    setCouponError(null)
+    setCouponSuccess(null)
+
+    // Simuler la vérification d'un code promo
+    if (couponCode.toLowerCase() === "promo10") {
+      setCouponSuccess("Code promo appliqué avec succès !")
+      setDiscount(totalPrice * 0.1) // 10% de réduction
+    } else if (couponCode.toLowerCase() === "promo20") {
+      setCouponSuccess("Code promo appliqué avec succès !")
+      setDiscount(totalPrice * 0.2) // 20% de réduction
     } else {
-      setShowShareDropdown(!showShareDropdown)
+      setCouponError("Code promo invalide ou expiré")
+      setDiscount(0)
     }
-  }
-
-  const getShareLinks = () => {
-    const url = encodeURIComponent(window.location.href)
-    const title = encodeURIComponent(product.name)
-    const text = encodeURIComponent(product.description)
-    const image = product.image ? encodeURIComponent(product.image) : ""
-
-    return [
-      {
-        name: "Facebook",
-        icon: <Facebook className="h-4 w-4 mr-2" aria-hidden="true" />,
-        url: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-        label: "Partager sur Facebook",
-      },
-      {
-        name: "Twitter",
-        icon: <Twitter className="h-4 w-4 mr-2" aria-hidden="true" />,
-        url: `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
-        label: "Partager sur Twitter",
-      },
-      {
-        name: "WhatsApp",
-        icon: <Whatsapp className="h-4 w-4 mr-2" aria-hidden="true" />,
-        url: `https://wa.me/?text=${title}%20${url}`,
-        label: "Partager sur WhatsApp",
-      },
-      {
-        name: "LinkedIn",
-        icon: <Linkedin className="h-4 w-4 mr-2" aria-hidden="true" />,
-        url: `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}&summary=${text}`,
-        label: "Partager sur LinkedIn",
-      },
-      {
-        name: "Pinterest",
-        icon: <Pinterest className="h-4 w-4 mr-2" aria-hidden="true" />,
-        url: `https://pinterest.com/pin/create/button/?url=${url}&media=${image}&description=${title}`,
-        label: "Partager sur Pinterest",
-      },
-      {
-        name: "Email",
-        icon: <Mail className="h-4 w-4 mr-2" aria-hidden="true" />,
-        url: `mailto:?subject=${title}&body=${text}%0D%0A%0D%0A${url}`,
-        label: "Partager par email",
-      },
-    ]
-  }
-
-  const findProductBySlug = (slug) => {
-    const searchSlug = String(slug).toLowerCase()
-    return products.find((product) => product.slug && String(product.slug).toLowerCase() === searchSlug)
-  }
-
-  const getCategoryInfo = (categoryId) => {
-    return categories.find((cat) => cat.id === categoryId)
-  }
-
-  const getRelatedProducts = (product, limit = 4) => {
-    if (!product || !product.categoryId) return []
-    return products
-      .filter((p) => {
-        if (product.relatedProducts && product.relatedProducts.includes(p.id)) {
-          return true
-        }
-        return p.categoryId === product.categoryId && p.id !== product.id
-      })
-      .slice(0, limit)
   }
 
   const formatPrice = (price) => {
@@ -346,532 +60,238 @@ export default function ProductPageClient({ slug }) {
     }).format(price)
   }
 
-  const renderRating = (rating) => {
-    if (!rating) return null
-    const fullStars = Math.floor(rating)
-    const hasHalfStar = rating % 1 >= 0.5
-    return (
-      <div className="flex items-center" aria-label={`Note: ${rating} sur 5`}>
-        {[...Array(fullStars)].map((_, i) => (
-          <Star key={`star-${i}`} className="w-4 h-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />
-        ))}
-        {hasHalfStar && <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />}
-        {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
-          <Star key={`empty-star-${i}`} className="w-4 h-4 text-gray-300" aria-hidden="true" />
-        ))}
-      </div>
-    )
-  }
-
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-16">
-        <div className="animate-pulse" aria-hidden="true">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-              <div className="flex space-x-2">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-20 w-20 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-                ))}
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-              <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
-              <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-            </div>
-          </div>
-        </div>
-        <div className="sr-only">Chargement du produit...</div>
-      </div>
-    )
-  }
-
-  if (error || !product) {
+  if (cart.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Produit non trouvé</h1>
-        <p className="mb-8">{error || "Le produit que vous recherchez n'existe pas ou a été supprimé."}</p>
-        <Button asChild>
-          <Link href="/produits">Voir tous les produits</Link>
-        </Button>
+        <div className="max-w-md mx-auto">
+          <div className="flex justify-center mb-6">
+            <div className="h-24 w-24 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+              <ShoppingCart className="h-12 w-12 text-gray-400 dark:text-gray-500" aria-hidden="true" />
+            </div>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Votre panier est vide</h1>
+          <p className="text-gray-500 dark:text-gray-400 mb-8">
+            Vous n'avez pas encore ajouté de produits à votre panier. Découvrez notre catalogue pour trouver des
+            produits qui vous plaisent.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild variant="outline">
+              <Link href="/">
+                <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" />
+                Retour à l'accueil
+              </Link>
+            </Button>
+            <Button asChild className="bg-yellow-500 hover:bg-yellow-600 text-black">
+              <Link href="/produits">
+                <ShoppingBag className="h-4 w-4 mr-2" aria-hidden="true" />
+                Parcourir les produits
+              </Link>
+            </Button>
+          </div>
+        </div>
       </div>
     )
   }
 
   return (
-    <>
-      {/* Ajout du schema.org JSON-LD */}
-      <ProductJsonLd product={product} />
+    <div className="container mx-auto px-4 py-12">
+      <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">Votre panier</h1>
 
-      {/* Toast component */}
-      <ToastComponent />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+            <div className="p-6">
+              <div className="flow-root">
+                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {cart.map((item) => (
+                    <li key={`${item.id}-${item.selectedColor || "default"}`} className="py-6 first:pt-0 last:pb-0">
+                      <div className="flex items-center">
+                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
+                          <Image
+                            src={item.image || "/placeholder.svg"}
+                            alt={item.name}
+                            width={96}
+                            height={96}
+                            className="h-full w-full object-cover object-center"
+                          />
+                        </div>
 
-      <main className="bg-gray-50 dark:bg-gray-900 pt-8 pb-16">
-        <div className="container mx-auto px-4 mb-6">
-          <nav className="flex items-center text-sm text-gray-500 dark:text-gray-400" aria-label="Fil d'Ariane">
-            <Link href="/" className="hover:text-gray-900 dark:hover:text-white">
-              Accueil
-            </Link>
-            <ChevronRight className="h-4 w-4 mx-2" aria-hidden="true" />
-            <Link href="/produits" className="hover:text-gray-900 dark:hover:text-white">
-              Produits
-            </Link>
-            <ChevronRight className="h-4 w-4 mx-2" aria-hidden="true" />
-            {categoryInfo && (
-              <>
-                <Link
-                  href={categoryInfo.href || `/categories/${categoryInfo.id}`}
-                  className="hover:text-gray-900 dark:hover:text-white"
-                >
-                  {categoryInfo.name}
-                </Link>
-                <ChevronRight className="h-4 w-4 mx-2" aria-hidden="true" />
-              </>
-            )}
-            <span className="text-gray-900 dark:text-white font-medium truncate" aria-current="page">
-              {product.name}
-            </span>
-          </nav>
-        </div>
-
-        <div className="container mx-auto px-4">
-          <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
-              <div className="space-y-4">
-                <div className="relative h-96 bg-white dark:bg-gray-700 rounded-lg overflow-hidden">
-                  <Image
-                    src={
-                      product.gallery?.[selectedImage] ||
-                      product.image ||
-                      "/placeholder.svg?height=384&width=384" ||
-                      "/placeholder.svg" ||
-                      "/placeholder.svg" ||
-                      "/placeholder.svg"
-                    }
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority
-                  />
-                  {product.discount > 0 && (
-                    <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                      -{product.discount}%
-                    </div>
-                  )}
-                  {product.isNew && (
-                    <div className="absolute top-4 right-4 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
-                      Nouveau
-                    </div>
-                  )}
-                </div>
-
-                {product.gallery && product.gallery.length > 0 && (
-                  <div
-                    className="flex space-x-2 overflow-x-auto pb-2"
-                    role="group"
-                    aria-label="Galerie d'images du produit"
-                  >
-                    {product.gallery.map((image, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedImage(index)}
-                        className={cn(
-                          "relative h-20 w-20 flex-shrink-0 rounded-lg overflow-hidden border-2",
-                          selectedImage === index
-                            ? "border-yellow-500 dark:border-yellow-400"
-                            : "border-transparent hover:border-gray-300 dark:hover:border-gray-600",
-                        )}
-                        aria-label={`Image ${index + 1} du produit`}
-                        aria-pressed={selectedImage === index}
-                      >
-                        <Image
-                          src={image || "/placeholder.svg"}
-                          alt={`${product.name} - Image ${index + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="80px"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="space-y-6">
-                <div>
-                  <div className="flex items-center justify-between">
-                    {product.category && (
-                      <Badge
-                        variant="outline"
-                        className="text-xs font-medium text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600"
-                      >
-                        {product.category}
-                      </Badge>
-                    )}
-                    <div className="flex items-center space-x-2">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button
-                              onClick={toggleFavorite}
-                              className={cn(
-                                "p-2 rounded-full transition-colors",
-                                isInFavorites(product.id)
-                                  ? "bg-red-50 text-red-500 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30"
-                                  : "bg-gray-100 text-gray-500 hover:text-red-500 hover:bg-red-50 dark:bg-gray-700 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/20",
-                              )}
-                              aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
-                            >
-                              <Heart
-                                className={cn("h-5 w-5", isInFavorites(product.id) && "fill-red-500")}
-                                aria-hidden="true"
-                              />
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            {isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="relative share-dropdown-container">
-                              <button
-                                onClick={handleShare}
-                                className="p-2 rounded-full bg-gray-100 text-gray-500 hover:text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-gray-600 transition-colors"
-                                aria-label="Partager"
-                                aria-expanded={showShareDropdown}
-                                aria-haspopup="true"
-                              >
-                                <Share2 className="h-5 w-5" aria-hidden="true" />
-                              </button>
-
-                              {showShareDropdown && (
-                                <div
-                                  className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700"
-                                  role="menu"
-                                  aria-orientation="vertical"
-                                  aria-labelledby="share-button"
+                        <div className="ml-4 flex-1">
+                          <div className="flex justify-between">
+                            <div>
+                              <h3 className="text-base font-medium text-gray-900 dark:text-white">
+                                <Link
+                                  href={`/produits/${item.slug || item.id}`}
+                                  className="hover:text-yellow-600 dark:hover:text-yellow-400"
                                 >
-                                  <div className="py-1">
-                                    {getShareLinks().map((platform) => (
-                                      <a
-                                        key={platform.name}
-                                        href={platform.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                        onClick={() => setShowShareDropdown(false)}
-                                        aria-label={platform.label}
-                                        role="menuitem"
-                                      >
-                                        {platform.icon}
-                                        <span>{platform.name}</span>
-                                      </a>
-                                    ))}
-                                  </div>
+                                  {item.name}
+                                </Link>
+                              </h3>
+
+                              {/* Affichage de la couleur sélectionnée */}
+                              {item.selectedColor && (
+                                <div className="flex items-center mt-1">
+                                  <div
+                                    className={cn(
+                                      "h-4 w-4 rounded-full mr-2",
+                                      (colorMap[item.selectedColor] === "#FFFFFF" ||
+                                        colorMap[item.selectedColor] === "#F5F5DC" ||
+                                        colorMap[item.selectedColor] === "#FFFF00") &&
+                                        "border border-gray-300",
+                                    )}
+                                    style={{
+                                      background:
+                                        item.selectedColor === "Multicolore"
+                                          ? "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)"
+                                          : colorMap[item.selectedColor] || "#808080",
+                                    }}
+                                  />
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">{item.selectedColor}</span>
                                 </div>
                               )}
+
+                              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                {formatPrice(item.price)} / unité
+                              </p>
                             </div>
-                          </TooltipTrigger>
-                          <TooltipContent>Partager ce produit</TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  </div>
+                            <p className="text-right font-medium text-gray-900 dark:text-white">
+                              {formatPrice(item.price * item.quantity)}
+                            </p>
+                          </div>
 
-                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-2">{product.name}</h1>
-
-                  <div className="flex items-center mt-2 space-x-4">
-                    {product.rating && (
-                      <div className="flex items-center">
-                        {renderRating(product.rating)}
-                        <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
-                          ({product.reviewCount || 0} avis)
-                        </span>
-                      </div>
-                    )}
-
-                    <Badge
-                      variant={product.inStock ? "outline" : "secondary"}
-                      className={cn(
-                        "text-xs font-medium",
-                        product.inStock
-                          ? "border-green-500 text-green-600 dark:border-green-500 dark:text-green-400"
-                          : "border-red-500 text-red-600 dark:border-red-500 dark:text-red-400",
-                      )}
-                    >
-                      {product.inStock ? "En stock" : "Rupture de stock"}
-                    </Badge>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-baseline">
-                    <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                      {formatPrice(product.price)}
-                    </span>
-                    {product.oldPrice && (
-                      <span className="ml-3 text-lg text-gray-500 line-through">{formatPrice(product.oldPrice)}</span>
-                    )}
-                  </div>
-
-                  {product.discount > 0 && product.oldPrice && (
-                    <div className="text-sm text-green-600 dark:text-green-400 font-medium">
-                      Économisez {formatPrice(product.oldPrice - product.price)} ({product.discount}%)
-                    </div>
-                  )}
-                </div>
-
-                <Separator />
-
-                <div className="space-y-4">
-                  <p className="text-gray-600 dark:text-gray-300">{product.description}</p>
-
-                  {product.features && product.features.length > 0 && (
-                    <div className="space-y-2">
-                      <h3 className="font-medium text-gray-900 dark:text-white">Caractéristiques principales:</h3>
-                      <ul className="space-y-1">
-                        {product.features.map((feature, index) => (
-                          <li key={index} className="flex items-start">
-                            <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                            <span className="text-gray-600 dark:text-gray-300">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-
-                {product.colors && product.colors.length > 0 && (
-                  <>
-                    <Separator />
-                    <ColorSelector colors={product.colors} selectedColor={selectedColor} onChange={setSelectedColor} />
-                  </>
-                )}
-
-                <Separator />
-
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-md">
-                      <button
-                        onClick={() => handleQuantityChange(quantity - 1)}
-                        className="px-3 py-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 disabled:opacity-50"
-                        disabled={quantity <= 1}
-                        aria-label="Diminuer la quantité"
-                      >
-                        <Minus className="h-4 w-4" aria-hidden="true" />
-                      </button>
-                      <input
-                        type="number"
-                        min="1"
-                        max="99"
-                        value={quantity}
-                        onChange={(e) => handleQuantityChange(Number.parseInt(e.target.value) || 1)}
-                        className="w-12 text-center border-0 focus:ring-0 text-gray-900 dark:text-white bg-transparent"
-                        aria-label="Quantité"
-                      />
-                      <button
-                        onClick={() => handleQuantityChange(quantity + 1)}
-                        className="px-3 py-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                        aria-label="Augmenter la quantité"
-                      >
-                        <Plus className="h-4 w-4" aria-hidden="true" />
-                      </button>
-                    </div>
-
-                    <Button
-                      onClick={handleAddToCart}
-                      className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
-                      disabled={!product.inStock}
-                      aria-label="Ajouter au panier"
-                    >
-                      <ShoppingCart className="h-5 w-5 mr-2" aria-hidden="true" />
-                      Ajouter au panier
-                    </Button>
-                  </div>
-
-                  {product.colors && product.colors.length > 0 && !selectedColor && (
-                    <Alert
-                      variant="warning"
-                      className="bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800"
-                    >
-                      <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                      <AlertDescription className="text-amber-700 dark:text-amber-300">
-                        Veuillez sélectionner une couleur avant d'ajouter au panier
-                      </AlertDescription>
-                    </Alert>
-                  )}
-
-                  {!product.inStock && (
-                    <Alert variant="destructive">
-                      <Info className="h-4 w-4 mr-2" aria-hidden="true" />
-                      <AlertDescription>
-                        Ce produit est actuellement en rupture de stock. Vous pouvez l'ajouter à vos favoris pour être
-                        notifié lorsqu'il sera à nouveau disponible.
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-8">
-              <Tabs defaultValue="details">
-                <TabsList>
-                  <TabsTrigger value="details">Détails</TabsTrigger>
-                  <TabsTrigger value="specs">Spécifications</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="details" className="space-y-4">
-                  <p className="text-gray-600 dark:text-gray-300">{product.description}</p>
-
-                  {product.features && product.features.length > 0 && (
-                    <div className="mt-6">
-                      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Caractéristiques</h3>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
-                        {product.features.map((feature, index) => (
-                          <li key={index} className="flex items-start">
-                            <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                            <span className="text-gray-600 dark:text-gray-300">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </TabsContent>
-
-                <TabsContent value="specs" className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                      Spécifications techniques
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {product.colors && product.colors.length > 0 && (
-                        <div className="space-y-2">
-                          <h4 className="font-medium text-gray-900 dark:text-white">Couleurs disponibles</h4>
-                          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                            <div className="flex flex-wrap gap-3">
-                              {product.colors.map((color) => {
-                                const colorHex = colorMap[color] || "#808080"
-                                const isLightColor =
-                                  colorHex === "#FFFFFF" || colorHex === "#F5F5DC" || colorHex === "#FFFF00"
-
-                                return (
-                                  <div key={color} className="flex items-center">
-                                    <div
-                                      className="h-6 w-6 rounded-full border border-gray-300 dark:border-gray-600 mr-2"
-                                      style={{
-                                        background:
-                                          color === "Multicolore"
-                                            ? "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)"
-                                            : colorHex,
-                                      }}
-                                    />
-                                    <span className="text-sm text-gray-700 dark:text-gray-300">{color}</span>
-                                  </div>
-                                )
-                              })}
+                          <div className="mt-4 flex items-center justify-between">
+                            <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-md">
+                              <button
+                                onClick={() => handleQuantityChange(item.id, item.selectedColor, item.quantity - 1)}
+                                className="px-2 py-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 disabled:opacity-50"
+                                disabled={item.quantity <= 1}
+                                aria-label="Diminuer la quantité"
+                              >
+                                <Minus className="h-4 w-4" aria-hidden="true" />
+                              </button>
+                              <span className="w-8 text-center text-gray-900 dark:text-white">{item.quantity}</span>
+                              <button
+                                onClick={() => handleQuantityChange(item.id, item.selectedColor, item.quantity + 1)}
+                                className="px-2 py-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                aria-label="Augmenter la quantité"
+                              >
+                                <Plus className="h-4 w-4" aria-hidden="true" />
+                              </button>
                             </div>
+                            <button
+                              onClick={() => handleRemoveItem(item.id, item.selectedColor)}
+                              className="text-sm font-medium text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300 flex items-center"
+                              aria-label={`Supprimer ${item.name} du panier`}
+                            >
+                              <Trash2 className="h-4 w-4 mr-1" aria-hidden="true" />
+                              Supprimer
+                            </button>
                           </div>
                         </div>
-                      )}
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          </article>
+          </div>
+
+          <div className="mt-6 flex justify-between">
+            <Button variant="outline" asChild className="flex items-center">
+              <Link href="/produits">
+                <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" />
+                Continuer les achats
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20 border-red-200 dark:border-red-800"
+              onClick={() => {
+                if (window.confirm("Êtes-vous sûr de vouloir vider votre panier ?")) {
+                  clearCart()
+                }
+              }}
+            >
+              <Trash2 className="h-4 w-4 mr-2" aria-hidden="true" />
+              Vider le panier
+            </Button>
+          </div>
         </div>
 
-        {relatedProducts.length > 0 && (
-          <section className="container mx-auto px-4 mt-16" aria-labelledby="related-products-heading">
-            <h2 id="related-products-heading" className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              Produits similaires
-            </h2>
+        <div className="lg:col-span-1">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden sticky top-24">
+            <div className="p-6">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Récapitulatif de la commande</h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((relatedProduct) => (
-                <article
-                  key={relatedProduct.id}
-                  className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={relatedProduct.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
-                      alt={relatedProduct.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    />
-                    {relatedProduct.discount > 0 && (
-                      <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                        -{relatedProduct.discount}%
-                      </div>
-                    )}
+              <div className="space-y-4">
+                <div className="flex justify-between text-base">
+                  <p className="text-gray-500 dark:text-gray-400">
+                    Sous-total ({cart.reduce((total, item) => total + item.quantity, 0)} articles)
+                  </p>
+                  <p className="font-medium text-gray-900 dark:text-white">{formatPrice(totalPrice)}</p>
+                </div>
+
+                {discount > 0 && (
+                  <div className="flex justify-between text-base">
+                    <p className="text-green-600 dark:text-green-400">Réduction</p>
+                    <p className="font-medium text-green-600 dark:text-green-400">-{formatPrice(discount)}</p>
                   </div>
-                  <div className="p-4">
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{relatedProduct.category}</div>
-                    <Link href={`/produits/${relatedProduct.slug || relatedProduct.id}`}>
-                      <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
-                        {relatedProduct.name}
-                      </h3>
-                    </Link>
-                    <div className="flex items-center mb-2">
-                      {renderRating(relatedProduct.rating)}
-                      <span className="text-xs text-gray-500 ml-1">({relatedProduct.reviewCount || 0})</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        {relatedProduct.oldPrice ? (
-                          <div className="flex items-center">
-                            <span className="font-bold text-gray-900 dark:text-white">
-                              {formatPrice(relatedProduct.price)}
-                            </span>
-                            <span className="text-sm text-gray-500 line-through ml-2">
-                              {formatPrice(relatedProduct.oldPrice)}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="font-bold text-gray-900 dark:text-white">
-                            {formatPrice(relatedProduct.price)}
-                          </span>
-                        )}
-                      </div>
-                      <Button
-                        size="sm"
-                        onClick={() => addToCart(relatedProduct)}
-                        className="h-8 w-8 p-0 rounded-full bg-yellow-500 hover:bg-yellow-600 text-black"
-                        aria-label={`Ajouter ${relatedProduct.name} au panier`}
-                      >
-                        <ShoppingCart className="h-4 w-4" aria-hidden="true" />
-                      </Button>
-                    </div>
-                  </div>
-                </article>
-              ))}
+                )}
+
+                <div className="flex justify-between text-base">
+                  <p className="text-gray-500 dark:text-gray-400">Livraison</p>
+                  <p className="font-medium text-gray-900 dark:text-white">Calculé à l'étape suivante</p>
+                </div>
+
+                <Separator />
+
+                <div className="flex justify-between text-lg font-medium">
+                  <p className="text-gray-900 dark:text-white">Total</p>
+                  <p className="text-gray-900 dark:text-white">{formatPrice(totalPrice - discount)}</p>
+                </div>
+              </div>
+
+              <form onSubmit={handleCouponSubmit} className="mt-6">
+                <div className="flex">
+                  <input
+                    type="text"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    placeholder="Code promo"
+                    className="flex-1 min-w-0 px-3 py-2 text-gray-900 dark:text-white bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:focus:ring-yellow-400"
+                  />
+                  <Button
+                    type="submit"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-l-none"
+                  >
+                    Appliquer
+                  </Button>
+                </div>
+
+                {couponError && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{couponError}</p>}
+
+                {couponSuccess && <p className="mt-2 text-sm text-green-600 dark:text-green-400">{couponSuccess}</p>}
+              </form>
+
+              <div className="mt-6">
+                <Button asChild className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium">
+                  <Link href="/checkout">Passer à la caisse</Link>
+                </Button>
+              </div>
+
+              <div className="mt-6">
+                <Alert className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                  <AlertTriangle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <AlertDescription className="text-blue-700 dark:text-blue-300 text-sm">
+                    Les prix affichés incluent la TVA. La livraison sera calculée à l'étape suivante en fonction de
+                    votre adresse.
+                  </AlertDescription>
+                </Alert>
+              </div>
             </div>
-          </section>
-        )}
-
-        <div className="container mx-auto px-4 mt-12">
-          <Button variant="outline" asChild className="flex items-center">
-            <Link href="/produits">
-              <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" />
-              Retour aux produits
-            </Link>
-          </Button>
+          </div>
         </div>
-      </main>
-    </>
+      </div>
+    </div>
   )
 }
