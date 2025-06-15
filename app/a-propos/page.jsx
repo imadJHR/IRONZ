@@ -264,16 +264,16 @@ export default function AboutPage() {
                 Notre Histoire
               </h2>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 leading-relaxed">
-                Fondée en 2019 par RIDA MAGHRABI , ancien athlète professionnel,
-                IRONZ PRO est née d'une passion pour le fitness et d'une vision
-                : rendre accessible à tous un équipement de qualité
-                professionnelle.
+                Fondée en 2019 par RIDA MAGHRABI, Ingénieur, Ex Champion en
+                Bodybuilding et athlète professionnel, IRONZ est née d'une
+                passion pour le fitness et d'une vision ingénieuse pour rendre
+                accessible des équipements de qualité professionnelle à tous.
               </p>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
                 Ce qui a commencé comme une petite boutique à Agadir s'est
-                rapidement développé pour devenir l'un des leaders Maroccaine de
+                rapidement développé pour devenir parmi les leaders marocains de
                 l'équipement fitness, avec une présence en ligne forte et
-                plusieurs showrooms à travers le pays.
+                Plusieurs showrooms à travers le pays.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mt-8 sm:mt-10">
                 <motion.div
