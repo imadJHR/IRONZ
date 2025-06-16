@@ -13,9 +13,9 @@ export const metadata = {
 
 export default function AmenagementSallePage() {
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <main className="min-h-screen bg-white dark:bg-gray-950">
       {/* Hero Section */}
-      <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-black text-white overflow-hidden">
+      <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-yellow-600 via-yellow-700 to-black text-white overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-40">
           <Image
             src="/placeholder.svg?height=1200&width=2000"
@@ -30,7 +30,7 @@ export default function AmenagementSallePage() {
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/services"
-            className="inline-flex items-center text-yellow-400 hover:text-yellow-300 mb-6 transition-colors"
+            className="inline-flex items-center text-yellow-300 hover:text-yellow-200 mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Retour aux services
@@ -39,7 +39,7 @@ export default function AmenagementSallePage() {
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
               Aménagement de{" "}
-              <span className="text-yellow-400">Salle & Espace</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-white">Salle & Espace</span>
             </h1>
             <p className="text-xl text-gray-300 mb-8">
               Transformez votre espace en une salle de fitness fonctionnelle et
@@ -47,26 +47,21 @@ export default function AmenagementSallePage() {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/demande-devis">
-                <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
+                <Button className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-medium text-lg px-8 py-6">
                   Demander un devis
                 </Button>
               </Link>
-             {/* <Button
-                variant="outline"
-                className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 font-medium text-lg px-8 py-6"
-              >
-                Découvrir nos réalisations
-              </Button> */}
+              
             </div>
           </div>
         </div>
       </section>
 
       {/* Services Overview */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-black dark:text-white">
               Créez l'espace fitness idéal
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -77,10 +72,10 @@ export default function AmenagementSallePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-transform hover:-translate-y-1 duration-300">
-              <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-6">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100 dark:border-gray-800">
+              <div className="w-14 h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center mb-6">
                 <svg
-                  className="w-7 h-7 text-yellow-600 dark:text-yellow-400"
+                  className="w-7 h-7 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -93,7 +88,7 @@ export default function AmenagementSallePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">
+              <h3 className="text-xl font-heading font-bold mb-3 text-black dark:text-white">
                 Étude & Conception
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
@@ -102,19 +97,19 @@ export default function AmenagementSallePage() {
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300">
                     Plans 2D et 3D personnalisés
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300">
                     Optimisation des flux de circulation
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300">
                     Respect des normes de sécurité
                   </span>
@@ -122,10 +117,10 @@ export default function AmenagementSallePage() {
               </ul>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-transform hover:-translate-y-1 duration-300">
-              <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-6">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100 dark:border-gray-800">
+              <div className="w-14 h-14 bg-gradient-to-br from-yellow-500 to-black rounded-full flex items-center justify-center mb-6">
                 <svg
-                  className="w-7 h-7 text-yellow-600 dark:text-yellow-400"
+                  className="w-7 h-7 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -138,7 +133,7 @@ export default function AmenagementSallePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">
+              <h3 className="text-xl font-heading font-bold mb-3 text-black dark:text-white">
                 Aménagement & Installation
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
@@ -147,19 +142,19 @@ export default function AmenagementSallePage() {
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300">
                     Installation professionnelle
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300">
                     Gestion de projet complète
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300">
                     Coordination des différents corps de métier
                   </span>
@@ -167,10 +162,10 @@ export default function AmenagementSallePage() {
               </ul>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-transform hover:-translate-y-1 duration-300">
-              <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-6">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100 dark:border-gray-800">
+              <div className="w-14 h-14 bg-gradient-to-br from-black to-yellow-500 rounded-full flex items-center justify-center mb-6">
                 <svg
-                  className="w-7 h-7 text-yellow-600 dark:text-yellow-400"
+                  className="w-7 h-7 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -183,7 +178,7 @@ export default function AmenagementSallePage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-heading font-bold mb-3">
+              <h3 className="text-xl font-heading font-bold mb-3 text-black dark:text-white">
                 Équipement & Finition
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
@@ -192,19 +187,19 @@ export default function AmenagementSallePage() {
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300">
                     Sélection d'équipements de qualité
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300">
                     Personnalisation des finitions
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 dark:text-gray-300">
                     Formation à l'utilisation
                   </span>
@@ -215,58 +210,11 @@ export default function AmenagementSallePage() {
         </div>
       </section>
 
-     
-     {/* <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
-              Nos réalisations
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Découvrez quelques-uns de nos projets d'aménagement d'espaces
-              fitness réalisés pour nos clients.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <div
-                key={item}
-                className="group relative overflow-hidden rounded-xl bg-gray-200 dark:bg-gray-800 aspect-square"
-              >
-                <Image
-                  src={`/placeholder.svg?height=600&width=600&text=Projet+${item}`}
-                  alt={`Projet d'aménagement ${item}`}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <h3 className="text-white text-xl font-bold mb-2">
-                    Projet {item}
-                  </h3>
-                  <p className="text-gray-200 text-sm mb-4">
-                    {item % 2 === 0
-                      ? "Salle de sport professionnelle"
-                      : "Home gym privé"}
-                  </p>
-                  <Button
-                    variant="outline"
-                    className="border-white text-white hover:bg-white/20 w-full"
-                  >
-                    Voir le projet
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
       {/* Process Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-yellow-50 dark:from-gray-900 dark:to-yellow-900/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-black dark:text-white">
               Notre processus
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
@@ -284,7 +232,7 @@ export default function AmenagementSallePage() {
               {/* Step 1 */}
               <div className="flex flex-col md:flex-row items-center">
                 <div className="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">
+                  <h3 className="text-xl font-heading font-bold mb-3 text-black dark:text-white">
                     Consultation initiale
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -293,25 +241,25 @@ export default function AmenagementSallePage() {
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pl-12 relative">
-                  <div className="absolute top-0 md:top-1/2 left-1/2 md:left-0 transform -translate-x-1/2 md:-translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold z-10">
+                  <div className="absolute top-0 md:top-1/2 left-1/2 md:left-0 transform -translate-x-1/2 md:-translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold z-10">
                     1
                   </div>
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 md:ml-6">
+                  <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 md:ml-6 border border-gray-100 dark:border-gray-800">
                     <ul className="space-y-2">
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Analyse des besoins
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Définition du budget
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Visite des lieux
                         </span>
@@ -324,7 +272,7 @@ export default function AmenagementSallePage() {
               {/* Step 2 */}
               <div className="flex flex-col md:flex-row-reverse items-center">
                 <div className="md:w-1/2 md:pl-12 md:text-left mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">
+                  <h3 className="text-xl font-heading font-bold mb-3 text-black dark:text-white">
                     Conception & Design
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -333,25 +281,25 @@ export default function AmenagementSallePage() {
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pr-12 relative">
-                  <div className="absolute top-0 md:top-1/2 left-1/2 md:right-0 transform -translate-x-1/2 md:translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold z-10">
+                  <div className="absolute top-0 md:top-1/2 left-1/2 md:right-0 transform -translate-x-1/2 md:translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold z-10">
                     2
                   </div>
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 md:mr-6">
+                  <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 md:mr-6 border border-gray-100 dark:border-gray-800">
                     <ul className="space-y-2">
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Plans 2D et 3D
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Sélection des matériaux
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Proposition d'équipements
                         </span>
@@ -364,7 +312,7 @@ export default function AmenagementSallePage() {
               {/* Step 3 */}
               <div className="flex flex-col md:flex-row items-center">
                 <div className="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">
+                  <h3 className="text-xl font-heading font-bold mb-3 text-black dark:text-white">
                     Validation & Planification
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -373,25 +321,25 @@ export default function AmenagementSallePage() {
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pl-12 relative">
-                  <div className="absolute top-0 md:top-1/2 left-1/2 md:left-0 transform -translate-x-1/2 md:-translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold z-10">
+                  <div className="absolute top-0 md:top-1/2 left-1/2 md:left-0 transform -translate-x-1/2 md:-translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold z-10">
                     3
                   </div>
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 md:ml-6">
+                  <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 md:ml-6 border border-gray-100 dark:border-gray-800">
                     <ul className="space-y-2">
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Validation du projet
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Planification des travaux
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Commande des équipements
                         </span>
@@ -404,7 +352,7 @@ export default function AmenagementSallePage() {
               {/* Step 4 */}
               <div className="flex flex-col md:flex-row-reverse items-center">
                 <div className="md:w-1/2 md:pl-12 md:text-left mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">
+                  <h3 className="text-xl font-heading font-bold mb-3 text-black dark:text-white">
                     Réalisation & Installation
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -413,25 +361,25 @@ export default function AmenagementSallePage() {
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pr-12 relative">
-                  <div className="absolute top-0 md:top-1/2 left-1/2 md:right-0 transform -translate-x-1/2 md:translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold z-10">
+                  <div className="absolute top-0 md:top-1/2 left-1/2 md:right-0 transform -translate-x-1/2 md:translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold z-10">
                     4
                   </div>
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 md:mr-6">
+                  <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 md:mr-6 border border-gray-100 dark:border-gray-800">
                     <ul className="space-y-2">
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Préparation du site
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Installation des équipements
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Contrôle qualité
                         </span>
@@ -444,7 +392,7 @@ export default function AmenagementSallePage() {
               {/* Step 5 */}
               <div className="flex flex-col md:flex-row items-center">
                 <div className="md:w-1/2 md:pr-12 md:text-right mb-6 md:mb-0">
-                  <h3 className="text-xl font-heading font-bold mb-3">
+                  <h3 className="text-xl font-heading font-bold mb-3 text-black dark:text-white">
                     Livraison & Suivi
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -453,25 +401,25 @@ export default function AmenagementSallePage() {
                   </p>
                 </div>
                 <div className="md:w-1/2 md:pl-12 relative">
-                  <div className="absolute top-0 md:top-1/2 left-1/2 md:left-0 transform -translate-x-1/2 md:-translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold z-10">
+                  <div className="absolute top-0 md:top-1/2 left-1/2 md:left-0 transform -translate-x-1/2 md:-translate-x-1/2 md:-translate-y-1/2 w-10 h-10 rounded-full bg-yellow-500 text-black flex items-center justify-center font-bold z-10">
                     5
                   </div>
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 md:ml-6">
+                  <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 md:ml-6 border border-gray-100 dark:border-gray-800">
                     <ul className="space-y-2">
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Formation à l'utilisation
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Remise des documents
                         </span>
                       </li>
                       <li className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-yellow-500 mr-2 flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700 dark:text-gray-300">
                           Service après-vente
                         </span>
@@ -486,12 +434,12 @@ export default function AmenagementSallePage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-black dark:text-white">
                   Prêt à transformer votre espace?
                 </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
@@ -506,7 +454,7 @@ export default function AmenagementSallePage() {
                       <Phone className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-lg font-medium">Téléphone</h3>
+                      <h3 className="text-lg font-medium text-black dark:text-white">Téléphone</h3>
                       <p className="mt-1 text-gray-600 dark:text-gray-400">
                         +212 674-114446
                       </p>
@@ -530,7 +478,7 @@ export default function AmenagementSallePage() {
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-lg font-medium">Email</h3>
+                      <h3 className="text-lg font-medium text-black dark:text-white">Email</h3>
                       <p className="mt-1 text-gray-600 dark:text-gray-400">
                         muscleironz2019@gmail.com
                       </p>
@@ -560,7 +508,7 @@ export default function AmenagementSallePage() {
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-lg font-medium">Adresse</h3>
+                      <h3 className="text-lg font-medium text-black dark:text-white">Adresse</h3>
                       <p className="mt-1 text-gray-600 dark:text-gray-400">
                         SAHARA MALL 1 ÈRE ÉTAGE C169 & C120
                       </p>
@@ -568,8 +516,8 @@ export default function AmenagementSallePage() {
                   </div>
                 </div>
 
-                <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6">
-                  <h3 className="text-lg font-medium mb-4">
+                <div className="bg-gray-100 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
+                  <h3 className="text-lg font-medium mb-4 text-black dark:text-white">
                     Horaires d'ouverture
                   </h3>
                   <div className="space-y-2">
@@ -577,50 +525,55 @@ export default function AmenagementSallePage() {
                       <span className="text-gray-600 dark:text-gray-400">
                         Lundi - Vendredi
                       </span>
-                      <span className="font-medium">9h - 18h</span>
+                      <span className="font-medium text-black dark:text-white">9h - 18h</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">
                         Samedi
                       </span>
-                      <span className="font-medium">10h - 16h</span>
+                      <span className="font-medium text-black dark:text-white">10h - 16h</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">
                         Dimanche
                       </span>
-                      <span className="font-medium">Fermé</span>
+                      <span className="font-medium text-black dark:text-white">Fermé</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div></div>
+              <div>
+                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-800">
+                  <h3 className="text-xl font-heading font-bold mb-6 text-black dark:text-white">Demande de devis professionnel</h3>
+                  <ServiceContactForm service="Aménagement Salle Professionnelle" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-yellow-400">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-yellow-500 to-yellow-600">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-black">
               Transformez votre espace dès maintenant
             </h2>
-            <p className="text-xl text-black/80 mb-8">
+            <p className="text-xl text-black/90 mb-8">
               Contactez-nous pour bénéficier d'une consultation gratuite et sans
               engagement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/demande-devis">
-                <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6">
+                <Button className="bg-black hover:bg-gray-900 text-white font-medium text-lg px-8 py-6">
                   Demander un devis gratuit
                 </Button>
               </Link>
               <Button
                 variant="outline"
-                className="border-black text-black hover:bg-black/10 font-medium text-lg px-8 py-6"
+                className="border-2 border-black text-black hover:bg-black/10 font-medium text-lg px-8 py-6"
               >
                 Découvrir nos réalisations
               </Button>
