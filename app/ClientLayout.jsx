@@ -439,14 +439,10 @@ function Navbar({ language, toggleLanguage }) {
                   {language === "fr" ? "Demande devis" : "Request Quote"}
                 </button>
               </Link>
-
-             
             </div>
 
             {/* Right side icons */}
             <div className="flex items-center space-x-3">
-             
-
               {/* Favorites button with animation */}
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -475,26 +471,28 @@ function Navbar({ language, toggleLanguage }) {
               </motion.button>
 
               {/* Cart button with animation */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={toggleCart}
-                className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors relative"
-                aria-label="Panier"
-              >
-                <ShoppingCart className="h-5 w-5" />
-                {itemCount > 0 && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-1"
-                  >
-                    <span className="h-5 w-5 p-0 flex items-center justify-center rounded-full bg-yellow-500 text-white text-xs font-medium">
-                      {itemCount}
-                    </span>
-                  </motion.div>
-                )}
-              </motion.button>
+              <Link href="/panier">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={toggleCart}
+                  className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors relative"
+                  aria-label="Panier"
+                >
+                  <ShoppingCart className="h-5 w-5" />
+                  {itemCount > 0 && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-1 -right-1"
+                    >
+                      <span className="h-5 w-5 p-0 flex items-center justify-center rounded-full bg-yellow-500 text-white text-xs font-medium">
+                        {itemCount}
+                      </span>
+                    </motion.div>
+                  )}
+                </motion.button>
+              </Link>
 
               {/* Mobile menu button */}
               <motion.button

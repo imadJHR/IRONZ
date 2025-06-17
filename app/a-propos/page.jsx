@@ -233,7 +233,7 @@ export default function AboutPage() {
               À Propos <span className="text-yellow-400">IRONZ</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed">
-              Découvrez notre histoire, nos valeurs et notre engagement à vous
+              D'une passion vers une ambition.<br/>Découvrez notre histoire, nos valeurs et notre engagement à vous
               fournir les meilleurs équipements et services de fitness.
             </p>
           </motion.div>
