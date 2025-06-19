@@ -147,7 +147,7 @@ export default function CartPageClient() {
                 asChild
                 className="bg-yellow-500 hover:bg-yellow-600 text-black"
               >
-                <Link href="/produits">
+                <Link href="/product">
                   <ShoppingBag className="h-4 w-4 mr-2" />
                   Parcourir les produits
                 </Link>
@@ -173,7 +173,7 @@ export default function CartPageClient() {
             </p>
           </div>
           <Link
-            href="/produits"
+            href="/product"
             className="inline-flex items-center text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 font-medium"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -346,7 +346,7 @@ export default function CartPageClient() {
               </h2>
 
               {/* Code promo */}
-              {/*
+            
               <form onSubmit={handleCouponSubmit} className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Code promo</label>
                 <div className="flex gap-2">
@@ -366,7 +366,7 @@ export default function CartPageClient() {
 
                 {couponSuccess && <p className="mt-2 text-sm text-green-600 dark:text-green-400">{couponSuccess}</p>}
               </form>
-              */}
+            
 
               {/* Détails des prix */}
               <div className="space-y-4 mb-6">

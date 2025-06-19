@@ -148,7 +148,7 @@ export default function CategoryPage() {
     }
   };
 
-  // Animation variants
+ 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
