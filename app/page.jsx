@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import ReferencesSection from "../components/references-section"
 import logo from "../public/logo.png";
 import {
   ArrowRight,
@@ -42,6 +43,15 @@ import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
+import ref1 from "../public/ref1.jpg";
+import ref2 from "../public/ref2.jpg";
+import ref3 from "../public/ref3.jpg";
+import ref4 from "../public/ref4.jpg";
+import ref5 from "../public/ref5.jpg";
+import ref6 from "../public/ref6.jpg";
+import ref7 from "../public/ref7.jpg";
+import ref8 from "../public/ref8.jpg";
+import ref9 from "../public/ref9.jpg";
 
 const faqs = [
   {
@@ -1446,6 +1456,9 @@ export default function Home() {
             <BrandsMarquee brands={brands} />
           </div>
         </section>
+
+        {/* References Gallery */}
+        <ReferencesSection />
 
         {/* Why Choose Us Section - Cartes améliorées */}
         <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
