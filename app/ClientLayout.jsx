@@ -642,74 +642,6 @@ function Navbar({ language, toggleLanguage }) {
 
                   <div className="h-px bg-gray-100 dark:bg-gray-800 my-4" />
 
-                  {/* Promotions dropdown for mobile */}
-                  <div>
-                    <div
-                      className="flex items-center justify-between px-3 mb-2 cursor-pointer"
-                      onClick={() =>
-                        setMobilePromotionsOpen(!mobilePromotionsOpen)
-                      }
-                    >
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {language === "fr" ? "Promotions" : "Promotions"}
-                      </h3>
-                      <ChevronDown
-                        className={cn(
-                          "h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform duration-200",
-                          mobilePromotionsOpen ? "rotate-180" : ""
-                        )}
-                      />
-                    </div>
-
-                    <AnimatePresence>
-                      {mobilePromotionsOpen && (
-                        <motion.div
-                          initial="closed"
-                          animate="open"
-                          exit="closed"
-                          variants={mobileSubmenuVariants}
-                          className="space-y-1 pl-3"
-                        >
-                          {promotionLinks.map((link, index) => (
-                            <Link
-                              key={index}
-                              href={link.path}
-                              onClick={() => setMobileMenuOpen(false)}
-                              className="flex items-center px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                            >
-                              <ShoppingBag className="h-5 w-5 mr-3 text-yellow-500" />
-                              {link.name}
-                            </Link>
-                          ))}
-                          <Link
-                            href="/promotions"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
-                          >
-                            {language === "fr"
-                              ? "Toutes les promotions"
-                              : "All Promotions"}
-                          </Link>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    {!mobilePromotionsOpen && (
-                      <Link
-                        href="/promotions"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={cn(
-                          "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                          isActive("/promotions")
-                            ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                        )}
-                      >
-                        {language === "fr" ? "Promotions" : "Promotions"}
-                      </Link>
-                    )}
-                  </div>
-
                   <div className="h-px bg-gray-100 dark:bg-gray-800 my-4" />
 
                   {/* Services dropdown for mobile */}
@@ -1293,10 +1225,6 @@ function Footer({ language }) {
   ];
 
   const categories = [
-    {
-      name: language === "fr" ? "Home Gym" : "Home Gym",
-      href: "/categories/home-gym",
-    },
     {
       name: language === "fr" ? "Équipements" : "Equipment",
       href: "/categories/equipements",

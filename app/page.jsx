@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import ReferencesSection from "../components/references-section"
+import ReferencesSection from "../components/references-section";
 import logo from "../public/logo.png";
 import {
   ArrowRight,
@@ -665,13 +665,6 @@ export default function Home() {
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  className="border-2 bg-white border-yellow-400 text-yellow-400 hover:bg-yellow-400/10 font-medium px-8 py-6 text-lg rounded-xl"
-                >
-                  <Link href="/promotions">Nos promotions</Link>
-                </Button>
               </div>
             </div>
           </div>
@@ -697,7 +690,7 @@ export default function Home() {
         </section>
 
         {/* Promotion Banner - Optimisé pour mobile */}
-        <section className="py-6 md:py-8 bg-gradient-to-r from-yellow-500 to-yellow-400">
+       {/* <section className="py-6 md:py-8 bg-gradient-to-r from-yellow-500 to-yellow-400">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="flex items-center mb-4 md:mb-0">
@@ -724,7 +717,7 @@ export default function Home() {
               </Button>
             </div>
           </div>
-        </section>
+        </section> */}
 
         <section className="py-20 md:py-28 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">

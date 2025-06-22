@@ -102,14 +102,7 @@ import b6 from "../public/b6.jpg";
 import adidas from "../public/adidas.png";
 import red from "../public/red.png";
 export const categories = [
-  {
-    id: "1",
-    image: img1,
-    name: "Home Gym",
-    href: "/categories/home-gym",
-    icon: "Dumbbell",
-    description: "Matériel et équipements pour l'entraînement à domicile",
-  },
+  
   {
     id: "2",
     image: img2,
