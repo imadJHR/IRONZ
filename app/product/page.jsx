@@ -90,16 +90,14 @@ export default function ProductsPage() {
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [priceRange, setPriceRange] = useState([
-    filters.price.min,
-    filters.price.max,
-  ]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState([]);
+  const [priceRange, setPriceRange] = useState([filters.price.min, filters.price.max]);
   const [sortOption, setSortOption] = useState("featured");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [viewMode, setViewMode] = useState("grid"); // grid or list
+  const [viewMode, setViewMode] = useState("grid");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(12); // Number of products per page
+  const [productsPerPage] = useState(12);
 
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
@@ -108,7 +106,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 800); // Reduced loading time for better UX
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -123,10 +121,9 @@ export default function ProductsPage() {
         (product) =>
           product.name.toLowerCase().includes(query) ||
           product.description.toLowerCase().includes(query) ||
-          (product.category &&
-            product.category.toLowerCase().includes(query)) ||
-          (product.tags &&
-            product.tags.some((tag) => tag.toLowerCase().includes(query)))
+          (product.category && product.category.toLowerCase().includes(query)) ||
+          (product.tags && product.tags.some((tag) => tag.toLowerCase().includes(query))) ||
+          (product.subCategory && product.subCategory.toLowerCase().includes(query))
       );
     }
 
@@ -134,6 +131,13 @@ export default function ProductsPage() {
     if (selectedCategories.length > 0) {
       result = result.filter((product) =>
         selectedCategories.includes(product.category)
+      );
+    }
+
+    // Apply subcategory filter
+    if (selectedSubCategories.length > 0) {
+      result = result.filter((product) =>
+        product.subCategory && selectedSubCategories.includes(product.subCategory)
       );
     }
 
@@ -169,7 +173,6 @@ export default function ProductsPage() {
       case "discount":
         result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
         break;
-      // featured is default, no sorting needed
       default:
         result.sort((a, b) => {
           if (a.isFeatured && !b.isFeatured) return -1;
@@ -180,12 +183,11 @@ export default function ProductsPage() {
     }
 
     setFilteredProducts(result);
-    setCurrentPage(1); // Reset to first page when filters change
-  }, [searchQuery, selectedCategories, priceRange, sortOption]);
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategories, selectedSubCategories, priceRange, sortOption]);
 
   // Pagination logic
   useEffect(() => {
-    // Calculate current products
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
     const currentProducts = filteredProducts.slice(
@@ -194,7 +196,6 @@ export default function ProductsPage() {
     );
     setDisplayedProducts(currentProducts);
 
-    // Scroll to top when page changes
     if (typeof window !== "undefined") {
       window.scrollTo({
         top: 0,
@@ -211,6 +212,14 @@ export default function ProductsPage() {
     );
   };
 
+  const handleSubCategoryToggle = (subCategory) => {
+    setSelectedSubCategories((prev) =>
+      prev.includes(subCategory)
+        ? prev.filter((sc) => sc !== subCategory)
+        : [...prev, subCategory]
+    );
+  };
+
   const handlePriceChange = (value) => {
     setPriceRange(value);
   };
@@ -218,6 +227,7 @@ export default function ProductsPage() {
   const clearFilters = () => {
     setSearchQuery("");
     setSelectedCategories([]);
+    setSelectedSubCategories([]);
     setPriceRange([filters.price.min, filters.price.max]);
     setSortOption("featured");
   };
@@ -230,54 +240,42 @@ export default function ProductsPage() {
     }
   };
 
-  // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Calculate total pages
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  // Generate page numbers for pagination
   const getPageNumbers = () => {
     const pageNumbers = [];
-    const maxVisiblePages = 5; // Maximum number of visible page buttons
+    const maxVisiblePages = 5;
 
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }
     } else {
-      // Always show first page
       pageNumbers.push(1);
 
-      // Calculate start and end pages
       let startPage = Math.max(2, currentPage - 1);
       let endPage = Math.min(totalPages - 1, currentPage + 1);
 
-      // Adjust if we're at the beginning
       if (currentPage <= 3) {
         endPage = Math.min(4, totalPages - 1);
-      }
-      // Adjust if we're at the end
-      else if (currentPage >= totalPages - 2) {
+      } else if (currentPage >= totalPages - 2) {
         startPage = Math.max(totalPages - 3, 2);
       }
 
-      // Add ellipsis if needed after first page
       if (startPage > 2) {
         pageNumbers.push("...");
       }
 
-      // Add middle pages
       for (let i = startPage; i <= endPage; i++) {
         pageNumbers.push(i);
       }
 
-      // Add ellipsis if needed before last page
       if (endPage < totalPages - 1) {
         pageNumbers.push("...");
       }
 
-      // Always show last page
       if (totalPages > 1) {
         pageNumbers.push(totalPages);
       }
@@ -286,13 +284,12 @@ export default function ProductsPage() {
     return pageNumbers;
   };
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05, // Reduced for better performance
+        staggerChildren: 0.05,
       },
     },
   };
@@ -310,7 +307,6 @@ export default function ProductsPage() {
     },
   };
 
-  // Format price
   const formatPrice = (price) => {
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
@@ -320,7 +316,6 @@ export default function ProductsPage() {
     }).format(price);
   };
 
-  // Render star rating
   const renderRating = (rating) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
@@ -356,7 +351,6 @@ export default function ProductsPage() {
     <>
       <ProductSEO />
       <main className="container mx-auto px-4 py-20 sm:py-24 md:py-28">
-        {/* Header */}
         <header className="mb-8">
           <h1 className="text-2xl sm:text-3xl text-yellow-500 font-bold mb-2">
             Tous nos produits
@@ -367,11 +361,8 @@ export default function ProductsPage() {
           </p>
         </header>
 
-        {/* Filters and Search Bar */}
         <div className="flex flex-col gap-4 mb-6">
-          {/* Search and Filter Row */}
           <div className="flex flex-wrap items-center gap-2">
-            {/* Mobile Filter Button */}
             <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
               <SheetTrigger asChild>
                 <Button
@@ -394,7 +385,7 @@ export default function ProductsPage() {
                     <h3 className="font-medium mb-3">Catégories</h3>
                     <div className="space-y-3">
                       {categories.map((category) => (
-                        <div key={category.id} className="flex  items-center">
+                        <div key={category.id} className="flex items-center">
                           <Checkbox
                             id={`mobile-category-${category.id}`}
                             checked={selectedCategories.includes(category.name)}
@@ -407,6 +398,27 @@ export default function ProductsPage() {
                             className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                           >
                             {category.name}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mb-6">
+                    <h3 className="font-medium mb-3">Sous-catégories</h3>
+                    <div className="space-y-3">
+                      {Array.from(new Set(products.map(product => product.subCategory).filter(Boolean))).map((subCategory) => (
+                        <div key={subCategory} className="flex items-center">
+                          <Checkbox
+                            id={`mobile-subcategory-${subCategory}`}
+                            checked={selectedSubCategories.includes(subCategory)}
+                            onCheckedChange={() => handleSubCategoryToggle(subCategory)}
+                          />
+                          <label
+                            htmlFor={`mobile-subcategory-${subCategory}`}
+                            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            {subCategory}
                           </label>
                         </div>
                       ))}
@@ -451,7 +463,6 @@ export default function ProductsPage() {
               </SheetContent>
             </Sheet>
 
-            {/* Search Bar */}
             <div className="relative flex-1 min-w-[200px]">
               <Input
                 type="text"
@@ -476,7 +487,6 @@ export default function ProductsPage() {
               )}
             </div>
 
-            {/* Sort Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -505,7 +515,6 @@ export default function ProductsPage() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* View Mode Toggle */}
             <div className="hidden md:flex items-center border rounded-md">
               <button
                 onClick={() => setViewMode("grid")}
@@ -545,8 +554,8 @@ export default function ProductsPage() {
             </div>
           </div>
 
-          {/* Active Filters */}
           {(selectedCategories.length > 0 ||
+            selectedSubCategories.length > 0 ||
             priceRange[0] > filters.price.min ||
             priceRange[1] < filters.price.max ||
             searchQuery) && (
@@ -581,6 +590,26 @@ export default function ProductsPage() {
                     <button
                       onClick={() => handleCategoryToggle(category)}
                       aria-label={`Supprimer le filtre de catégorie ${category}`}
+                    >
+                      <X className="h-3 w-3 flex-shrink-0" />
+                    </button>
+                  </Badge>
+                ))}
+
+                {selectedSubCategories.map((subCategory) => (
+                  <Badge
+                    key={subCategory}
+                    variant="outline"
+                    className="flex items-center gap-1 max-w-full"
+                  >
+                    <span className="truncate">{subCategory}</span>
+                    <button
+                      onClick={() => {
+                        setSelectedSubCategories(prev =>
+                          prev.filter((sc) => sc !== subCategory)
+                        );
+                      }}
+                      aria-label={`Supprimer le filtre de sous-catégorie ${subCategory}`}
                     >
                       <X className="h-3 w-3 flex-shrink-0" />
                     </button>
@@ -622,7 +651,6 @@ export default function ProductsPage() {
         </div>
 
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Desktop Filters Sidebar */}
           <aside className="hidden md:block w-64 flex-shrink-0">
             <div className="sticky top-24 space-y-6">
               <div>
@@ -642,6 +670,29 @@ export default function ProductsPage() {
                         className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         {category.name}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Separator />
+
+              <div>
+                <h3 className="font-medium mb-3">Sous-catégories</h3>
+                <div className="space-y-2">
+                  {Array.from(new Set(products.map(product => product.subCategory).filter(Boolean))).map((subCategory) => (
+                    <div key={subCategory} className="flex items-center">
+                      <Checkbox
+                        id={`subcategory-${subCategory}`}
+                        checked={selectedSubCategories.includes(subCategory)}
+                        onCheckedChange={() => handleSubCategoryToggle(subCategory)}
+                      />
+                      <label
+                        htmlFor={`subcategory-${subCategory}`}
+                        className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {subCategory}
                       </label>
                     </div>
                   ))}
@@ -685,7 +736,6 @@ export default function ProductsPage() {
             </div>
           </aside>
 
-          {/* Products Grid */}
           <section className="flex-1" aria-label="Liste des produits">
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
@@ -913,9 +963,7 @@ export default function ProductsPage() {
                             size="sm"
                             className="bg-yellow-500 hover:bg-yellow-600"
                             onClick={() => addToCart(product)}
-                            aria-label={`
-                              
-                              ${product.name} au panier`}
+                            aria-label={`Ajouter ${product.name} au panier`}
                           >
                             <ShoppingCart className="h-4 w-4 mr-2" />
                             Ajouter
@@ -936,7 +984,6 @@ export default function ProductsPage() {
                   {filteredProducts.length}
                 </div>
 
-                {/* Pagination */}
                 {totalPages > 1 && (
                   <nav aria-label="Pagination des produits">
                     <Pagination>
@@ -955,9 +1002,7 @@ export default function ProductsPage() {
                           />
                         </PaginationItem>
 
-                        {/* On small screens, show fewer page numbers */}
                         {getPageNumbers().map((pageNumber, index) => {
-                          // On very small screens, only show current page, first and last
                           const isMobile =
                             typeof window !== "undefined" &&
                             window.innerWidth < 480;
