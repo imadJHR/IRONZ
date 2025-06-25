@@ -3,20 +3,26 @@ import Image from "next/image";
 import Link from "next/link";
 import ReferencesSection from "../components/references-section";
 import logo from "../public/logo.png";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import {
   ArrowRight,
+  Dumbbell,
+  HeartPulse,
+  Shield,
+  Weight,
   CheckCircle,
   TrendingUp,
   Award,
-  ChevronRight,
   Star,
   ShoppingCart,
   Truck,
   Sparkles,
-} from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
-import {
   MessageSquare,
   X,
   Send,
@@ -600,6 +606,45 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
     </>
   );
 };
+const banners = [
+  {
+    id: 1,
+    title: "Équipement de Musculation",
+    highlight: "Professionnel",
+    description: "Matériel haute performance pour des résultats optimaux",
+    image: "/images/musculation-banner.jpg",
+    link: "/musculation",
+    icon: <Dumbbell className="w-8 h-8 md:w-10 md:h-10" />,
+  },
+  {
+    id: 2,
+    title: "Cardio-Training",
+    highlight: "High-Tech",
+    description:
+      "Tapis roulants et vélos dernier cri pour un entraînement intense",
+    image: "/images/cardio-banner.jpg",
+    link: "/cardio",
+    icon: <HeartPulse className="w-8 h-8 md:w-10 md:h-10" />,
+  },
+  {
+    id: 3,
+    title: "Arts Martiaux",
+    highlight: "Équipement Pro",
+    description: "Gants, protections et sacs de qualité compétition",
+    image: "/images/martial-arts-banner.jpg",
+    link: "/arts-martiaux",
+    icon: <Shield className="w-8 h-8 md:w-10 md:h-10" />,
+  },
+  {
+    id: 4,
+    title: "Accessoires",
+    highlight: "Premium",
+    description: "Ceintures, bandages et compléments pour performer",
+    image: "/images/accessories-banner.jpg",
+    link: "/accessoires",
+    icon: <Weight className="w-8 h-8 md:w-10 md:h-10" />,
+  },
+];
 
 export default function Home() {
   const { addToCart } = useCart();
@@ -631,66 +676,116 @@ export default function Home() {
     <>
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Hero Section - Amélioré pour une meilleure responsivité */}
-        <section className="relative pt-20 pb-24 md:pt-28 md:pb-32 lg:pt-32 lg:pb-40 bg-black text-white overflow-hidden">
+        <section className="relative bg-yellow-500 text-white overflow-hidden h-[600px] md:h-[700px] lg:h-[800px]">
+          {/* Fond dynamique */}
           <div className="absolute inset-0 z-0">
-            <Image
-              src="/placeholder.svg?height=1200&width=2000"
-              alt="Background"
-              fill
-              className="object-cover opacity-40"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
+            <div className="absolute inset-0 bg-[url('/images/texture.png')] opacity-10 mix-blend-overlay" />
           </div>
 
-          <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight">
-                Équipement de Fitness{" "}
-                <span className="text-yellow-400">Professionnel</span> pour Tous
-              </h1>
-              <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl">
-                Découvrez notre gamme complète d'équipements de fitness,
-                suppléments alimentaires et accessoires de musculation et d'arts
-                martiaux de qualité professionnelle.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium px-8 py-6 text-lg rounded-xl"
-                >
-                  <Link href="/product">
-                    Découvrir nos produits
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          {/* Animated scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:block">
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
-              className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-1"
+          {/* Swiper */}
+          <div className="relative z-10 h-full w-full">
+            <Swiper
+              modules={[Autoplay, Pagination, Navigation]}
+              spaceBetween={0}
+              slidesPerView={1}
+              loop={true}
+              speed={800}
+              autoplay={{
+                delay: 6000,
+                disableOnInteraction: false,
+              }}
+              pagination={{
+                clickable: true,
+                el: ".swiper-pagination",
+                renderBullet: (index, className) => {
+                  return `<span class="${className} bg-yellow-400 w-3 h-3 mx-1 rounded-full transition-all duration-300"></span>`;
+                },
+              }}
+              navigation={{
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              }}
+              className="h-full"
             >
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Number.POSITIVE_INFINITY,
-                  delay: 0.2,
-                }}
-                className="w-1.5 h-1.5 bg-yellow-400 rounded-full"
-              />
-            </motion.div>
+              {banners.map((banner) => (
+                <SwiperSlide key={banner.id}>
+                  <div className="relative h-full w-full flex items-center">
+                    <div className="absolute inset-0 overflow-hidden">
+                      <Image
+                        src={banner.image}
+                        alt={banner.title}
+                        fill
+                        className="object-cover object-center scale-110 group-hover:scale-100 transition-transform duration-700"
+                        priority={banner.id === 1}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+                      />
+                    </div>
+
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                        className="max-w-2xl bg-gradient-to-r from-black/90 via-black/70 to-transparent p-8 rounded-xl backdrop-blur-sm border-l-4 border-yellow-400"
+                      >
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="bg-yellow-400 text-black p-2 rounded-full">
+                            {banner.icon}
+                          </div>
+                          <span className="text-yellow-400 font-bold tracking-wider">
+                            NOUVEAUTÉ {banner.id}
+                          </span>
+                        </div>
+
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight uppercase">
+                          {banner.title}{" "}
+                          <span className="text-yellow-400">
+                            {banner.highlight}
+                          </span>
+                        </h1>
+
+                        <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-lg font-medium">
+                          {banner.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-4">
+                          <Button
+                            asChild
+                            size="lg"
+                            className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-6 text-lg rounded-lg shadow-lg hover:shadow-yellow-400/30 transition-all"
+                          >
+                            <Link href={banner.link}>
+                              Voir le produit{" "}
+                              <ArrowRight className="ml-2 h-5 w-5" />
+                            </Link>
+                          </Button>
+
+                          <Button
+                            asChild
+                            size="lg"
+                            variant="outline"
+                            className="text-white border-white hover:bg-white/10 font-bold px-8 py-6 text-lg rounded-lg hover:shadow-white/20 hover:shadow-lg transition-all"
+                          ></Button>
+                        </div>
+                      </motion.div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+
+              {/* Navigation personnalisée */}
+              <div className="swiper-button-prev !left-4 !text-yellow-400 after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-400 hover:!text-black transition-all"></div>
+              <div className="swiper-button-next !right-4 !text-yellow-400 after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-400 hover:!text-black transition-all"></div>
+
+              {/* Pagination moderne */}
+              <div className="swiper-pagination !bottom-8 flex justify-center gap-1"></div>
+            </Swiper>
           </div>
         </section>
 
         {/* Promotion Banner - Optimisé pour mobile */}
-       {/* <section className="py-6 md:py-8 bg-gradient-to-r from-yellow-500 to-yellow-400">
+        {/* <section className="py-6 md:py-8 bg-gradient-to-r from-yellow-500 to-yellow-400">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="flex items-center mb-4 md:mb-0">
@@ -804,7 +899,6 @@ export default function Home() {
                       href={category.href}
                       className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium group/link mt-auto"
                     >
-                      <span>Explorer la catégorie</span>
                       <ArrowRight className="ml-2 h-4 w-4 transform group-hover/link:translate-x-1 transition-transform" />
                     </Link>
                   </div>
