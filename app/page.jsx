@@ -49,6 +49,12 @@ import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
+import tel1 from "../public/tel1.jpg"
+import tab1 from "../public/tab1.jpg"
+import tab2 from "../public/tab2.jpg"
+import tel2 from "../public/tel2.jpg"
+import des1 from "../public/des1.jpg"
+import des2 from "../public/des2.jpg"
 import ref1 from "../public/ref1.jpg";
 import ref2 from "../public/ref2.jpg";
 import ref3 from "../public/ref3.jpg";
@@ -609,43 +615,27 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
 const banners = [
   {
     id: 1,
-    title: "Équipement de Musculation",
-    highlight: "Professionnel",
-    description: "Matériel haute performance pour des résultats optimaux",
-    image: "/images/musculation-banner.jpg",
-    link: "/musculation",
-    icon: <Dumbbell className="w-8 h-8 md:w-10 md:h-10" />,
+    imageDesktop: des1, // 1920x600
+    imageTablet: tab1, // 1280x500
+    imageMobile: tel1, // 768x400
+    title: 'First Banner Title',
+    highlight: 'Highlight',
+    description: 'Description for the first banner.',
+    link: '/link1',
+    icon: '🌟', // Replace with your icon component or image
   },
   {
     id: 2,
-    title: "Cardio-Training",
-    highlight: "High-Tech",
-    description:
-      "Tapis roulants et vélos dernier cri pour un entraînement intense",
-    image: "/images/cardio-banner.jpg",
-    link: "/cardio",
-    icon: <HeartPulse className="w-8 h-8 md:w-10 md:h-10" />,
+    imageDesktop: des2, // 1920x600
+    imageTablet: tab2, // 1280x500
+    imageMobile:tel2, // 768x400
+    title: 'Second Banner Title',
+    highlight: 'Highlight',
+    description: 'Description for the second banner.',
+    link: '/link2',
+    icon: '🌟', // Replace with your icon component or image
   },
-  {
-    id: 3,
-    title: "Arts Martiaux",
-    highlight: "Équipement Pro",
-    description: "Gants, protections et sacs de qualité compétition",
-    image: "/images/martial-arts-banner.jpg",
-    link: "/arts-martiaux",
-    icon: <Shield className="w-8 h-8 md:w-10 md:h-10" />,
-  },
-  {
-    id: 4,
-    title: "Accessoires",
-    highlight: "Premium",
-    description: "Ceintures, bandages et compléments pour performer",
-    image: "/images/accessories-banner.jpg",
-    link: "/accessoires",
-    icon: <Weight className="w-8 h-8 md:w-10 md:h-10" />,
-  },
-];
-
+]
 export default function Home() {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
@@ -677,7 +667,7 @@ export default function Home() {
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Hero Section - Amélioré pour une meilleure responsivité */}
         <section className="relative bg-yellow-500 text-white overflow-hidden h-[600px] md:h-[700px] lg:h-[800px]">
-          {/* Fond dynamique */}
+          {/* Background */}
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
             <div className="absolute inset-0 bg-[url('/images/texture.png')] opacity-10 mix-blend-overlay" />
@@ -713,72 +703,30 @@ export default function Home() {
                   <div className="relative h-full w-full flex items-center">
                     <div className="absolute inset-0 overflow-hidden">
                       <Image
-                        src={banner.image}
+                        srcSet={`
+                      ${banner.imageMobile} 768w,
+                      ${banner.imageTablet} 1280w,
+                      ${banner.imageDesktop} 1920w
+                    `}
+                        src={banner.imageDesktop}
                         alt={banner.title}
                         fill
                         className="object-cover object-center scale-110 group-hover:scale-100 transition-transform duration-700"
                         priority={banner.id === 1}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+                        sizes="(max-width: 768px) 768px, (max-width: 1280px) 1280px, 1920px"
                       />
                     </div>
 
-                    <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="max-w-2xl bg-gradient-to-r from-black/90 via-black/70 to-transparent p-8 rounded-xl backdrop-blur-sm border-l-4 border-yellow-400"
-                      >
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="bg-yellow-400 text-black p-2 rounded-full">
-                            {banner.icon}
-                          </div>
-                          <span className="text-yellow-400 font-bold tracking-wider">
-                            NOUVEAUTÉ {banner.id}
-                          </span>
-                        </div>
-
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight uppercase">
-                          {banner.title}{" "}
-                          <span className="text-yellow-400">
-                            {banner.highlight}
-                          </span>
-                        </h1>
-
-                        <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-lg font-medium">
-                          {banner.description}
-                        </p>
-
-                        <div className="flex flex-wrap gap-4">
-                          <Button
-                            asChild
-                            size="lg"
-                            className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-6 text-lg rounded-lg shadow-lg hover:shadow-yellow-400/30 transition-all"
-                          >
-                            <Link href={banner.link}>
-                              Voir le produit{" "}
-                              <ArrowRight className="ml-2 h-5 w-5" />
-                            </Link>
-                          </Button>
-
-                          <Button
-                            asChild
-                            size="lg"
-                            variant="outline"
-                            className="text-white border-white hover:bg-white/10 font-bold px-8 py-6 text-lg rounded-lg hover:shadow-white/20 hover:shadow-lg transition-all"
-                          ></Button>
-                        </div>
-                      </motion.div>
-                    </div>
+                   
                   </div>
                 </SwiperSlide>
               ))}
 
-              {/* Navigation personnalisée */}
+              {/* Custom Navigation */}
               <div className="swiper-button-prev !left-4 !text-yellow-400 after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-400 hover:!text-black transition-all"></div>
               <div className="swiper-button-next !right-4 !text-yellow-400 after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-400 hover:!text-black transition-all"></div>
 
-              {/* Pagination moderne */}
+              {/* Modern Pagination */}
               <div className="swiper-pagination !bottom-8 flex justify-center gap-1"></div>
             </Swiper>
           </div>
