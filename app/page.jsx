@@ -52,7 +52,7 @@ import { Heart } from "lucide-react";
 import banner1 from "../public/banner2.jpg";
 import banner2 from "../public/banner3.jpg";
 import banner3 from "../public/banner33.jpg";
-import banner4 from "../public/des1.jpg"
+import banner4 from "../public/des1.jpg";
 
 const faqs = [
   {
@@ -605,7 +605,7 @@ const banners = [
   {
     id: 1,
     title: "Banner 1",
-    image:banner4 , // Replace with your image path
+    image: banner4, // Replace with your image path
     link: "http://ironz.ma/product/RED-REX-BEEF-PROTEIN-ISOLATE-4lbs",
   },
   {
@@ -691,7 +691,7 @@ export default function Home() {
               className="h-full"
             >
               {banners.map((banner) => (
-                <SwiperSlide key={banner.id}>
+                <SwiperSlide key={banner.id} className="swiper-slide">
                   <a href={banner.link} className="block h-full w-full">
                     <div className="relative h-full w-full flex items-center">
                       <div className="absolute inset-0 overflow-hidden">
@@ -699,9 +699,18 @@ export default function Home() {
                           src={banner.image}
                           alt={banner.title}
                           fill
-                          className="object-cover object-center"
+                          className="object-cover object-center md:object-left-top"
                           priority={banner.id === 1}
-                          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 1920px"
+                          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 100vw, 1920px"
+                        />
+                      </div>
+                      {/* Optional: Add different focal point for mobile */}
+                      <div className="md:hidden absolute inset-0">
+                        <Image
+                          src={banner.mobileImage || banner.image} // fallback to regular image if no mobile version
+                          alt={banner.title}
+                          fill
+                          className="object-cover object-top"
                         />
                       </div>
                     </div>
