@@ -102,15 +102,6 @@ import adidas from "../public/adidas.png";
 import red from "../public/red.png";
 export const categories = [
   {
-    id: 1,
-    name: "Home Gym",
-    description:
-      "Tout l'équipement nécessaire pour créer votre salle de sport à domicile.",
-    href: "/categories/home-gym",
-    image: "/placeholder.svg?height=400&width=600",
-    productCount: 42,
-  },
-  {
     id: "2",
     image: img2,
     name: "Equipements",
@@ -173,7 +164,7 @@ export const products = [
     discount: "",
     image: a1,
     gallery: [a1],
-    category: "Home Gym",
+    category: "Accessoires",
     categoryId: "1",
     subCategory: "Revêtement du sol",
     rating: 4.7,
@@ -996,7 +987,7 @@ export const products = [
     discount: null,
     image: a68,
     gallery: [a68, a69],
-    category: "Home Gym",
+    category: "Accessoires",
     categoryId: "1",
     rating: 4.9,
     reviewCount: 89,
@@ -1025,7 +1016,7 @@ export const products = [
     discount: "",
     image: a70,
     gallery: [a70],
-    category: "Home Gym",
+    category: "Accessoires",
     categoryId: "1",
     rating: 4.7,
     reviewCount: 124,

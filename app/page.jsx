@@ -49,21 +49,10 @@ import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
-import tel1 from "../public/tel1.jpg"
-import tab1 from "../public/tab1.jpg"
-import tab2 from "../public/tab2.jpg"
-import tel2 from "../public/tel2.jpg"
-import des1 from "../public/des1.jpg"
-import des2 from "../public/des2.jpg"
-import ref1 from "../public/ref1.jpg";
-import ref2 from "../public/ref2.jpg";
-import ref3 from "../public/ref3.jpg";
-import ref4 from "../public/ref4.jpg";
-import ref5 from "../public/ref5.jpg";
-import ref6 from "../public/ref6.jpg";
-import ref7 from "../public/ref7.jpg";
-import ref8 from "../public/ref8.jpg";
-import ref9 from "../public/ref9.jpg";
+import banner1 from "../public/banner2.jpg";
+import banner2 from "../public/banner3.jpg";
+import banner3 from "../public/banner33.jpg";
+import banner4 from "../public/des1.jpg"
 
 const faqs = [
   {
@@ -615,27 +604,29 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
 const banners = [
   {
     id: 1,
-    imageDesktop: des1, // 1920x600
-    imageTablet: tab1, // 1280x500
-    imageMobile: tel1, // 768x400
-    title: 'First Banner Title',
-    highlight: 'Highlight',
-    description: 'Description for the first banner.',
-    link: '/link1',
-    icon: '🌟', // Replace with your icon component or image
+    title: "Banner 1",
+    image:banner4 , // Replace with your image path
+    link: "http://ironz.ma/product/RED-REX-BEEF-PROTEIN-ISOLATE-4lbs",
   },
   {
     id: 2,
-    imageDesktop: des2, // 1920x600
-    imageTablet: tab2, // 1280x500
-    imageMobile:tel2, // 768x400
-    title: 'Second Banner Title',
-    highlight: 'Highlight',
-    description: 'Description for the second banner.',
-    link: '/link2',
-    icon: '🌟', // Replace with your icon component or image
+    title: "Banner 2",
+    image: banner2, // Replace with your image path
+    link: "http://ironz.ma/product/PERFORMANCE-UTILITY-BENCH",
   },
-]
+  {
+    id: 3,
+    title: "Banner 3",
+    image: banner3, // Replace with your image path
+    link: "http://irone.ma/product/C-21-BIKE",
+  },
+  {
+    id: 4,
+    title: "Banner 3",
+    image: banner1, // Replace with your image path
+    link: "http://ironz.ma/product/PERFORMANCE-HOME-GYM",
+  },
+];
 export default function Home() {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
@@ -666,7 +657,8 @@ export default function Home() {
     <>
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Hero Section - Amélioré pour une meilleure responsivité */}
-        <section className="relative bg-yellow-500 text-white overflow-hidden h-[600px] md:h-[700px] lg:h-[800px]">
+
+        <section className="relative bg-yellow-500 text-white overflow-hidden h-[300px] sm:h-[400px] md:h-[600px] lg:h-[800px]">
           {/* Background */}
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
@@ -700,25 +692,20 @@ export default function Home() {
             >
               {banners.map((banner) => (
                 <SwiperSlide key={banner.id}>
-                  <div className="relative h-full w-full flex items-center">
-                    <div className="absolute inset-0 overflow-hidden">
-                      <Image
-                        srcSet={`
-                      ${banner.imageMobile} 768w,
-                      ${banner.imageTablet} 1280w,
-                      ${banner.imageDesktop} 1920w
-                    `}
-                        src={banner.imageDesktop}
-                        alt={banner.title}
-                        fill
-                        className="object-cover object-center scale-110 group-hover:scale-100 transition-transform duration-700"
-                        priority={banner.id === 1}
-                        sizes="(max-width: 768px) 768px, (max-width: 1280px) 1280px, 1920px"
-                      />
+                  <a href={banner.link} className="block h-full w-full">
+                    <div className="relative h-full w-full flex items-center">
+                      <div className="absolute inset-0 overflow-hidden">
+                        <Image
+                          src={banner.image}
+                          alt={banner.title}
+                          fill
+                          className="object-cover object-center"
+                          priority={banner.id === 1}
+                          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 1920px"
+                        />
+                      </div>
                     </div>
-
-                   
-                  </div>
+                  </a>
                 </SwiperSlide>
               ))}
 
@@ -731,7 +718,6 @@ export default function Home() {
             </Swiper>
           </div>
         </section>
-
         {/* Promotion Banner - Optimisé pour mobile */}
         {/* <section className="py-6 md:py-8 bg-gradient-to-r from-yellow-500 to-yellow-400">
           <div className="container mx-auto px-4">
@@ -761,7 +747,6 @@ export default function Home() {
             </div>
           </div>
         </section> */}
-
         <section className="py-20 md:py-28 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -874,7 +859,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         {/* Products Section - Tabs responsives et cartes de produits améliorées */}
         <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1370,7 +1354,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         {/* Featured Product Section - Mise en page améliorée */}
         <section className="py-16 md:py-24 bg-black text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1474,7 +1457,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         {/* Brands Section */}
         <section className="py-16 md:py-20 bg-gray-100 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1491,10 +1473,8 @@ export default function Home() {
             <BrandsMarquee brands={brands} />
           </div>
         </section>
-
         {/* References Gallery */}
         <ReferencesSection />
-
         {/* Why Choose Us Section - Cartes améliorées */}
         <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1596,7 +1576,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         {/* FAQ Section - Accordéon amélioré */}
         <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1644,7 +1623,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         {/* Newsletter Section - Design amélioré */}
         <section className="py-16 sm:py-20 md:py-24 bg-white dark:bg-gray-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1684,7 +1662,6 @@ export default function Home() {
             </motion.div>
           </div>
         </section>
-
         {/* ChatBot avec logo personnalisé */}
         <ChatBot />
       </main>
