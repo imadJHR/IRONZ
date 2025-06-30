@@ -685,121 +685,187 @@ export default function Home() {
     <>
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Hero Section - Amélioré pour une meilleure responsivité */}
-
-        <section className="relative bg-yellow-500 text-white overflow-hidden h-[600px] md:h-[700px] lg:h-[800px]">
-          {/* Background */}
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
-            <div className="absolute inset-0 bg-[url('/images/texture.png')] opacity-10 mix-blend-overlay" />
-          </div>
-
-          {/* Swiper */}
-          <div className="relative z-10 h-full w-full">
-            <Swiper
-              modules={[Autoplay, Pagination, Navigation]}
-              spaceBetween={0}
-              slidesPerView={1}
-              loop={true}
-              speed={800}
-              autoplay={{
-                delay: 6000,
-                disableOnInteraction: false,
-              }}
-              pagination={{
-                clickable: true,
-                el: ".swiper-pagination",
-                renderBullet: (index, className) => {
-                  return `<span class="${className} bg-yellow-400 w-3 h-3 mx-1 rounded-full transition-all duration-300"></span>`;
-                },
-              }}
-              navigation={{
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-              }}
-              className="h-full"
-            >
-              {banners.map((banner) => (
-            <SwiperSlide key={banner.id}>
-  <div className="relative h-full w-full flex items-center min-h-[500px] md:min-h-[600px] lg:min-h-[700px]">
-    {/* Background Image */}
-    <div className="absolute inset-0 overflow-hidden bg-black/20">
-      <Image
-        srcSet={`
-          ${banner.imageMobile} 768w,
-          ${banner.imageTablet} 1280w,
-          ${banner.imageDesktop} 1920w
-        `}
-        src={banner.imageDesktop}
-        alt={banner.title}
-        fill
-        className="object-cover object-center scale-105 group-hover:scale-100 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]"
-        priority={banner.id === 1}
-        sizes="(max-width: 768px) 768px, (max-width: 1280px) 1280px, 1920px"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10" />
-    </div>
-
-    {/* Content */}
-    <div className="relative z-20 px-6 md:px-16 lg:px-24 max-w-4xl text-white">
-      <div className="space-y-4 md:space-y-6 transition-all duration-700 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100">
-        {banner.subtitle && (
-          <p className="text-sm md:text-base font-semibold tracking-widest text-yellow-300 uppercase">
-            {banner.subtitle}
-          </p>
-        )}
-        
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-          {banner.title}
-        </h2>
-        
-        <p className="text-lg md:text-xl lg:text-2xl max-w-2xl opacity-90 leading-relaxed">
-          {banner.description}
-        </p>
-        
-        {/* Button Container - Fixed Layout */}
-        <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full max-w-md">
-          {/* View Product Button */}
-          <a
-            href={banner.link}
-            className="flex-1 flex items-center justify-center gap-2 bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 text-center sm:text-base text-sm"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span>View Product</span>
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-              <path d="M5 12H19M12 5L19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-
-          {/* Acheter Button - Sport Style */}
-          <a
-            href={banner.purchaseLink || banner.link}
-            className="flex-1 flex items-center justify-center gap-2 bg-transparent text-white font-bold px-6 py-3 rounded-full border-2 border-white hover:bg-white hover:text-black transition-all duration-300 text-center sm:text-base text-sm relative group"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span>Acheter</span>
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-              <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.707 15.293C4.077 15.923 4.523 17 5.414 17H17M17 17C15.895 17 15 17.895 15 19C15 20.105 15.895 21 17 21C18.105 21 19 20.105 19 19C19 17.895 18.105 17 17 17ZM9 19C9 20.105 8.105 21 7 21C5.895 21 5 20.105 5 19C5 17.895 5.895 17 7 17C8.105 17 9 17.895 9 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-          </a>
-        </div>
-      </div>
-    </div>
+<section className="relative bg-gray-900 text-white overflow-hidden h-[600px] md:h-[700px] lg:h-[800px]">
+  {/* Background */}
+  <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+    <div className="absolute inset-0 bg-[url('/images/texture.png')] opacity-10 mix-blend-overlay" />
   </div>
-</SwiperSlide>
-              ))}
 
-              {/* Custom Navigation */}
-              <div className="swiper-button-prev !left-4 !text-yellow-400 after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-400 hover:!text-black transition-all"></div>
-              <div className="swiper-button-next !right-4 !text-yellow-400 after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-400 hover:!text-black transition-all"></div>
+  {/* Swiper */}
+  <div className="relative z-10 h-full w-full">
+    <Swiper
+      modules={[Autoplay, Pagination, Navigation]}
+      spaceBetween={0}
+      slidesPerView={1}
+      loop={true}
+      speed={1000}
+      autoplay={{
+        delay: 8000,
+        disableOnInteraction: false,
+      }}
+      pagination={{
+        clickable: true,
+        el: ".swiper-pagination",
+        renderBullet: (index, className) => {
+          return `<span class="${className} bg-yellow-500 w-3 h-3 mx-1 rounded-full transition-all duration-300"></span>`;
+        },
+      }}
+      navigation={{
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      }}
+      className="h-full"
+    >
+      {banners.map((banner) => (
+        <SwiperSlide key={banner.id}>
+          <div className="relative h-full w-full flex items-center min-h-[500px] md:min-h-[600px] lg:min-h-[700px]">
+            {/* Background Image */}
+            <div className="absolute inset-0 overflow-hidden">
+              <Image
+                srcSet={`
+                  ${banner.imageMobile} 768w,
+                  ${banner.imageTablet} 1280w,
+                  ${banner.imageDesktop} 1920w
+                `}
+                src={banner.imageDesktop}
+                alt={banner.title}
+                fill
+                className="object-cover object-center scale-110 group-hover:scale-100 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                priority={banner.id === 1}
+                sizes="(max-width: 768px) 768px, (max-width: 1280px) 1280px, 1920px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+            </div>
 
-              {/* Modern Pagination */}
-              <div className="swiper-pagination !bottom-8 flex justify-center gap-1"></div>
-            </Swiper>
+            {/* Content */}
+            <div className="relative z-20 px-6 md:px-16 lg:px-24 max-w-4xl text-white">
+              <div className="space-y-4 md:space-y-6 transition-all duration-700 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100">
+                <div className="inline-flex items-center gap-2 bg-yellow-500/20 px-4 py-2 rounded-full border border-yellow-500/30">
+                  <span className="text-yellow-400">{banner.icon}</span>
+                  <span className="text-sm font-semibold tracking-wider text-yellow-300 uppercase">
+                    {banner.highlight}
+                  </span>
+                </div>
+
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg">
+                  {banner.title}
+                </h2>
+
+                <p className="text-lg md:text-xl lg:text-2xl max-w-2xl opacity-90 leading-relaxed text-gray-100">
+                  {banner.description}
+                </p>
+
+                {/* Button Container */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full max-w-md">
+                  {/* Primary Button */}
+                  <a
+                    href={banner.link}
+                    className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-6 py-3 rounded-lg hover:scale-[1.02] transition-all duration-300 text-center text-sm sm:text-base shadow-lg shadow-yellow-500/20 hover:shadow-yellow-400/30"
+                    rel="noopener noreferrer"
+                  >
+                    <span>View Product</span>
+                    <svg
+                      className="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M5 12H19M12 5L19 12L12 19" />
+                    </svg>
+                  </a>
+
+                  {/* Secondary Button */}
+                  <a
+                    href={banner.link}
+                    className="flex-1 flex items-center justify-center gap-2 bg-transparent text-white font-bold px-6 py-3 rounded-lg border-2 border-white/30 hover:border-yellow-500 hover:text-yellow-500 transition-all duration-300 text-center text-sm sm:text-base group"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>Shop Now</span>
+                    <svg
+                      className="w-4 h-4 group-hover:animate-bounce"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Mini Banner - Desktop (Bottom Right) */}
+            <div className="absolute bottom-8 right-8 z-20 hidden lg:block">
+              <div className="bg-black/80 backdrop-blur-sm border-l-4 border-yellow-500 p-4 max-w-xs rounded-r-lg shadow-xl">
+                <h3 className="text-lg font-bold text-yellow-400 mb-2">Nouveautés</h3>
+                <p className="text-sm text-gray-200 mb-3">Découvrez notre dernière collection</p>
+                <a
+                  href={banner.link}
+                  className="inline-flex items-center justify-center gap-1 bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold px-4 py-2 rounded transition-all duration-300"
+                >
+                  <span>Voir produit</span>
+                  <svg
+                    className="w-3 h-3"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12H19M12 5L19 12L12 19" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Mini Banner - Mobile (Bottom Center) */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 lg:hidden w-[90%]">
+              <div className="bg-black/80 backdrop-blur-sm border-t-4 border-yellow-500 p-3 rounded-lg shadow-xl flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-yellow-400">offre spéciale</h3>
+                  <p className="text-xs text-gray-200">découvrez notre dernière collection</p>
+                </div>
+                <a
+                  href={banner.link}
+                  className="inline-flex items-center justify-center gap-1 bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded transition-all duration-300 whitespace-nowrap"
+                >
+                  <span>Shop Now</span>
+                  <svg
+                    className="w-3 h-3"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12H19M12 5L19 12L12 19" />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
-        </section>
+        </SwiperSlide>
+      ))}
+
+      {/* Custom Navigation */}
+      <div className="swiper-button-prev !left-4 !text-white after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-500 hover:!text-black transition-all backdrop-blur-sm"></div>
+      <div className="swiper-button-next !right-4 !text-white after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-500 hover:!text-black transition-all backdrop-blur-sm"></div>
+
+      {/* Modern Pagination */}
+      <div className="swiper-pagination !bottom-20 md:!bottom-8 flex justify-center gap-1"></div>
+    </Swiper>
+  </div>
+</section>
         {/* Promotion Banner - Optimisé pour mobile */}
         {/* <section className="py-6 md:py-8 bg-gradient-to-r from-yellow-500 to-yellow-400">
           <div className="container mx-auto px-4">
