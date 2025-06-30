@@ -49,10 +49,18 @@ import { useCart } from "@/context/cart-context";
 import { useFavorites } from "@/context/favorites-context";
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
-import banner1 from "../public/banner2.jpg";
-import banner2 from "../public/banner3.jpg";
-import banner3 from "../public/banner33.jpg";
-import banner4 from "../public/des1.jpg";
+import img1 from "../public/1.jpg";
+import img2 from "../public/2.jpg";
+import img3 from "../public/3.jpg";
+import img4 from "../public/4.jpg";
+import img5 from "../public/mo1.jpg";
+import img6 from "../public/mo2.jpg";
+import img7 from "../public/mo3.jpg";
+import img8 from "../public/mo4.jpg";
+import banner1 from "../public/des1.jpg";
+import banner2 from "../public/des2.jpg";
+import banner3 from "../public/des3.jpg";
+import banner4 from "../public/des4.jpg";
 
 const faqs = [
   {
@@ -604,27 +612,47 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
 const banners = [
   {
     id: 1,
-    title: "Banner 1",
-    image: banner4, // Replace with your image path
-    link: "http://ironz.ma/product/RED-REX-BEEF-PROTEIN-ISOLATE-4lbs",
+    imageDesktop: banner1, // 1920x600
+    imageTablet: img1, // 1280x500
+    imageMobile: img5, // 768x400
+    title: "First Banner Title",
+    highlight: "Highlight",
+    description: "Description for the first banner.",
+    link: "https://www.ironz.ma/product/RED-REX-BEEF-PROTEIN-ISOLATE-4lbs",
+    icon: "🌟", // Replace with your icon component or image
   },
   {
     id: 2,
-    title: "Banner 2",
-    image: banner2, // Replace with your image path
-    link: "http://ironz.ma/product/PERFORMANCE-UTILITY-BENCH",
+    imageDesktop: banner2, // 1920x600
+    imageTablet: img2, // 1280x500
+    imageMobile: img6, // 768x400
+    title: "Second Banner Title",
+    highlight: "Highlight",
+    description: "Description for the second banner.",
+    link: "https://www.ironz.ma/product/PERFORMANCE-UTILITY-BENCH",
+    icon: "🌟", // Replace with your icon component or image
   },
   {
     id: 3,
-    title: "Banner 3",
-    image: banner3, // Replace with your image path
-    link: "http://irone.ma/product/C-21-BIKE",
+    imageDesktop: banner3, // 1920x600
+    imageTablet: img3, // 1280x500
+    imageMobile: img7, // 768x400
+    title: "Second Banner Title",
+    highlight: "Highlight",
+    description: "Description for the second banner.",
+    link: "https://www.ironz.ma/product/PERFORMANCE-HOME-GYM",
+    icon: "🌟", // Replace with your icon component or image
   },
   {
     id: 4,
-    title: "Banner 3",
-    image: banner1, // Replace with your image path
-    link: "http://ironz.ma/product/PERFORMANCE-HOME-GYM",
+    imageDesktop: banner4, // 1920x600
+    imageTablet: img4, // 1280x500
+    imageMobile: img8, // 768x400
+    title: "Second Banner Title",
+    highlight: "Highlight",
+    description: "Description for the second banner.",
+    link: "https://www.ironz.ma/product/C-21-BIKE",
+    icon: "🌟", // Replace with your icon component or image
   },
 ];
 export default function Home() {
@@ -658,7 +686,7 @@ export default function Home() {
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Hero Section - Amélioré pour une meilleure responsivité */}
 
-        <section className="relative bg-yellow-500 text-white overflow-hidden h-[300px] sm:h-[400px] md:h-[600px] lg:h-[800px]">
+        <section className="relative bg-yellow-500 text-white overflow-hidden h-[600px] md:h-[700px] lg:h-[800px]">
           {/* Background */}
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
@@ -691,31 +719,76 @@ export default function Home() {
               className="h-full"
             >
               {banners.map((banner) => (
-                <SwiperSlide key={banner.id} className="swiper-slide">
-                  <a href={banner.link} className="block h-full w-full">
-                    <div className="relative h-full w-full flex items-center">
-                      <div className="absolute inset-0 overflow-hidden">
-                        <Image
-                          src={banner.image}
-                          alt={banner.title}
-                          fill
-                          className="object-cover object-center md:object-left-top"
-                          priority={banner.id === 1}
-                          sizes="(max-width: 767px) 100vw, (max-width: 1023px) 100vw, 1920px"
-                        />
-                      </div>
-                      {/* Optional: Add different focal point for mobile */}
-                      <div className="md:hidden absolute inset-0">
-                        <Image
-                          src={banner.mobileImage || banner.image} // fallback to regular image if no mobile version
-                          alt={banner.title}
-                          fill
-                          className="object-cover object-top"
-                        />
-                      </div>
-                    </div>
-                  </a>
-                </SwiperSlide>
+            <SwiperSlide key={banner.id}>
+  <div className="relative h-full w-full flex items-center min-h-[500px] md:min-h-[600px] lg:min-h-[700px]">
+    {/* Background Image */}
+    <div className="absolute inset-0 overflow-hidden bg-black/20">
+      <Image
+        srcSet={`
+          ${banner.imageMobile} 768w,
+          ${banner.imageTablet} 1280w,
+          ${banner.imageDesktop} 1920w
+        `}
+        src={banner.imageDesktop}
+        alt={banner.title}
+        fill
+        className="object-cover object-center scale-105 group-hover:scale-100 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        priority={banner.id === 1}
+        sizes="(max-width: 768px) 768px, (max-width: 1280px) 1280px, 1920px"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10" />
+    </div>
+
+    {/* Content */}
+    <div className="relative z-20 px-6 md:px-16 lg:px-24 max-w-4xl text-white">
+      <div className="space-y-4 md:space-y-6 transition-all duration-700 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100">
+        {banner.subtitle && (
+          <p className="text-sm md:text-base font-semibold tracking-widest text-yellow-300 uppercase">
+            {banner.subtitle}
+          </p>
+        )}
+        
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+          {banner.title}
+        </h2>
+        
+        <p className="text-lg md:text-xl lg:text-2xl max-w-2xl opacity-90 leading-relaxed">
+          {banner.description}
+        </p>
+        
+        {/* Button Container - Fixed Layout */}
+        <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full max-w-md">
+          {/* View Product Button */}
+          <a
+            href={banner.link}
+            className="flex-1 flex items-center justify-center gap-2 bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full hover:bg-white hover:scale-105 transition-all duration-300 text-center sm:text-base text-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>View Product</span>
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12H19M12 5L19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </a>
+
+          {/* Acheter Button - Sport Style */}
+          <a
+            href={banner.purchaseLink || banner.link}
+            className="flex-1 flex items-center justify-center gap-2 bg-transparent text-white font-bold px-6 py-3 rounded-full border-2 border-white hover:bg-white hover:text-black transition-all duration-300 text-center sm:text-base text-sm relative group"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Acheter</span>
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+              <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.707 15.293C4.077 15.923 4.523 17 5.414 17H17M17 17C15.895 17 15 17.895 15 19C15 20.105 15.895 21 17 21C18.105 21 19 20.105 19 19C19 17.895 18.105 17 17 17ZM9 19C9 20.105 8.105 21 7 21C5.895 21 5 20.105 5 19C5 17.895 5.895 17 7 17C8.105 17 9 17.895 9 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</SwiperSlide>
               ))}
 
               {/* Custom Navigation */}
@@ -1364,10 +1437,11 @@ export default function Home() {
           </div>
         </section>
         {/* Featured Product Section - Mise en page améliorée */}
-        <section className="py-16 md:py-24 bg-black text-white">
+        <section className="py-12 sm:py-16 md:py-24 bg-black text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-              <div className="relative h-[350px] sm:h-[400px] md:h-[500px] rounded-xl overflow-hidden group shadow-2xl order-1 md:order-1">
+              {/* Image Column */}
+              <div className="relative h-[300px] xs:h-[350px] sm:h-[400px] md:h-[500px] rounded-xl overflow-hidden group shadow-2xl order-1 md:order-1">
                 <Image
                   src={
                     featuredProduct.image ||
@@ -1378,6 +1452,7 @@ export default function Home() {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                 {featuredProduct.discount > 0 && (
@@ -1386,20 +1461,23 @@ export default function Home() {
                   </div>
                 )}
               </div>
+
+              {/* Content Column */}
               <div className="order-2 md:order-2">
-                <span className="inline-block bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium mb-4 shadow-md">
+                <span className="inline-block bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium mb-3 sm:mb-4 shadow-md">
                   Produit Vedette
                 </span>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight">
                   {featuredProduct.name}
                 </h2>
-                <div className="flex items-center mb-4">
+
+                <div className="flex items-center mb-3 sm:mb-4">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
                         className={cn(
-                          "h-5 w-5",
+                          "h-4 w-4 sm:h-5 sm:w-5",
                           i < Math.floor(featuredProduct.rating)
                             ? "text-yellow-400 fill-yellow-400"
                             : "text-gray-600"
@@ -1407,36 +1485,41 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                  <span className="text-gray-400 ml-2">
+                  <span className="text-gray-400 ml-2 text-sm sm:text-base">
                     ({featuredProduct.reviewCount || 0} avis)
                   </span>
                 </div>
-                <p className="text-gray-300 mb-6">
+
+                <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">
                   {featuredProduct.description}
                 </p>
-                <ul className="space-y-2 mb-6">
+
+                <ul className="space-y-1 sm:space-y-2 mb-4 sm:mb-6">
                   {featuredProduct.features &&
                     featuredProduct.features
                       .slice(0, 4)
                       .map((feature, index) => (
                         <li key={index} className="flex items-start">
-                          <CheckCircle className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                          <span>{feature}</span>
+                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
+                          <span className="text-sm sm:text-base">
+                            {feature}
+                          </span>
                         </li>
                       ))}
                 </ul>
-                <div className="flex items-center mb-6">
+
+                <div className="flex items-center mb-4 sm:mb-6">
                   {featuredProduct.oldPrice && (
-                    <span className="text-gray-400 line-through text-xl mr-3">
+                    <span className="text-gray-400 line-through text-lg sm:text-xl mr-2 sm:mr-3">
                       {formatPrice(featuredProduct.oldPrice)}
                     </span>
                   )}
-                  <span className="text-3xl font-bold text-white">
+                  <span className="text-2xl sm:text-3xl font-bold text-white">
                     {formatPrice(featuredProduct.price)}
                   </span>
 
                   {featuredProduct.oldPrice && (
-                    <span className="ml-3 bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
+                    <span className="ml-2 sm:ml-3 bg-green-500/20 text-green-400 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm">
                       Économisez{" "}
                       {formatPrice(
                         featuredProduct.oldPrice - featuredProduct.price
@@ -1444,21 +1527,22 @@ export default function Home() {
                     </span>
                   )}
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4">
+
+                <div className="flex flex-col xs:flex-row gap-3 sm:gap-4">
                   <Button
-                    className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium text-lg px-8 py-6 rounded-xl shadow-md"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6 rounded-lg sm:rounded-xl shadow-md"
                     onClick={() => addToCart(featuredProduct)}
                   >
-                    <ShoppingCart className="h-5 w-5 mr-2" />
+                    <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                     Ajouter au panier
                   </Button>
                   <Button
                     asChild
-                    className="border-2 border-white text-white hover:bg-white/10 font-medium text-lg px-8 py-6 rounded-xl"
+                    className="border-2 border-white text-white hover:bg-white/10 font-medium text-base sm:text-lg px-6 py-4 sm:px-8 sm:py-6 rounded-lg sm:rounded-xl"
                   >
                     <Link href={`/product/${featuredProduct.slug}`}>
                       Voir les détails
-                      <ArrowRight className="ml-2 h-5 w-5" />
+                      <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                     </Link>
                   </Button>
                 </div>
