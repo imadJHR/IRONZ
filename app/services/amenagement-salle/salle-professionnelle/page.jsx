@@ -491,9 +491,11 @@ export default function SalleProfessionnellePage() {
 
                 <div className="text-center">
                   {/*  <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">À partir de 45 000€</div> */}
-                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black">
-                    Demander un devis
-                  </Button>
+                  <Link href="/demande-devis">
+                    <Button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black">
+                      Demander un devis
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -552,9 +554,11 @@ export default function SalleProfessionnellePage() {
 
                 <div className="text-center">
                   {/*  <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">À partir de 45 000€</div> */}
-                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-black hover:from-yellow-600 hover:to-black text-white">
-                    Demander un devis
-                  </Button>
+                  <Link href="/demande-devis">
+                    <Button className="w-full bg-gradient-to-r from-yellow-500 to-black hover:from-yellow-600 hover:to-black text-white">
+                      Demander un devis
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -610,9 +614,11 @@ export default function SalleProfessionnellePage() {
 
                 <div className="text-center">
                   {/*  <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">À partir de 45 000€</div> */}
-                  <Button className="w-full bg-gradient-to-r from-black to-yellow-600 hover:from-gray-900 hover:to-yellow-700 text-white">
-                    Demander un devis
-                  </Button>
+                  <Link href="/demande-devis">
+                    <Button className="w-full bg-gradient-to-r from-black to-yellow-600 hover:from-gray-900 hover:to-yellow-700 text-white">
+                      Demander un devis
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

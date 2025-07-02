@@ -39,7 +39,9 @@ export default function AmenagementSallePage() {
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
               Aménagement de{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-white">Salle & Espace</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-white">
+                Salle & Espace
+              </span>
             </h1>
             <p className="text-xl text-gray-300 mb-8">
               Transformez votre espace en une salle de fitness fonctionnelle et
@@ -51,7 +53,6 @@ export default function AmenagementSallePage() {
                   Demander un devis
                 </Button>
               </Link>
-              
             </div>
           </div>
         </div>
@@ -454,7 +455,9 @@ export default function AmenagementSallePage() {
                       <Phone className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-lg font-medium text-black dark:text-white">Téléphone</h3>
+                      <h3 className="text-lg font-medium text-black dark:text-white">
+                        Téléphone
+                      </h3>
                       <p className="mt-1 text-gray-600 dark:text-gray-400">
                         +212 674-114446
                       </p>
@@ -478,7 +481,9 @@ export default function AmenagementSallePage() {
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-lg font-medium text-black dark:text-white">Email</h3>
+                      <h3 className="text-lg font-medium text-black dark:text-white">
+                        Email
+                      </h3>
                       <p className="mt-1 text-gray-600 dark:text-gray-400">
                         muscleironz2019@gmail.com
                       </p>
@@ -508,7 +513,9 @@ export default function AmenagementSallePage() {
                       </svg>
                     </div>
                     <div className="ml-4">
-                      <h3 className="text-lg font-medium text-black dark:text-white">Adresse</h3>
+                      <h3 className="text-lg font-medium text-black dark:text-white">
+                        Adresse
+                      </h3>
                       <p className="mt-1 text-gray-600 dark:text-gray-400">
                         SAHARA MALL 1 ÈRE ÉTAGE C169 & C120
                       </p>
@@ -525,19 +532,25 @@ export default function AmenagementSallePage() {
                       <span className="text-gray-600 dark:text-gray-400">
                         Lundi - Vendredi
                       </span>
-                      <span className="font-medium text-black dark:text-white">9h - 18h</span>
+                      <span className="font-medium text-black dark:text-white">
+                        9h - 18h
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">
                         Samedi
                       </span>
-                      <span className="font-medium text-black dark:text-white">10h - 16h</span>
+                      <span className="font-medium text-black dark:text-white">
+                        10h - 16h
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">
                         Dimanche
                       </span>
-                      <span className="font-medium text-black dark:text-white">Fermé</span>
+                      <span className="font-medium text-black dark:text-white">
+                        Fermé
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -545,7 +558,9 @@ export default function AmenagementSallePage() {
 
               <div>
                 <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-800">
-                  <h3 className="text-xl font-heading font-bold mb-6 text-black dark:text-white">Demande de devis professionnel</h3>
+                  <h3 className="text-xl font-heading font-bold mb-6 text-black dark:text-white">
+                    Demande de devis professionnel
+                  </h3>
                   <ServiceContactForm service="Aménagement Salle Professionnelle" />
                 </div>
               </div>

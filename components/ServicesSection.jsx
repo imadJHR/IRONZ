@@ -1,7 +1,7 @@
-import { 
-  Home, 
-  Palette, 
-  ToyBrick, 
+import {
+  Home,
+  Palette,
+  ToyBrick,
   SquareStack,
   Check,
   ArrowRight,
@@ -11,7 +11,7 @@ import {
   Flame,
   Package,
   Apple,
-  Sparkles
+  Sparkles,
 } from "lucide-react"; // or from your actual icon library
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -36,7 +36,7 @@ const ServicesSection = () => (
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Service 1 - Aménagement de salles */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -58,10 +58,13 @@ const ServicesSection = () => (
               <div className="bg-yellow-100 dark:bg-yellow-900/20 p-3 rounded-lg mr-4">
                 <Home className="h-6 w-6 text-yellow-500" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Aménagement de salles</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                Aménagement de salles
+              </h3>
             </div>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Solutions complètes pour home gym et salles professionnelles, de la conception à l'installation.
+              Solutions complètes pour home gym et salles professionnelles, de
+              la conception à l'installation.
             </p>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
               <li className="flex items-center">
@@ -81,7 +84,7 @@ const ServicesSection = () => (
         </motion.div>
 
         {/* Service 2 - Personnalisation */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -103,10 +106,13 @@ const ServicesSection = () => (
               <div className="bg-yellow-100 dark:bg-yellow-900/20 p-3 rounded-lg mr-4">
                 <Palette className="h-6 w-6 text-yellow-500" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Personnalisation d'accessoires</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                Personnalisation d'accessoires
+              </h3>
             </div>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Créez des équipements uniques avec vos couleurs, logos ou messages personnalisés.
+              Créez des équipements uniques avec vos couleurs, logos ou messages
+              personnalisés.
             </p>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
               <li className="flex items-center">
@@ -126,7 +132,7 @@ const ServicesSection = () => (
         </motion.div>
 
         {/* Service 3 - Espace Enfance */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -148,10 +154,13 @@ const ServicesSection = () => (
               <div className="bg-yellow-100 dark:bg-yellow-900/20 p-3 rounded-lg mr-4">
                 <ToyBrick className="h-6 w-6 text-yellow-500" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Espace Enfance</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                Espace Enfance
+              </h3>
             </div>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Zones d'activités sportives adaptées et sécurisées pour les enfants.
+              Zones d'activités sportives adaptées et sécurisées pour les
+              enfants.
             </p>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
               <li className="flex items-center">
@@ -171,7 +180,7 @@ const ServicesSection = () => (
         </motion.div>
 
         {/* Service 4 - Revêtements */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -193,10 +202,13 @@ const ServicesSection = () => (
               <div className="bg-yellow-100 dark:bg-yellow-900/20 p-3 rounded-lg mr-4">
                 <SquareStack className="h-6 w-6 text-yellow-500" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Revêtement sol & mur</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                Revêtement sol & mur
+              </h3>
             </div>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Solutions techniques pour sols et murs adaptées à toutes les pratiques sportives.
+              Solutions techniques pour sols et murs adaptées à toutes les
+              pratiques sportives.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">

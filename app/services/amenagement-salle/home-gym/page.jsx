@@ -67,7 +67,7 @@ export default function HomeGymPage() {
             </p>
 
             <div className="flex flex-wrap gap-4 mb-12">
-              <Link  href="/demande-devis">
+              <Link href="/demande-devis">
                 <Button className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-medium text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
                   Demander un devis gratuit
                 </Button>
@@ -273,9 +273,11 @@ export default function HomeGymPage() {
                   <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">
                     À partir de 3 500€
                   </div> */}
-                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black">
-                    Demander un devis
-                  </Button>
+                  <Link href="/demande-devis">
+                    <Button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black">
+                      Demander un devis
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -337,9 +339,11 @@ export default function HomeGymPage() {
                   <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">
                     À partir de 3 500€
                   </div> */}
-                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-black hover:from-yellow-600 hover:to-black text-white">
-                    Demander un devis
-                  </Button>
+                  <Link href="/demande-devis">
+                    <Button className="w-full bg-gradient-to-r from-yellow-500 to-black hover:from-yellow-600 hover:to-black text-white">
+                      Demander un devis
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -398,9 +402,11 @@ export default function HomeGymPage() {
                   <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">
                     À partir de 3 500€
                   </div> */}
-                  <Button className="w-full bg-gradient-to-r from-black to-yellow-600 hover:from-gray-900 hover:to-yellow-700 text-white">
-                    Demander un devis
-                  </Button>
+                  <Link href="/demande-devis">
+                    <Button className="w-full bg-gradient-to-r from-black to-yellow-600 hover:from-gray-900 hover:to-yellow-700 text-white">
+                      Demander un devis
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -595,14 +601,7 @@ export default function HomeGymPage() {
                 </div>*/}
               </div>
 
-              <div>
-                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-800">
-                  <h3 className="text-xl font-heading font-bold mb-6 text-black dark:text-white">
-                    Demande de devis Home Gym
-                  </h3>
-                  <ServiceContactForm service="Aménagement Home Gym" />
-                </div>
-              </div>
+            
             </div>
           </div>
         </div>
