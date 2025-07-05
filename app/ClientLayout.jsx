@@ -29,6 +29,8 @@ import {
   MapPin,
   ArrowRight,
   ArrowUp,
+  User,
+  LogIn,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/cart-context";
@@ -36,6 +38,14 @@ import { useFavorites } from "@/context/favorites-context";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { categories } from "@/data/product";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,21 +57,23 @@ export default function ClientLayout({ children }) {
   };
 
   return (
-    <html lang={language} suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <CartProvider>
-            <FavoritesProvider>
-              <div className="flex flex-col min-h-screen">
-                <Navbar language={language} toggleLanguage={toggleLanguage} />
-                <main className="flex-grow pt-24">{children}</main>
-                <Footer language={language} />
-              </div>
-            </FavoritesProvider>
-          </CartProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang={language} suppressHydrationWarning>
+        <body className={inter.className}>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <CartProvider>
+              <FavoritesProvider>
+                <div className="flex flex-col min-h-screen">
+                  <Navbar language={language} toggleLanguage={toggleLanguage} />
+                  <main className="flex-grow pt-24">{children}</main>
+                  <Footer language={language} />
+                </div>
+              </FavoritesProvider>
+            </CartProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
 
@@ -77,6 +89,7 @@ function Navbar({ language, toggleLanguage }) {
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [mobilePromotionsOpen, setMobilePromotionsOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [authDropdownOpen, setAuthDropdownOpen] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -103,6 +116,7 @@ function Navbar({ language, toggleLanguage }) {
   const mobileMenuRef = useRef(null);
   const cartRef = useRef(null);
   const favoritesRef = useRef(null);
+  const authRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
@@ -148,6 +162,13 @@ function Navbar({ language, toggleLanguage }) {
       ) {
         toggleFavorites();
       }
+      if (
+        authDropdownOpen &&
+        authRef.current &&
+        !authRef.current.contains(event.target)
+      ) {
+        setAuthDropdownOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -157,6 +178,7 @@ function Navbar({ language, toggleLanguage }) {
     mobileMenuOpen,
     cartOpen,
     favoritesOpen,
+    authDropdownOpen,
     toggleCart,
     toggleFavorites,
   ]);
@@ -494,6 +516,70 @@ function Navbar({ language, toggleLanguage }) {
                 </motion.button>
               </Link>
 
+              {/* Auth buttons - Desktop */}
+              <div className="hidden lg:flex items-center space-x-2">
+                <SignedOut>
+                  <div className="relative" ref={authRef}>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setAuthDropdownOpen(!authDropdownOpen)}
+                      className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <User className="h-4 w-4" />
+                      <span className="text-sm font-medium">
+                        {language === "fr" ? "Connexion" : "Sign In"}
+                      </span>
+                    </motion.button>
+
+                    <AnimatePresence>
+                      {authDropdownOpen && (
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          variants={dropdownVariants}
+                          className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 overflow-hidden z-50"
+                        >
+                          <div className="p-2">
+                            <SignInButton mode="modal">
+                              <button className="w-full flex items-center px-3 py-2 text-sm text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                <LogIn className="h-4 w-4 mr-2" />
+                                {language === "fr" ? "Se connecter" : "Sign In"}
+                              </button>
+                            </SignInButton>
+                            <SignUpButton mode="modal">
+                              <button className="w-full flex items-center px-3 py-2 text-sm text-left rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                <User className="h-4 w-4 mr-2" />
+                                {language === "fr" ? "S'inscrire" : "Sign Up"}
+                              </button>
+                            </SignUpButton>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </SignedOut>
+                <SignedIn>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center"
+                  >
+                    <UserButton
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          userButtonAvatarBox: "h-8 w-8",
+                          userButtonPopoverCard:
+                            "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl",
+                        },
+                      }}
+                    />
+                  </motion.div>
+                </SignedIn>
+              </div>
+
               {/* Mobile menu button */}
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -556,6 +642,45 @@ function Navbar({ language, toggleLanguage }) {
                 </div>
 
                 <div className="flex-1 overflow-y-auto py-4 px-4 max-h-[calc(100vh-140px)]">
+                  {/* Mobile Auth Buttons - Only show when signed out */}
+                  <SignedOut>
+                    <div className="mb-6 grid grid-cols-2 gap-3">
+                      <SignInButton mode="modal">
+                        <button
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="w-full flex items-center justify-center px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        >
+                          <LogIn className="h-4 w-4 mr-2" />
+                          {language === "fr" ? "Connexion" : "Sign In"}
+                        </button>
+                      </SignInButton>
+                      <SignUpButton mode="modal">
+                        <button
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="w-full flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium"
+                        >
+                          <User className="h-4 w-4 mr-2" />
+                          {language === "fr" ? "Inscription" : "Sign Up"}
+                        </button>
+                      </SignUpButton>
+                    </div>
+                  </SignedOut>
+
+                  <SignedIn>
+                    <div className="mb-6 flex justify-center">
+                      <UserButton
+                        afterSignOutUrl="/"
+                        appearance={{
+                          elements: {
+                            userButtonAvatarBox: "h-10 w-10",
+                            userButtonPopoverCard:
+                              "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg rounded-xl",
+                          },
+                        }}
+                      />
+                    </div>
+                  </SignedIn>
+
                   <div className="space-y-1">
                     <Link
                       href="/"
