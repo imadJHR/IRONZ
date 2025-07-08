@@ -777,7 +777,6 @@ const handleAddToCart = () => {
               <Tabs defaultValue="details">
                 <TabsList>
                   <TabsTrigger value="details">Détails</TabsTrigger>
-                  <TabsTrigger value="specs">Spécifications</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="details" className="space-y-4">

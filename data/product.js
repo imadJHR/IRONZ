@@ -100,6 +100,9 @@ import b5 from "../public/b5.jpg";
 import b6 from "../public/b6.jpg";
 import adidas from "../public/adidas.png";
 import red from "../public/red.png";
+import gh from "../public/gh.jpg"
+import gj from "../public/gj.jpg"
+import gk from "../public/gk.jpg"
 export const categories = [
   {
     id: "2",
@@ -1726,6 +1729,102 @@ export const products = [
     isFeatured: true,
     inStock: true,
     relatedProducts: ["3", "7"],
+  },
+  {
+    id: "55",
+    name: "GH Pro Max 120 Capsules - Arginine Ornithine & Lysine",
+    slug: "GH-Pro-Max-120-Capsules",
+    description:
+      "Le GH Pro-Max de Superior 14 combine 2000 mg d'arginine, d'ornithine et de lysine dans une capsule unique, favorisant ainsi la production d'hormone de croissance par le corps. Ces acides aminés anabolisants sont essentiels pour le développement musculaire et soutiennent l'anabolisme, vous aidant à obtenir des résultats concrets. Enrichi en vitamine B6, ce supplément favorise également la dégradation des protéines pour une absorption optimale, renforçant ainsi ses effets bénéfiques pour votre entraînement et vos performances.",
+    features: [
+      "Stimule naturellement l'hormone de croissance",
+      "Maximise les performances physiques",
+      "Accélère la récupération musculaire",
+      "Favorise la croissance musculaire maigre",
+      "Améliore la force et l'endurance",
+      "Booste le métabolisme et la combustion des graisses",
+      "Renforce le système immunitaire",
+      "Améliore la qualité du sommeil",
+      "Augmente la concentration mentale",
+    ],
+    price: "449",
+    oldPrice: "",
+    discount: "",
+    image: gh,
+    gallery: [gh],
+    category: "Supplément",
+    categoryId: "3",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
+  },
+  {
+    id: "56",
+    name: "Superior Mass Professional 6,81 kg",
+    slug: "Superior-Mass-Professional",
+    description:
+      "Cette formule de gain de masse contient des sources de protéines de haute qualité qui peuvent fournir les 20 acides aminés de construction de protéines, nécessaires à la croissance des tissus musculaires. Le produit Superior Mass Professional contient également la créatine, ce qui rend le produit plus efficace.",
+    features: [
+      "Gain de poids de qualité",
+      "Augmentation de la masse musculaire et de la force.",
+      "Récupération immédiate et croissance musculaire.",
+      "Enrichi avec 3 types de créatine.",
+      "Enrichi avec un mélange de plantes 'nrg'",
+      "Matrice de glucides multi-sources",
+      "Enrichi en Tribulus Terrestris – Extrait de thé vert au ginceng.",
+      "Enrichi en complexe multi-enzymes Digezyme et en vitamines",
+
+    ],
+    price: "1199",
+    oldPrice: "",
+    discount: "",
+    image: gj,
+    gallery: [gj],
+    category: "Supplément",
+    categoryId: "3",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
+  },
+  {
+    id: "57",
+    name: "SUPERIOR MASS PROFESSIONAL 6.30KG",
+    slug: "Superior-Mass-Professional-",
+    description:
+      "Superior Mass Professional est une formule de gainer protéiné ultra-performante, conçue spécialement pour les athlètes et pratiquants de musculation cherchant une prise de masse musculaire rapide, efficace et saine.",
+    features: [
+      "Favorise une prise de masse musculaire rapide et saine",
+      "Soutient la performance sportive et améliore la récupération",
+      "Optimise les niveaux d'énergie grâce à un apport équilibré en protéines et glucides",
+      "Aide à préserver la masse musculaire pendant les périodes d'entraînement intense",
+      "Formulé pour être facile à digérer et sans gluten",
+
+    ],
+    price: "1199",
+    oldPrice: "",
+    discount: "",
+    image: gk,
+    gallery: [gk],
+    category: "Supplément",
+    categoryId: "3",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
   },
 ];
 
