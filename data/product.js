@@ -100,9 +100,9 @@ import b5 from "../public/b5.jpg";
 import b6 from "../public/b6.jpg";
 import adidas from "../public/adidas.png";
 import red from "../public/red.png";
-import gh from "../public/gh.jpg"
-import gj from "../public/gj.jpg"
-import gk from "../public/gk.jpg"
+import gh from "../public/gh.jpg";
+import gj from "../public/gj.jpg";
+import gk from "../public/gk.jpg";
 export const categories = [
   {
     id: "2",
@@ -311,45 +311,7 @@ export const products = [
     colors: ["Vert", "Rouge", "Bleu", "Gris"],
     relatedProducts: ["6", "7"],
   },
-  {
-    id: "6",
-    name: "Ensemble veste et pantalon Under Armour",
-    slug: "tetsttete",
-    description:
-      "Ensemble veste et pantalon Under ArmourDécouvrez cet ensemble élégant signé Under Armour, conçu pour répondre aux besoins des sportifs et amateurs de confort au quotidien. Disponible en trois couleurs",
-    features: [
-      "Coupe slim : Offrant une silhouette moderne et ajustée, parfaite pour l'entraînement ou les sorties décontractées.",
-      "Logo discret : Positionné sur la jambe pour une finition raffinée.",
-      "Confort optimal : Tissu doux et respirant qui évacue l'humidité pour rester au sec.",
-      "Résistance accrue : Matériaux conçus pour durer, même après des séances d'entraînement intensives.",
-      "Polyvalence : Convient aussi bien pour le sport que pour un look décontracté.",
-    ],
-    price: 349.99,
-    oldPrice: "",
-    discount: "",
-    taille: ["XL", "M", "S"],
-    image: a18,
-    gallery: [a18, a19, a20],
-    category: "accessoires",
-    categoryId: "4",
-    subCategoryId: "4-2",
-    rating: 4.8,
-    reviewCount: 112,
-    isNew: false,
-    isFeatured: false,
-    inStock: true,
-    stockQuantity: 75,
-    tags: [
-      "ceinture",
-      "musculation",
-      "protection",
-      "soutien lombaire",
-      "current",
-    ],
-    colors: ["Bleu", "Gris"],
 
-    relatedProducts: ["5", "7"],
-  },
   {
     id: "7",
     name: "SEATED LEG PRESS PANATTA",
@@ -580,62 +542,6 @@ export const products = [
     materials: ["Acier", "Mousse haute densité", "Similicuir"],
     warranty: "2 ans",
 
-    relatedProducts: ["3", "7", "9"],
-  },
-  {
-    id: "13",
-    name: "Capsules de Zinc Picolinate - Swanson",
-    slug: "Capsules-de-Zinc-Picolinate-Swanson",
-    description:
-      "Le picolinate de zinc est une forme hautement biodisponible de zinc, favorisant une absorption optimale par l'organisme. Ce complément soutient :",
-    features: [
-      "Le fonctionnement normal du système immunitaire.",
-      "La santé des cheveux, de la peau et des ongles.",
-      "Une fertilité et une reproduction normales.",
-      "La protection contre le stress oxydatif.",
-    ],
-    price: 279,
-    oldPrice: "",
-    discount: "",
-    image: a36,
-    gallery: [a36],
-    category: "Supplément",
-    categoryId: "3",
-    rating: 4.7,
-    reviewCount: 124,
-    isNew: false,
-    isFeatured: false,
-    inStock: true,
-    stockQuantity: 45,
-    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
-    relatedProducts: ["3", "7", "9"],
-  },
-  {
-    id: "14",
-    name: "Glutamine Premium avec AstraGin",
-    slug: "Glutamine-Premium-avec-AstraGin",
-    description:
-      "Ce produit est idéal pour les sportifs, amateurs ou professionnels, qui cherchent à maximiser leur récupération et à protéger leur organisme contre l’usure physique liée à l’entraînement intensif.",
-    features: [
-      "Augmenter l’absorption des nutriments : Notamment la créatine, avec une efficacité démontrée de +33 %.",
-      "Optimiser la santé intestinale : Favorise un environnement intestinal sain, garantissant une meilleure utilisation des compléments alimentaires.",
-      "Convient parfaitement aux sportifs soumis à des contrôles antidopage, car la L-Glutamine et les acides aminés ne figurent pas sur la liste des substances interdites de l’AMA.",
-      "Sans stimulant, ce complément est adapté à une utilisation quotidienne et prolongée.",
-    ],
-    price: 486,
-    oldPrice: "",
-    discount: "",
-    image: a38,
-    gallery: [a38, a39],
-    category: "Supplément",
-    categoryId: "3",
-    rating: 4.7,
-    reviewCount: 124,
-    isNew: false,
-    isFeatured: false,
-    inStock: true,
-    stockQuantity: 45,
-    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
     relatedProducts: ["3", "7", "9"],
   },
   {
@@ -885,37 +791,7 @@ export const products = [
 
     relatedProducts: ["8", "12"],
   },
-  {
-    id: "23",
-    name: "Brique de Yoga en Mousse - Un Soutien Parfait pour Votre Pratique",
-    slug: "brique-de-yoga-en-mousse-un-soutien-parfait-pour-votre-pratique",
-    description:
-      "La brique de yoga en mousse de Decathlon est un accessoire essentiel pour les pratiquants de yoga, qu'ils soient débutants ou avancés. Conçue pour offrir soutien et stabilité, elle permet d'améliorer l'alignement, d'approfondir les postures et de faciliter la pratique pour ceux qui manquent de souplesse.",
-    features: [
-      "Matériau : Mousse dense et légère, agréable au toucher et résistante aux déformations.",
-      "Utilisation : Parfaite pour soutenir les bras, les jambes ou les hanches dans diverses postures de yoga.",
-      "Avantages : Aide à maintenir l’équilibre et permet un alignement correct du corps, ce qui rend les postures plus accessibles aux débutants.",
-      "Entretien : Facile à nettoyer, il suffit de l'essuyer avec un chiffon humide.",
-    ],
-    price: 69,
-    oldPrice: null,
-    discount: 0,
-    image: a57,
-    gallery: [a57],
-    category: "Equipements",
 
-    categoryId: "2",
-    rating: 4.9,
-    reviewCount: 89,
-    isNew: false,
-    isFeatured: true,
-    inStock: true,
-    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-
-    colors: ["Bleu", "Gris", "Vert"],
-
-    relatedProducts: ["8", "12"],
-  },
   {
     id: "24",
     name: "Gants de boxe Pakka – Qualité supérieure, fabriqués au Pakistan",
@@ -963,35 +839,6 @@ export const products = [
     gallery: [a61, a62, a63, a64],
     category: "Accessoires",
     categoryId: "4",
-    rating: 4.9,
-    reviewCount: 89,
-    isNew: false,
-    isFeatured: true,
-    inStock: true,
-    tags: ["pack", "bundle", "débutant", "ensemble"],
-    colors: ["Bleu", "Rouge", "Jaune"],
-    relatedProducts: ["16", "17"],
-    promotionType: "bundle",
-  },
-  {
-    id: "26",
-    name: "Slip de Posing (Coupe Droite)",
-    slug: "slip-de-posing-coupe-droite",
-    description:
-      "Améliorez votre condition physique avec cette corde à sauter de haute qualité, conçue en Inde pour les amateurs de fitness et les athlètes. Dotée de poignées ajustables et d’un câble durable",
-    features: [
-      "Boostez vos performances avec cette corde à sauter de haute qualité, disponible en bleu et rouge, conçue en Inde pour répondre aux besoins des sportifs exigeants. Avec ses poignées ajustables et son câble robuste, elle est idéale pour les exercices de cardio, d’endurance, et de renforcement musculaire.",
-      "Fabriquée en Inde Options de Couleurs : Disponible en bleu et en rouge, pour s’adapter à votre style personnel Matériau : Câble en plastique résistant pour une durabilité maximale",
-      "Roulement fluide : Assure des rotations rapides et sans accrocs, parfait pour les exercices de vitesse",
-      "Cette corde à sauter est idéale pour divers types d'entraînement, que ce soit pour la boxe, le cross-training, ou des exercices de fitness quotidiens.",
-    ],
-    price: 119,
-    oldPrice: null,
-    discount: null,
-    image: a68,
-    gallery: [a68, a69],
-    category: "Accessoires",
-    categoryId: "1",
     rating: 4.9,
     reviewCount: 89,
     isNew: false,
@@ -1778,7 +1625,6 @@ export const products = [
       "Matrice de glucides multi-sources",
       "Enrichi en Tribulus Terrestris – Extrait de thé vert au ginceng.",
       "Enrichi en complexe multi-enzymes Digezyme et en vitamines",
-
     ],
     price: "1199",
     oldPrice: "",
@@ -1808,7 +1654,6 @@ export const products = [
       "Optimise les niveaux d'énergie grâce à un apport équilibré en protéines et glucides",
       "Aide à préserver la masse musculaire pendant les périodes d'entraînement intense",
       "Formulé pour être facile à digérer et sans gluten",
-
     ],
     price: "1149",
     oldPrice: "",
