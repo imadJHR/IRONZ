@@ -19,7 +19,7 @@ import {
   Check,
   Palette,
   ToyBrick,
-  SquareStack ,
+  SquareStack,
   Weight,
   CheckCircle,
   TrendingUp,
@@ -689,15 +689,15 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Hero Section - Amélioré pour une meilleure responsivité */}
-        <section className="relative bg-gray-900 text-white overflow-hidden h-[600px] md:h-[700px] lg:h-[800px]">
-          {/* Background */}
+        {/* Hero Section - Optimized for Responsiveness and Performance */}
+        <section className="relative bg-gray-900 text-white overflow-hidden h-[500px] sm:h-[600px] md:h-[700px] lg:h-[800px] xl:h-[900px]">
+          {/* Background Overlay */}
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
             <div className="absolute inset-0 bg-[url('/images/texture.png')] opacity-10 mix-blend-overlay" />
           </div>
 
-          {/* Swiper */}
+          {/* Swiper Container */}
           <div className="relative z-10 h-full w-full">
             <Swiper
               modules={[Autoplay, Pagination, Navigation]}
@@ -724,49 +724,49 @@ export default function Home() {
             >
               {banners.map((banner) => (
                 <SwiperSlide key={banner.id}>
-                  <div className="relative h-full w-full flex items-center min-h-[500px] md:min-h-[600px] lg:min-h-[700px]">
-                    {/* Background Image */}
+                  <div className="relative h-full w-full flex items-center">
+                    {/* Background Image with Responsive Sizes */}
                     <div className="absolute inset-0 overflow-hidden">
                       <Image
-                        srcSet={`
-                  ${banner.imageMobile} 768w,
-                  ${banner.imageTablet} 1280w,
-                  ${banner.imageDesktop} 1920w
-                `}
                         src={banner.imageDesktop}
                         alt={banner.title}
                         fill
-                        className="object-cover object-center scale-110 group-hover:scale-100 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]"
                         priority={banner.id === 1}
-                        sizes="(max-width: 768px) 768px, (max-width: 1280px) 1280px, 1920px"
+                        className="object-cover object-center"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
+                        quality={90}
                       />
                       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
                     </div>
 
                     {/* Content */}
-                    <div className="relative z-20 px-6 md:px-16 lg:px-24 max-w-4xl text-white">
-                      <div className="space-y-4 md:space-y-6 transition-all duration-700 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100">
-                        <div className="inline-flex items-center gap-2 bg-yellow-500/20 px-4 py-2 rounded-full border border-yellow-500/30">
-                          <span className="text-yellow-400">{banner.icon}</span>
-                          <span className="text-sm font-semibold tracking-wider text-yellow-300 uppercase">
+                    <div className="relative z-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 container mx-auto">
+                      <div className="max-w-2xl md:max-w-3xl lg:max-w-4xl space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6">
+                        {/* Highlight Badge */}
+                        <div className="inline-flex items-center gap-2 bg-yellow-500/20 px-3 py-1 sm:px-4 sm:py-2 rounded-full border border-yellow-500/30">
+                          <span className="text-yellow-400 text-sm sm:text-base">
+                            {banner.icon}
+                          </span>
+                          <span className="text-xs sm:text-sm font-semibold tracking-wider text-yellow-300 uppercase">
                             {banner.highlight}
                           </span>
                         </div>
 
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg">
+                        {/* Title */}
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg">
                           {banner.title}
                         </h2>
 
-                        <p className="text-lg md:text-xl lg:text-2xl max-w-2xl opacity-90 leading-relaxed text-gray-100">
+                        {/* Description */}
+                        <p className="text-base sm:text-lg md:text-xl lg:text-xl max-w-lg md:max-w-xl opacity-90 leading-relaxed text-gray-100">
                           {banner.description}
                         </p>
 
-                        {/* Button Container */}
-                        <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full max-w-md">
-                          {/* Primary Button */}
+                        {/* Buttons */}
+                        <div className="flex flex-col xs:flex-row gap-3 pt-1 sm:pt-2 w-full max-w-md">
                           <a
                             href={banner.link}
-                            className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-6 py-3 rounded-lg hover:scale-[1.02] transition-all duration-300 text-center text-sm sm:text-base shadow-lg shadow-yellow-500/20 hover:shadow-yellow-400/30"
+                            className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-lg hover:scale-[1.02] transition-all duration-300 text-center text-sm sm:text-base shadow-lg shadow-yellow-500/20 hover:shadow-yellow-400/30"
                             rel="noopener noreferrer"
                           >
                             <span>View Product</span>
@@ -783,10 +783,9 @@ export default function Home() {
                             </svg>
                           </a>
 
-                          {/* Secondary Button */}
                           <a
                             href={banner.link}
-                            className="flex-1 flex items-center justify-center gap-2 bg-transparent text-white font-bold px-6 py-3 rounded-lg border-2 border-white/30 hover:border-yellow-500 hover:text-yellow-500 transition-all duration-300 text-center text-sm sm:text-base group"
+                            className="flex-1 flex items-center justify-center gap-2 bg-transparent text-white font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-lg border-2 border-white/30 hover:border-yellow-500 hover:text-yellow-500 transition-all duration-300 text-center text-sm sm:text-base group"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -807,7 +806,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Mini Banner - Desktop (Bottom Right) */}
+                    {/* Mini Banner - Desktop */}
                     <div className="absolute bottom-8 right-8 z-20 hidden lg:block">
                       <div className="bg-black/80 backdrop-blur-sm border-l-4 border-yellow-500 p-4 max-w-xs rounded-r-lg shadow-xl">
                         <h3 className="text-lg font-bold text-yellow-400 mb-2">
@@ -836,7 +835,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Mini Banner - Mobile (Bottom Center) */}
+                    {/* Mini Banner - Mobile */}
                     <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 lg:hidden w-[90%]">
                       <div className="bg-black/80 backdrop-blur-sm border-t-4 border-yellow-500 p-3 rounded-lg shadow-xl flex items-center justify-between">
                         <div>
@@ -870,12 +869,12 @@ export default function Home() {
                 </SwiperSlide>
               ))}
 
-              {/* Custom Navigation */}
-              <div className="swiper-button-prev !left-4 !text-white after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-500 hover:!text-black transition-all backdrop-blur-sm"></div>
-              <div className="swiper-button-next !right-4 !text-white after:!text-2xl !w-12 !h-12 !bg-black/50 !rounded-full hover:!bg-yellow-500 hover:!text-black transition-all backdrop-blur-sm"></div>
+              {/* Navigation Arrows */}
+              <div className="swiper-button-prev !left-2 sm:!left-4 !text-white after:!text-xl sm:after:!text-2xl !w-10 !h-10 sm:!w-12 sm:!h-12 !bg-black/50 !rounded-full hover:!bg-yellow-500 hover:!text-black transition-all backdrop-blur-sm"></div>
+              <div className="swiper-button-next !right-2 sm:!right-4 !text-white after:!text-xl sm:after:!text-2xl !w-10 !h-10 sm:!w-12 sm:!h-12 !bg-black/50 !rounded-full hover:!bg-yellow-500 hover:!text-black transition-all backdrop-blur-sm"></div>
 
-              {/* Modern Pagination */}
-              <div className="swiper-pagination !bottom-20 md:!bottom-8 flex justify-center gap-1"></div>
+              {/* Pagination */}
+              <div className="swiper-pagination !bottom-4 sm:!bottom-6 md:!bottom-8 flex justify-center gap-1"></div>
             </Swiper>
           </div>
         </section>
@@ -1020,11 +1019,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <ServicesSection/>
-    
-  
-        
-      
+        <ServicesSection />
+
         {/* Products Section - Tabs responsives et cartes de produits améliorées */}
         <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
