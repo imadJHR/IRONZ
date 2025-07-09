@@ -620,9 +620,9 @@ const banners = [
     imageDesktop: banner1, // 1920x600
     imageTablet: img1, // 1280x500
     imageMobile: img5, // 768x400
-    title: "First Banner Title",
+    title: "RED REX 100% BEEF PROTEIN",
     highlight: "Highlight",
-    description: "Description for the first banner.",
+    description: "",
     link: "https://www.ironz.ma/product/RED-REX-BEEF-PROTEIN-ISOLATE-4lbs",
     icon: "🌟", // Replace with your icon component or image
   },
@@ -631,9 +631,9 @@ const banners = [
     imageDesktop: banner2, // 1920x600
     imageTablet: img2, // 1280x500
     imageMobile: img6, // 768x400
-    title: "Second Banner Title",
+    title: "PERFORMANCE UTILITY BENCH",
     highlight: "Highlight",
-    description: "Description for the second banner.",
+    description: "",
     link: "https://www.ironz.ma/product/PERFORMANCE-UTILITY-BENCH",
     icon: "🌟", // Replace with your icon component or image
   },
@@ -642,9 +642,9 @@ const banners = [
     imageDesktop: banner3, // 1920x600
     imageTablet: img3, // 1280x500
     imageMobile: img7, // 768x400
-    title: "Second Banner Title",
+    title: "PERFORMANCE HOME GYM",
     highlight: "Highlight",
-    description: "Description for the second banner.",
+    description: "",
     link: "https://www.ironz.ma/product/PERFORMANCE-HOME-GYM",
     icon: "🌟", // Replace with your icon component or image
   },
@@ -653,9 +653,9 @@ const banners = [
     imageDesktop: banner4, // 1920x600
     imageTablet: img4, // 1280x500
     imageMobile: img8, // 768x400
-    title: "Second Banner Title",
+    title: "C-21 BIKE",
     highlight: "Highlight",
-    description: "Description for the second banner.",
+    description: "",
     link: "https://www.ironz.ma/product/C-21-BIKE",
     icon: "🌟", // Replace with your icon component or image
   },
