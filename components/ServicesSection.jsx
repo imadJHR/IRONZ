@@ -17,6 +17,10 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button"; // Adjust this import based on your actual button component path
+import img1 from "../public/salle1.jpg"
+import img2 from "../public/salle2.jpg"
+import img3 from "../public/salle3.jpg"
+import img4 from "../public/salle4.jpg"
 
 // Then your services section component
 const ServicesSection = () => (
@@ -45,7 +49,7 @@ const ServicesSection = () => (
         >
           <div className="relative h-48 overflow-hidden">
             <Image
-              src="/services/home-gym.jpg"
+              src={img1}
               alt="Aménagement de salle"
               fill
               className="object-cover"
@@ -93,7 +97,7 @@ const ServicesSection = () => (
         >
           <div className="relative h-48 overflow-hidden">
             <Image
-              src="/services/custom-accessories.jpg"
+              src={img2}
               alt="Personnalisation d'accessoires"
               fill
               className="object-cover"
@@ -141,7 +145,7 @@ const ServicesSection = () => (
         >
           <div className="relative h-48 overflow-hidden">
             <Image
-              src="/services/kids-space.jpg"
+              src={img3}
               alt="Espace Enfance"
               fill
               className="object-cover"
@@ -189,7 +193,7 @@ const ServicesSection = () => (
         >
           <div className="relative h-48 overflow-hidden">
             <Image
-              src="/services/flooring.jpg"
+              src={img4}
               alt="Revêtements sol & mur"
               fill
               className="object-cover"
