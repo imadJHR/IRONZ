@@ -119,10 +119,7 @@ const ServicesSection = () => (
               personnalisés.
             </p>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-              <li className="flex items-center">
-                <Check className="h-4 w-4 text-yellow-500 mr-2" />
-                Gravure laser professionnelle
-              </li>
+              
               <li className="flex items-center">
                 <Check className="h-4 w-4 text-yellow-500 mr-2" />
                 Impression haute qualité
