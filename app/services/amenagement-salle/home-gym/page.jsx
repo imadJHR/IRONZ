@@ -415,6 +415,7 @@ export default function HomeGymPage() {
       </section>
 
       {/* Gallery Section */}
+      {/* 
       <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
@@ -467,6 +468,7 @@ export default function HomeGymPage() {
           </div>
         </div>
       </section>
+      */}
 
       {/* Process Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-black/5 dark:from-yellow-900/10 dark:to-black/20">

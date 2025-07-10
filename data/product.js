@@ -622,7 +622,7 @@ export const products = [
     category: "Supplément",
     categoryId: "3",
     rating: 4.7,
-    reviewCount: 124,
+    reviewCount: 130,
     isNew: false,
     isFeatured: false,
     inStock: true,

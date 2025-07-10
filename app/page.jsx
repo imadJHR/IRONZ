@@ -764,12 +764,12 @@ export default function Home() {
 
                         {/* Buttons */}
                         <div className="flex flex-col xs:flex-row gap-3 pt-1 sm:pt-2 w-full max-w-md">
-                          <a
+                          <Link
                             href={banner.link}
                             className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-lg hover:scale-[1.02] transition-all duration-300 text-center text-sm sm:text-base shadow-lg shadow-yellow-500/20 hover:shadow-yellow-400/30"
                             rel="noopener noreferrer"
                           >
-                            <span>View Product</span>
+                            <span>voir le produit</span>
                             <svg
                               className="w-4 h-4"
                               viewBox="0 0 24 24"
@@ -781,27 +781,7 @@ export default function Home() {
                             >
                               <path d="M5 12H19M12 5L19 12L12 19" />
                             </svg>
-                          </a>
-
-                          <a
-                            href={banner.link}
-                            className="flex-1 flex items-center justify-center gap-2 bg-transparent text-white font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-lg border-2 border-white/30 hover:border-yellow-500 hover:text-yellow-500 transition-all duration-300 text-center text-sm sm:text-base group"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <span>Shop Now</span>
-                            <svg
-                              className="w-4 h-4 group-hover:animate-bounce"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -846,23 +826,6 @@ export default function Home() {
                             découvrez notre dernière collection
                           </p>
                         </div>
-                        <a
-                          href={banner.link}
-                          className="inline-flex items-center justify-center gap-1 bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded transition-all duration-300 whitespace-nowrap"
-                        >
-                          <span>Shop Now</span>
-                          <svg
-                            className="w-3 h-3"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M5 12H19M12 5L19 12L12 19" />
-                          </svg>
-                        </a>
                       </div>
                     </div>
                   </div>

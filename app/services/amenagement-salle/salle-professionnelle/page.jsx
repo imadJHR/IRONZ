@@ -627,6 +627,7 @@ export default function SalleProfessionnellePage() {
       </section>
 
       {/* References Gallery */}
+    {/*
       <section className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-yellow-50 dark:from-gray-900 dark:to-yellow-900/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
@@ -685,6 +686,7 @@ export default function SalleProfessionnellePage() {
           </div>
         </div>
       </section>
+    */}
 
       {/* Contact Section */}
       <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
@@ -760,12 +762,14 @@ export default function SalleProfessionnellePage() {
               </div>
 
               <div>
+                {/*
                 <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-800">
                   <h3 className="text-xl font-heading font-bold mb-6 text-black dark:text-white">
                     Demande de devis professionnel
                   </h3>
                   <ServiceContactForm service="Aménagement Salle Professionnelle" />
                 </div>
+                */}
               </div>
             </div>
           </div>
