@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +16,6 @@ import {
   ChevronsRight,
   CurrencyIcon as Cash,
 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/cart-context";
 import { Input } from "@/components/ui/input";
@@ -30,7 +28,6 @@ export default function CheckoutPage() {
   const { cart, updateQuantity, removeFromCart, cartTotal, clearCart, color } =
     useCart();
   const [mounted, setMounted] = useState(false);
-
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -40,43 +37,37 @@ export default function CheckoutPage() {
     city: "",
     postalCode: "",
     country: "Maroc",
-    paymentMethod: "cashOnDelivery", // Default to cash on delivery
+    paymentMethod: "cashOnDelivery",
     shippingMethod: "standard",
     saveInfo: false,
     notes: "",
   });
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const [orderComplete, setOrderComplete] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Éviter les erreurs d'hydratation
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Redirect if cart is empty
   useEffect(() => {
     if (mounted && cart.length === 0 && !orderComplete) {
       router.push("/product");
     }
   }, [cart, router, orderComplete, mounted]);
 
-  // Shipping costs
   const shippingCosts = {
     standard: 30,
     express: 50,
     free: 0,
   };
 
-  // Calculate totals
   const subtotal = cartTotal;
   const shipping = subtotal >= 500 ? 0 : shippingCosts[formData.shippingMethod];
   const total = subtotal + shipping;
 
-  // Format price
   const formatPrice = (price) => {
     return new Intl.NumberFormat("fr-MA", {
       style: "currency",
@@ -91,8 +82,6 @@ export default function CheckoutPage() {
       ...formData,
       [name]: type === "checkbox" ? checked : value,
     });
-
-    // Clear error when field is edited
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -103,8 +92,6 @@ export default function CheckoutPage() {
 
   const validateForm = () => {
     const newErrors = {};
-
-    // Required fields
     const requiredFields = [
       "firstName",
       "lastName",
@@ -122,17 +109,14 @@ export default function CheckoutPage() {
       }
     });
 
-    // Email validation
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Adresse email invalide";
     }
 
-    // Phone validation
     if (formData.phone && !/^[0-9+\s()-]{8,15}$/.test(formData.phone)) {
       newErrors.phone = "Numéro de téléphone invalide";
     }
 
-    // Postal code validation for Morocco
     if (
       formData.country === "Maroc" &&
       formData.postalCode &&
@@ -157,79 +141,70 @@ export default function CheckoutPage() {
     window.scrollTo(0, 0);
   };
 
-  const formatPhoneForWhatsApp = (phone) => {
-    // Supprimer tous les caractères non numériques
-    let cleaned = phone.replace(/\D/g, "");
-
-    // S'assurer que le numéro commence par le code pays
-    if (!cleaned.startsWith("212") && cleaned.startsWith("0")) {
-      cleaned = "212" + cleaned.substring(1);
-    } else if (!cleaned.startsWith("212")) {
-      cleaned = "212" + cleaned;
-    }
-
-    return cleaned;
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) {
       return;
     }
-
+    
     setIsSubmitting(true);
-
+    
     // Generate random order number
     const randomOrderNumber = `CMD-${Math.floor(Math.random() * 1000000)
       .toString()
       .padStart(6, "0")}`;
     setOrderNumber(randomOrderNumber);
 
-    // Create order details message for WhatsApp
-    const orderItems = cart
-      .map(
-        (item) =>
-          `- ${item.name} (x${item.quantity}) - ${formatPrice(
-            item.price * item.quantity
-          )}`
-      )
-      .join("\n");
+    // Prepare order data for Formspree
+    const orderData = {
+      _replyto: formData.email,
+      _subject: `Nouvelle commande - ${randomOrderNumber}`,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      address: formData.address,
+      city: formData.city,
+      postalCode: formData.postalCode,
+      country: formData.country,
+      paymentMethod: formData.paymentMethod,
+      shippingMethod: formData.shippingMethod,
+      notes: formData.notes,
+      orderNumber: randomOrderNumber,
+      items: cart.map(item => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        total: item.price * item.quantity
+      })),
+      subtotal: formatPrice(subtotal),
+      shipping: shipping === 0 ? "Gratuit" : formatPrice(shipping),
+      total: formatPrice(total)
+    };
 
-    const orderDetails = `
-*Nouvelle commande!* 📦 #${randomOrderNumber}
-*Client:* ${formData.firstName} ${formData.lastName}
-*Email:* ${formData.email}
-*Téléphone:* ${formData.phone}
-*Adresse:* ${formData.address}, ${formData.city}, ${formData.postalCode}, ${
-      formData.country
+    try {
+      const response = await fetch("https://formspree.io/f/xeokyzaz", { // Replace with your Formspree form ID
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (response.ok) {
+        // Complete the order
+        setOrderComplete(true);
+        clearCart();
+      } else {
+        throw new Error("Form submission failed");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("There was an error submitting your order. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-*Articles:*
-${orderItems}
-
-*Livraison:* ${shipping === 0 ? "Gratuite" : formatPrice(shipping)}
-*Total:* ${formatPrice(total)}
-*Mode de paiement:* Paiement à la livraison
-
-${formData.notes ? `*Notes:* ${formData.notes}` : ""}
-`;
-
-    const whatsappNumber = "+212674114446"; // Numéro WhatsApp de l'entreprise
-    const whatsappPhone = formatPhoneForWhatsApp(whatsappNumber);
-
-    // Create WhatsApp link
-    const whatsappLink = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
-      orderDetails
-    )}`;
-
-    // Complete the order
-    setOrderComplete(true);
-    clearCart();
-    setIsSubmitting(false);
-
-    // Open WhatsApp in a new tab
-    window.open(whatsappLink, "_blank");
   };
 
   if (orderComplete) {
@@ -240,7 +215,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 mb-6">
               <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
-
             <h1 className="text-3xl font-heading font-bold mb-4">
               Commande confirmée!
             </h1>
@@ -248,17 +222,14 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
               Votre commande #{orderNumber} a été enregistrée avec succès.
             </p>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Un message WhatsApp a été envoyé avec les détails de votre
-              commande.
+              Un email de confirmation a été envoyé à {formData.email}.
             </p>
-
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/">
                 <Button className="bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-white dark:text-gray-900">
                   Retour à l'accueil
                 </Button>
               </Link>
-
               <Link href="/product">
                 <Button
                   variant="outline"
@@ -299,11 +270,10 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
             Retour au panier
           </Link>
         </div>
-
         <h1 className="text-3xl md:text-4xl font-heading font-bold mb-8">
           Finaliser ma commande
         </h1>
-
+        
         {/* Checkout Steps */}
         <div className="mb-8">
           <div className="flex items-center">
@@ -351,7 +321,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                 <h2 className="text-xl font-heading font-semibold mb-6">
                   Informations de livraison
                 </h2>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   <div>
                     <Label htmlFor="firstName" className="mb-1">
@@ -370,7 +339,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                       </p>
                     )}
                   </div>
-
                   <div>
                     <Label htmlFor="lastName" className="mb-1">
                       Nom <span className="text-red-500">*</span>
@@ -389,7 +357,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     )}
                   </div>
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   <div>
                     <Label htmlFor="email" className="mb-1">
@@ -409,7 +376,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                       </p>
                     )}
                   </div>
-
                   <div>
                     <Label htmlFor="phone" className="mb-1">
                       Téléphone <span className="text-red-500">*</span>
@@ -427,11 +393,10 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                       </p>
                     )}
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      Utilisé pour les notifications WhatsApp
+                      Utilisé pour les notifications
                     </p>
                   </div>
                 </div>
-
                 <div className="mb-6">
                   <Label htmlFor="address" className="mb-1">
                     Adresse <span className="text-red-500">*</span>
@@ -449,7 +414,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     </p>
                   )}
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <div>
                     <Label htmlFor="postalCode" className="mb-1">
@@ -468,7 +432,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                       </p>
                     )}
                   </div>
-
                   <div className="md:col-span-2">
                     <Label htmlFor="city" className="mb-1">
                       Ville <span className="text-red-500">*</span>
@@ -485,7 +448,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     )}
                   </div>
                 </div>
-
                 <div className="mb-6">
                   <Label htmlFor="notes" className="mb-1">
                     Notes de commande (optionnel)
@@ -500,7 +462,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     placeholder="Instructions spéciales pour la livraison..."
                   ></textarea>
                 </div>
-
                 <div className="flex items-center mb-6">
                   <Checkbox
                     id="saveInfo"
@@ -514,7 +475,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     Sauvegarder ces informations pour la prochaine fois
                   </Label>
                 </div>
-
                 <Button
                   onClick={handleNextStep}
                   className="w-full bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-white dark:text-gray-900 py-6"
@@ -530,7 +490,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                 <h2 className="text-xl font-heading font-semibold mb-6">
                   Mode de paiement
                 </h2>
-
                 <div className="mb-6">
                   <div className="border border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4">
                     <div className="flex items-center">
@@ -546,12 +505,10 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     </div>
                   </div>
                 </div>
-
                 <div className="mb-6">
                   <h3 className="font-medium text-lg mb-4">
                     Méthode de livraison
                   </h3>
-
                   <RadioGroup
                     value={formData.shippingMethod}
                     onValueChange={(value) =>
@@ -582,12 +539,10 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     </div>
                   </RadioGroup>
                 </div>
-
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
                   <h3 className="font-medium text-lg mb-4">
                     Récapitulatif de la commande
                   </h3>
-
                   <div className="space-y-4 mb-4">
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">
@@ -597,7 +552,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                         {formatPrice(subtotal)}
                       </span>
                     </div>
-
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">
                         Frais de livraison
@@ -606,7 +560,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                         {shipping === 0 ? "Gratuit" : formatPrice(shipping)}
                       </span>
                     </div>
-
                     <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between">
                       <span className="font-medium text-gray-900 dark:text-white">
                         Total
@@ -616,7 +569,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                       </span>
                     </div>
                   </div>
-
                   <div className="space-y-2">
                     <div className="flex items-start">
                       <User className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2 flex-shrink-0 mt-0.5" />
@@ -626,7 +578,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                         </span>
                       </div>
                     </div>
-
                     <div className="flex items-start">
                       <Mail className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2 flex-shrink-0 mt-0.5" />
                       <div>
@@ -635,7 +586,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                         </span>
                       </div>
                     </div>
-
                     <div className="flex items-start">
                       <Phone className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2 flex-shrink-0 mt-0.5" />
                       <div>
@@ -644,7 +594,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                         </span>
                       </div>
                     </div>
-
                     <div className="flex items-start">
                       <Home className="h-5 w-5 text-gray-500 dark:text-gray-400 mr-2 flex-shrink-0 mt-0.5" />
                       <div>
@@ -656,7 +605,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     </div>
                   </div>
                 </div>
-
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
                     variant="outline"
@@ -666,7 +614,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     <ChevronLeft className="mr-2 h-5 w-5" />
                     Retour
                   </Button>
-
                   <Button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
@@ -695,7 +642,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
               <h2 className="text-xl font-heading font-semibold mb-6">
                 Récapitulatif de commande
               </h2>
-
               <div className="max-h-[300px] overflow-y-auto mb-6">
                 {cart.map((item) => (
                   <div
@@ -716,7 +662,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                         {item.quantity}
                       </div>
                     </div>
-
                     <div className="ml-4 flex-1">
                       <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
                         {item.name}
@@ -725,7 +670,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                         {formatPrice(item.price)} × {item.quantity}
                       </p>
                     </div>
-
                     <div className="text-right">
                       <span className="font-medium text-gray-900 dark:text-white">
                         {formatPrice(item.price * item.quantity)}
@@ -734,7 +678,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                   </div>
                 ))}
               </div>
-
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-400">
@@ -744,7 +687,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     {formatPrice(subtotal)}
                   </span>
                 </div>
-
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-400">
                     Frais de livraison
@@ -753,7 +695,6 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                     {shipping === 0 ? "Gratuit" : formatPrice(shipping)}
                   </span>
                 </div>
-
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between">
                   <span className="font-medium text-gray-900 dark:text-white">
                     Total
@@ -763,13 +704,11 @@ ${formData.notes ? `*Notes:* ${formData.notes}` : ""}
                   </span>
                 </div>
               </div>
-
               <div className="mt-6 space-y-4">
                 <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                   <Truck className="h-4 w-4 mr-2 flex-shrink-0" />
                   <span>Livraison gratuite à partir de 500 MAD d'achat</span>
                 </div>
-
                 <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                   <ShieldCheck className="h-4 w-4 mr-2 flex-shrink-0" />
                   <span>Paiement 100% sécurisé</span>
