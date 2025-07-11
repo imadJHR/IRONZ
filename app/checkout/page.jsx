@@ -158,7 +158,7 @@ export default function CheckoutPage() {
     // Prepare order data for Formspree
     const orderData = {
       _replyto: formData.email,
-      _subject: `Nouvelle commande - ${randomOrderNumber}`,
+      _subject: 'Nouvelle commande ',
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
@@ -183,7 +183,7 @@ export default function CheckoutPage() {
     };
 
     try {
-      const response = await fetch("https://formspree.io/f/xeokyzaz", { // Replace with your Formspree form ID
+      const response = await fetch("https://formspree.io/f/xwpbgwyw", { // Replace with your Formspree form ID
         method: "POST",
         headers: {
           "Content-Type": "application/json",
