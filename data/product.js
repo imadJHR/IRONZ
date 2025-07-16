@@ -1796,8 +1796,8 @@ export const products = [
   },
   {
     id: "108",
-    name: "Bande de box 3,5m",
-    slug: "Bande-de-box",
+    name: "Bande de boxe 3,5m",
+    slug: "Bande-de-boxe",
     description: "",
     features: [],
     price: 49,
@@ -1815,8 +1815,8 @@ export const products = [
   },
   {
     id: "109",
-    name: "Bande de box 4,5m",
-    slug: "Bande-de-box-4",
+    name: "Bande de boxe 4,5m",
+    slug: "Bande-de-boxe-4",
     description: "",
     features: [],
     price: 69,
@@ -1834,8 +1834,8 @@ export const products = [
   },
   {
     id: "110",
-    name: "Bande de box 5,5m",
-    slug: "Bande-de-box-5",
+    name: "Bande de boxe 5,5m",
+    slug: "Bande-de-boxe-5",
     description: "",
     features: [],
     price: 89,
