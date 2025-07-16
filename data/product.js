@@ -1815,7 +1815,7 @@ export const products = [
   },
   {
     id: "109",
-    name: "Bande de box 4,4m",
+    name: "Bande de box 4,5m",
     slug: "Bande-de-box-4",
     description: "",
     features: [],
