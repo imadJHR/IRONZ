@@ -1877,7 +1877,7 @@ export const products = [
     slug: "JUMP-ROPE-ROLLER-PAKKA",
     description: "",
     features: [],
-    price: 99,
+    price: 119,
     image: l18,
     gallery: [l18],
     category: "Accessoires",
