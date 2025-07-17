@@ -1634,7 +1634,7 @@ export const products = [
     slug: "SAC-A-DOS",
     description: "",
     features: [],
-    price: 119,
+    price: 269,
     image: l5,
     gallery: [l5, l6],
     category: "Accessoires",
