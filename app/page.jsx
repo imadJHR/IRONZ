@@ -37,6 +37,9 @@ import {
   CreditCard,
   Phone,
   Tag,
+  Zap,
+  Gift,
+  Mail
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -685,6 +688,35 @@ export default function Home() {
 
   const featuredProduct =
     specialOffers.length > 0 ? specialOffers[0] : featuredProducts[0];
+    const [showPopup, setShowPopup] = useState(false)
+  const [email, setEmail] = useState("")
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  useEffect(() => {
+    // Show popup after 3 seconds
+    const timer = setTimeout(() => {
+      setShowPopup(true)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (email) {
+      setIsSubmitted(true)
+      setTimeout(() => {
+        setShowPopup(false)
+        setIsSubmitted(false)
+        setEmail("")
+      }, 2000)
+    }
+  }
+
+  const closePopup = () => {
+    setShowPopup(false)
+  }
+
 
   return (
     <>
@@ -841,6 +873,111 @@ export default function Home() {
             </Swiper>
           </div>
         </section>
+          {/* Newsletter Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black border-2 border-yellow-500 rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+            {/* Close Button */}
+            <button
+              onClick={closePopup}
+              className="absolute top-4 right-4 z-10 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Animated Background Elements */}
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-500/10 rounded-full animate-pulse"></div>
+              <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-yellow-500/5 rounded-full animate-bounce"></div>
+            </div>
+
+            <div className="relative p-6 sm:p-8">
+              {!isSubmitted ? (
+                <>
+                  {/* Header */}
+                  <div className="text-center mb-6">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-500/20 rounded-full mb-4">
+                      <div className="flex items-center gap-1">
+                        <Zap className="w-6 h-6 text-yellow-400" />
+                        <Gift className="w-5 h-5 text-yellow-300" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight">Restez Informé(e)</h3>
+                    <p className="text-yellow-400 font-semibold text-lg mb-1">de nos offres et nouveautés !</p>
+                    <p className="text-gray-300 text-sm">Recevez en exclusivité nos dernières collections sportives</p>
+                  </div>
+
+                  {/* Benefits */}
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    <div className="flex items-center gap-2 text-sm text-gray-300">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                      <span>Offres exclusives</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-300">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                      <span>Nouveautés en avant-première</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-300">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                      <span>Conseils d'experts</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-300">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                      <span>Réductions spéciales</span>
+                    </div>
+                  </div>
+
+                  {/* Form */}
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Votre adresse email"
+                        required
+                        className="w-full pl-12 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-yellow-500 to-yellow-400 hover:from-yellow-400 hover:to-yellow-300 text-black font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-500/25 flex items-center justify-center gap-2"
+                    >
+                      <Zap className="w-5 h-5" />
+                      <span>S'abonner maintenant</span>
+                    </button>
+                  </form>
+
+                  {/* Footer */}
+                  <p className="text-xs text-gray-400 text-center mt-4">
+                    Pas de spam, désinscription facile à tout moment
+                  </p>
+                </>
+              ) : (
+                /* Success State */
+                <div className="text-center py-8">
+                  <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/20 rounded-full mb-4">
+                    <svg className="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">Merci !</h3>
+                  <p className="text-gray-300 mb-4">Vous êtes maintenant abonné(e) à notre newsletter sportive</p>
+                  <div className="flex items-center justify-center gap-2 text-yellow-400">
+                    <Zap className="w-5 h-5" />
+                    <span className="font-semibold">Préparez-vous aux meilleures offres !</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Sporty Border Animation */}
+            <div className="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-yellow-500 via-transparent to-yellow-500 opacity-50 animate-pulse pointer-events-none"></div>
+          </div>
+        </div>
+      )}
         {/* Promotion Banner - Optimisé pour mobile */}
         {/* <section className="py-6 md:py-8 bg-gradient-to-r from-yellow-500 to-yellow-400">
           <div className="container mx-auto px-4">

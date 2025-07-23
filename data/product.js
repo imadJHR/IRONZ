@@ -125,6 +125,9 @@ import l19 from "../public/l19.jpg";
 import l20 from "../public/l20.jpg";
 import l21 from "../public/l21.jpg";
 import l22 from "../public/l22.jpg";
+import l24 from "../public/l24.jpg";
+import l25 from "../public/l25.jpg";
+
 export const categories = [
   {
     id: "2",
@@ -169,7 +172,6 @@ export const colorMap = {
     "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)",
 };
 export const products = [
-
   {
     id: "2",
     name: "Bande de Résistance LIVEPRO  Small",
@@ -223,7 +225,7 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Blanc","Jaune" ],
+    colors: ["Blanc", "Jaune"],
     relatedProducts: ["17", "67", "69"],
   },
   {
@@ -1626,10 +1628,9 @@ export const products = [
     inStock: true,
     stockQuantity: 35,
     colors: ["Orange"],
-    relatedProducts: ["171", "67", "69"],
   },
   {
-    id: "103",
+    id: "1067",
     name: "SAC A DOS",
     slug: "SAC-A-DOS",
     description: "",
@@ -1842,6 +1843,59 @@ export const products = [
     inStock: true,
     stockQuantity: 35,
     relatedProducts: ["173", "68", "19"],
+  },
+  {
+    id: "114",
+    name: "FITNESS TREADMILL",
+    slug: "FITNESS-TREADMILL",
+    description:
+      "Tapis de course ergonomique Ecran LCD 3 inches avec suivi calories , temps, vitesse Zone de course: 400x1020mm Taille total: 1280x765x254mm Poid maximal sur tapis : 100 kg Vitesse: 1-13km/H Poid total du produit avec emballage: 37 kg Porte gobelet Taille avec fonction pliable 630.710.1280 mm GARANTIE 1 ans",
+    features: [],
+    price: 7799,
+    oldPrice: "",
+    discount: "",
+    image: l24,
+    gallery: [l24],
+    category: "Equipements",
+    categoryId: "2",
+    subCategory: "Machines",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    relatedProducts: ["8", "12"],
+  },
+   {
+    id: "115",
+    name: "Vélo Sport Spinning HAPPYGAM-Vélo",
+    slug: "velo-sport",
+    description:
+      "Le Vélo Sport Spinning HAPPYGAM madin in  - dispose d’un système de résistance magnétique qui rendra votre  entraînement  totalement silencieux. L’intensité avec laquelle vous voulez pédaler et le siège sont réglables, ce qui vous permet d’être à l’aise pendant l’exercice. Son design moderne et de haute qualité.",
+    features: [
+      "Système De Résistance Magnétique",
+      "Pédales Antidérapantes avec sangles réglables",
+      "Guidon Ergonomique Recouvert En Mousse Antidérapantes",
+      "Guidon réglable en hauteur",
+      "Selle ajustable en hauteur et en Profondeur",
+      "Réglage de la résistance manuel"
+
+
+    ],
+    price: 7799,
+    oldPrice: "",
+    discount: "",
+    image: l25,
+    gallery: [l25],
+    category: "Equipements",
+    categoryId: "2",
+    subCategory: "Machines",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    relatedProducts: ["8", "12"],
   },
 ];
 
