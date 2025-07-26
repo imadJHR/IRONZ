@@ -19,6 +19,7 @@ import {
   TrendingUp,
   Award,
   Star,
+  ChevronRight ,
   ShoppingCart,
   Truck,
   Sparkles,
@@ -638,127 +639,120 @@ export default function Home() {
     <>
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Hero Section - Optimized for Responsiveness and Performance */}
-        <section className="relative bg-gray-900 text-white overflow-hidden h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px]">
-          {/* Background Overlay */}
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-            <div className="absolute inset-0 bg-[url('/images/texture.png')] opacity-10 mix-blend-overlay" />
+       <section className="relative bg-gray-900 text-white overflow-hidden h-[500px] sm:h-[600px] lg:h-[700px] xl:h-[90vh] max-h-[900px]">
+  {/* Background Overlay with Modern Gradient */}
+  <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-black/60 to-black/30" />
+    <div className="absolute inset-0 bg-[url('/images/noise-texture.png')] opacity-10 mix-blend-overlay" />
+  </div>
+
+  {/* Swiper Container */}
+  <div className="relative z-10 h-full w-full">
+    <Swiper
+      modules={[Autoplay, Pagination, Navigation]}
+      spaceBetween={0}
+      slidesPerView={1}
+      loop={true}
+      speed={1200}
+      autoplay={{
+        delay: 7500,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      }}
+      pagination={{
+        clickable: true,
+        el: ".swiper-pagination",
+        renderBullet: (index, className) => {
+          return `<span class="${className} bg-white w-2.5 h-2.5 mx-1 rounded-full opacity-50 hover:opacity-100 transition-all duration-300"></span>`
+        },
+      }}
+      navigation={{
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      }}
+      className="h-full"
+    >
+      {banners.map((banner) => (
+        <SwiperSlide key={banner.id}>
+          <div className="relative h-full w-full flex items-center">
+            {/* Modern Background Image with Priority Loading */}
+            <div className="absolute inset-0 overflow-hidden">
+              <Image
+                src={banner.imageDesktop || "/placeholder.svg"}
+                alt={banner.title}
+                fill
+                priority={banner.id === 1}
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+                quality={100}
+                placeholder="blur"
+                blurDataURL="/placeholder-blur.svg"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/30 to-transparent" />
+            </div>
+
+            {/* Content Container */}
+            <div className="relative z-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 container mx-auto">
+              <div className="max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl space-y-4 sm:space-y-5 md:space-y-6">
+                {/* Modern Tag/Badge */}
+                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 hover:border-white/40 transition-all duration-300 group">
+                  <span className="text-yellow-400 text-lg">{banner.icon}</span>
+                  <span className="text-xs font-medium tracking-wider text-white uppercase">
+                    {banner.highlight}
+                  </span>
+                  <ChevronRight className="w-4 h-4 text-white/60 group-hover:text-white/90 transition-all" />
+                </div>
+
+                {/* Modern Typography */}
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+                  <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                    {banner.title.split(' ')[0]}
+                  </span>{' '}
+                  {banner.title.split(' ').slice(1).join(' ')}
+                </h2>
+
+                {/* Description with Better Readability */}
+                <p className="text-base sm:text-lg md:text-xl max-w-lg md:max-w-xl opacity-90 leading-relaxed text-gray-100 font-light">
+                  {banner.description}
+                </p>
+
+                {/* Buttons with Modern Hover Effects */}
+                <div className="flex flex-col xs:flex-row gap-3 pt-2 sm:pt-3">
+                  <Link
+                    href={banner.link}
+                    className="relative flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg transition-all duration-300 group overflow-hidden"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="relative z-10">Voir le produit</span>
+                    <ArrowRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+                    <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  </Link>
+                  <Link
+                    href="/collection"
+                    className="relative flex-1 flex items-center justify-center gap-2 bg-transparent hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 group overflow-hidden"
+                  >
+                    <span className="relative z-10">Toute la collection</span>
+                    <ChevronRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating Product Card - Desktop */}
+           
           </div>
+        </SwiperSlide>
+      ))}
 
-          {/* Swiper Container */}
-          <div className="relative z-10 h-full w-full">
-            <Swiper
-              modules={[Autoplay, Pagination, Navigation]}
-              spaceBetween={0}
-              slidesPerView={1}
-              loop={true}
-              speed={1000}
-              autoplay={{
-                delay: 8000,
-                disableOnInteraction: false,
-              }}
-              pagination={{
-                clickable: true,
-                el: ".swiper-pagination",
-                renderBullet: (index, className) => {
-                  return `<span class="${className} bg-yellow-500 w-3 h-3 mx-1 rounded-full transition-all duration-300"></span>`
-                },
-              }}
-              navigation={{
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-              }}
-              className="h-full"
-            >
-              {banners.map((banner) => (
-                <SwiperSlide key={banner.id}>
-                  <div className="relative h-full w-full flex items-center">
-                    {/* Background Image with Responsive Sizes */}
-                    <div className="absolute inset-0 overflow-hidden">
-                      <Image
-                        src={banner.imageDesktop || "/placeholder.svg"}
-                        alt={banner.title}
-                        fill
-                        priority={banner.id === 1}
-                        className="object-cover object-center"
-                        sizes="100vw"
-                        quality={90}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-                    </div>
+      {/* Modern Navigation Arrows */}
+      <div className="swiper-button-prev !left-4 sm:!left-6 !text-white after:!text-xl sm:after:!text-2xl !w-12 !h-12 !bg-white/10 !rounded-full hover:!bg-white hover:!text-black transition-all backdrop-blur-md border border-white/20 hover:border-white/40"></div>
+      <div className="swiper-button-next !right-4 sm:!right-6 !text-white after:!text-xl sm:after:!text-2xl !w-12 !h-12 !bg-white/10 !rounded-full hover:!bg-white hover:!text-black transition-all backdrop-blur-md border border-white/20 hover:border-white/40"></div>
 
-                    {/* Content */}
-                    <div className="relative z-20 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 container mx-auto">
-                      <div className="max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6">
-                        {/* Highlight Badge */}
-                        <div className="inline-flex items-center gap-2 bg-yellow-500/20 px-3 py-1 sm:px-4 sm:py-2 rounded-full border border-yellow-500/30">
-                          <span className="text-yellow-400 text-sm sm:text-base">{banner.icon}</span>
-                          <span className="text-xs sm:text-sm font-semibold tracking-wider text-yellow-300 uppercase">
-                            {banner.highlight}
-                          </span>
-                        </div>
-
-                        {/* Title */}
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight drop-shadow-lg">
-                          {banner.title}
-                        </h2>
-
-                        {/* Description */}
-                        <p className="text-sm sm:text-base md:text-lg lg:text-xl max-w-lg md:max-w-xl opacity-90 leading-relaxed text-gray-100">
-                          {banner.description}
-                        </p>
-
-                        {/* Buttons */}
-                        <div className="flex flex-col xs:flex-row gap-3 pt-1 sm:pt-2 w-full max-w-md">
-                          <Link
-                            href={banner.link}
-                            className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold px-4 py-2 sm:px-6 sm:py-3 rounded-lg hover:scale-[1.02] transition-all duration-300 text-center text-sm sm:text-base shadow-lg shadow-yellow-500/20 hover:shadow-yellow-400/30"
-                            rel="noopener noreferrer"
-                          >
-                            <span>Voir le produit</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Mini Banner - Desktop */}
-                    <div className="absolute bottom-8 right-8 z-20 hidden lg:block">
-                      <div className="bg-black/80 backdrop-blur-sm border-l-4 border-yellow-500 p-4 max-w-xs rounded-r-lg shadow-xl">
-                        <h3 className="text-lg font-bold text-yellow-400 mb-2">Nouveautés</h3>
-                        <p className="text-sm text-gray-200 mb-3">Découvrez notre dernière collection</p>
-                        <a
-                          href={banner.link}
-                          className="inline-flex items-center justify-center gap-1 bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold px-4 py-2 rounded transition-all duration-300"
-                        >
-                          <span>Voir produit</span>
-                          <ArrowRight className="w-3 h-3" />
-                        </a>
-                      </div>
-                    </div>
-
-                    {/* Mini Banner - Mobile */}
-                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 lg:hidden w-[90%]">
-                      <div className="bg-black/80 backdrop-blur-sm border-t-4 border-yellow-500 p-3 rounded-lg shadow-xl flex items-center justify-between">
-                        <div>
-                          <h3 className="text-sm font-bold text-yellow-400">Offre spéciale</h3>
-                          <p className="text-xs text-gray-200">Découvrez notre dernière collection</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-
-              {/* Navigation Arrows */}
-              <div className="swiper-button-prev !left-2 sm:!left-4 !text-white after:!text-xl sm:after:!text-2xl !w-10 !h-10 sm:!w-12 sm:!h-12 !bg-black/50 !rounded-full hover:!bg-yellow-500 hover:!text-black transition-all backdrop-blur-sm"></div>
-              <div className="swiper-button-next !right-2 sm:!right-4 !text-white after:!text-xl sm:after:!text-2xl !w-10 !h-10 sm:!w-12 sm:!h-12 !bg-black/50 !rounded-full hover:!bg-yellow-500 hover:!text-black transition-all backdrop-blur-sm"></div>
-
-              {/* Pagination */}
-              <div className="swiper-pagination !bottom-4 sm:!bottom-6 md:!bottom-8 flex justify-center gap-1"></div>
-            </Swiper>
-          </div>
-        </section>
+      {/* Modern Pagination */}
+      <div className="swiper-pagination !bottom-6 sm:!bottom-8 flex justify-center gap-2"></div>
+    </Swiper>
+  </div>
+</section>
 
         {/* Newsletter Popup */}
         {showPopup && (
