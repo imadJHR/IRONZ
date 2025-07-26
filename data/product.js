@@ -127,6 +127,13 @@ import l21 from "../public/l21.jpg";
 import l22 from "../public/l22.jpg";
 import l24 from "../public/l24.jpg";
 import l25 from "../public/l25.jpg";
+import l26 from "../public/l26.jpg";
+import l27 from "../public/l27.jpg";
+import l28 from "../public/l28.jpg";
+import l29 from "../public/l29.jpg";
+import l30 from "../public/l30.jpg";
+import l31 from "../public/l31.jpg";
+import l32 from "../public/l32.jpg";
 
 export const categories = [
   {
@@ -1896,6 +1903,46 @@ export const products = [
     isFeatured: false,
     inStock: true,
     relatedProducts: ["8", "12"],
+  },
+   {
+    id: "116",
+    name: "Foam rollers",
+    slug: "Foam-rollers",
+    description: "",
+    features: [],
+    price: 159,
+    image: l26,
+    gallery: [l26,l27,l28],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.5,
+    reviewCount: 74,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 35,
+    colors: ["Rouge","Noir","Bleu"],
+    relatedProducts: ["17", "67", "69"],
+  },
+   {
+    id: "117",
+    name: "Yoga ball",
+    slug: "Yoga-ball",
+    description: "",
+    features: [],
+    price: 249,
+    image: l29,
+    gallery: [l29,l30,l31],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.5,
+    reviewCount: 74,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 35,
+    colors: ["Bleu","Gris","Rouge"],
+    relatedProducts: ["17", "67", "69"],
   },
 ];
 
