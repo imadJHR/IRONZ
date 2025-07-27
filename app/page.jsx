@@ -673,75 +673,96 @@ export default function Home() {
       className="h-full"
     >
       {banners.map((banner) => (
-        <SwiperSlide key={banner.id}>
-          <div className="relative h-full w-full flex items-center">
-            {/* Modern Background Image with Priority Loading */}
-            <div className="absolute inset-0 overflow-hidden">
-              <Image
-                src={banner.imageDesktop || "/placeholder.svg"}
-                alt={banner.title}
-                fill
-                priority={banner.id === 1}
-                className="object-cover object-center"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-                quality={100}
-                placeholder="blur"
-                blurDataURL="/placeholder-blur.svg"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/30 to-transparent" />
-            </div>
+       <SwiperSlide key={banner.id}>
+  <div className="relative h-full w-full flex items-center">
+    {/* Images spécifiques par appareil */}
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Desktop (≥1024px) */}
+      <Image
+        src={banner.imageDesktop || "/placeholder.svg"}
+        alt={banner.title}
+        fill
+        priority={banner.id === 1}
+        className="hidden lg:block object-cover object-center"
+        sizes="(min-width: 1024px) 100vw"
+        quality={100}
+        placeholder="blur"
+        blurDataURL="/placeholder-blur.svg"
+      />
 
-            {/* Content Container */}
-            <div className="relative z-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 container mx-auto">
-              <div className="max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl space-y-4 sm:space-y-5 md:space-y-6">
-                {/* Modern Tag/Badge */}
-                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 hover:border-white/40 transition-all duration-300 group">
-                  <span className="text-yellow-400 text-lg">{banner.icon}</span>
-                  <span className="text-xs font-medium tracking-wider text-white uppercase">
-                    {banner.highlight}
-                  </span>
-                  <ChevronRight className="w-4 h-4 text-white/60 group-hover:text-white/90 transition-all" />
-                </div>
+      {/* Tablet (768px - 1023px) */}
+      <Image
+        src={banner.imageTablet || "/placeholder.svg"}
+        alt={banner.title}
+        fill
+        className="hidden md:block lg:hidden object-cover object-center"
+        sizes="(min-width: 768px) and (max-width: 1023px) 100vw"
+        quality={100}
+        placeholder="blur"
+        blurDataURL="/placeholder-blur.svg"
+      />
 
-                {/* Modern Typography */}
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-                  <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
-                    {banner.title.split(' ')[0]}
-                  </span>{' '}
-                  {banner.title.split(' ').slice(1).join(' ')}
-                </h2>
+      {/* Mobile (<768px) */}
+      <Image
+        src={banner.imageMobile || "/placeholder.svg"}
+        alt={banner.title}
+        fill
+        className="block md:hidden object-cover object-center"
+        sizes="(max-width: 767px) 100vw"
+        quality={100}
+        placeholder="blur"
+        blurDataURL="/placeholder-blur.svg"
+      />
 
-                {/* Description with Better Readability */}
-                <p className="text-base sm:text-lg md:text-xl max-w-lg md:max-w-xl opacity-90 leading-relaxed text-gray-100 font-light">
-                  {banner.description}
-                </p>
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/30 to-transparent" />
+    </div>
 
-                {/* Buttons with Modern Hover Effects */}
-                <div className="flex flex-col xs:flex-row gap-3 pt-2 sm:pt-3">
-                  <Link
-                    href={banner.link}
-                    className="relative flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg transition-all duration-300 group overflow-hidden"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="relative z-10">Voir le produit</span>
-                    <ArrowRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
-                    <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  </Link>
-                  <Link
-                    href="/collection"
-                    className="relative flex-1 flex items-center justify-center gap-2 bg-transparent hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 group overflow-hidden"
-                  >
-                    <span className="relative z-10">Toute la collection</span>
-                    <ChevronRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              </div>
-            </div>
+    {/* Contenu (inchangé) */}
+    <div className="relative z-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 container mx-auto">
+      <div className="max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl space-y-4 sm:space-y-5 md:space-y-6">
+        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 hover:border-white/40 transition-all duration-300 group">
+          <span className="text-yellow-400 text-lg">{banner.icon}</span>
+          <span className="text-xs font-medium tracking-wider text-white uppercase">
+            {banner.highlight}
+          </span>
+          <ChevronRight className="w-4 h-4 text-white/60 group-hover:text-white/90 transition-all" />
+        </div>
 
-            {/* Floating Product Card - Desktop */}
-           
-          </div>
-        </SwiperSlide>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+          <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+            {banner.title.split(' ')[0]}
+          </span>{' '}
+          {banner.title.split(' ').slice(1).join(' ')}
+        </h2>
+
+        <p className="text-base sm:text-lg md:text-xl max-w-lg md:max-w-xl opacity-90 leading-relaxed text-gray-100 font-light">
+          {banner.description}
+        </p>
+
+        <div className="flex flex-col xs:flex-row gap-3 pt-2 sm:pt-3">
+          <Link
+            href={banner.link}
+            className="relative flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg transition-all duration-300 group overflow-hidden"
+            rel="noopener noreferrer"
+          >
+            <span className="relative z-10">Voir le produit</span>
+            <ArrowRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+            <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+          </Link>
+          <Link
+            href="/collection"
+            className="relative flex-1 flex items-center justify-center gap-2 bg-transparent hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 group overflow-hidden"
+          >
+            <span className="relative z-10">Toute la collection</span>
+            <ChevronRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</SwiperSlide>
+
       ))}
 
       {/* Modern Navigation Arrows */}
