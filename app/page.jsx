@@ -1,25 +1,27 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import ReferencesSection from "../components/references-section"
-import logo from "../public/logo.png"
-import ServicesSection from "@/components/ServicesSection"
-import { Swiper, SwiperSlide } from "swiper/react"
-import { Autoplay, Pagination, Navigation } from "swiper/modules"
-import "swiper/css"
-import "swiper/css/pagination"
-import "swiper/css/navigation"
-import { AnimatePresence, motion } from "framer-motion"
-import { useState, useEffect, useRef } from "react"
+import Image from "next/image";
+import Link from "next/link";
+import ReferencesSection from "../components/references-section";
+import logo from "../public/logo.png";
+import ServicesSection from "@/components/ServicesSection";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import {
   ArrowRight,
   Dumbbell,
+  Trophy,
+  Tag,
   CheckCircle,
   TrendingUp,
   Award,
   Star,
-  ChevronRight ,
+  ChevronRight,
   ShoppingCart,
   Truck,
   Sparkles,
@@ -34,31 +36,37 @@ import {
   Flame,
   Package,
   Apple,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import BrandsMarquee from "@/components/brands-marquee"
-import { categories, brands, productUtils } from "@/data/product"
-import { useCart } from "@/context/cart-context"
-import { useFavorites } from "@/context/favorites-context"
-import { cn } from "@/lib/utils"
-import img1 from "../public/1.jpg"
-import img2 from "../public/2.jpg"
-import img3 from "../public/3.jpg"
-import img4 from "../public/4.jpg"
-import img5 from "../public/mo1.jpg"
-import img6 from "../public/mo2.jpg"
-import img7 from "../public/mo3.jpg"
-import img8 from "../public/mo4.jpg"
-import banner1 from "../public/des1.jpg"
-import banner2 from "../public/des2.jpg"
-import banner3 from "../public/des3.jpg"
-import banner4 from "../public/des4.jpg"
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import BrandsMarquee from "@/components/brands-marquee";
+import { categories, brands, productUtils } from "@/data/product";
+import { useCart } from "@/context/cart-context";
+import { useFavorites } from "@/context/favorites-context";
+import { cn } from "@/lib/utils";
+import img1 from "../public/1.jpg";
+import img2 from "../public/2.jpg";
+import img3 from "../public/3.jpg";
+import img4 from "../public/4.jpg";
+import img5 from "../public/mo1.jpg";
+import img6 from "../public/mo2.jpg";
+import img7 from "../public/mo3.jpg";
+import img8 from "../public/mo4.jpg";
+import banner1 from "../public/des1.jpg";
+import banner2 from "../public/des2.jpg";
+import banner3 from "../public/des3.jpg";
+import banner4 from "../public/des4.jpg";
 
 const faqs = [
   {
-    question: "Comment choisir le bon équipement pour ma salle de sport à domicile ?",
+    question:
+      "Comment choisir le bon équipement pour ma salle de sport à domicile ?",
     answer:
       "Pour choisir le bon équipement, considérez d'abord vos objectifs fitness, l'espace disponible et votre budget. Nous recommandons de commencer par des équipements polyvalents comme un banc réglable, des haltères ajustables et un tapis de sol. N'hésitez pas à contacter notre équipe pour des conseils personnalisés.",
   },
@@ -78,23 +86,30 @@ const faqs = [
       "Nous offrons une garantie de satisfaction de 30 jours. Si vous n'êtes pas satisfait de votre achat, vous pouvez retourner le produit dans son emballage d'origine pour un remboursement complet ou un échange. Les frais de retour sont à la charge du client, sauf en cas de produit défectueux.",
   },
   {
-    question: "Vos suppléments sont-ils testés pour les substances interdites ?",
+    question:
+      "Vos suppléments sont-ils testés pour les substances interdites ?",
     answer:
       "Absolument. Tous nos suppléments nutritionnels sont fabriqués dans des installations certifiées et sont testés par des laboratoires indépendants pour garantir leur pureté et l'absence de substances interdites. Nous fournissons des certificats d'analyse sur demande.",
   },
-]
+];
 
 const ChatBot = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState([])
-  const [inputValue, setInputValue] = useState("")
-  const [isTyping, setIsTyping] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
-  const messagesEndRef = useRef(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const messagesEndRef = useRef(null);
 
   const knowledgeBase = {
     returns: {
-      triggers: ["retour", "remboursement", "garantie", "échanger", "défectueux"],
+      triggers: [
+        "retour",
+        "remboursement",
+        "garantie",
+        "échanger",
+        "défectueux",
+      ],
       response: `Nous offrons une politique de retour flexible :
 🔄 **Retours standards** : 30 jours pour un remboursement complet (produit non utilisé, dans son emballage d'origine)
 ⚡ **Retours rapides** : Retours gratuits dans nos boutiques physiques
@@ -103,7 +118,14 @@ const ChatBot = () => {
 Pour initier un retour, veuillez visiter notre [portail de retours](https://ironz.ma/retours) ou répondre à ce message avec votre numéro de commande.`,
     },
     delivery: {
-      triggers: ["livraison", "délai", "expédition", "recevoir", "temps", "commande"],
+      triggers: [
+        "livraison",
+        "délai",
+        "expédition",
+        "recevoir",
+        "temps",
+        "commande",
+      ],
       response: `🚚 **Options de livraison disponibles** :
 1. **Standard** : 2-3 jours ouvrés (gratuite à partir de 500 DH)
 2. **Express** : Livraison en 24h (+50 DH)
@@ -112,7 +134,14 @@ Pour initier un retour, veuillez visiter notre [portail de retours](https://iron
 📦 **Suivi en temps réel** : Vous recevrez un lien de suivi par SMS/email dès l'expédition. Notre système intelligent peut prédire votre heure de livraison à ±30 minutes près !`,
     },
     products: {
-      triggers: ["équipement", "choisir", "produit", "conseil", "recommander", "suggestion"],
+      triggers: [
+        "équipement",
+        "choisir",
+        "produit",
+        "conseil",
+        "recommander",
+        "suggestion",
+      ],
       response: `Pour une recommandation personnalisée, j'ai besoin de savoir :
 1. **Type d'activité** : Musculation, cardio, cross-training, etc.
 2. **Niveau** : Débutant, intermédiaire, avancé
@@ -135,7 +164,14 @@ Pour initier un retour, veuillez visiter notre [portail de retours](https://iron
 🔒 **Sécurité** : Tous les paiements sont cryptés et protégés par notre système de détection de fraude IA.`,
     },
     contact: {
-      triggers: ["contact", "service client", "appeler", "email", "adresse", "téléphone"],
+      triggers: [
+        "contact",
+        "service client",
+        "appeler",
+        "email",
+        "adresse",
+        "téléphone",
+      ],
       response: `📞 **Contactez-nous facilement** :
 - **Chat live** : Disponible 24/7 sur notre app
 - **Téléphone** : +212 674-114446 (8h-20h)
@@ -152,7 +188,7 @@ Pour initier un retour, veuillez visiter notre [portail de retours](https://iron
 
 🔔 **Conseil pro** : Abonnez-vous à notre newsletter pour recevoir des offres exclusives avant tout le monde !`,
     },
-  }
+  };
 
   const suggestedQuestions = [
     "Comment faire un retour ?",
@@ -160,7 +196,7 @@ Pour initier un retour, veuillez visiter notre [portail de retours](https://iron
     "Quel équipement pour débutant ?",
     "Avez-vous des promotions ?",
     "Comment contacter le service client ?",
-  ]
+  ];
 
   useEffect(() => {
     setMessages([
@@ -179,34 +215,34 @@ Essayez de me demander : "Quel équipement pour perdre du poids ?" ou "Comment s
         sender: "bot",
         timestamp: new Date(),
       },
-    ])
-  }, [])
+    ]);
+  }, []);
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages, isMinimized])
+    scrollToBottom();
+  }, [messages, isMinimized]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const handleSendMessage = () => {
-    if (inputValue.trim() === "") return
+    if (inputValue.trim() === "") return;
 
     const newUserMessage = {
       id: messages.length + 1,
       text: inputValue,
       sender: "user",
       timestamp: new Date(),
-    }
+    };
 
-    setMessages((prev) => [...prev, newUserMessage])
-    setInputValue("")
-    setIsTyping(true)
+    setMessages((prev) => [...prev, newUserMessage]);
+    setInputValue("");
+    setIsTyping(true);
 
     setTimeout(
       () => {
-        const botResponse = generateEnhancedResponse(inputValue)
+        const botResponse = generateEnhancedResponse(inputValue);
         setMessages((prev) => [
           ...prev,
           {
@@ -215,19 +251,19 @@ Essayez de me demander : "Quel équipement pour perdre du poids ?" ou "Comment s
             sender: "bot",
             timestamp: new Date(),
           },
-        ])
-        setIsTyping(false)
+        ]);
+        setIsTyping(false);
       },
-      800 + Math.random() * 1500,
-    )
-  }
+      800 + Math.random() * 1500
+    );
+  };
 
   const generateEnhancedResponse = (userInput) => {
-    const input = userInput.toLowerCase()
+    const input = userInput.toLowerCase();
 
     for (const [topic, data] of Object.entries(knowledgeBase)) {
       if (data.triggers.some((trigger) => input.includes(trigger))) {
-        return data.response
+        return data.response;
       }
     }
 
@@ -239,7 +275,7 @@ Saviez-vous que vous pouvez aussi :
 - **Obtenir un guide gratuit** sur l'entraînement à domicile
 - **Réserver une consultation** avec nos coachs certifiés
 
-Comment puis-je continuer à vous aider ?`
+Comment puis-je continuer à vous aider ?`;
     } else if (input.includes("bonjour") || input.includes("salut")) {
       return `Bonjour à vous ! 🌞 Je suis ravi de vous aider aujourd'hui. 
 
@@ -249,7 +285,7 @@ Pour gagner du temps, voici quelques demandes fréquentes que je peux traiter in
 2. "Je veux retourner un article"
 3. "Quels accessoires pour compléter mon home gym ?"
 
-Dites-moi simplement ce dont vous avez besoin !`
+Dites-moi simplement ce dont vous avez besoin !`;
     } else if (input.includes("urgence") || input.includes("important")) {
       return `🚨 Pour les questions urgentes, je peux :
 
@@ -257,7 +293,7 @@ Dites-moi simplement ce dont vous avez besoin !`
 2. Envoyer un SMS de rappel avec les informations critiques
 3. Vous donner le numéro direct du responsable de service
 
-Dites "rappeler" ou "urgence" pour activer le mode prioritaire.`
+Dites "rappeler" ou "urgence" pour activer le mode prioritaire.`;
     } else {
       return `🤖 **Je veux m'assurer de bien comprendre votre demande**
 
@@ -269,35 +305,35 @@ Pouvez-vous préciser votre question ou choisir parmi ces options :
 4. Questions sur les paiements
 5. Autre demande
 
-Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous offrir un service toujours plus pertinent !`
+Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous offrir un service toujours plus pertinent !`;
     }
-  }
+  };
 
   const handleQuickReply = (question) => {
-    setInputValue(question)
-  }
+    setInputValue(question);
+  };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
+      e.preventDefault();
+      handleSendMessage();
     }
-  }
+  };
 
   const toggleChat = () => {
-    setIsOpen(!isOpen)
+    setIsOpen(!isOpen);
     if (isOpen) {
-      setIsMinimized(false)
+      setIsMinimized(false);
     }
-  }
+  };
 
   const toggleMinimize = () => {
-    setIsMinimized(!isMinimized)
-  }
+    setIsMinimized(!isMinimized);
+  };
 
   const formatTime = (date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  }
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
 
   return (
     <>
@@ -313,7 +349,11 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
           className="bg-black rounded-full p-3 shadow-xl flex items-center justify-center transition-all duration-300 ring-2 ring-white/20 hover:ring-4 hover:ring-white/30"
           aria-label="Ouvrir le chat"
         >
-          <Image src={logo || "/placeholder.svg"} alt="logo" className="w-6 h-6 sm:w-8 sm:h-8" />
+          <Image
+            src={logo || "/placeholder.svg"}
+            alt="logo"
+            className="w-6 h-6 sm:w-8 sm:h-8"
+          />
           <motion.span
             className="absolute -top-2 -right-2 bg-yellow-500 text-xs rounded-full px-2 py-1 shadow"
             animate={{ scale: [1, 1.1, 1] }}
@@ -365,24 +405,32 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                     />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-sm sm:text-base">IronzBot Assistant IA</h3>
-                    {!isMinimized && <p className="text-xs text-yellow-100">En ligne • Prêt à vous aider</p>}
+                    <h3 className="font-bold text-white text-sm sm:text-base">
+                      IronzBot Assistant IA
+                    </h3>
+                    {!isMinimized && (
+                      <p className="text-xs text-yellow-100">
+                        En ligne • Prêt à vous aider
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={(e) => {
-                      e.stopPropagation()
-                      toggleMinimize()
+                      e.stopPropagation();
+                      toggleMinimize();
                     }}
                     className="text-white hover:text-gray-200 transition-transform"
                   >
-                    <ChevronDown className={`h-5 w-5 transition-transform ${isMinimized ? "rotate-180" : ""}`} />
+                    <ChevronDown
+                      className={`h-5 w-5 transition-transform ${isMinimized ? "rotate-180" : ""}`}
+                    />
                   </button>
                   <button
                     onClick={(e) => {
-                      e.stopPropagation()
-                      toggleChat()
+                      e.stopPropagation();
+                      toggleChat();
                     }}
                     className="text-white hover:text-gray-200"
                     aria-label="Fermer le chat"
@@ -429,10 +477,14 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                               </span>
                             </div>
                           )}
-                          <div className="text-sm whitespace-pre-line">{message.text}</div>
+                          <div className="text-sm whitespace-pre-line">
+                            {message.text}
+                          </div>
                           <div
                             className={`text-xs mt-1 flex justify-end ${
-                              message.sender === "user" ? "text-yellow-100/80" : "text-gray-500 dark:text-gray-400"
+                              message.sender === "user"
+                                ? "text-yellow-100/80"
+                                : "text-gray-500 dark:text-gray-400"
                             }`}
                           >
                             {formatTime(message.timestamp)}
@@ -479,7 +531,9 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                       transition={{ delay: 0.5 }}
                       className="px-4 pb-2"
                     >
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Essayez de demander :</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                        Essayez de demander :
+                      </div>
                       <div className="flex flex-wrap gap-2">
                         {suggestedQuestions.map((question, index) => (
                           <motion.button
@@ -509,8 +563,12 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                       <motion.button
                         onClick={handleSendMessage}
                         disabled={inputValue.trim() === ""}
-                        whileHover={inputValue.trim() !== "" ? { scale: 1.05 } : {}}
-                        whileTap={inputValue.trim() !== "" ? { scale: 0.95 } : {}}
+                        whileHover={
+                          inputValue.trim() !== "" ? { scale: 1.05 } : {}
+                        }
+                        whileTap={
+                          inputValue.trim() !== "" ? { scale: 0.95 } : {}
+                        }
                         className={`bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-full p-3 ${
                           inputValue.trim() === ""
                             ? "opacity-50 cursor-not-allowed"
@@ -529,8 +587,8 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
         )}
       </AnimatePresence>
     </>
-  )
-}
+  );
+};
 
 const banners = [
   {
@@ -577,203 +635,209 @@ const banners = [
     link: "https://www.ironz.ma/product/C-21-BIKE",
     icon: "🌟",
   },
-]
+];
 
 export default function Home() {
-  const { addToCart } = useCart()
-  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites()
-  const featuredProducts = productUtils.getFeaturedProducts().slice(0, 8)
-  const newArrivals = productUtils.getNewProducts().slice(0, 8)
-  const bestSellers = productUtils.getFeaturedProducts().slice(0, 8)
-  const specialOffers = productUtils.getDiscountedProducts().slice(0, 6)
+  const { addToCart } = useCart();
+  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
+  const featuredProducts = productUtils.getFeaturedProducts().slice(0, 8);
+  const newArrivals = productUtils.getNewProducts().slice(0, 8);
+  const bestSellers = productUtils.getFeaturedProducts().slice(0, 8);
+  const specialOffers = productUtils.getDiscountedProducts().slice(0, 6);
 
-  const [showPopup, setShowPopup] = useState(false)
-  const [email, setEmail] = useState("")
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [showPopup, setShowPopup] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
       currency: "MAD",
-    }).format(price)
-  }
+    }).format(price);
+  };
 
   const toggleFavorite = (product) => {
     if (isInFavorites(product.id)) {
-      removeFromFavorites(product.id)
+      removeFromFavorites(product.id);
     } else {
-      addToFavorites(product)
+      addToFavorites(product);
     }
-  }
+  };
 
-  const featuredProduct = specialOffers.length > 0 ? specialOffers[0] : featuredProducts[0]
+  const featuredProduct =
+    specialOffers.length > 0 ? specialOffers[0] : featuredProducts[0];
 
   useEffect(() => {
-    const hasSeenPopup = localStorage.getItem("hasSeenDiscountPopup")
+    const hasSeenPopup = localStorage.getItem("hasSeenDiscountPopup");
     if (!hasSeenPopup) {
       const timer = setTimeout(() => {
-        setShowPopup(true)
-        localStorage.setItem("hasSeenDiscountPopup", "true")
-      }, 3000)
-      return () => clearTimeout(timer)
+        setShowPopup(true);
+        localStorage.setItem("hasSeenDiscountPopup", "true");
+      }, 3000);
+      return () => clearTimeout(timer);
     }
-  }, [])
+  }, []);
 
   const closePopup = () => {
-    setShowPopup(false)
-  }
+    setShowPopup(false);
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (email) {
-      setIsSubmitted(true)
+      setIsSubmitted(true);
       setTimeout(() => {
-        setShowPopup(false)
-        setIsSubmitted(false)
-        setEmail("")
-      }, 2000)
+        setShowPopup(false);
+        setIsSubmitted(false);
+        setEmail("");
+      }, 2000);
     }
-  }
+  };
 
   return (
     <>
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Hero Section - Optimized for Responsiveness and Performance */}
-       <section className="relative bg-gray-900 text-white overflow-hidden h-[500px] sm:h-[600px] lg:h-[700px] xl:h-[90vh] max-h-[900px]">
-  {/* Background Overlay with Modern Gradient */}
-  <div className="absolute inset-0 z-0">
-    <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-black/60 to-black/30" />
-    <div className="absolute inset-0 bg-[url('/images/noise-texture.png')] opacity-10 mix-blend-overlay" />
-  </div>
+        <section className="relative bg-gray-900 text-white overflow-hidden h-[500px] sm:h-[600px] lg:h-[700px] xl:h-[90vh] max-h-[900px]">
+          {/* Background Overlay with Modern Gradient */}
+          <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-black/60 to-black/30" />
+            <div className="absolute inset-0 bg-[url('/images/noise-texture.png')] opacity-10 mix-blend-overlay" />
+          </div>
 
-  {/* Swiper Container */}
-  <div className="relative z-10 h-full w-full">
-    <Swiper
-      modules={[Autoplay, Pagination, Navigation]}
-      spaceBetween={0}
-      slidesPerView={1}
-      loop={true}
-      speed={1200}
-      autoplay={{
-        delay: 7500,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true
-      }}
-      pagination={{
-        clickable: true,
-        el: ".swiper-pagination",
-        renderBullet: (index, className) => {
-          return `<span class="${className} bg-white w-2.5 h-2.5 mx-1 rounded-full opacity-50 hover:opacity-100 transition-all duration-300"></span>`
-        },
-      }}
-      navigation={{
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      }}
-      className="h-full"
-    >
-      {banners.map((banner) => (
-       <SwiperSlide key={banner.id}>
-  <div className="relative h-full w-full flex items-center">
-    {/* Images spécifiques par appareil */}
-    <div className="absolute inset-0 overflow-hidden">
-      {/* Desktop (≥1024px) */}
-      <Image
-        src={banner.imageDesktop || "/placeholder.svg"}
-        alt={banner.title}
-        fill
-        priority={banner.id === 1}
-        className="hidden lg:block object-cover object-center"
-        sizes="(min-width: 1024px) 100vw"
-        quality={100}
-        placeholder="blur"
-        blurDataURL="/placeholder-blur.svg"
-      />
+          {/* Swiper Container */}
+          <div className="relative z-10 h-full w-full">
+            <Swiper
+              modules={[Autoplay, Pagination, Navigation]}
+              spaceBetween={0}
+              slidesPerView={1}
+              loop={true}
+              speed={1200}
+              autoplay={{
+                delay: 7500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              pagination={{
+                clickable: true,
+                el: ".swiper-pagination",
+                renderBullet: (index, className) => {
+                  return `<span class="${className} bg-white w-2.5 h-2.5 mx-1 rounded-full opacity-50 hover:opacity-100 transition-all duration-300"></span>`;
+                },
+              }}
+              navigation={{
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              }}
+              className="h-full"
+            >
+              {banners.map((banner) => (
+                <SwiperSlide key={banner.id}>
+                  <div className="relative h-full w-full flex items-center">
+                    {/* Images spécifiques par appareil */}
+                    <div className="absolute inset-0 overflow-hidden">
+                      {/* Desktop (≥1024px) */}
+                      <Image
+                        src={banner.imageDesktop || "/placeholder.svg"}
+                        alt={banner.title}
+                        fill
+                        priority={banner.id === 1}
+                        className="hidden lg:block object-cover object-center"
+                        sizes="(min-width: 1024px) 100vw"
+                        quality={100}
+                        placeholder="blur"
+                        blurDataURL="/placeholder-blur.svg"
+                      />
 
-      {/* Tablet (768px - 1023px) */}
-      <Image
-        src={banner.imageTablet || "/placeholder.svg"}
-        alt={banner.title}
-        fill
-        className="hidden md:block lg:hidden object-cover object-center"
-        sizes="(min-width: 768px) and (max-width: 1023px) 100vw"
-        quality={100}
-        placeholder="blur"
-        blurDataURL="/placeholder-blur.svg"
-      />
+                      {/* Tablet (768px - 1023px) */}
+                      <Image
+                        src={banner.imageTablet || "/placeholder.svg"}
+                        alt={banner.title}
+                        fill
+                        className="hidden md:block lg:hidden object-cover object-center"
+                        sizes="(min-width: 768px) and (max-width: 1023px) 100vw"
+                        quality={100}
+                        placeholder="blur"
+                        blurDataURL="/placeholder-blur.svg"
+                      />
 
-      {/* Mobile (<768px) */}
-      <Image
-        src={banner.imageMobile || "/placeholder.svg"}
-        alt={banner.title}
-        fill
-        className="block md:hidden object-cover object-center"
-        sizes="(max-width: 767px) 100vw"
-        quality={100}
-        placeholder="blur"
-        blurDataURL="/placeholder-blur.svg"
-      />
+                      {/* Mobile (<768px) */}
+                      <Image
+                        src={banner.imageMobile || "/placeholder.svg"}
+                        alt={banner.title}
+                        fill
+                        className="block md:hidden object-cover object-center"
+                        sizes="(max-width: 767px) 100vw"
+                        quality={100}
+                        placeholder="blur"
+                        blurDataURL="/placeholder-blur.svg"
+                      />
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/30 to-transparent" />
-    </div>
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/30 to-transparent" />
+                    </div>
 
-    {/* Contenu (inchangé) */}
-    <div className="relative z-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 container mx-auto">
-      <div className="max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl space-y-4 sm:space-y-5 md:space-y-6">
-        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 hover:border-white/40 transition-all duration-300 group">
-          <span className="text-yellow-400 text-lg">{banner.icon}</span>
-          <span className="text-xs font-medium tracking-wider text-white uppercase">
-            {banner.highlight}
-          </span>
-          <ChevronRight className="w-4 h-4 text-white/60 group-hover:text-white/90 transition-all" />
-        </div>
+                    {/* Contenu (inchangé) */}
+                    <div className="relative z-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 container mx-auto">
+                      <div className="max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl space-y-4 sm:space-y-5 md:space-y-6">
+                        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 hover:border-white/40 transition-all duration-300 group">
+                          <span className="text-yellow-400 text-lg">
+                            {banner.icon}
+                          </span>
+                          <span className="text-xs font-medium tracking-wider text-white uppercase">
+                            {banner.highlight}
+                          </span>
+                          <ChevronRight className="w-4 h-4 text-white/60 group-hover:text-white/90 transition-all" />
+                        </div>
 
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-          <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
-            {banner.title.split(' ')[0]}
-          </span>{' '}
-          {banner.title.split(' ').slice(1).join(' ')}
-        </h2>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+                          <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                            {banner.title.split(" ")[0]}
+                          </span>{" "}
+                          {banner.title.split(" ").slice(1).join(" ")}
+                        </h2>
 
-        <p className="text-base sm:text-lg md:text-xl max-w-lg md:max-w-xl opacity-90 leading-relaxed text-gray-100 font-light">
-          {banner.description}
-        </p>
+                        <p className="text-base sm:text-lg md:text-xl max-w-lg md:max-w-xl opacity-90 leading-relaxed text-gray-100 font-light">
+                          {banner.description}
+                        </p>
 
-        <div className="flex flex-col xs:flex-row gap-3 pt-2 sm:pt-3">
-          <Link
-            href={banner.link}
-            className="relative flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg transition-all duration-300 group overflow-hidden"
-            rel="noopener noreferrer"
-          >
-            <span className="relative z-10">Voir le produit</span>
-            <ArrowRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
-            <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-          </Link>
-          <Link
-            href="/collection"
-            className="relative flex-1 flex items-center justify-center gap-2 bg-transparent hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 group overflow-hidden"
-          >
-            <span className="relative z-10">Toute la collection</span>
-            <ChevronRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </div>
-      </div>
-    </div>
-  </div>
-</SwiperSlide>
+                        <div className="flex flex-col xs:flex-row gap-3 pt-2 sm:pt-3">
+                          <Link
+                            href={banner.link}
+                            className="relative flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg transition-all duration-300 group overflow-hidden"
+                            rel="noopener noreferrer"
+                          >
+                            <span className="relative z-10">
+                              Voir le produit
+                            </span>
+                            <ArrowRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+                            <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                          </Link>
+                          <Link
+                            href="/collection"
+                            className="relative flex-1 flex items-center justify-center gap-2 bg-transparent hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 group overflow-hidden"
+                          >
+                            <span className="relative z-10">
+                              Toute la collection
+                            </span>
+                            <ChevronRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
 
-      ))}
+              {/* Modern Navigation Arrows */}
+              <div className="swiper-button-prev !left-4 sm:!left-6 !text-white after:!text-xl sm:after:!text-2xl !w-12 !h-12 !bg-white/10 !rounded-full hover:!bg-white hover:!text-black transition-all backdrop-blur-md border border-white/20 hover:border-white/40"></div>
+              <div className="swiper-button-next !right-4 sm:!right-6 !text-white after:!text-xl sm:after:!text-2xl !w-12 !h-12 !bg-white/10 !rounded-full hover:!bg-white hover:!text-black transition-all backdrop-blur-md border border-white/20 hover:border-white/40"></div>
 
-      {/* Modern Navigation Arrows */}
-      <div className="swiper-button-prev !left-4 sm:!left-6 !text-white after:!text-xl sm:after:!text-2xl !w-12 !h-12 !bg-white/10 !rounded-full hover:!bg-white hover:!text-black transition-all backdrop-blur-md border border-white/20 hover:border-white/40"></div>
-      <div className="swiper-button-next !right-4 sm:!right-6 !text-white after:!text-xl sm:after:!text-2xl !w-12 !h-12 !bg-white/10 !rounded-full hover:!bg-white hover:!text-black transition-all backdrop-blur-md border border-white/20 hover:border-white/40"></div>
-
-      {/* Modern Pagination */}
-      <div className="swiper-pagination !bottom-6 sm:!bottom-8 flex justify-center gap-2"></div>
-    </Swiper>
-  </div>
-</section>
+              {/* Modern Pagination */}
+              <div className="swiper-pagination !bottom-6 sm:!bottom-8 flex justify-center gap-2"></div>
+            </Swiper>
+          </div>
+        </section>
 
         {/* Newsletter Popup */}
         {showPopup && (
@@ -807,9 +871,12 @@ export default function Home() {
                       <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight">
                         Restez Informé(e)
                       </h3>
-                      <p className="text-yellow-400 font-semibold text-lg mb-1">de nos offres et nouveautés !</p>
+                      <p className="text-yellow-400 font-semibold text-lg mb-1">
+                        de nos offres et nouveautés !
+                      </p>
                       <p className="text-gray-300 text-sm">
-                        Recevez en exclusivité nos dernières collections sportives
+                        Recevez en exclusivité nos dernières collections
+                        sportives
                       </p>
                     </div>
 
@@ -864,15 +931,31 @@ export default function Home() {
                   /* Success State */
                   <div className="text-center py-8">
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/20 rounded-full mb-4">
-                      <svg className="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      <svg
+                        className="w-10 h-10 text-green-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"
+                        ></path>
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Merci !</h3>
-                    <p className="text-gray-300 mb-4">Vous êtes maintenant abonné(e) à notre newsletter sportive</p>
+                    <h3 className="text-2xl font-bold text-white mb-2">
+                      Merci !
+                    </h3>
+                    <p className="text-gray-300 mb-4">
+                      Vous êtes maintenant abonné(e) à notre newsletter sportive
+                    </p>
                     <div className="flex items-center justify-center gap-2 text-yellow-400">
                       <Zap className="w-5 h-5" />
-                      <span className="font-semibold">Préparez-vous aux meilleures offres !</span>
+                      <span className="font-semibold">
+                        Préparez-vous aux meilleures offres !
+                      </span>
                     </div>
                   </div>
                 )}
@@ -895,7 +978,8 @@ export default function Home() {
                 Nos <span className="text-yellow-500">Catégories</span>
               </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
-                Découvrez notre sélection d'équipements premium pour tous vos besoins fitness
+                Découvrez notre sélection d'équipements premium pour tous vos
+                besoins fitness
               </p>
             </div>
 
@@ -911,7 +995,11 @@ export default function Home() {
                 >
                   <div className="relative h-48 sm:h-56 overflow-hidden">
                     <Image
-                      src={category.image || "/placeholder.svg?height=300&width=400" || "/placeholder.svg"}
+                      src={
+                        category.image ||
+                        "/placeholder.svg?height=300&width=400" ||
+                        "/placeholder.svg"
+                      }
                       alt={category.name}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -922,15 +1010,34 @@ export default function Home() {
 
                     {/* Icône de catégorie */}
                     <div className="absolute top-4 right-4 w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 group-hover:rotate-0 transition-transform duration-300">
-                      {category.id === "musculation" && <Dumbbell className="h-6 w-6 text-yellow-500" />}
-                      {category.id === "cardio" && <Heart className="h-6 w-6 text-yellow-500" />}
-                      {category.id === "crossfit" && <Activity className="h-6 w-6 text-yellow-500" />}
-                      {category.id === "boxe" && <Flame className="h-6 w-6 text-yellow-500" />}
-                      {category.id === "accessoires" && <Package className="h-6 w-6 text-yellow-500" />}
-                      {category.id === "nutrition" && <Apple className="h-6 w-6 text-yellow-500" />}
-                      {!["musculation", "cardio", "crossfit", "boxe", "accessoires", "nutrition"].includes(
-                        category.id,
-                      ) && <Sparkles className="h-6 w-6 text-yellow-500" />}
+                      {category.id === "musculation" && (
+                        <Dumbbell className="h-6 w-6 text-yellow-500" />
+                      )}
+                      {category.id === "cardio" && (
+                        <Heart className="h-6 w-6 text-yellow-500" />
+                      )}
+                      {category.id === "crossfit" && (
+                        <Activity className="h-6 w-6 text-yellow-500" />
+                      )}
+                      {category.id === "boxe" && (
+                        <Flame className="h-6 w-6 text-yellow-500" />
+                      )}
+                      {category.id === "accessoires" && (
+                        <Package className="h-6 w-6 text-yellow-500" />
+                      )}
+                      {category.id === "nutrition" && (
+                        <Apple className="h-6 w-6 text-yellow-500" />
+                      )}
+                      {![
+                        "musculation",
+                        "cardio",
+                        "crossfit",
+                        "boxe",
+                        "accessoires",
+                        "nutrition",
+                      ].includes(category.id) && (
+                        <Sparkles className="h-6 w-6 text-yellow-500" />
+                      )}
                     </div>
                   </div>
 
@@ -990,33 +1097,66 @@ export default function Home() {
             </div>
 
             <Tabs defaultValue="featured" className="w-full">
-              <div className="flex justify-center mb-6 sm:mb-8 overflow-x-auto pb-2">
-                <TabsList className="bg-white dark:bg-gray-700 shadow-md rounded-full p-1 border border-gray-100 dark:border-gray-600">
-                  <TabsTrigger
-                    value="featured"
-                    className="text-sm md:text-base whitespace-nowrap rounded-full px-3 sm:px-4 py-2"
-                  >
-                    Populaires
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="new"
-                    className="text-sm md:text-base whitespace-nowrap rounded-full px-3 sm:px-4 py-2"
-                  >
-                    Nouveautés
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="bestsellers"
-                    className="text-sm md:text-base whitespace-nowrap rounded-full px-3 sm:px-4 py-2"
-                  >
-                    Meilleures Ventes
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="offers"
-                    className="text-sm md:text-base whitespace-nowrap rounded-full px-3 sm:px-4 py-2"
-                  >
-                    Offres Spéciales
-                  </TabsTrigger>
-                </TabsList>
+              <div className="w-full px-4 sm:px-6 mb-8 overflow-x-auto no-scrollbar">
+                <div className="inline-flex w-full max-w-4xl mx-auto">
+                  <TabsList className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-1 border border-gray-200 dark:border-gray-700 backdrop-blur-sm bg-opacity-60 dark:bg-opacity-60">
+                    <TabsTrigger
+                      value="featured"
+                      className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
+                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-50 data-[state=active]:to-amber-50 dark:data-[state=active]:from-orange-900/30 dark:data-[state=active]:to-amber-900/30
+                  data-[state=active]:text-orange-600 dark:data-[state=active]:text-amber-400
+                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                    >
+                      <span className="relative z-10 flex items-center gap-2">
+                        <Flame className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+                        Populaires
+                      </span>
+                      <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-orange-500 dark:bg-amber-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
+                    </TabsTrigger>
+
+                    <TabsTrigger
+                      value="new"
+                      className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
+                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-50 data-[state=active]:to-cyan-50 dark:data-[state=active]:from-blue-900/30 dark:data-[state=active]:to-cyan-900/30
+                  data-[state=active]:text-blue-600 dark:data-[state=active]:text-cyan-400
+                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                    >
+                      <span className="relative z-10 flex items-center gap-2">
+                        <Sparkles className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                        Nouveautés
+                      </span>
+                      <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-blue-500 dark:bg-cyan-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
+                    </TabsTrigger>
+
+                    <TabsTrigger
+                      value="bestsellers"
+                      className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
+                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-50 data-[state=active]:to-amber-50 dark:data-[state=active]:from-yellow-900/30 dark:data-[state=active]:to-amber-900/30
+                  data-[state=active]:text-yellow-600 dark:data-[state=active]:text-amber-400
+                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                    >
+                      <span className="relative z-10 flex items-center gap-2">
+                        <Trophy className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
+                        Meilleures Ventes
+                      </span>
+                      <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-yellow-500 dark:bg-amber-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
+                    </TabsTrigger>
+
+                    <TabsTrigger
+                      value="offers"
+                      className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
+                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-50 data-[state=active]:to-pink-50 dark:data-[state=active]:from-red-900/30 dark:data-[state=active]:to-pink-900/30
+                  data-[state=active]:text-red-600 dark:data-[state=active]:text-pink-400
+                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                    >
+                      <span className="relative z-10 flex items-center gap-2">
+                        <Tag className="h-4 w-4 text-red-500 dark:text-red-400" />
+                        Offres Spéciales
+                      </span>
+                      <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-red-500 dark:bg-pink-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
               </div>
 
               <TabsContent value="featured">
@@ -1030,7 +1170,11 @@ export default function Home() {
                     >
                       <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
                         <Image
-                          src={product.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=256" ||
+                            "/placeholder.svg"
+                          }
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -1043,11 +1187,20 @@ export default function Home() {
                               "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                             )}
-                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            aria-label={
+                              isInFavorites(product.id)
+                                ? "Retirer des favoris"
+                                : "Ajouter aux favoris"
+                            }
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </button>
                         </div>
                         {product.isNew && (
@@ -1062,7 +1215,9 @@ export default function Home() {
                         )}
                       </div>
                       <div className="p-3 sm:p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          {product.category}
+                        </div>
                         <Link href={`/produits/${product.slug}`}>
                           <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
                             {product.name}
@@ -1076,7 +1231,7 @@ export default function Home() {
                                 "h-3 w-3 sm:h-4 sm:w-4",
                                 i < Math.floor(product.rating)
                                   ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300 dark:text-gray-600",
+                                  : "text-gray-300 dark:text-gray-600"
                               )}
                             />
                           ))}
@@ -1126,7 +1281,11 @@ export default function Home() {
                     >
                       <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
                         <Image
-                          src={product.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=256" ||
+                            "/placeholder.svg"
+                          }
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -1139,11 +1298,20 @@ export default function Home() {
                               "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                             )}
-                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            aria-label={
+                              isInFavorites(product.id)
+                                ? "Retirer des favoris"
+                                : "Ajouter aux favoris"
+                            }
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </button>
                         </div>
                         <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
@@ -1156,7 +1324,9 @@ export default function Home() {
                         )}
                       </div>
                       <div className="p-3 sm:p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          {product.category}
+                        </div>
                         <Link href={`/produits/${product.slug}`}>
                           <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
                             {product.name}
@@ -1170,7 +1340,7 @@ export default function Home() {
                                 "h-3 w-3 sm:h-4 sm:w-4",
                                 i < Math.floor(product.rating)
                                   ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300 dark:text-gray-600",
+                                  : "text-gray-300 dark:text-gray-600"
                               )}
                             />
                           ))}
@@ -1220,7 +1390,11 @@ export default function Home() {
                     >
                       <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
                         <Image
-                          src={product.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=256" ||
+                            "/placeholder.svg"
+                          }
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -1233,11 +1407,20 @@ export default function Home() {
                               "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                             )}
-                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            aria-label={
+                              isInFavorites(product.id)
+                                ? "Retirer des favoris"
+                                : "Ajouter aux favoris"
+                            }
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </button>
                         </div>
                         {product.isNew && (
@@ -1252,7 +1435,9 @@ export default function Home() {
                         )}
                       </div>
                       <div className="p-3 sm:p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          {product.category}
+                        </div>
                         <Link href={`/produits/${product.slug}`}>
                           <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
                             {product.name}
@@ -1266,7 +1451,7 @@ export default function Home() {
                                 "h-3 w-3 sm:h-4 sm:w-4",
                                 i < Math.floor(product.rating)
                                   ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300 dark:text-gray-600",
+                                  : "text-gray-300 dark:text-gray-600"
                               )}
                             />
                           ))}
@@ -1316,7 +1501,11 @@ export default function Home() {
                     >
                       <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
                         <Image
-                          src={product.image || "/placeholder.svg?height=192&width=256" || "/placeholder.svg"}
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=256" ||
+                            "/placeholder.svg"
+                          }
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -1329,11 +1518,20 @@ export default function Home() {
                               "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
                               isInFavorites(product.id)
                                 ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50",
+                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
                             )}
-                            aria-label={isInFavorites(product.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                            aria-label={
+                              isInFavorites(product.id)
+                                ? "Retirer des favoris"
+                                : "Ajouter aux favoris"
+                            }
                           >
-                            <Heart className={cn("h-4 w-4", isInFavorites(product.id) && "fill-red-500")} />
+                            <Heart
+                              className={cn(
+                                "h-4 w-4",
+                                isInFavorites(product.id) && "fill-red-500"
+                              )}
+                            />
                           </button>
                         </div>
                         {product.isNew && (
@@ -1346,7 +1544,9 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="p-3 sm:p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{product.category}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                          {product.category}
+                        </div>
                         <Link href={`/produits/${product.slug}`}>
                           <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
                             {product.name}
@@ -1360,7 +1560,7 @@ export default function Home() {
                                 "h-3 w-3 sm:h-4 sm:w-4",
                                 i < Math.floor(product.rating)
                                   ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300 dark:text-gray-600",
+                                  : "text-gray-300 dark:text-gray-600"
                               )}
                             />
                           ))}
@@ -1379,7 +1579,8 @@ export default function Home() {
                               </span>
                             </div>
                             <div className="text-xs text-green-600 dark:text-green-400 font-medium">
-                              Économisez {formatPrice(product.oldPrice - product.price)}
+                              Économisez{" "}
+                              {formatPrice(product.oldPrice - product.price)}
                             </div>
                           </div>
                           <Button
@@ -1419,7 +1620,11 @@ export default function Home() {
               {/* Image Column */}
               <div className="relative h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] rounded-xl overflow-hidden group shadow-2xl order-1 md:order-1">
                 <Image
-                  src={featuredProduct.image || "/placeholder.svg?height=1000&width=800" || "/placeholder.svg"}
+                  src={
+                    featuredProduct.image ||
+                    "/placeholder.svg?height=1000&width=800" ||
+                    "/placeholder.svg"
+                  }
                   alt={featuredProduct.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -1449,7 +1654,9 @@ export default function Home() {
                         key={i}
                         className={cn(
                           "h-4 w-4 sm:h-5 sm:w-5",
-                          i < Math.floor(featuredProduct.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-600",
+                          i < Math.floor(featuredProduct.rating)
+                            ? "text-yellow-400 fill-yellow-400"
+                            : "text-gray-600"
                         )}
                       />
                     ))}
@@ -1458,15 +1665,21 @@ export default function Home() {
                     ({featuredProduct.reviewCount || 0} avis)
                   </span>
                 </div>
-                <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">{featuredProduct.description}</p>
+                <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">
+                  {featuredProduct.description}
+                </p>
                 <ul className="space-y-1 sm:space-y-2 mb-4 sm:mb-6">
                   {featuredProduct.features &&
-                    featuredProduct.features.slice(0, 4).map((feature, index) => (
-                      <li key={index} className="flex items-start">
-                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="text-sm sm:text-base">{feature}</span>
-                      </li>
-                    ))}
+                    featuredProduct.features
+                      .slice(0, 4)
+                      .map((feature, index) => (
+                        <li key={index} className="flex items-start">
+                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400 mr-2 flex-shrink-0 mt-0.5" />
+                          <span className="text-sm sm:text-base">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
                 </ul>
                 <div className="flex items-center mb-4 sm:mb-6">
                   {featuredProduct.oldPrice && (
@@ -1479,7 +1692,10 @@ export default function Home() {
                   </span>
                   {featuredProduct.oldPrice && (
                     <span className="ml-2 sm:ml-3 bg-green-500/20 text-green-400 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm">
-                      Économisez {formatPrice(featuredProduct.oldPrice - featuredProduct.price)}
+                      Économisez{" "}
+                      {formatPrice(
+                        featuredProduct.oldPrice - featuredProduct.price
+                      )}
                     </span>
                   )}
                 </div>
@@ -1514,7 +1730,8 @@ export default function Home() {
                 Nos <span className="text-yellow-500">Marques Partenaires</span>
               </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Nous collaborons avec les meilleures marques du marché pour vous offrir des produits d'exception
+                Nous collaborons avec les meilleures marques du marché pour vous
+                offrir des produits d'exception
               </p>
             </div>
             <BrandsMarquee brands={brands} />
@@ -1532,7 +1749,8 @@ export default function Home() {
                 Pourquoi Choisir <span className="text-yellow-500">IRONZ</span>
               </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Nous nous engageons à vous offrir les meilleurs produits et services pour atteindre vos objectifs
+                Nous nous engageons à vous offrir les meilleurs produits et
+                services pour atteindre vos objectifs
               </p>
             </div>
 
@@ -1545,9 +1763,12 @@ export default function Home() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
                   <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">Qualité Garantie</h3>
+                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                  Qualité Garantie
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-                  Tous nos produits sont sélectionnés avec soin et testés pour garantir une qualité professionnelle.
+                  Tous nos produits sont sélectionnés avec soin et testés pour
+                  garantir une qualité professionnelle.
                 </p>
               </motion.div>
 
@@ -1559,10 +1780,12 @@ export default function Home() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
                   <TrendingUp className="h-6 w-6 sm:h-7 sm:w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">Expertise Fitness</h3>
+                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                  Expertise Fitness
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-                  Notre équipe d'experts est là pour vous conseiller et vous aider à choisir les produits adaptés à vos
-                  besoins.
+                  Notre équipe d'experts est là pour vous conseiller et vous
+                  aider à choisir les produits adaptés à vos besoins.
                 </p>
               </motion.div>
 
@@ -1574,9 +1797,12 @@ export default function Home() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
                   <Award className="h-6 w-6 sm:h-7 sm:w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">Marques Premium</h3>
+                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                  Marques Premium
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-                  Nous collaborons avec les meilleures marques du marché pour vous offrir des produits d'exception.
+                  Nous collaborons avec les meilleures marques du marché pour
+                  vous offrir des produits d'exception.
                 </p>
               </motion.div>
 
@@ -1588,9 +1814,12 @@ export default function Home() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
                   <Truck className="h-6 w-6 sm:h-7 sm:w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">Livraison Rapide</h3>
+                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                  Livraison Rapide
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-                  Livraison rapide et sécurisée partout au Maroc avec suivi en temps réel.
+                  Livraison rapide et sécurisée partout au Maroc avec suivi en
+                  temps réel.
                 </p>
               </motion.div>
 
@@ -1602,10 +1831,12 @@ export default function Home() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center mb-4 shadow-inner">
                   <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7 text-yellow-600 dark:text-yellow-500" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">Satisfaction Client</h3>
+                <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                  Satisfaction Client
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-                  Votre satisfaction est notre priorité, avec un service client disponible 7j/7 et une garantie de 30
-                  jours.
+                  Votre satisfaction est notre priorité, avec un service client
+                  disponible 7j/7 et une garantie de 30 jours.
                 </p>
               </motion.div>
             </div>
@@ -1677,7 +1908,8 @@ export default function Home() {
                 Abonnez-vous à notre newsletter
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-6 sm:mb-8">
-                Recevez nos dernières offres, nouveautés et conseils fitness directement dans votre boîte mail.
+                Recevez nos dernières offres, nouveautés et conseils fitness
+                directement dans votre boîte mail.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-2xl mx-auto">
                 <input
@@ -1691,8 +1923,8 @@ export default function Home() {
                 </Button>
               </div>
               <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-4">
-                En vous inscrivant, vous acceptez notre politique de confidentialité. Vous pouvez vous désinscrire à
-                tout moment.
+                En vous inscrivant, vous acceptez notre politique de
+                confidentialité. Vous pouvez vous désinscrire à tout moment.
               </p>
             </motion.div>
           </div>
@@ -1702,5 +1934,5 @@ export default function Home() {
         <ChatBot />
       </main>
     </>
-  )
+  );
 }
