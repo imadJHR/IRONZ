@@ -133,7 +133,7 @@ import l28 from "../public/l28.jpg";
 import l29 from "../public/l29.jpg";
 import l30 from "../public/l30.jpg";
 import l31 from "../public/l31.jpg";
-import l32 from "../public/l32.jpg";
+import l33 from "../public/l33.jpg";
 
 export const categories = [
   {
@@ -904,7 +904,7 @@ export const products = [
     discount: "",
     image: a82,
     gallery: [a82, a83],
-    category: "Supplément",
+    category: "Accessoires",
     categoryId: "3",
     rating: 4.7,
     reviewCount: 124,
@@ -1873,7 +1873,7 @@ export const products = [
     inStock: true,
     relatedProducts: ["8", "12"],
   },
-   {
+  {
     id: "115",
     name: "Vélo Sport Spinning HAPPYGAM-Vélo",
     slug: "velo-sport",
@@ -1885,9 +1885,7 @@ export const products = [
       "Guidon Ergonomique Recouvert En Mousse Antidérapantes",
       "Guidon réglable en hauteur",
       "Selle ajustable en hauteur et en Profondeur",
-      "Réglage de la résistance manuel"
-
-
+      "Réglage de la résistance manuel",
     ],
     price: 7799,
     oldPrice: "",
@@ -1904,7 +1902,7 @@ export const products = [
     inStock: true,
     relatedProducts: ["8", "12"],
   },
-   {
+  {
     id: "116",
     name: "Foam rollers",
     slug: "Foam-rollers",
@@ -1912,7 +1910,7 @@ export const products = [
     features: [],
     price: 159,
     image: l26,
-    gallery: [l26,l27,l28],
+    gallery: [l26, l27, l28],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.5,
@@ -1921,10 +1919,10 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Rouge","Noir","Bleu"],
+    colors: ["Rouge", "Noir", "Bleu"],
     relatedProducts: ["17", "67", "69"],
   },
-   {
+  {
     id: "117",
     name: "Yoga ball",
     slug: "Yoga-ball",
@@ -1932,7 +1930,7 @@ export const products = [
     features: [],
     price: 249,
     image: l29,
-    gallery: [l29,l30,l31],
+    gallery: [l29, l30, l31],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.5,
@@ -1941,8 +1939,35 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Bleu","Gris","Rouge"],
+    colors: ["Bleu", "Gris", "Rouge"],
     relatedProducts: ["17", "67", "69"],
+  },
+   {
+    id: "118",
+    name: "TOTAL UPER BODY WORKOUT BAR",
+    slug: "TOTAL-UPER-BODY-WORKOUT-BAR",
+    description:
+      "",
+    features: [
+      "",
+    ],
+    price: 299,
+    oldPrice: null,
+    discount: 0,
+    image: l33,
+    gallery: [l33],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
+
+    colors: ["Bleu", "Rouge", "Jaune"],
+
+    relatedProducts: ["16", "17"],
   },
 ];
 
