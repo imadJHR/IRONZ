@@ -134,6 +134,12 @@ import l29 from "../public/l29.jpg";
 import l30 from "../public/l30.jpg";
 import l31 from "../public/l31.jpg";
 import l33 from "../public/l33.jpg";
+import l34 from "../public/l34.jpg";
+import l35 from "../public/l35.jpg";
+import l36 from "../public/l36.jpg";
+import l37 from "../public/l37.jpg";
+import l38 from "../public/l38.jpg";
+import l39 from "../public/l39.jpg";
 
 export const categories = [
   {
@@ -1942,15 +1948,12 @@ export const products = [
     colors: ["Bleu", "Gris", "Rouge"],
     relatedProducts: ["17", "67", "69"],
   },
-   {
+  {
     id: "118",
     name: "TOTAL UPER BODY WORKOUT BAR",
     slug: "TOTAL-UPER-BODY-WORKOUT-BAR",
-    description:
-      "",
-    features: [
-      "",
-    ],
+    description: "",
+    features: [""],
     price: 299,
     oldPrice: null,
     discount: 0,
@@ -1969,6 +1972,190 @@ export const products = [
 
     relatedProducts: ["16", "17"],
   },
+  {
+    id: "118",
+    name: "BARRE N 1,80Cm",
+    slug: "barre-1.8",
+    description:
+      "UTILISATION : Home PRO /FABRICANT : ironbull livraison express : oui LONG : 1.80CM / CHARGE MAXIMAL 320/POIDS (kg) 20kg",
+    features: [
+      "UTILISATION : Home",
+      "PRO /FABRICANT : ironbull",
+      "livraison express : oui",
+      "LONG : 1.80CM / CHARGE MAXIMAL",
+    ],
+    price: 1200,
+    oldPrice: "",
+    discount: "",
+    image: l34,
+    gallery: [l34],
+    category: "Equipements",
+    subCategory: "Barres",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "119",
+    name: "Sac de Frappe IRONZ – 1,20 m en Bâche Renforcée",
+    slug: "sac-de-frappe",
+    description:
+      "Améliorez vos entraînements avec ce sac de frappe hautement résistant, conçu pour les pratiquants de boxe, kick-boxing, MMA et arts martiaux. Fabriqué en bâche ultra-solide, il est parfait pour un usage intensif en salle ou à domicile.",
+    features: [
+      "Hauteur : 1,20 m",
+      "Matériau : Bâche PVC renforcée, ultra résistante à l'usure",
+      "Coloris : Noir et jaune avec logo IRONZ",
+      "Système d'accroche : Anneau métallique solide avec renfort cousu",
+      "Remplissage : Compact et équilibré pour absorber les coups efficacement",
+      "Utilisation : Entraînement de boxe anglaise, thaï, pieds-poings, cardio boxing",
+    ],
+    price: "599",
+    oldPrice: null,
+    discount: 0,
+    image: l35,
+    gallery: [l35],
+    category: "Equipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 120,
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "120",
+    name: " Sac Poire de Frappe IRONZ – En Bâche Renforcée",
+    slug: "sac-de-poire-de-frappe",
+    description:
+      "Travaillez votre puissance, vos uppercuts et vos crochets comme un pro avec ce sac poire de frappe IRONZ, conçu pour une résistance extrême et une excellente absorption des chocs. Fabriqué en bâche PVC ultra-résistante, il est parfait pour les entraînements techniques et puissants.",
+    features: [
+      "Forme : Poire large (idéal pour les uppercuts, crochets, genoux)",
+      "Matériau : Bâche PVC haute résistance",
+      "Coloris : Noir & jaune avec logo IRONZ",
+      "Système de suspension : Chaînes métalliques robustes avec crochets renforcés",
+      "Remplissage : Compact et équilibré pour un excellent rebond et une bonne absorption",
+      "Utilisation : Boxe anglaise, Muay Thai, MMA, entraînement cardio & puissance",
+    ],
+    price: "599",
+    oldPrice: null,
+    discount: 0,
+    image: l36,
+    gallery: [l36],
+    category: "Equipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 120,
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "121",
+    name: "Sac de frappe Ironz 1,90M",
+    slug: "sac-de-frappe-ironz-1-90m",
+    description:
+      "Améliorez vos séances d'entraînement avec le sac de frappe Ironz de 1,90 m. Conçu pour les athlètes amateurs et professionnels, ce sac de frappe est parfait pour améliorer votre force, votre endurance et votre technique. Le design frappant jaune et noir ajoute non seulement une touche de style à votre salle de sport, mais assure également une haute visibilité pendant les entraînements intenses. Fabriqué pour durer, ce sac de frappe robuste est idéal pour la boxe, le kickboxing et les arts martiaux mixtes.",
+    features: [
+      "Hauteur : 1,90 mètre",
+      "Matériau : Cuir synthétique de haute qualité et durable",
+      "Couleur : Noir avec des accents jaunes",
+      "Marque : Ironz",
+      "Utilisation : Convient pour la boxe, le kickboxing et l'entraînement MMA",
+      "Caractéristiques de design : Coutures renforcées pour une durabilité accrue, une sangle de suspension robuste et un logo Ironz proéminent",
+      "Poids : Remplissage lourd pour une résistance et une efficacité d'entraînement optimales",
+      "Poids : Remplissage lourd pour une résistance et une efficacité d'entraînement optimales",
+    ],
+    price: "1199",
+    oldPrice: null,
+    discount: 0,
+    image: l37,
+    gallery: [l37],
+    category: "Equipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 120,
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "122",
+    name: "Barre de Curl Olympique 1.20m",
+    slug: "barre-de-curl-olympique-ironz",
+    description:
+      "La barre de curl olympique Ironz est conçue pour améliorer vos entraînements des bras, en ciblant spécifiquement vos biceps et triceps. Cette barre de curl de haute qualité est construite en acier durable, garantissant qu'elle peut résister à une utilisation rigoureuse dans les salles de sport à domicile et commerciales. La barre présente une poignée confortable avec une surface texturée pour éviter de glisser pendant les entraînements intenses. Son design ergonomique aide à réduire la tension sur les poignets et les avant-bras, permettant une expérience de levage plus efficace et confortable. Parfaite pour les débutants et les athlètes expérimentés, cette barre de curl est un ajout essentiel à tout régime d'entraînement de force.",
+    features: [
+      "Matériau : Acier de haute qualité",
+      "Longueur : Longueur standard d'une barre de curl olympique",
+      "Finition : Placage chrome pour la résistance à la corrosion",
+      "Poids : Adaptée à diverses plaques de poids",
+      "Poignée : Surface texturée pour une meilleure prise et un meilleur contrôle",
+      "Rotation des manchons : Manchons rotatifs lisses pour un mouvement constant",
+      "Compatibilité : Compatible avec les plaques de poids olympiques standard",
+      "Compatibilité : Compatible avec les plaques de poids olympiques standard",
+      "Compatibilité : Compatible avec les plaques de poids olympiques standard",
+
+    ],
+    price: 649,
+    oldPrice: "",
+    discount: "",
+    image: l38,
+    gallery: [l38],
+    category: "Equipements",
+    subCategory: "Barres",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    relatedProducts: ["8", "12"],
+  },
+    {
+    id: "123",
+    name: "Barre Olympique 1.80m",
+    slug: "barre-olympique-ironz",
+    description:
+      "La barre olympique Ironz est un équipement essentiel pour tout amateur de musculation et de fitness. Fabriquée en acier de haute qualité, cette barre est conçue pour résister à une utilisation intensive dans les salles de sport à domicile et commerciales. La finition chromée offre une résistance accrue à la corrosion, garantissant une longue durée de vie. La barre est dotée de manchons rotatifs lisses pour un mouvement fluide et constant, ce qui est idéal pour une variété d'exercices de musculation, y compris les développés couchés, les squats et les soulevés de terre. La poignée texturée assure une prise ferme et confortable, réduisant le risque de glissement pendant les entraînements intenses.",
+    features: [
+      "Matériau : Acier de haute qualité",
+      "Finition : Placage chrome pour une résistance à la corrosion",
+      "Longueur : Longueur standard d'une barre olympique",
+      "Poids : Adaptée pour supporter des charges lourdes",
+      "Poignée : Surface texturée pour une meilleure prise et un meilleur contrôle",
+      "Manchons : Manchons rotatifs lisses pour un mouvement constant",
+      "Compatibilité : Compatible avec les plaques de poids olympiques standard",
+      "Utilisation : Idéale pour une variété d'exercices de musculation, y compris les développés couchés, les squats et les soulevés de terre",
+      "Design : Conçue pour une utilisation intensive et durable",
+
+    ],
+    price: 1199,
+    oldPrice: "",
+    discount: "",
+    image: l39,
+    gallery: [l39],
+    category: "Equipements",
+    subCategory: "Barres",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    relatedProducts: ["8", "12"],
+  },
+  
+  
 ];
 
 export const brands = [

@@ -163,7 +163,7 @@ export default function CartPageClient() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">Mon Panier</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-yellow-400 dark:text-white mb-2">Mon Panier</h1>
             <p className="text-gray-600 dark:text-gray-400">
               {totalItems} article{totalItems > 1 ? "s" : ""} dans votre panier
             </p>

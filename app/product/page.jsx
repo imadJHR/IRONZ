@@ -778,7 +778,7 @@ export default function ProductsPage() {
               >
                 {displayedProducts.map((product) => (
                   <motion.article
-                    key={product.id}
+                    key={`${product.id}-${product.name}`}
                     className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow h-full flex flex-col"
                     variants={itemVariants}
                   >
