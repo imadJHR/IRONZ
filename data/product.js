@@ -1887,7 +1887,7 @@ export const products = [
       "Selle ajustable en hauteur et en Profondeur",
       "Réglage de la résistance manuel",
     ],
-    price: 7799,
+    price: 3899,
     oldPrice: "",
     discount: "",
     image: l25,
