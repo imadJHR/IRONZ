@@ -2203,7 +2203,7 @@ export const products = [
     categoryId: "4",
     rating: 4.9,
     reviewCount: 89,
-    isNew: false,
+    isNew: true,
     isFeatured: true,
     inStock: true,
 
@@ -2231,7 +2231,7 @@ export const products = [
     categoryId: "4",
     rating: 4.9,
     reviewCount: 89,
-    isNew: false,
+    isNew: true,
     isFeatured: true,
     inStock: true,
 
