@@ -140,6 +140,8 @@ import l37 from "../public/l37.jpg";
 import l38 from "../public/l38.jpg";
 import l39 from "../public/l39.jpg";
 import l40 from "../public/l40.jpg";
+import l41 from "../public/l41.jpg";
+import l42 from "../public/l42.jpg";
 
 export const categories = [
   {
@@ -2165,8 +2167,7 @@ export const products = [
       "Mousqueton Sécurisé : La chaîne est fixée à la ceinture avec un mousqueton sécurisé pour garantir que les poids restent en place pendant l'exercice.",
       "Polyvalence : Idéale pour une variété d'exercices, y compris les tractions, les dips et les muscle-ups, ce qui en fait un outil polyvalent pour le renforcement du haut du corps.",
       "Matériaux Durables : Fabriquée avec des matériaux de haute qualité pour assurer durabilité et longévité, même avec une utilisation fréquente.",
-      "Confort et Soutien : Conçue pour offrir un bon équilibre entre flexibilité et soutien, permettant une grande liberté de mouvement tout en maintenant les poids de manière sécurisée."
-
+      "Confort et Soutien : Conçue pour offrir un bon équilibre entre flexibilité et soutien, permettant une grande liberté de mouvement tout en maintenant les poids de manière sécurisée.",
     ],
     price: 249,
     oldPrice: "",
@@ -2181,6 +2182,60 @@ export const products = [
     isFeatured: true,
     inStock: true,
     relatedProducts: ["9", "13"],
+  },
+  {
+    id: "125",
+    name: "Grip de Traction Gorilla Gym – Renfort pour Musculation",
+    slug: "grip-traction-gorilla-gym",
+    description:
+      "Améliorez votre performance à la salle avec les Grips de Traction Gorilla Gym !Conçus pour les pratiquants de musculation, de cross-training ou de calisthenics, ces grips assurent une adhérence optimale, protègent vos paumes et soulagent la pression sur les poignets lors des tractions, soulevés de terre, ou exercices de tirage.Fabriqués avec des matériaux résistants et confortables, ils garantissent durabilité, confort et sécurité pendant l’entraînement intensif.",
+    features: [
+      "Design ergonomique",
+      "Fermeture ajustable avec scratch",
+      "Logo Gorilla Gym brodé pour un look puissant",
+    ],
+    price: 119,
+    oldPrice: null,
+    discount: 0,
+    image: l41,
+    gallery: [l41],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["16", "17"],
+  },
+    {
+    id: "126",
+    name: "Ensemble de Fitness Homme – Sports Fitness Suit SBK166",
+    slug: "ensemble-fitness-homme-sbk166",
+    description:
+      "L’ensemble de fitness SBK166 est conçu pour accompagner vos entraînements les plus exigeants. Idéal pour la course, le fitness, la musculation, le cross-training ou encore le vélo, ce set de sport vous offre liberté de mouvement, confort thermique et maintien optimal.",
+    features: [
+      " Tissu stretch, léger et respirant",
+      " Design ergonomique pour une liberté totale de mouvement",
+      " Idéal pour running, training, musculation, etc.",
+      "Coupe près du corps – performance & confort",
+      " Convient pour toutes les saisons"
+    ],
+    price: 249,
+    oldPrice: null,
+    discount: 0,
+    image: l42,
+    gallery: [l42],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
   },
 ];
 
