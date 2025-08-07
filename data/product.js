@@ -74,8 +74,7 @@ import a78 from "../public/a78.jpeg";
 import a79 from "../public/a79.jpeg";
 import a80 from "../public/a80.jpeg";
 import a81 from "../public/a81.jpeg";
-import a82 from "../public/a82.jpeg";
-import a83 from "../public/a83.jpeg";
+import a82 from "../public/a82.jpg";
 import a84 from "../public/a84.jpeg";
 import a85 from "../public/a85.jpeg";
 import a86 from "../public/a86.jpeg";
@@ -140,6 +139,7 @@ import l36 from "../public/l36.jpg";
 import l37 from "../public/l37.jpg";
 import l38 from "../public/l38.jpg";
 import l39 from "../public/l39.jpg";
+import l40 from "../public/l40.jpg";
 
 export const categories = [
   {
@@ -909,7 +909,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: a82,
-    gallery: [a82, a83],
+    gallery: [a82],
     category: "Accessoires",
     categoryId: "3",
     rating: 4.7,
@@ -2104,7 +2104,6 @@ export const products = [
       "Compatibilité : Compatible avec les plaques de poids olympiques standard",
       "Compatibilité : Compatible avec les plaques de poids olympiques standard",
       "Compatibilité : Compatible avec les plaques de poids olympiques standard",
-
     ],
     price: 649,
     oldPrice: "",
@@ -2121,7 +2120,7 @@ export const products = [
     inStock: true,
     relatedProducts: ["8", "12"],
   },
-    {
+  {
     id: "123",
     name: "Barre Olympique 1.80m",
     slug: "barre-olympique-ironz",
@@ -2137,7 +2136,6 @@ export const products = [
       "Compatibilité : Compatible avec les plaques de poids olympiques standard",
       "Utilisation : Idéale pour une variété d'exercices de musculation, y compris les développés couchés, les squats et les soulevés de terre",
       "Design : Conçue pour une utilisation intensive et durable",
-
     ],
     price: 1199,
     oldPrice: "",
@@ -2154,8 +2152,36 @@ export const products = [
     inStock: true,
     relatedProducts: ["8", "12"],
   },
-  
-  
+  {
+    id: "124",
+    name: "Ceinture de Calisthénie avec Poids Pakka Gym",
+    slug: "ceinture-calisthenie-poids-pakka-gym",
+    description:
+      "Améliorez vos exercices de calisthénie et d'entraînement de force avec la Ceinture de Calisthénie avec Poids Pakka Gym. Conçue pour la durabilité et le confort, cette ceinture est parfaite pour ajouter de la résistance à vos entraînements, vous aidant à construire vos muscles et à augmenter votre force efficacement. La ceinture dispose d'une attache à chaîne sécurisée, garantissant que les plaques de poids restent fermement en place pendant les sessions d'exercice intenses. Fabriquée à partir de matériaux de haute qualité, elle offre à la fois flexibilité et soutien, ce qui en fait un accessoire essentiel pour les passionnés de fitness cherchant à porter leur entraînement à un niveau supérieur. Que vous effectuiez des tractions, des dips ou des muscle-ups, la Ceinture de Calisthénie avec Poids Pakka Gym est l'équipement idéal pour obtenir des résultats supérieurs.",
+    features: [
+      "Sangle Ajustable : La ceinture est équipée d'une sangle ajustable qui permet de l'adapter à différentes tailles de taille pour un ajustement sûr et confortable.",
+      "Rembourrage : Elle est dotée d'un rembourrage pour offrir un confort optimal pendant les séances d'entraînement intenses.",
+      "Chaîne Métallique Solide : La ceinture est livrée avec une chaîne métallique robuste qui permet d'ajouter des poids pour augmenter la résistance.",
+      "Mousqueton Sécurisé : La chaîne est fixée à la ceinture avec un mousqueton sécurisé pour garantir que les poids restent en place pendant l'exercice.",
+      "Polyvalence : Idéale pour une variété d'exercices, y compris les tractions, les dips et les muscle-ups, ce qui en fait un outil polyvalent pour le renforcement du haut du corps.",
+      "Matériaux Durables : Fabriquée avec des matériaux de haute qualité pour assurer durabilité et longévité, même avec une utilisation fréquente.",
+      "Confort et Soutien : Conçue pour offrir un bon équilibre entre flexibilité et soutien, permettant une grande liberté de mouvement tout en maintenant les poids de manière sécurisée."
+
+    ],
+    price: 249,
+    oldPrice: "",
+    discount: "",
+    image: l40,
+    gallery: [l40],
+    category: "Equipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    relatedProducts: ["9", "13"],
+  },
 ];
 
 export const brands = [
