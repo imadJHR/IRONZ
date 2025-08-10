@@ -833,7 +833,6 @@ export const products = [
     isFeatured: true,
     inStock: true,
     tags: ["pack", "bundle", "débutant", "ensemble"],
-    colors: ["Bleu", "Rouge", "Jaune"],
     relatedProducts: ["16", "17"],
     promotionType: "bundle",
   },
