@@ -48,7 +48,7 @@ import a43 from "../public/a43.jpeg";
 import a44 from "../public/a44.jpeg";
 import a45 from "../public/a45.jpg";
 import a47 from "../public/a47.jpg";
-import a51 from "../public/a51.jpeg";
+import a51 from "../public/a51.jpg";
 import a52 from "../public/a52.jpeg";
 import a53 from "../public/a53.jpg";
 import a54 from "../public/a54.jpg";
@@ -575,7 +575,7 @@ export const products = [
     oldPrice: null,
     discount: 0,
     image: a51,
-    gallery: [a51, a52],
+    gallery: [a51],
     category: "Equipements",
     categoryId: "2",
     subCategory: "Disque",
