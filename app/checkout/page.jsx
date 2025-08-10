@@ -146,9 +146,9 @@ export default function CheckoutPage() {
     if (!validateForm()) {
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     // Generate random order number
     const randomOrderNumber = `CMD-${Math.floor(Math.random() * 1000000)
       .toString()
@@ -158,7 +158,7 @@ export default function CheckoutPage() {
     // Prepare order data for Formspree
     const orderData = {
       _replyto: formData.email,
-      _subject: 'Nouvelle commande ',
+      _subject: "Nouvelle commande ",
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
@@ -171,19 +171,20 @@ export default function CheckoutPage() {
       shippingMethod: formData.shippingMethod,
       notes: formData.notes,
       orderNumber: randomOrderNumber,
-      items: cart.map(item => ({
+      items: cart.map((item) => ({
         name: item.name,
         price: item.price,
         quantity: item.quantity,
-        total: item.price * item.quantity
+        total: item.price * item.quantity,
       })),
       subtotal: formatPrice(subtotal),
       shipping: shipping === 0 ? "Gratuit" : formatPrice(shipping),
-      total: formatPrice(total)
+      total: formatPrice(total),
     };
 
     try {
-      const response = await fetch("https://formspree.io/f/meozjkdd", { // Replace with your Formspree form ID
+      const response = await fetch("https://formspree.io/f/meozjkdd", {
+        // Replace with your Formspree form ID
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -220,9 +221,6 @@ export default function CheckoutPage() {
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-2">
               Votre commande #{orderNumber} a été enregistrée avec succès.
-            </p>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Un email de confirmation a été envoyé à {formData.email}.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/">
@@ -273,7 +271,7 @@ export default function CheckoutPage() {
         <h1 className="text-3xl md:text-4xl font-heading font-bold mb-8">
           Finaliser ma commande
         </h1>
-        
+
         {/* Checkout Steps */}
         <div className="mb-8">
           <div className="flex items-center">
