@@ -594,7 +594,6 @@ export const products = [
       depth: 183,
       weight: 1.2,
     },
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     materials: ["TPE écologique", "Caoutchouc naturel"],
     warranty: "1 an",
     shipping: {
