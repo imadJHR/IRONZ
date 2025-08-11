@@ -142,6 +142,7 @@ import l39 from "../public/l39.jpg";
 import l40 from "../public/l40.jpg";
 import l41 from "../public/l41.jpg";
 import l42 from "../public/l42.jpg";
+import l43 from "../public/l43.jpg";
 
 export const categories = [
   {
@@ -2213,6 +2214,35 @@ export const products = [
     inStock: true,
 
     relatedProducts: ["1", "17"],
+  },
+    {
+    id: "127",
+    name: "Shaker Diora Limited Edition – 600 ML",
+    slug: "shaker-diora-limited-edition-600ml",
+    description:
+      "Le Shaker Diora Limited Edition est un accessoire pratique et stylé spécialement conçu pour vos boissons préférées. D’une capacité de 600 ML, ce shaker en plastique léger et résistant est idéal pour mélanger vos protéines, smoothies ou supplements en toute simplicité. Son design exclusif #MONDAY OFF en fait un must-have pour les amateurs de fitness et les personnes soucieuses de leur bien-être.",
+    features: [
+      "Capacité généreuse : 600 ML pour préparer vos boissons en une seule fois.",
+      "Plastique durable : Résistant aux chocs et sans BPA, sans danger pour la santé.",
+      "Design Limited Edition : Motif unique #MONDAY OFF pour un style motivant et original.",
+      "Poignée ergonomique : Prise en main confortable pour un mélange facile.",
+      "Facile à nettoyer : Compatible avec le lave-vaisselle (haut et bas).",
+    ],
+    price: 79,
+    oldPrice: "",
+    discount: "",
+    image: l43,
+    gallery: [l43],
+    category: "Supplément",
+    categoryId: "3",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
   },
 ];
 
