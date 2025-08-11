@@ -17,7 +17,7 @@ import a9 from "../public/a9.jpeg";
 import a10 from "../public/a10.jpeg";
 import a11 from "../public/a11.jpeg";
 import a12 from "../public/a12.jpeg";
-import a13 from "../public/a13.jpeg";
+import a13 from "../public/a13.jpg";
 import a14 from "../public/a14.jpg";
 import a15 from "../public/a15.jpg";
 import a16 from "../public/a16.jpg";
@@ -67,7 +67,7 @@ import a69 from "../public/a69.jpeg";
 import a70 from "../public/a70.jpeg";
 import a71 from "../public/a71.jpeg";
 import a72 from "../public/a72.jpeg";
-import a73 from "../public/a73.jpeg";
+import a73 from "../public/a73.jpg";
 import a74 from "../public/a74.jpeg";
 import a75 from "../public/a75.jpeg";
 import a78 from "../public/a78.jpeg";
@@ -78,7 +78,7 @@ import a82 from "../public/a82.jpg";
 import a84 from "../public/a84.jpeg";
 import a85 from "../public/a85.jpeg";
 import a86 from "../public/a86.jpeg";
-import a87 from "../public/a87.jpeg";
+import a87 from "../public/a87.jpg";
 import a88 from "../public/a88.jpeg";
 import a89 from "../public/a89.jpeg";
 import a90 from "../public/a90.jpeg";
@@ -259,8 +259,8 @@ export const products = [
     price: 499,
     oldPrice: "",
     discount: "",
-    image: a11,
-    gallery: [a11, a12, a13],
+    image: a13,
+    gallery: [a13, a11, a12],
     category: "Accessoires",
     categoryId: "4",
     subCategoryId: "4-4",
@@ -628,8 +628,6 @@ export const products = [
     isFeatured: true,
     inStock: true,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-
-    colors: ["Bleu", "Gris", "Vert"],
     warranty: "1 an",
 
     relatedProducts: ["8", "12"],
@@ -654,8 +652,6 @@ export const products = [
     isFeatured: true,
     inStock: true,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-
-    colors: ["Bleu", "Gris", "Vert"],
 
     relatedProducts: ["8", "12"],
   },
@@ -686,7 +682,6 @@ export const products = [
     inStock: true,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
 
-    colors: ["Bleu", "Gris", "Vert"],
 
     relatedProducts: ["8", "12"],
   },
@@ -717,7 +712,6 @@ export const products = [
     inStock: true,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
 
-    colors: ["Bleu", "Gris", "Vert"],
 
     relatedProducts: ["8", "12"],
   },
@@ -824,7 +818,7 @@ export const products = [
     oldPrice: null,
     discount: null,
     image: a73,
-    gallery: [a73, a74],
+    gallery: [a73],
     category: "Equipement",
     categoryId: "23",
     rating: 4.9,
@@ -988,7 +982,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1011,7 +1004,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1034,7 +1026,7 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
+   
     relatedProducts: ["8", "12"],
   },
   {
@@ -1057,7 +1049,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1080,7 +1071,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1103,7 +1093,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1126,7 +1115,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1149,7 +1137,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1172,7 +1159,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1195,7 +1181,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1218,7 +1203,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1241,7 +1225,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1270,7 +1253,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1298,7 +1280,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -1326,7 +1307,6 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -2206,7 +2186,7 @@ export const products = [
 
     relatedProducts: ["16", "17"],
   },
-    {
+  {
     id: "126",
     name: "Ensemble de Fitness Homme – Sports Fitness Suit SBK166",
     slug: "ensemble-fitness-homme-sbk166",
@@ -2217,7 +2197,7 @@ export const products = [
       " Design ergonomique pour une liberté totale de mouvement",
       " Idéal pour running, training, musculation, etc.",
       "Coupe près du corps – performance & confort",
-      " Convient pour toutes les saisons"
+      " Convient pour toutes les saisons",
     ],
     price: 249,
     oldPrice: null,
