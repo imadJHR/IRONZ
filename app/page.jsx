@@ -697,7 +697,6 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Hero Section - Optimized for Responsiveness and Performance */}
         <section className="relative bg-gray-900 text-white overflow-hidden h-[500px] sm:h-[600px] lg:h-[700px] xl:h-[90vh] max-h-[900px]">
           {/* Background Overlay with Modern Gradient */}
           <div className="absolute inset-0 z-0">
@@ -734,7 +733,7 @@ export default function Home() {
               {banners.map((banner) => (
                 <SwiperSlide key={banner.id}>
                   <div className="relative h-full w-full flex items-center">
-                    {/* Images spécifiques par appareil */}
+                    {/* Device-specific Images */}
                     <div className="absolute inset-0 overflow-hidden">
                       {/* Desktop (≥1024px) */}
                       <Image
@@ -777,17 +776,17 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/30 to-transparent" />
                     </div>
 
-                    {/* Contenu (inchangé) */}
-                    <div className="relative z-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 container mx-auto">
+                    {/* Content Container (Mobile-first Centered) */}
+                    <div className="relative z-20 px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 container mx-auto text-center sm:text-left">
                       <div className="max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl space-y-4 sm:space-y-5 md:space-y-6">
-                        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 hover:border-white/40 transition-all duration-300 group">
+                        <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 transition-all duration-300">
                           <span className="text-yellow-400 text-lg">
                             {banner.icon}
                           </span>
                           <span className="text-xs font-medium tracking-wider text-white uppercase">
                             {banner.highlight}
                           </span>
-                          <ChevronRight className="w-4 h-4 text-white/60 group-hover:text-white/90 transition-all" />
+                          <ChevronRight className="w-4 h-4 text-white/60 transition-all" />
                         </div>
 
                         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
@@ -797,11 +796,12 @@ export default function Home() {
                           {banner.title.split(" ").slice(1).join(" ")}
                         </h2>
 
-                        <p className="text-base sm:text-lg md:text-xl max-w-lg md:max-w-xl opacity-90 leading-relaxed text-gray-100 font-light">
+                        <p className="text-base sm:text-lg md:text-xl max-w-lg md:max-w-xl opacity-90 leading-relaxed text-gray-100 font-light mx-auto sm:mx-0">
                           {banner.description}
                         </p>
 
-                        <div className="flex flex-col xs:flex-row gap-3 pt-2 sm:pt-3">
+                        {/* Buttons are hidden on small screens (< sm) */}
+                        <div className="hidden sm:flex flex-col xs:flex-row gap-3 pt-2 sm:pt-3 md:justify-start">
                           <Link
                             href={banner.link}
                             className="relative flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-lg transition-all duration-300 group overflow-hidden"
@@ -1002,14 +1002,14 @@ export default function Home() {
                       }
                       alt={category.name}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover transition-transform duration-700"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       priority={index < 3}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-70 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 transition-opacity duration-300"></div>
 
-                    {/* Icône de catégorie */}
-                    <div className="absolute top-4 right-4 w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 group-hover:rotate-0 transition-transform duration-300">
+                    {/* Catégorie icon */}
+                    <div className="absolute top-4 right-4 w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg transform -rotate-12 transition-transform duration-300">
                       {category.id === "musculation" && (
                         <Dumbbell className="h-6 w-6 text-yellow-500" />
                       )}
@@ -1042,7 +1042,7 @@ export default function Home() {
                   </div>
 
                   <div className="p-4 sm:p-6 flex flex-col flex-grow">
-                    <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-yellow-500 transition-colors duration-300">
+                    <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white transition-colors duration-300">
                       {category.name}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 mb-5 line-clamp-3 flex-grow text-sm sm:text-base">
