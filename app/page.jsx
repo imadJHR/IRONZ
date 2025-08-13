@@ -813,15 +813,6 @@ export default function Home() {
                             <ArrowRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
                             <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                           </Link>
-                          <Link
-                            href="/collection"
-                            className="relative flex-1 flex items-center justify-center gap-2 bg-transparent hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 group overflow-hidden"
-                          >
-                            <span className="relative z-10">
-                              Toute la collection
-                            </span>
-                            <ChevronRight className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
-                          </Link>
                         </div>
                       </div>
                     </div>
