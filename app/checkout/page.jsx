@@ -603,6 +603,7 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </div>
+
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
                     variant="outline"
@@ -700,16 +701,6 @@ export default function CheckoutPage() {
                   <span className="font-bold text-xl text-gray-900 dark:text-white">
                     {formatPrice(total)}
                   </span>
-                </div>
-              </div>
-              <div className="mt-6 space-y-4">
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                  <Truck className="h-4 w-4 mr-2 flex-shrink-0" />
-                  <span>Livraison gratuite à partir de 500 MAD d'achat</span>
-                </div>
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                  <ShieldCheck className="h-4 w-4 mr-2 flex-shrink-0" />
-                  <span>Paiement 100% sécurisé</span>
                 </div>
               </div>
             </div>
