@@ -128,6 +128,9 @@ import l53 from "../public/l53.jpg";
 import l54 from "../public/l54.jpg";
 import l51 from "../public/l51.jpg";
 import l57 from "../public/l57.jpg";
+import l58 from "../public/l58.jpg";
+import l59 from "../public/l59.jpg";
+import l60 from "../public/l60.jpg";
 
 export const categories = [
   {
@@ -2553,10 +2556,98 @@ export const products = [
       "Confort Optimal : Coupe standard et tissu léger pour une liberté de mouvement totale sur le terrain comme au quotidien.",
     ],
     price: 138,
+    taille: ["M"],
     oldPrice: null,
     discount: 0,
     image: l51,
     gallery: [l51],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
+  },
+  {
+    id: "142",
+    name: "Shaker en Inox DIORA 'Glory No Limits' - Édition Limitée",
+    slug: "shaker-inox-diora-glory-no-limits",
+    description:
+      "Alliez performance, durabilité et style avec le shaker en acier inoxydable DIORA, édition limitée 'Glory No Limits'. Conçu pour les athlètes qui ne se fixent aucune limite, ce shaker premium est l'accessoire idéal pour vous accompagner dans tous vos défis.Fabriqué en acier inoxydable de haute qualité, il est non seulement ultra-résistant, mais il ne retient pas les odeurs et garde vos boissons fraîches plus longtemps qu'un shaker en plastique traditionnel.",
+    features: [
+      "Matériau de Qualité Supérieure : Conçu en acier inoxydable (inox) de qualité alimentaire, garantissant une grande durabilité et une hygiène parfaite.",
+      "Design Inspirant : Le slogan 'Glory No Limits' est gravé pour vous motiver à repousser vos limites à chaque entraînement.",
+      "Édition Limitée : Un design exclusif et une finition métal brossé pour un style unique et élégant.",
+      "Isolation Naturelle : L'acier inoxydable aide à maintenir la température de votre boisson, la gardant fraîche plus longtemps.",
+      "Anti-Odeur et Facile à Nettoyer : Contrairement au plastique, l'inox ne retient pas les odeurs des suppléments et se nettoie très facilement.",
+      "Étanchéité Garantie : Le couvercle à vis robuste avec un clapet sécurisé empêche toute fuite.",
+    ],
+    price: 149,
+    oldPrice: "",
+    discount: "",
+    image: l58,
+    gallery: [l58],
+    category: "Supplément",
+    categoryId: "3",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
+  },
+  {
+    id: "143",
+    name: "Coquille de Protection Dehka - Protège-Aine pour Sports de Combat",
+    slug: "coquille-protection-dekhka-sports-combat",
+    description:
+      "Assurez une protection indispensable lors de vos entraînements et compétitions avec la coquille de protection Dehka. Conçue pour les pratiquants de sports de combat et d'arts martiaux, elle offre une sécurité optimale contre les chocs et les impacts dans les zones les plus sensibles.Son design ergonomique et ses matériaux de qualité garantissent un ajustement confortable et un maintien fiable, vous permettant de vous concentrer pleinement sur votre performance sans aucune gêne.",
+    features: [
+      "Protection Essentielle : Offre une protection vitale pour le bas-ventre et l'aine, obligatoire dans de nombreuses disciplines comme la boxe, le MMA, le karaté, le taekwondo ou le hockey.",
+      "Confort et Maintien : La large ceinture élastique assure un positionnement parfait et un maintien sécurisé, même lors des mouvements les plus intenses.",
+      "Design Anatomique : La forme de la coquille est étudiée pour s'adapter à l'anatomie masculine, offrant protection sans sacrifier la mobilité.",
+      "Tissu Respirant : L'enveloppe en tissu est conçue pour être confortable au contact de la peau et pour évacuer la transpiration.",
+      "Facile à Porter : Se porte simplement comme un sous-vêtement sous un short ou un pantalon de sport.",
+    ],
+    price: 49,
+    oldPrice: null,
+    discount: 0,
+    image: l59,
+    gallery: [l59],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
+  },
+  {
+    id: "143",
+    name: "Gants de Musculation FAFA SPORT avec Maintien Poignet",
+    slug: "gants-musculation-fafa-sport-maintien-poignet",
+    description:
+      "Optimisez vos entraînements et protégez vos mains avec les gants de musculation FAFA SPORT. Conçus pour les pratiquants de fitness et de musculation, ces gants offrent une combinaison parfaite de confort, de protection et de soutien pour vous aider à soulever plus lourd et plus longtemps.La bande de maintien intégrée au poignet est l'atout majeur de ces gants, offrant une stabilité cruciale pour les exercices de poussée et de traction.",
+    features: [
+      "Support de Poignet Intégré : La longue bande de poignet avec fermeture velcro stabilise l'articulation, réduit le risque de blessures et offre un soutien optimal lors des charges lourdes.",
+      "Protection de la Paume : La paume rembourrée et renforcée protège vos mains contre les ampoules et les callosités tout en assurant une excellente adhérence (grip) sur les barres et haltères.",
+      "Confort et Aération : Le dos du gant est fabriqué dans un matériau souple et respirant pour un confort maximal et une bonne évacuation de la transpiration.",
+      "Design Ergonomique : La coupe sans doigts (mitaines) offre une meilleure sensation et une plus grande flexibilité, tandis que la fermeture ajustable garantit un ajustement parfait.",
+      "Polyvalence : Parfaits pour la musculation, l'haltérophilie, le CrossFit, le fitness et tout entraînement nécessitant une prise solide.",
+    ],
+    price: 60,
+    oldPrice: null,
+    taille: ["M"],
+    discount: 0,
+    image: l60,
+    gallery: [l60],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.9,

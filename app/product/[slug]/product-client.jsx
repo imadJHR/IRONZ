@@ -94,6 +94,37 @@ function ColorSelector({ colors, selectedColor, onChange }) {
   );
 }
 
+// AJOUT : Nouveau composant pour le sélecteur de taille
+function TailleSelector({ tailles, selectedTaille, onChange }) {
+  if (!tailles || tailles.length === 0) return null;
+
+  return (
+    <div className="mb-6">
+      <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+        Taille:{" "}
+        {selectedTaille && <span className="font-bold">{selectedTaille}</span>}
+      </h3>
+      <div className="flex flex-wrap gap-3">
+        {tailles.map((taille) => (
+          <button
+            key={taille}
+            onClick={() => onChange(taille)}
+            className={cn(
+              "px-4 py-2 rounded-md border text-sm font-medium transition-colors",
+              selectedTaille === taille
+                ? "bg-yellow-500 text-black border-yellow-500 dark:bg-yellow-400 dark:border-yellow-400"
+                : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600"
+            )}
+            aria-pressed={selectedTaille === taille}
+          >
+            {taille}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Ajout du schéma JSON-LD directement dans le composant client
 function ProductJsonLd({ product }) {
   if (!product) return null;
@@ -135,6 +166,8 @@ export default function ProductPageClient({ slug }) {
   const [categoryInfo, setCategoryInfo] = useState(null);
   const [showShareDropdown, setShowShareDropdown] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
+  // AJOUT : Nouvel état pour la taille sélectionnée
+  const [selectedTaille, setSelectedTaille] = useState("");
 
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
@@ -153,6 +186,11 @@ export default function ProductPageClient({ slug }) {
         // Définir la couleur par défaut si disponible
         if (foundProduct.colors && foundProduct.colors.length > 0) {
           setSelectedColor(foundProduct.colors[0]);
+        }
+        
+        // AJOUT : Définir la taille par défaut si disponible
+        if (foundProduct.taille && foundProduct.taille.length > 0) {
+          setSelectedTaille(foundProduct.taille[0]);
         }
 
         const catInfo = getCategoryInfo(foundProduct.categoryId);
@@ -194,32 +232,42 @@ export default function ProductPageClient({ slug }) {
     setQuantity(newQuantity);
   };
 
-const handleAddToCart = () => {
-  if (product) {
-    // Check if a color is selected if the product has colors
-    if (product.colors && product.colors.length > 0 && !selectedColor) {
-      alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
-      return;
+  // MODIFICATION : Mise à jour de la fonction pour inclure la taille
+  const handleAddToCart = () => {
+    if (product) {
+      // Vérifier si une taille est sélectionnée si le produit a des tailles
+      if (product.taille && product.taille.length > 0 && !selectedTaille) {
+        alert("Veuillez sélectionner une taille avant d'ajouter au panier");
+        return;
+      }
+      
+      // Vérifier si une couleur est sélectionnée si le produit a des couleurs
+      if (product.colors && product.colors.length > 0 && !selectedColor) {
+        alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
+        return;
+      }
+
+      // Créer un objet produit avec toutes les données nécessaires
+      const productWithOptions = {
+        ...product,
+        selectedColor: selectedColor,
+        selectedTaille: selectedTaille, // Ajouter la taille sélectionnée
+        quantity: quantity,
+      };
+
+      // Ajouter le produit au panier
+      addToCart(productWithOptions);
+
+      // Notification
+      alert(
+        `${product.name} ${
+          selectedTaille ? `(Taille: ${selectedTaille})` : ""
+        } ${
+          selectedColor ? `(Couleur: ${selectedColor})` : ""
+        } ajouté au panier`
+      );
     }
-
-    // Create a product object with all necessary data
-    const productWithColor = {
-      ...product,
-      selectedColor: selectedColor,
-      quantity: quantity,
-    };
-
-    // Add the product to the cart
-    addToCart(productWithColor);
-
-    // Notification
-    alert(
-      `${product.name} ${
-        selectedColor ? `(${selectedColor})` : ""
-      } ajouté au panier`
-    );
-  }
-};
+  };
 
 
   const toggleFavorite = () => {
@@ -455,10 +503,7 @@ const handleAddToCart = () => {
                     src={
                       product.gallery?.[selectedImage] ||
                       product.image ||
-                      "/placeholder.svg?height=384&width=384" ||
-                      "/placeholder.svg" ||
-                      "/placeholder.svg" ||
-                      "/placeholder.svg"
+                      "/placeholder.svg?height=384&width=384"
                     }
                     alt={product.name}
                     fill
@@ -687,6 +732,15 @@ const handleAddToCart = () => {
                 </div>
 
                 <Separator />
+                
+                {/* MODIFICATION : On affiche le sélecteur de taille ici */}
+                {product.taille && product.taille.length > 0 && (
+                  <TailleSelector
+                    tailles={product.taille}
+                    selectedTaille={selectedTaille}
+                    onChange={setSelectedTaille}
+                  />
+                )}
 
                 {product.colors && product.colors.length > 0 && (
                   <ColorSelector
@@ -732,11 +786,15 @@ const handleAddToCart = () => {
                     <Button
                       onClick={handleAddToCart}
                       className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
+                      // MODIFICATION : Mise à jour de la condition disabled
                       disabled={
                         !product.inStock ||
                         (product.colors &&
                           product.colors.length > 0 &&
-                          !selectedColor)
+                          !selectedColor) ||
+                        (product.taille &&
+                          product.taille.length > 0 &&
+                          !selectedTaille)
                       }
                       aria-label="Ajouter au panier"
                     >
@@ -917,8 +975,7 @@ const handleAddToCart = () => {
                     <Image
                       src={
                         relatedProduct.image ||
-                        "/placeholder.svg?height=192&width=256" ||
-                        "/placeholder.svg"
+                        "/placeholder.svg?height=192&width=256"
                       }
                       alt={relatedProduct.name}
                       fill
