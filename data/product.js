@@ -1885,8 +1885,8 @@ export const products = [
   },
   {
     id: "117",
-    name: "Yoga ball",
-    slug: "Yoga-ball",
+    name: "Yoga ball 65cm",
+    slug: "Yoga-ball-65-cm",
     description: "",
     features: [],
     price: 249,
@@ -2296,6 +2296,27 @@ export const products = [
     inStock: true,
     relatedProducts: ["11", "21"],
   },
+  {
+    id: "131",
+    name: "Yoga ball 75cm",
+    slug: "Yoga-ball-75-cm",
+    description: "",
+    features: [],
+    price: 249,
+    image: l31,
+    gallery: [l31, l30, l29],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.5,
+    reviewCount: 74,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 35,
+    colors: ["Rouge", "Gris", "Bleu"],
+    relatedProducts: ["17", "67", "69"],
+  },
+  
  
 
   
