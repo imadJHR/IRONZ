@@ -27,6 +27,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { cart, updateQuantity, removeFromCart, cartTotal, clearCart, color } =
     useCart();
+    console.log("CONTENU DU PANIER SUR LA PAGE CHECKOUT:", cart);
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -149,13 +150,11 @@ export default function CheckoutPage() {
 
     setIsSubmitting(true);
 
-    // Generate random order number
     const randomOrderNumber = `CMD-${Math.floor(Math.random() * 1000000)
       .toString()
       .padStart(6, "0")}`;
     setOrderNumber(randomOrderNumber);
 
-    // Prepare order data for Formspree
     const orderData = {
       _replyto: formData.email,
       _subject: "Nouvelle commande ",
@@ -171,10 +170,14 @@ export default function CheckoutPage() {
       shippingMethod: formData.shippingMethod,
       notes: formData.notes,
       orderNumber: randomOrderNumber,
+      // MODIFICATION 1 : Ajout de la taille et de la couleur dans les données envoyées
       items: cart.map((item) => ({
         name: item.name,
         price: item.price,
         quantity: item.quantity,
+        // On ajoute la taille et la couleur seulement si elles existent
+        ...(item.selectedTaille && { taille: item.selectedTaille }),
+        ...(item.selectedColor && { couleur: item.selectedColor }),
         total: item.price * item.quantity,
       })),
       subtotal: formatPrice(subtotal),
@@ -184,7 +187,6 @@ export default function CheckoutPage() {
 
     try {
       const response = await fetch("https://formspree.io/f/meozjkdd", {
-        // Replace with your Formspree form ID
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -194,7 +196,6 @@ export default function CheckoutPage() {
       });
 
       if (response.ok) {
-        // Complete the order
         setOrderComplete(true);
         clearCart();
       } else {
@@ -644,7 +645,7 @@ export default function CheckoutPage() {
               <div className="max-h-[300px] overflow-y-auto mb-6">
                 {cart.map((item) => (
                   <div
-                    key={item.id}
+                    key={`${item.id}-${item.selectedColor}-${item.selectedTaille}`} // Clé plus unique
                     className="flex items-center py-3 border-b border-gray-200 dark:border-gray-700 last:border-0"
                   >
                     <div className="relative h-16 w-16 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden">
@@ -665,6 +666,14 @@ export default function CheckoutPage() {
                       <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
                         {item.name}
                       </h4>
+                      {/* MODIFICATION 2 : Affichage de la taille et de la couleur dans le récapitulatif */}
+                      {(item.selectedTaille || item.selectedColor) && (
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {item.selectedTaille && `Taille: ${item.selectedTaille}`}
+                          {item.selectedTaille && item.selectedColor && ' / '}
+                          {item.selectedColor && `Couleur: ${item.selectedColor}`}
+                        </p>
+                      )}
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         {formatPrice(item.price)} × {item.quantity}
                       </p>
