@@ -1,4 +1,4 @@
-import img1 from "../public/homeGym.jpg";
+import a5 from "../public/a5.jpg";
 import img2 from "../public/equipement.jpg";
 import img3 from "../public/complement.jpg";
 import img4 from "../public/accessoire.jpg";
@@ -8,39 +8,18 @@ import img66 from "../public/panatta.png";
 import topgym from "../public/topgym.png";
 import teslaa from "../public/teslaa.png";
 import sup from "../public/14.png";
-import a1 from "../public/a1.jpg";
-import a5 from "../public/a5.jpg";
-import a6 from "../public/a6.jpeg";
-import a7 from "../public/a7.jpeg";
-import a8 from "../public/a8.jpeg";
-import a9 from "../public/a9.jpeg";
-import a10 from "../public/a10.jpeg";
 import a11 from "../public/a11.jpeg";
 import a12 from "../public/a12.jpeg";
 import a13 from "../public/a13.jpg";
-import a14 from "../public/a14.jpg";
-import a15 from "../public/a15.jpg";
-import a16 from "../public/a16.jpg";
-import a17 from "../public/a17.jpg";
-import a18 from "../public/a18.jpg";
-import a19 from "../public/a19.jpg";
-import a20 from "../public/a20.jpg";
 import a21 from "../public/a21.jpeg";
 import a22 from "../public/a22.jpeg";
 import a23 from "../public/a23.jpg";
-import a24 from "../public/a24.jpeg";
-import a25 from "../public/a25.jpeg";
-import a26 from "../public/a26.jpeg";
-import a27 from "../public/a27.jpeg";
 import a28 from "../public/a28.jpg";
 import a31 from "../public/a31.jpeg";
 import a32 from "../public/a32.jpeg";
 import a33 from "../public/a33.jpeg";
 import a34 from "../public/a34.jpeg";
 import a35 from "../public/a35.jpeg";
-import a36 from "../public/a36.jpg";
-import a38 from "../public/a38.jpg";
-import a39 from "../public/a39.jpeg";
 import a40 from "../public/a40.jpeg";
 import a41 from "../public/a41.jpeg";
 import a42 from "../public/a42.jpeg";
@@ -49,26 +28,16 @@ import a44 from "../public/a44.jpeg";
 import a45 from "../public/a45.jpg";
 import a47 from "../public/a47.jpg";
 import a51 from "../public/a51.jpg";
-import a52 from "../public/a52.jpeg";
 import a53 from "../public/a53.jpg";
 import a54 from "../public/a54.jpg";
 import a55 from "../public/a55.jpeg";
 import a56 from "../public/a56.jpeg";
-import a57 from "../public/a57.jpeg";
 import a58 from "../public/a58.jpg";
 import a59 from "../public/a59.jpg";
 import a60 from "../public/a60.jpg";
-import a61 from "../public/a61.jpeg";
-import a62 from "../public/a62.jpeg";
-import a63 from "../public/a63.jpeg";
-import a64 from "../public/a64.jpeg";
-import a68 from "../public/a68.jpeg";
-import a69 from "../public/a69.jpeg";
-import a70 from "../public/a70.jpeg";
 import a71 from "../public/a71.jpeg";
 import a72 from "../public/a72.jpeg";
 import a73 from "../public/a73.jpg";
-import a74 from "../public/a74.jpeg";
 import a75 from "../public/a75.jpeg";
 import a78 from "../public/a78.jpeg";
 import a79 from "../public/a79.jpeg";
@@ -149,6 +118,16 @@ import l45 from "../public/l45.jpg";
 import l455 from "../public/l455.jpg";
 import l46 from "../public/l46.jpg";
 import l466 from "../public/l466.jpg";
+import l47 from "../public/l47.jpg";
+import l48 from "../public/l48.jpg";
+import l49 from "../public/l49.jpg";
+import l50 from "../public/l50.jpg";
+import l55 from "../public/l55.jpg";
+import l52 from "../public/l52.jpg";
+import l53 from "../public/l53.jpg";
+import l54 from "../public/l54.jpg";
+import l51 from "../public/l51.jpg";
+import l57 from "../public/l57.jpg";
 
 export const categories = [
   {
@@ -327,9 +306,6 @@ export const products = [
       "Polyvalence : Convient aussi bien pour le sport que pour un look décontracté.",
     ],
     price: 299.99,
-    oldPrice: "",
-    discount: "",
-    taille: ["XL", "M", "S"],
     image: a23,
     gallery: a23,
     category: "Equipements",
@@ -349,7 +325,6 @@ export const products = [
       "soutien lombaire",
       "current",
     ],
-    colors: ["Bleu", "Gris"],
 
     relatedProducts: ["5", "7"],
   },
@@ -2252,7 +2227,7 @@ export const products = [
     features: [
       "Matériau Ultra-Résistant : Fabriqué à partir d'un revêtement en PVC renforcé, il est résistant aux déchirures, à l'abrasion et facile à nettoyer.",
       "Poignées Multiples et Ergonomiques : Doté de plusieurs poignées robustes et stratégiquement placées, il offre une multitude d'options de prise pour une variété infinie d'exercices : squats, fentes, presses, tirages, portés (carries), etc.",
-      "Stabilité Optimale : Le remplissage interne est conçu pour rester stable, évitant les déséquilibres inconfortables pendant les mouvements dynamiques."
+      "Stabilité Optimale : Le remplissage interne est conçu pour rester stable, évitant les déséquilibres inconfortables pendant les mouvements dynamiques.",
     ],
     price: 720,
     oldPrice: "",
@@ -2269,7 +2244,7 @@ export const products = [
     inStock: true,
     relatedProducts: ["9", "18"],
   },
-   {
+  {
     id: "130",
     name: "Bulgarian Bag Pro IRONZ Personnalisable",
     slug: "bulgarian-bag-pro-ironz-personnalisable-13kg",
@@ -2279,7 +2254,7 @@ export const products = [
       "Forme Ergonomique : Sa conception unique permet une distribution équilibrée du poids et une grande liberté de mouvement pour des exercices comme les spins, les squats, les presses et les fentes dynamiques.",
       "Prises Flexibles : Les poignées principales (les cornes) et les sangles extérieures offrent une variété de prises pour cibler différents groupes musculaires et varier l'intensité.",
       "Stabilité Optimale : Le remplissage interne est conçu pour rester stable, évitant les déséquilibres inconfortables pendant les mouvements dynamiques.",
-      "Qualité Supérieure : Fabriqué avec un revêtement en cuir synthétique robuste et des coutures renforcées, il est conçu pour résister aux chocs, aux torsions et à une utilisation intensive et répétée."
+      "Qualité Supérieure : Fabriqué avec un revêtement en cuir synthétique robuste et des coutures renforcées, il est conçu pour résister aux chocs, aux torsions et à une utilisation intensive et répétée.",
     ],
     price: 838,
     oldPrice: "",
@@ -2316,10 +2291,282 @@ export const products = [
     colors: ["Rouge", "Gris", "Bleu"],
     relatedProducts: ["17", "67", "69"],
   },
-  
- 
+  {
+    id: "132",
+    name: "Ballon de Football PAKKA - Noir et Blanc - Taille 5",
+    slug: "ballon-foot-pakka-noir-blanc-taille-5",
+    description:
+      "Découvrez le ballon de football PAKKA, le partenaire idéal pour vos entraînements et vos matchs. Conçu pour allier durabilité et performance, ce ballon vous offrira un excellent toucher de balle et une trajectoire fiable.Sa construction robuste et ses matériaux de qualité en font un choix parfait pour les joueurs de tous niveaux.",
+    features: [
+      "Construction Soft Bilt : Offre un contact doux et un contrôle amélioré.",
+      "Enroulement en Nylon : Assure une excellente durabilité et aide le ballon à conserver sa forme, même après de nombreuses frappes",
+      "Imperméable (Water Proof) : Sa surface résistante à l'eau permet de jouer dans toutes les conditions météorologiques, sur terrain sec ou humide.",
+      "Taille Officielle 5 : La taille standard pour les adultes et les jeunes de plus de 12 ans, parfaite pour les compétitions et les entraînements sérieux.",
+    ],
+    price: 119,
+    image: l47,
+    gallery: [l47],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.5,
+    reviewCount: 74,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 35,
+    relatedProducts: ["24", "67", "69"],
+  },
+  {
+    id: "133",
+    name: "Ballon de Basketball PRIDE - Approuvé FIBA - Taille 7",
+    slug: "ballon-basketball-pride-fiba-taille-7",
+    description:
+      "Passez au niveau supérieur avec le ballon de basketball PRIDE, un choix de qualité professionnelle pour les joueurs exigeants. Officiellement approuvé par la FIBA (Fédération Internationale de Basketball), ce ballon respecte les standards les plus stricts en matière de taille et de poids, le rendant parfait pour la compétition et l'entraînement intensif.",
+    features: [
+      "Approuvé par la FIBA : Gage de qualité et de conformité aux normes officielles du basketball international.",
+      "Taille et Poids Officiels : Ballon de taille 7, la taille réglementaire pour les compétitions masculines seniors.",
+      "Grip Supérieur : Le revêtement de haute qualité assure une excellente prise en main et un contrôle précis du ballon.",
+      "Haute Durabilité : Conçu pour résister à une utilisation intensive sur les parquets intérieurs comme sur les terrains extérieurs (playground).",
+    ],
+    price: 129,
+    image: l48,
+    gallery: [l48],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.5,
+    reviewCount: 74,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 35,
+    relatedProducts: ["24", "67", "69"],
+  },
+  {
+    id: "134",
+    name: "Ballon de Football Molten Vantaggio 2810 - Bleu et Blanc",
+    slug: "ballon-football-molten-vantaggio-2810-bleu",
+    description:
+      "Améliorez votre jeu avec le ballon de football Molten Vantaggio 2810. Réputée dans le monde entier pour sa qualité et son innovation, la marque Molten propose un ballon conçu pour offrir des performances exceptionnelles sur le terrain. Son design moderne et sa construction de haute technologie en font un choix privilégié pour les entraînements et les matchs.",
+    features: [
+      "Approuvé par la FIBA : Gage de qualité et de conformité aux normes officielles du basketball international.",
+      "Taille et Poids Officiels : Ballon de taille 7, la taille réglementaire pour les compétitions masculines seniors.",
+      "Grip Supérieur : Le revêtement de haute qualité assure une excellente prise en main et un contrôle précis du ballon.",
+      "Haute Durabilité : Conçu pour résister à une utilisation intensive sur les parquets intérieurs comme sur les terrains extérieurs (playground).",
+    ],
+    price: 249,
+    image: l49,
+    gallery: [l49],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.5,
+    reviewCount: 74,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 35,
+    relatedProducts: ["24", "67", "69"],
+  },
+  {
+    id: "135",
+    name: "Gaine Amincissante Anti-Cellulite Body Shaper - NEW NIGHT",
+    slug: "gaine-amincissante-anti-cellulite-new-night",
+    description:
+      "Sculptez votre silhouette et lissez votre peau avec la gaine  anti-cellulite de la marque NEW NIGHT. Conçue en Turquie avec des matériaux de haute qualité, cette gaine invisible sous les vêtements est votre alliée discrète pour un effet ventre plat et des courbes redessinées instantanément.Grâce à sa technologie de compression ciblée, elle aide non seulement à affiner votre taille et vos hanches, mais contribue également à réduire l'apparence de la cellulite pour une peau visiblement plus lisse.",
+    features: [
+      "Grâce à sa technologie de compression ciblée, elle aide non seulement à affiner votre taille et vos hanches, mais contribue également à réduire l'apparence de la cellulite pour une peau visiblement plus lisse.",
+      "Action Anti-Cellulite : La compression et la texture du tissu exercent un micro-massage sur la peau, aidant à améliorer la circulation et à estomper l'effet peau d'orange.",
+      "Confort et Discrétion : Fabriquée dans un tissu souple et respirant, elle se porte comme une seconde peau et reste totalement invisible, même sous les tenues les plus ajustées.",
+      "Maintien Optimal : Offre un excellent soutien lombaire tout en assurant une liberté de mouvement totale.",
+      "Qualité Supérieure : Un produit de la marque NEW NIGHT, reconnue pour son savoir-faire dans le domaine de la lingerie gainante.",
+    ],
+    price: 159,
+    image: l50,
+    gallery: [l50],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.5,
+    reviewCount: 74,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 35,
+    relatedProducts: ["24", "67", "69"],
+  },
+  {
+    id: "136",
+    name: "Genouillère de Maintien Sportive - Taille Universelle INT AJ",
+    slug: "genouillere-sportive-universelle-int-aj",
+    description:
+      "Protégez et soutenez votre articulation avec la genouillère de maintien INT AJ. Conçue pour s'adapter à tous, cette genouillère de taille universelle est l'accessoire indispensable pour les sportifs et pour toute personne souhaitant soulager une douleur au genou ou prévenir les blessures.Que ce soit pour le tennis, la course, le basketball ou simplement pour vos activités quotidiennes, elle offre une compression stable sans limiter votre liberté de mouvement.",
+    features: [
+      "Taille Universelle : S'adapte facilement à toutes les morphologies grâce à son design ergonomique et ses matériaux flexibles.",
+      "Ambidextre : Peut être portée indifféremment sur le genou droit ou le genou gauche.",
+      "Unisexe : Convient aussi bien aux hommes qu'aux femmes.",
+      "Soutien Efficace : Offre une compression ciblée qui aide à stabiliser l'articulation, à réduire l'inflammation et à soulager la douleur.",
+      "Idéale pour le Sport : Parfaite pour la prévention des blessures et le soutien durant l'effort, vous permettant de rester actif en toute confiance.",
+    ],
+    price: 149,
+    image: l55,
+    gallery: [l55],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.5,
+    reviewCount: 74,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 35,
+    relatedProducts: ["24", "67", "69"],
+  },
+  {
+    id: "137",
+    name: "Magnésie d'Escalade SIMOND - Chalk Crunch 200g",
+    slug: "magnesie-escalade-simond-crunch-200g",
+    description:
+      "Assurez une prise parfaite et une adhérence maximale avec la magnésie de SIMOND. Spécialement conçue pour les grimpeurs, les gymnastes et les haltérophiles, cette magnésie en morceaux (crunch) offre une excellente couverture de la main tout en réduisant la volatilité de la poudre.Le format est très apprécié car il permet de doser facilement la quantité de magnésie et procure une sensation durable. C'est l'accessoire indispensable pour garder les mains sèches et performantes durant l'effort.",
+    features: [
+      "Texture  : Un mélange optimal de poudre et de morceaux pour une application facile et une tenue longue durée.",
+      "Haute Performance : Améliore considérablement le grip en absorbant la transpiration, vous permettant de vous concentrer sur votre performance.",
+      "Polyvalence : Idéale pour l'escalade (en salle comme en falaise), la gymnastique, l'haltérophilie, le CrossFit et toute autre activité nécessitant une prise solide.",
+      "Marque de Confiance : SIMOND est une marque reconnue et respectée dans le monde de l'alpinisme et de l'escalade.",
+      "Format Pratique : Le sac de 200g offre une excellente quantité pour de nombreuses séances d'entraînement.",
+    ],
+    price: 279,
+    image: l52,
+    gallery: [l52],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.5,
+    reviewCount: 74,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 35,
+    relatedProducts: ["24", "67", "69"],
+  },
+  {
+    id: "138",
+    name: "Dalles de Sol en Mousse Amortissantes - Tapis Puzzle pour Fitness et Sport",
+    slug: "dalles-sol-mousse-amortissantes-tapis-puzzle",
+    description:
+      "Créez votre espace d'entraînement idéal avec ces dalles de sol amortissantes en mousse. Parfaites pour un home-gym, une salle de jeux pour enfants, un studio de yoga ou un espace d'arts martiaux, ces dalles de type puzzle s'assemblent facilement pour couvrir la surface de votre choix.Elles offrent une excellente protection pour vos sols contre les chocs, les rayures et les impacts d'haltères, tout en assurant votre confort et votre sécurité grâce à leur surface texturée antidérapante.",
+    features: [
+      "Protection Supérieure : La mousse haute densité absorbe efficacement les chocs et les vibrations, protégeant à la fois vos articulations et votre sol.",
+      "Installation Facile : Le système d'emboîtement de type puzzle permet un montage et un démontage rapides et sans effort. Vous pouvez moduler la surface selon vos besoins.",
+      "Surface Antidérapante : La texture de la surface garantit une excellente adhérence pour des entraînements en toute sécurité.",
+      "Polyvalence d'Utilisation : Idéales pour le fitness, la musculation, le CrossFit, le yoga, le Pilates, les arts martiaux ou comme tapis de jeu sécurisé pour les enfants.",
+      "Facile à Nettoyer : Les dalles sont résistantes à l'eau et se nettoient simplement avec un chiffon humide.",
+    ],
+    price: 179,
+    oldPrice: "",
+    discount: "",
+    image: l53,
+    gallery: l53,
+    category: "Equipements",
+    categoryId: "2",
+    subCategory: "Revêtement du sol",
+    subCategoryId: "4-2",
+    rating: 4.8,
+    reviewCount: 112,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 75,
+    tags: [
+      "ceinture",
+      "musculation",
+      "protection",
+      "soutien lombaire",
+      "current",
+    ],
 
-  
+    relatedProducts: ["5", "7"],
+  },
+  {
+    id: "139",
+    name: "Sac de Frappe Mural IRONZ - Coussin de Frappe Personnalisable ",
+    slug: "sac-frappe-mural-cuir-personnalisable-ironz",
+    description:
+      "Développez votre puissance et votre précision avec le sac de frappe mural de la marque IRONZ. Conçu pour les entraînements intensifs de boxe, MMA, Muay Thai et autres sports de combat, ce coussin mural est l'équipement parfait pour travailler vos enchaînements de coups de poing, crochets et uppercuts.Robuste et durable, il est fabriqué à partir d'un revêtement en cuir de haute qualité qui résiste aux impacts les plus puissants. Son rembourrage en mousse dense absorbe les chocs pour protéger vos mains et vos articulations.",
+    features: [
+      "Haute Résistance : Revêtement en cuir de qualité supérieure conçu pour une durabilité maximale face à des entraînements répétés.",
+      "Absorption des Chocs : Mousse intérieure à haute densité qui amortit efficacement la puissance de vos frappes pour un entraînement sécurisé.",
+      "Cibles de Précision : Les deux logos IRONZ servent de cibles pour vous aider à améliorer la précision et la coordination de vos coups.",
+      "Gain de Place : Idéal pour les home-gyms ou les salles avec un espace limité, il se fixe solidement au mur et ne prend pas de place au sol.",
+      "Entièrement Personnalisable : Faites de cet équipement le vôtre ! Nous offrons la possibilité de personnaliser le sac avec votre propre logo ou design. Contactez-nous pour en savoir plus.",
+    ],
+    price: 2299,
+    oldPrice: "",
+    discount: "",
+    image: l54,
+    gallery: [l54],
+    category: "Equipements",
+    categoryId: "2",
+    subCategory: "",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    relatedProducts: ["9", "18"],
+  },
+  {
+    id: "140",
+    name: "Shaker DIORA '#NO DAYS OFF' - Édition Limitée",
+    slug: "shaker-diora-no-days-off-edition-limitee",
+    description:
+      "Restez motivé et préparez vos boissons préférées avec style grâce au shaker DIORA en édition limitée. Arborant le slogan inspirant '#NO DAYS OFF', ce shaker est plus qu'un simple accessoire : c'est une déclaration de votre engagement envers vos objectifs de fitness.Conçu pour un mélange parfait et sans grumeaux, il est idéal pour vos shakes de protéines, pré-workouts ou BCAA. Sa couleur verte vibrante ne passera pas inaperçue à la salle de sport.",
+    features: [
+      "Design Exclusif : Affiche le slogan audacieux '#NO DAYS OFF' pour vous motiver à chaque séance.",
+      "Édition Limitée : Un modèle de collection à ne pas manquer, parfait pour se démarquer.",
+      "Mélange Optimal : Équipé d'une grille ou d'une boule de mélange pour garantir une dissolution parfaite de vos poudres, sans aucun grumeau.",
+      "Parfaitement Hermétique : Son bouchon à vis et son clapet de fermeture sécurisé assurent une étanchéité parfaite, sans risque de fuite dans votre sac de sport.",
+      "Qualité DIORA : Fabriqué avec des matériaux durables, sans BPA, pour une utilisation saine et durable.",
+    ],
+    price: 79,
+    oldPrice: "",
+    discount: "",
+    image: l57,
+    gallery: [l57],
+    category: "Supplément",
+    categoryId: "3",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
+  },
+  {
+    id: "141",
+    name: "Ensemble Maillot et Short Maroc Domicile - PUMA",
+    slug: "ensemble-maillot-short-maroc-domicile-puma",
+    description:
+      "Portez les couleurs des Lions de l'Atlas avec fierté grâce à cet ensemble maillot et short domicile officiel de l'équipe nationale du Maroc. Conçu par PUMA, cet équipement est identique à celui porté par les joueurs sur le terrain, alliant performance, confort et passion.Que ce soit pour jouer un match entre amis, vous entraîner ou pour supporter l'équipe depuis les tribunes, cette tenue est le choix parfait pour tout fan de la sélection marocaine.",
+    features: [
+      " Design Emblématique : Reprend les couleurs traditionnelles du Maroc avec le maillot rouge et le short vert, ornés de la bande distinctive sur la poitrine.",
+      "Blason de l'Équipe : Le blason officiel de la Fédération Royale Marocaine de Football est fièrement apposé sur le cœur et sur le short.",
+      "Technologie de Performance : Fabriqué avec la technologie dryCELL de PUMA qui évacue l'humidité pour vous garder au sec et à l'aise pendant l'effort.",
+      "Coupe près du corps – performance & confort",
+      "Confort Optimal : Coupe standard et tissu léger pour une liberté de mouvement totale sur le terrain comme au quotidien.",
+    ],
+    price: 138,
+    oldPrice: null,
+    discount: 0,
+    image: l51,
+    gallery: [l51],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
+  },
 ];
 
 export const brands = [
