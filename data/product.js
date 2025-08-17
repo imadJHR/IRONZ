@@ -143,6 +143,12 @@ import l40 from "../public/l40.jpg";
 import l41 from "../public/l41.jpg";
 import l42 from "../public/l42.jpg";
 import l43 from "../public/l43.jpg";
+import l44 from "../public/l44.jpg";
+import l444 from "../public/l444.jpg";
+import l45 from "../public/l45.jpg";
+import l455 from "../public/l455.jpg";
+import l46 from "../public/l46.jpg";
+import l466 from "../public/l466.jpg";
 
 export const categories = [
   {
@@ -683,7 +689,6 @@ export const products = [
     inStock: true,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
 
-
     relatedProducts: ["8", "12"],
   },
   {
@@ -712,7 +717,6 @@ export const products = [
     isFeatured: true,
     inStock: true,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-
 
     relatedProducts: ["8", "12"],
   },
@@ -744,7 +748,7 @@ export const products = [
 
     relatedProducts: ["16", "17"],
   },
-  
+
   {
     id: "28",
     name: "Spray de Soulagement Rapide Deep Heat - Douleurs Musculaires et Articulaires",
@@ -998,7 +1002,7 @@ export const products = [
     isNew: false,
     isFeatured: true,
     inStock: true,
-   
+
     relatedProducts: ["8", "12"],
   },
   {
@@ -2186,7 +2190,7 @@ export const products = [
 
     relatedProducts: ["1", "17"],
   },
-    {
+  {
     id: "127",
     name: "Shaker Diora Limited Edition – 600 ML",
     slug: "shaker-diora-limited-edition-600ml",
@@ -2215,6 +2219,86 @@ export const products = [
     tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
     relatedProducts: ["8", "6", "8"],
   },
+  {
+    id: "128",
+    name: "Wall Ball en Cuir Personnalisable ",
+    slug: "wall-ball-cuir-personnalisable-10kg",
+    description:
+      "Découvrez notre Wall Ball en cuir de haute qualité, idéal pour vos entraînements de force et de crossfit. Avec un poids de 10 kg, ce ballon robuste vous permet de travailler efficacement vos muscles tout en améliorant votre coordination et votre endurance. Personnalisez-le grâce à la broderie pour ajouter votre nom, logo ou motif unique. Parfait pour un usage personnel ou en salle de sport.",
+    features: [
+      "Wall Ball en cuir 10 kg, durable et personnalisable en broderie. Idéal pour crossfit, renforcement musculaire et entraînement fonctionnel.",
+    ],
+    price: 879,
+    oldPrice: "",
+    discount: "",
+    image: l44,
+    gallery: [l44, l444],
+    category: "Equipements",
+    categoryId: "2",
+    subCategory: "",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    relatedProducts: ["9", "18"],
+  },
+  {
+    id: "129",
+    name: "Power Bag d'Entraînement en cuir Personnalisable",
+    slug: "power-bag-ronz-entrainement-personnalisable-poids-logo",
+    description:
+      "Le Power Bag RONZ n'est pas un simple sac de sable. C'est un partenaire d'entraînement polyvalent, robuste et, surtout, entièrement personnalisable pour répondre parfaitement à vos besoins, que vous soyez un athlète professionnel, le propriétaire d'une salle de sport ou un passionné de fitness à domicile.",
+    features: [
+      "Matériau Ultra-Résistant : Fabriqué à partir d'un revêtement en PVC renforcé, il est résistant aux déchirures, à l'abrasion et facile à nettoyer.",
+      "Poignées Multiples et Ergonomiques : Doté de plusieurs poignées robustes et stratégiquement placées, il offre une multitude d'options de prise pour une variété infinie d'exercices : squats, fentes, presses, tirages, portés (carries), etc.",
+      "Stabilité Optimale : Le remplissage interne est conçu pour rester stable, évitant les déséquilibres inconfortables pendant les mouvements dynamiques."
+    ],
+    price: 720,
+    oldPrice: "",
+    discount: "",
+    image: l45,
+    gallery: [l45, l455],
+    category: "Equipements",
+    categoryId: "2",
+    subCategory: "",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    relatedProducts: ["9", "18"],
+  },
+   {
+    id: "130",
+    name: "Bulgarian Bag Pro IRONZ Personnalisable",
+    slug: "bulgarian-bag-pro-ironz-personnalisable-13kg",
+    description:
+      "Inspiré des méthodes d'entraînement traditionnelles des lutteurs, le Bulgarian Bag IRONZ est conçu pour développer la force explosive, la coordination et l'endurance musculaire comme aucun autre équipement. Sa forme unique en croissant épouse parfaitement les épaules pour un confort optimal lors des exercices dynamiques. Ce modèle de 13 kg est idéal pour un entraînement intense et polyvalent.",
+    features: [
+      "Forme Ergonomique : Sa conception unique permet une distribution équilibrée du poids et une grande liberté de mouvement pour des exercices comme les spins, les squats, les presses et les fentes dynamiques.",
+      "Prises Flexibles : Les poignées principales (les cornes) et les sangles extérieures offrent une variété de prises pour cibler différents groupes musculaires et varier l'intensité.",
+      "Stabilité Optimale : Le remplissage interne est conçu pour rester stable, évitant les déséquilibres inconfortables pendant les mouvements dynamiques.",
+      "Qualité Supérieure : Fabriqué avec un revêtement en cuir synthétique robuste et des coutures renforcées, il est conçu pour résister aux chocs, aux torsions et à une utilisation intensive et répétée."
+    ],
+    price: 838,
+    oldPrice: "",
+    discount: "",
+    image: l46,
+    gallery: [l46, l466],
+    category: "Equipements",
+    categoryId: "2",
+    subCategory: "",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: false,
+    inStock: true,
+    relatedProducts: ["11", "21"],
+  },
+ 
+
+  
 ];
 
 export const brands = [
