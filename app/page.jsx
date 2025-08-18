@@ -1595,7 +1595,7 @@ export default function Home() {
                 size="lg"
                 className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-xl shadow-md"
               >
-                <Link href="/produits">
+                <Link href="/product">
                   Voir tous les produits
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
