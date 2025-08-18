@@ -2696,7 +2696,7 @@ export const products = [
     features: [
       "Robustes et durables, les gants Pakka sont conçus pour les amateurs comme pour les professionnels, et sont disponibles en plusieurs designs modernes pour un look à la hauteur de vos performances. Préparez-vous à dominer le ring avec des gants qui allient style, confort et qualité artisanale.",
     ],
-    price: 159,
+    price: 109,
     oldPrice: null,
     discount: 0,
     image: l62,
