@@ -131,6 +131,8 @@ import l57 from "../public/l57.jpg";
 import l58 from "../public/l58.jpg";
 import l59 from "../public/l59.jpg";
 import l60 from "../public/l60.jpg";
+import l61 from "../public/l61.jpg";
+
 
 export const categories = [
   {
@@ -292,7 +294,6 @@ export const products = [
     isNew: false,
     isFeatured: false,
     inStock: true,
-    colors: ["Bleu", "Violet", "Vert", "Noir"],
     relatedProducts: ["8", "12"],
   },
   {
@@ -2657,6 +2658,33 @@ export const products = [
     inStock: true,
 
     relatedProducts: ["1", "17"],
+  },
+  {
+    id: "144",
+    name: "Poignées de Pompes Rotatives 'Push Up Professional' pour Musculation",
+    slug: "poignees-pompes-rotatives-push-up-professional",
+    description:
+      "Passez au niveau supérieur de vos entraînements avec les poignées de pompes rotatives 'Push Up Professional'. Conçues pour maximiser l'efficacité de vos pompes tout en minimisant la tension sur vos poignets, elles sont l'accessoire indispensable pour sculpter votre haut du corps.Leur base circulaire et stable permet une rotation fluide, engageant davantage de muscles dans la poitrine, les épaules, les bras et le tronc par rapport aux pompes classiques. Ce mouvement naturel protège vos articulations et vous permet de vous concentrer sur la performance.",
+    features: [
+      "Design Rotatif : Permet un mouvement naturel des bras et des épaules pour un meilleur engagement musculaire et une réduction du stress articulaire.",
+      "Stabilité Maximale : Base large et antidérapante assurant une parfaite sécurité sur tout type de sol.",
+      "Confort Ergonomique : Poignées robustes et confortables offrant une prise en main ferme et agréable, même pendant les séries les plus intenses.",
+      "Construction Durable : Fabriquées avec des matériaux de haute qualité pour résister à l'épreuve du temps et du poids.",
+      " Polyvalence : Idéales pour tous les niveaux, des débutants aux athlètes confirmés, pour varier les exercices et cibler efficacement le haut du corps."
+    ],
+    price: 249,
+    oldPrice: "",
+    discount: "",
+    image: l61,
+    gallery: [l61],
+    category: "Equipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: false,
+    isFeatured: false,
+    inStock: true,
+    relatedProducts: ["8", "12"],
   },
 ];
 
