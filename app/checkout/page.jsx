@@ -27,7 +27,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { cart, updateQuantity, removeFromCart, cartTotal, clearCart, color } =
     useCart();
-    console.log("CONTENU DU PANIER SUR LA PAGE CHECKOUT:", cart);
+  console.log("CONTENU DU PANIER SUR LA PAGE CHECKOUT:", cart);
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -221,7 +221,9 @@ export default function CheckoutPage() {
               Commande confirmée!
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-2">
-              Votre commande #{orderNumber} a été enregistrée avec succès.
+              Notre service commerciale va vous contacter dans 24 heures par
+              téléphone. On cas de non réponse de notre part veuillez nous
+              contacter par whatsapp au 0669510042.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/">
@@ -669,9 +671,11 @@ export default function CheckoutPage() {
                       {/* MODIFICATION 2 : Affichage de la taille et de la couleur dans le récapitulatif */}
                       {(item.selectedTaille || item.selectedColor) && (
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {item.selectedTaille && `Taille: ${item.selectedTaille}`}
-                          {item.selectedTaille && item.selectedColor && ' / '}
-                          {item.selectedColor && `Couleur: ${item.selectedColor}`}
+                          {item.selectedTaille &&
+                            `Taille: ${item.selectedTaille}`}
+                          {item.selectedTaille && item.selectedColor && " / "}
+                          {item.selectedColor &&
+                            `Couleur: ${item.selectedColor}`}
                         </p>
                       )}
                       <p className="text-xs text-gray-500 dark:text-gray-400">
