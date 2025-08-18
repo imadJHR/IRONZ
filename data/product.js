@@ -133,7 +133,14 @@ import l59 from "../public/l59.jpg";
 import l60 from "../public/l60.jpg";
 import l61 from "../public/l61.jpg";
 import l62 from "../public/l62.jpg";
-
+import l63 from "../public/l63.jpg";
+import l65 from "../public/l65.jpg";
+import l69 from "../public/l69.jpg";
+import l70 from "../public/l70.jpg";
+import l73 from "../public/l73.jpg";
+import l72 from "../public/l72.jpg";
+import l64 from "../public/l64.jpg";
+import l68 from "../public/l68.jpg";
 
 export const categories = [
   {
@@ -2558,7 +2565,7 @@ export const products = [
       "Confort Optimal : Coupe standard et tissu léger pour une liberté de mouvement totale sur le terrain comme au quotidien.",
     ],
     price: 138,
-    taille: ["4 ans", "6 ans", "12 ans", "16 ans", "18 ans","XL"],
+    taille: ["4 ans", "6 ans", "12 ans", "16 ans", "18 ans", "XL"],
     oldPrice: null,
     discount: 0,
     image: l51,
@@ -2671,7 +2678,7 @@ export const products = [
       "Stabilité Maximale : Base large et antidérapante assurant une parfaite sécurité sur tout type de sol.",
       "Confort Ergonomique : Poignées robustes et confortables offrant une prise en main ferme et agréable, même pendant les séries les plus intenses.",
       "Construction Durable : Fabriquées avec des matériaux de haute qualité pour résister à l'épreuve du temps et du poids.",
-      " Polyvalence : Idéales pour tous les niveaux, des débutants aux athlètes confirmés, pour varier les exercices et cibler efficacement le haut du corps."
+      " Polyvalence : Idéales pour tous les niveaux, des débutants aux athlètes confirmés, pour varier les exercices et cibler efficacement le haut du corps.",
     ],
     price: 249,
     oldPrice: "",
@@ -2711,6 +2718,145 @@ export const products = [
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
 
     taille: ["XL"],
+  },
+  {
+    id: "146",
+    name: "Short de Sport Performance - Rose Fluo",
+    slug: "short-sport-performance-rose-fluo",
+    description:
+      "Démarquez-vous à la salle de sport ou en plein air avec notre short de sport rose fluo. Conçu pour les athlètes qui cherchent à allier style audacieux et fonctionnalité, ce short est l'atout parfait pour des entraînements énergiques.",
+    features: [
+      "Confort et performance : Tissu léger, respirant et à séchage rapide.",
+      "Ajustement parfait : Ceinture élastique large et cordon de serrage résistant.",
+      "Polyvalent : Idéal pour tout type d'activité sportive, de la musculation à la natation",
+      "Design soigné : Logo minimaliste et finitions noires contrastantes.",
+    ],
+    price: 699,
+    colors: ["Bleu", "Rose", "Vert"],
+    taille: ["L", "xl", "M"],
+    oldPrice: null,
+    discount: 0,
+    image: l69,
+    gallery: [l69, l65, l70],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
+  },
+  {
+    id: "147",
+    name: "NARCIZO BODYBUILDING POSING TRUNK",
+    slug: "slip-posing-competition-bleu-metallise",
+    description:
+      "Montez sur scène avec une confiance absolue grâce à notre slip de posing conçu pour les champions. Spécialement étudié pour les compétitions de bodybuilding et Men's Physique, ce slip mettra en valeur chaque détail de votre préparation physique.",
+    features: [
+      "Usage : Idéal pour les compétitions de bodybuilding et physique.",
+      "Coupe Pro : Coupe en V échancrée pour une mise en valeur maximale du physique.",
+      "Tissu Premium : Effet métallisé/brillant qui accroche la lumière sur scène.",
+      "Maintien assuré : Conçu pour rester parfaitement en place durant chaque pose.",
+    ],
+    price: 799,
+    colors: ["Bleu", "Rouge"],
+    taille: ["S", "XL", "XXL"],
+    oldPrice: null,
+    discount: 0,
+    image: l72,
+    gallery: [l72, l73],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
+  },
+  {
+    id: "148",
+    name: "Casque Audio Bluetooth Edifier W800BT Plus - Idéal pour le Sport",
+    slug: "casque-audio-bluetooth-edifier-w800bt-plus-sport",
+    description:
+      "Concentration maximale et motivation absolue pour vos entraînements avec le casque audio Bluetooth Edifier W800BT Plus. Conçu pour offrir une expérience sonore de haute qualité, il est le partenaire idéal pour vous isoler et vous immerger dans votre musique à la salle de sport.Grâce à sa connexion Bluetooth 5.1, profitez d'une liberté de mouvement totale, sans aucun câble pour entraver vos exercices. Son plus grand atout est son autonomie record : avec près de 55 heures de lecture sur une seule charge, il vous suivra pendant des semaines d'entraînement.Léger et ergonomique, son design circum-aural (qui englobe l'oreille) et ses coussinets doux assurent un confort exceptionnel, même pendant les sessions les plus longues et intenses.",
+    features: [
+      "Marque reconnue : Edifier, gage de qualité audio.",
+      "Modèle : W800BT Plus",
+      "Autonomie exceptionnelle : Jusqu'à 55 heures de musique non-stop.",
+      "Liberté totale : Connectivité Bluetooth 5.1 stable et fiable.",
+      "Qualité sonore : Haut-parleurs de 40mm pour un son clair et des basses profondes.",
+      "Confort longue durée : Conception légère et coussinets confortables pour un maintien parfait.",
+      "Appels clairs : Microphone intégré avec réduction de bruit cVc 8.0 pour des appels mains libres.",
+    ],
+    price: 399,
+    oldPrice: null,
+    discount: 0,
+    image: l64,
+    gallery: [l64],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
+  },
+  {
+    id: "149",
+    name: "Veste de Survêtement Maroc",
+    slug: "veste-survetement-maroc-lions-atlas",
+    description:
+      "Portez les couleurs de la nation et affichez votre soutien indéfectible à l'équipe nationale avec cette magnifique veste de survêtement. Parfaite pour les jours de match, l'entraînement ou pour un style sportswear au quotidien, cette veste est un incontournable pour tout supporter des Lions de l'Atlas.Son design distinctif combine un torse noir élégant avec des manches aux motifs géométriques rouge et vert, inspirés de la richesse culturelle marocaine. L'écusson officiel de la Fédération Royale Marocaine de Football est soigneusement brodé sur le cœur, symbolisant votre fierté et votre passion.",
+    price: 109,
+    oldPrice: null,
+    discount: 0,
+    image: l63,
+    gallery: [l63],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
+  },
+  {
+    id: "150",
+    name: "Pack Complet de Combat Muay Thai / Kickboxing (5 en 1)",
+    slug: "pack-complet-combat-muay-thai-kickboxing",
+    description:
+      "Équipez-vous de la tête aux pieds avec notre pack de combat complet, spécialement conçu pour les pratiquants de Muay Thai, Kickboxing et autres sports de frappe. Cet ensemble a été soigneusement assemblé pour vous offrir tout l'équipement essentiel, alliant performance, protection et style. Idéal pour débuter la discipline ou pour renouveler son matériel avec un kit de qualité.",
+    price: 649,
+    features: [
+      "1 x Short de Muay Thai Venum x ONE Championship : Un short de haute qualité, léger et offrant une liberté de mouvement exceptionnelle. Son design gris, noir et or est à la fois sobre et percutant.",
+      "1 x Paire de Protège-tibias PAKKA : Indispensables pour la sécurité, ces protège-tibias ergonomiques absorbent les chocs lors des frappes et des blocages. Leur design noir et or est parfaitement assorti au reste de l'équipement.",
+      "1 x Paire de Gants de Frappe PAKKA : Gants polyvalents, parfaits pour l'entraînement sur sac, les pattes d'ours ou le sparring léger. Ils offrent un bon maintien et une protection efficace pour vos mains.",
+      "1 x Protège-dents Venum : La protection fondamentale pour vos dents et votre mâchoire, livré dans sa boîte hygiénique pour le transport.",
+      "1 x Paire de Bandes de Boxe PAKKA : Pour envelopper et protéger les articulations de vos mains et de vos poignets sous les gants.",
+    ],
+    oldPrice: null,
+    discount: 0,
+    image: l68,
+
+    colors: ["Gris", "Bleu", "Noir"],
+    gallery: [l68],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
   },
 ];
 
