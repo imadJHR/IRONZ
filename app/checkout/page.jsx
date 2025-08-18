@@ -220,11 +220,11 @@ export default function CheckoutPage() {
             <h1 className="text-3xl font-heading font-bold mb-4">
               Commande confirmée!
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-2">
+           {/* <p className="text-gray-600 dark:text-gray-400 mb-2">
               Notre service commerciale va vous contacter dans 24 heures par
               téléphone. On cas de non réponse de notre part veuillez nous
               contacter par whatsapp au 0669510042.
-            </p>
+            </p> */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/">
                 <Button className="bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-white dark:text-gray-900">
