@@ -138,6 +138,7 @@ import l65 from "../public/l65.jpg";
 import l69 from "../public/l69.jpg";
 import l70 from "../public/l70.jpg";
 import l73 from "../public/l73.jpg";
+import l74 from "../public/l74.jpg";
 import l72 from "../public/l72.jpg";
 import l64 from "../public/l64.jpg";
 import l68 from "../public/l68.jpg";
@@ -2365,7 +2366,7 @@ export const products = [
       "Grip Supérieur : Le revêtement de haute qualité assure une excellente prise en main et un contrôle précis du ballon.",
       "Haute Durabilité : Conçu pour résister à une utilisation intensive sur les parquets intérieurs comme sur les terrains extérieurs (playground).",
     ],
-    price: 249,
+    price: 299,
     image: l49,
     gallery: [l49],
     category: "Accessoires",
@@ -2857,6 +2858,35 @@ export const products = [
     inStock: true,
 
     relatedProducts: ["1", "17"],
+  },
+  {
+    id: "151",
+    name: " Optigura Creatine Monohydrate 250g",
+    slug: " optigura-creatine-monohydrate-250g",
+    description:
+      "Optigura Créatine Monohydrate est un complément alimentaire de haute pureté, conçu pour augmenter la force et l’énergie pendant l’entraînement, tout en favorisant le développement de la masse musculaire. Formulé avec de la créatine monohydrate 100% pure, il assure une absorption optimale et des résultats maximaux, idéal pour les sportifs souhaitant améliorer leurs performances.",
+    features: [
+      "Fournit des nutriments pour le développement de la masse musculaire maigre",
+      "Contribue à la perte de poids",
+      "Soutient le système immunitaire",
+      "Aide à maintenir des os, des cheveux, des ongles et une peau en bonne santé.",
+      "Big Ramy est l'un des plus grands bodybuilders de tous les temps, ayant remporté plusieurs fois le titre de Mr. Olympia. En créant Big Ramy Labs et la marque RED REX, il a réuni des produits nutritionnels qu'il estime propices à la croissance et au développement de quiconque est prêt à fournir des efforts en salle de sport et à suivre une bonne nutrition. RED REX est une marque sérieuse et déterminée !",
+    ],
+    price: 1900,
+    oldPrice: "",
+    discount: "",
+    image: l74,
+    gallery: [l74],
+    category: "Supplément",
+    categoryId: "3",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
   },
 ];
 
