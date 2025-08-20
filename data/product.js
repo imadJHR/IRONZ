@@ -1629,8 +1629,14 @@ export const products = [
     id: "105",
     name: "Tapis Abdos",
     slug: "Tapis-Abdos",
-    description: "",
-    features: [],
+    description:
+      "Tapis FAFA pour tous vos entraînements !Conçu pour tous les niveaux, le tapis FAFA offre confort et stabilité pour tous vos exercices. Avec ses deux faces antidérapantes, il garantit un entraînement sûr et efficace, sans glisser. Léger et facile à transporter, il vous accompagne partout pour vos séances quotidiennes.",
+    features: [
+      "Confort optimal grâce à sa mousse épaisse",
+      "Deux faces antidérapantes pour plus de sécurité",
+      "Léger et portable",
+      "Adapté à tous types d’exercices : renforcement musculaire, fitness, yoga, pilates, et plus",
+    ],
     price: 299,
     image: l9,
     gallery: [l9],
@@ -1910,8 +1916,6 @@ export const products = [
     isFeatured: true,
     inStock: true,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-
-    colors: ["Bleu", "Rouge", "Jaune"],
 
     relatedProducts: ["16", "17"],
   },
