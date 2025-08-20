@@ -1899,9 +1899,9 @@ export const products = [
   },
   {
     id: "118",
-    name: "TOTAL UPER BODY WORKOUT BAR",
+    name: "Barre de traction multifonction à fixer sur la porte",
     slug: "TOTAL-UPER-BODY-WORKOUT-BAR",
-    description: "",
+    description: "Barre de traction multifonction à fixer sur la porte, idéale pour un entraînement complet du haut du corps. Permet de travailler les dorsaux, les biceps, les pectoraux, les triceps et les abdos. Facile à installer sans perçage, robuste et pratique pour un usage à domicile",
     features: [""],
     price: 299,
     oldPrice: null,
@@ -1916,7 +1916,7 @@ export const products = [
     isFeatured: true,
     inStock: true,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-
+    colors:["Noir"],
     relatedProducts: ["16", "17"],
   },
   {
