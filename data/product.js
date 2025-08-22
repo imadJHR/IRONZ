@@ -142,6 +142,11 @@ import l74 from "../public/l74.jpg";
 import l72 from "../public/l72.jpg";
 import l64 from "../public/l64.jpg";
 import l68 from "../public/l68.jpg";
+import z1 from "../public/z1.jpg"
+import z2 from "../public/z2.jpg"
+import z3 from "../public/z3.jpg"
+import z4 from "../public/z4.jpg"
+import z5 from "../public/z5.jpg"
 
 export const categories = [
   {
@@ -1816,8 +1821,8 @@ export const products = [
     price: 7799,
     oldPrice: "",
     discount: "",
-    image: l24,
-    gallery: [l24],
+    image: z5,
+    gallery: [z5],
     category: "Equipements",
     categoryId: "2",
     subCategory: "Machines",
@@ -1846,7 +1851,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: l25,
-    gallery: [l25],
+    gallery: [l25,z1,z2,z3,z4],
     category: "Equipements",
     categoryId: "2",
     subCategory: "Machines",
@@ -1901,7 +1906,8 @@ export const products = [
     id: "118",
     name: "Barre de traction multifonction à fixer sur la porte",
     slug: "TOTAL-UPER-BODY-WORKOUT-BAR",
-    description: "Barre de traction multifonction à fixer sur la porte, idéale pour un entraînement complet du haut du corps. Permet de travailler les dorsaux, les biceps, les pectoraux, les triceps et les abdos. Facile à installer sans perçage, robuste et pratique pour un usage à domicile",
+    description:
+      "Barre de traction multifonction à fixer sur la porte, idéale pour un entraînement complet du haut du corps. Permet de travailler les dorsaux, les biceps, les pectoraux, les triceps et les abdos. Facile à installer sans perçage, robuste et pratique pour un usage à domicile",
     features: [""],
     price: 299,
     oldPrice: null,
@@ -1916,7 +1922,7 @@ export const products = [
     isFeatured: true,
     inStock: true,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-    colors:["Noir"],
+    colors: ["Noir"],
     relatedProducts: ["16", "17"],
   },
   {
@@ -3021,8 +3027,6 @@ export const productUtils = {
     }
     return null;
   },
-
-  // Obtenir toutes les sous-catégories d'une catégorie
   getSubCategoriesByCategoryId: (categoryId) => {
     const category = categories.find((cat) => cat.id === categoryId);
     return category?.subCategories || [];
