@@ -147,6 +147,14 @@ import z2 from "../public/z2.jpg"
 import z3 from "../public/z3.jpg"
 import z4 from "../public/z4.jpg"
 import z5 from "../public/z5.jpg"
+import w1 from "../public/w1.jpg"
+import w2 from "../public/w2.jpg"
+import w3 from "../public/w3.jpg"
+import w4 from "../public/w4.jpg"
+import w6 from "../public/w6.jpg"
+import w7 from "../public/w7.jpg"
+import w8 from "../public/w8.jpg"
+
 
 export const categories = [
   {
@@ -187,7 +195,7 @@ export const colorMap = {
   Violet: "#800080",
   Rose: "#FFC0CB",
   Chrome: "#C0C0C0",
-  Bois: "#D2B48C",
+  Beige: "#D2B48C",
   Rosefoncé: "#DB7093",
   "Multi 2": "linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #FFBE0B)", 
 };
@@ -1653,7 +1661,7 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Bois", "Rose", "Bleu", "Vert", "Gris"],
+    colors: ["Beige", "Rose", "Bleu", "Vert", "Gris"],
     relatedProducts: ["173", "68", "19"],
   },
   {
@@ -1664,7 +1672,7 @@ export const products = [
     features: [],
     price: 299,
     image: l10,
-    gallery: [l10, l11],
+    gallery: [l10, l11,w1],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.5,
@@ -1673,7 +1681,7 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Bleu", "Noir","Bois"],
+    colors: ["Bleu", "Noir","Beige"],
     relatedProducts: ["173", "68", "19"],
   },
   {
@@ -2749,7 +2757,7 @@ export const products = [
     oldPrice: null,
     discount: 0,
     image: l69,
-    gallery: [l69, l65, l70],
+    gallery: [l69, l65, l70,w6],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.9,
@@ -2859,7 +2867,7 @@ export const products = [
     image: l68,
 
     colors: ["Gris", "Bleu", "Noir"],
-    gallery: [l68],
+    gallery: [l68,w3,w4],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.9,
@@ -2909,9 +2917,9 @@ export const products = [
     
     oldPrice: null,
     discount: 0,
-    image: l68,
+    image: w2,
     taille: ["XXL","XL"],
-    gallery: [l68],
+    gallery: [w2],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.9,
@@ -2921,6 +2929,59 @@ export const products = [
     inStock: true,
 
     relatedProducts: ["1", "17"],
+  },
+  {
+    id: "153",
+    name: "SAC DE BOXE CUIR POIRE IRONZ 45KG",
+    slug: "sacs-boxe-cuir-poire-ironz",
+    description:
+      "Améliorez votre technique de frappe et votre condition physique avec le sac de boxe poire en cuir de la marque IRONZ. Conçu pour les pratiquants de boxe, MMA, Muay Thai et autres sports de combat, ce sac de forme poire est idéal pour travailler vos uppercuts, crochets et genoux. Sa forme unique permet une variété d'entraînements dynamiques, simulant les mouvements réels d'un adversaire.",
+    
+    price: "1299",
+    oldPrice: null,
+    discount: 0,
+    image: w8,
+    gallery: [w8],
+    category: "Equipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 120,
+    relatedProducts: ["8", "12"],
+  },
+   {
+    id: "154",
+    name: "SAC DE BOXE CUIR 1,80M",
+    slug: "sac-de-frappe-ironz-1-90m",
+    description:
+      "Améliorez vos séances d'entraînement avec le sac de frappe Ironz de 1,80 m. Conçu pour les athlètes amateurs et professionnels, ce sac de frappe est parfait pour améliorer votre force, votre endurance et votre technique.",
+    features: [
+      "Hauteur : 1,80 mètre",
+      "Matériau : Cuir synthétique de haute qualité et durable",
+      "Couleur : Noir ",
+      "Marque : Ironz",
+      "Utilisation : Convient pour la boxe, le kickboxing et l'entraînement MMA",
+      "Caractéristiques de design : Coutures renforcées pour une durabilité accrue, une sangle de suspension robuste et un logo Ironz proéminent",
+      "Poids : Remplissage lourd pour une résistance et une efficacité d'entraînement optimales",
+      "Poids : Remplissage lourd pour une résistance et une efficacité d'entraînement optimales",
+    ],
+    price: "1899",
+    oldPrice: null,
+    discount: 0,
+    image: w7,
+    gallery: [w7],
+    category: "Equipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 120,
+    relatedProducts: ["8", "12"],
   },
 ];
 
