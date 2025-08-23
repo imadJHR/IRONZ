@@ -93,7 +93,6 @@ import l19 from "../public/l19.jpg";
 import l20 from "../public/l20.jpg";
 import l21 from "../public/l21.jpg";
 import l22 from "../public/l22.jpg";
-import l24 from "../public/l24.jpg";
 import l25 from "../public/l25.jpg";
 import l26 from "../public/l26.jpg";
 import l27 from "../public/l27.jpg";
@@ -142,19 +141,20 @@ import l74 from "../public/l74.jpg";
 import l72 from "../public/l72.jpg";
 import l64 from "../public/l64.jpg";
 import l68 from "../public/l68.jpg";
-import z1 from "../public/z1.jpg"
-import z2 from "../public/z2.jpg"
-import z3 from "../public/z3.jpg"
-import z4 from "../public/z4.jpg"
-import z5 from "../public/z5.jpg"
-import w1 from "../public/w1.jpg"
-import w2 from "../public/w2.jpg"
-import w3 from "../public/w3.jpg"
-import w4 from "../public/w4.jpg"
-import w6 from "../public/w6.jpg"
-import w7 from "../public/w7.jpg"
-import w8 from "../public/w8.jpg"
-
+import z1 from "../public/z1.jpg";
+import z2 from "../public/z2.jpg";
+import z3 from "../public/z3.jpg";
+import z4 from "../public/z4.jpg";
+import z5 from "../public/z5.jpg";
+import w1 from "../public/w1.jpg";
+import w2 from "../public/w2.jpg";
+import w11 from "../public/w11.jpg";
+import w4 from "../public/w4.jpg";
+import w6 from "../public/w6.jpg";
+import w7 from "../public/w7.jpg";
+import w8 from "../public/w8.jpg";
+import w9 from "../public/w9.jpg";
+import w10 from "../public/w10.jpg";
 
 export const categories = [
   {
@@ -197,7 +197,7 @@ export const colorMap = {
   Chrome: "#C0C0C0",
   Beige: "#D2B48C",
   Rosefoncé: "#DB7093",
-  "Multi 2": "linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #FFBE0B)", 
+  "Multi 2": "linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #FFBE0B)",
 };
 export const products = [
   {
@@ -1672,7 +1672,7 @@ export const products = [
     features: [],
     price: 299,
     image: l10,
-    gallery: [l10, l11,w1],
+    gallery: [l10, l11, w1],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.5,
@@ -1681,7 +1681,7 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Bleu", "Noir","Beige"],
+    colors: ["Bleu", "Noir", "Beige"],
     relatedProducts: ["173", "68", "19"],
   },
   {
@@ -1810,7 +1810,7 @@ export const products = [
     image: l19,
     gallery: [l19],
     category: "Accessoires",
-    taille:["L","XL"],
+    taille: ["L", "XL"],
     categoryId: "4",
     rating: 4.5,
     reviewCount: 74,
@@ -1860,7 +1860,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: l25,
-    gallery: [l25,z1,z2,z3,z4],
+    gallery: [l25, z1, z2, z3, z4],
     category: "Equipements",
     categoryId: "2",
     subCategory: "Machines",
@@ -2673,7 +2673,7 @@ export const products = [
     ],
     price: 59,
     oldPrice: null,
-    taille: ["S","M","XL"],
+    taille: ["S", "M", "XL"],
     discount: 0,
     image: l60,
     gallery: [l60],
@@ -2752,12 +2752,12 @@ export const products = [
       "Design soigné : Logo minimaliste et finitions noires contrastantes.",
     ],
     price: 699,
-    colors: ["Bleu", "Rose",,"Rouge", "Vert","Rosefoncé","Multi 2"],
+    colors: ["Bleu", "Rose", , "Rouge", "Vert", "Rosefoncé", "Multi 2"],
     taille: ["L", "xl", "M"],
     oldPrice: null,
     discount: 0,
     image: l69,
-    gallery: [l69, l65, l70,w6],
+    gallery: [l69, l65, l70, w6, w9],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.9,
@@ -2781,8 +2781,8 @@ export const products = [
       "Maintien assuré : Conçu pour rester parfaitement en place durant chaque pose.",
     ],
     price: 799,
-    colors: ["Bleu", "Rouge","Vert"],
-    taille: ["S", "M","XL", "XXL"],
+    colors: ["Bleu", "Rouge", "Vert"],
+    taille: ["S", "M", "XL", "XXL"],
     oldPrice: null,
     discount: 0,
     image: l72,
@@ -2867,7 +2867,7 @@ export const products = [
     image: l68,
 
     colors: ["Gris", "Bleu", "Noir"],
-    gallery: [l68,w3,w4],
+    gallery: [l68, w4, w10],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.9,
@@ -2907,18 +2907,17 @@ export const products = [
     tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
     relatedProducts: ["8", "6", "8"],
   },
-   {
+  {
     id: "152",
     name: "T-short hassania AGADIR",
     slug: "t-short-hassania-agadir",
-    description:
-      "",
+    description: "",
     price: 109,
-    
+
     oldPrice: null,
     discount: 0,
     image: w2,
-    taille: ["XXL","XL"],
+    taille: ["XXL", "XL"],
     gallery: [w2],
     category: "Accessoires",
     categoryId: "4",
@@ -2936,7 +2935,7 @@ export const products = [
     slug: "sacs-boxe-cuir-poire-ironz",
     description:
       "Améliorez votre technique de frappe et votre condition physique avec le sac de boxe poire en cuir de la marque IRONZ. Conçu pour les pratiquants de boxe, MMA, Muay Thai et autres sports de combat, ce sac de forme poire est idéal pour travailler vos uppercuts, crochets et genoux. Sa forme unique permet une variété d'entraînements dynamiques, simulant les mouvements réels d'un adversaire.",
-    
+
     price: "1299",
     oldPrice: null,
     discount: 0,
@@ -2952,7 +2951,7 @@ export const products = [
     stockQuantity: 120,
     relatedProducts: ["8", "12"],
   },
-   {
+  {
     id: "154",
     name: "SAC DE BOXE CUIR 1,80M",
     slug: "sac-de-frappe-ironz-1-90m",
@@ -2974,6 +2973,28 @@ export const products = [
     image: w7,
     gallery: [w7],
     category: "Equipements",
+    categoryId: "2",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 120,
+    relatedProducts: ["8", "12"],
+  },
+  {
+    id: "155",
+    name: "SHORT LYCRA",
+    slug: "short-lycra",
+    description: "",
+    features: [],
+    price: 139,
+    oldPrice: null,
+    discount: 0,
+    taille: ["S", "M", "XL", "XXL"],
+    image: w11,
+    gallery: [w11],
+    category: "Accessoires",
     categoryId: "2",
     rating: 4.9,
     reviewCount: 89,
