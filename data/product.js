@@ -155,6 +155,7 @@ import w7 from "../public/w7.jpg";
 import w8 from "../public/w8.jpg";
 import w9 from "../public/w9.jpg";
 import w10 from "../public/w10.jpg";
+import m60 from "../public/m60.jpg"
 
 export const categories = [
   {
@@ -2585,7 +2586,7 @@ export const products = [
       "Confort Optimal : Coupe standard et tissu léger pour une liberté de mouvement totale sur le terrain comme au quotidien.",
     ],
     price: 139,
-    taille: ["8 ans"],
+    taille: ["4 ans","8 ans","12 ans","16 ans","18 ans","XL"],
     oldPrice: null,
     discount: 0,
     image: l51,
@@ -2676,9 +2677,10 @@ export const products = [
     taille: ["S", "M", "XL"],
     discount: 0,
     image: l60,
-    gallery: [l60],
+    gallery: [l60,m60],
     category: "Accessoires",
     categoryId: "4",
+    colors:["Noir",'Jaune'],
     rating: 4.9,
     reviewCount: 89,
     isNew: true,
