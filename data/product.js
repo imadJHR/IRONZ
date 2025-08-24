@@ -1682,7 +1682,7 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Bleu", "Noir", "Beige"],
+    colors: ["Bleu",  "Beige"],
     relatedProducts: ["173", "68", "19"],
   },
   {
