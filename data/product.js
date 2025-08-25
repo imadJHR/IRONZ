@@ -159,6 +159,11 @@ import m60 from "../public/m60.jpg"
 import v1 from "../public/v1.jpg"
 import v2 from "../public/v2.jpg"
 import v3 from "../public/v3.jpg"
+import v4 from "../public/v4.jpg"
+import v5 from "../public/v5.jpg"
+import v6 from "../public/v6.jpg"
+import v7 from "../public/v7.jpg"
+import v8 from "../public/v8.jpg"
 
 export const categories = [
   {
@@ -1531,7 +1536,7 @@ export const products = [
     features: [],
     price: 249,
     image: l1,
-    gallery: [l1],
+    gallery: [l1, v4, v5],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.5,
@@ -1540,7 +1545,7 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Noir"],
+    colors: ["Noir", "Bleu", "Gris"],
     relatedProducts: ["17", "67", "69"],
   },
   {
@@ -1675,11 +1680,11 @@ export const products = [
     description: "Découvrez le sac de sport T60, l'accessoire indispensable pour tous les passionnés de fitness et de sport. Conçu pour allier style audacieux et fonctionnalité maximale, ce sac  dynamique vous accompagnera dans toutes vos aventures sportives, de la salle de gym .",
     features: ["Design Moderne et Sportif : Affichez votre détermination avec son logo 'T60' imposant et son look athlétique.",
       "Rangement Optimisé : Un grand compartiment principal zippé vous offre tout l'espace nécessaire pour vos vêtements, chaussures, serviette et équipement.",
-    "Poche d'Accès Rapide : Une poche avant zippée, parfaite pour garder vos essentiels (clés, téléphone, portefeuille) à portée de main.",
-  "Confort et Polyvalence : Transportez-le facilement grâce à ses deux poignées robustes avec attache rembourrée ou utilisez la bandoulière réglable et amovible pour un port confortable à l'épaule."],
+      "Poche d'Accès Rapide : Une poche avant zippée, parfaite pour garder vos essentiels (clés, téléphone, portefeuille) à portée de main.",
+      "Confort et Polyvalence : Transportez-le facilement grâce à ses deux poignées robustes avec attache rembourrée ou utilisez la bandoulière réglable et amovible pour un port confortable à l'épaule."],
     price: 299,
     image: l11,
-    gallery: [ l11, w1],
+    gallery: [l11, w1],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.5,
@@ -1688,7 +1693,7 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Bleu",  "Beige","Gris"],
+    colors: ["Bleu", "Beige", "Gris"],
     relatedProducts: ["173", "68", "19"],
   },
   {
@@ -1838,7 +1843,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: z5,
-    gallery: [z5,v1,v2,v3],
+    gallery: [z5, v1, v2, v3],
     category: "Equipements",
     categoryId: "2",
     subCategory: "Machines",
@@ -2592,7 +2597,7 @@ export const products = [
       "Confort Optimal : Coupe standard et tissu léger pour une liberté de mouvement totale sur le terrain comme au quotidien.",
     ],
     price: 139,
-    taille: ["4 ans","8 ans","12 ans","16 ans","18 ans","XL"],
+    taille: ["4 ans", "8 ans", "12 ans", "16 ans", "18 ans", "XL"],
     oldPrice: null,
     discount: 0,
     image: l51,
@@ -2680,7 +2685,7 @@ export const products = [
     ],
     price: 59,
     oldPrice: null,
-    taille: [ "M"],
+    taille: ["M"],
     discount: 0,
     image: l60,
     gallery: [l60],
@@ -2727,7 +2732,7 @@ export const products = [
     slug: "t-shirt-muay-thai-born-to-be-warrior",
     description:
       "Portez l'esprit du guerrier qui sommeille en vous avec ce t-shirt unique. Il présente une illustration audacieuse d'un combattant de Muay Thai aux muscles saillants et aux poings serrés, encadré par des motifs inspirés de l'arène et des dragons. Parfait pour les fans et pratiquants de Muay Thai et d'arts martiaux, ce t-shirt est conçu pour ceux qui sont nés pour le combat. Fabriqué en tissu léger et confortable, il est idéal pour l'entraînement ou pour afficher votre passion au quotidien.",
-   
+
     price: 109,
     oldPrice: null,
     discount: 0,
@@ -2791,7 +2796,7 @@ export const products = [
     oldPrice: null,
     discount: 0,
     image: l72,
-    gallery: [l72, l73],
+    gallery: [l72, l73, v6],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.9,
@@ -3009,7 +3014,7 @@ export const products = [
     stockQuantity: 120,
     relatedProducts: ["8", "12"],
   },
-   {
+  {
     id: "156",
     name: "Gants de Musculation PAKKA avec Support de Poignet Intégré - Noir & Jaune Fluo",
     slug: "gants-musculation-pakka-support-poignet-noir-jaune",
@@ -3028,6 +3033,46 @@ export const products = [
     discount: 0,
     image: m60,
     gallery: [m60],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
+  },
+  {
+    id: "157",
+    name: "Ensemble Sweat shaper",
+    slug: "Ensemble-Sweat-shaper",
+    price: 299,
+    taille: ["XL", "L"],
+    oldPrice: null,
+    discount: 0,
+    image: v8,
+    gallery: [v8],
+    category: "Accessoires",
+    categoryId: "4",
+    rating: 4.9,
+    reviewCount: 89,
+    isNew: true,
+    isFeatured: true,
+    inStock: true,
+
+    relatedProducts: ["1", "17"],
+  },
+  {
+    id: "158",
+    name: "Survêtement pour enfants",
+    slug: "survetement-pour-enfants",
+    price: 159,
+    taille: ["4ans", "6ans"],
+    oldPrice: null,
+    discount: 0,
+    image: v7,
+    gallery: [v7],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.9,

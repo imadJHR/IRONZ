@@ -114,16 +114,17 @@ export default function ProductsPage() {
   useEffect(() => {
     let result = [...products];
 
-    // Apply search filter
+    // Apply search filter (CORRECTED BLOCK)
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
         (product) =>
-          product.name.toLowerCase().includes(query) ||
-          product.description.toLowerCase().includes(query) ||
-          (product.category && product.category.toLowerCase().includes(query)) ||
-          (product.tags && product.tags.some((tag) => tag.toLowerCase().includes(query))) ||
-          (product.subCategory && product.subCategory.toLowerCase().includes(query))
+          // Ajout de ?. pour éviter les erreurs si les champs sont undefined
+          product.name?.toLowerCase().includes(query) ||
+          product.description?.toLowerCase().includes(query) ||
+          product.category?.toLowerCase().includes(query) ||
+          (product.tags && product.tags.some((tag) => tag?.toLowerCase().includes(query))) ||
+          product.subCategory?.toLowerCase().includes(query)
       );
     }
 
