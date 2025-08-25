@@ -156,6 +156,9 @@ import w8 from "../public/w8.jpg";
 import w9 from "../public/w9.jpg";
 import w10 from "../public/w10.jpg";
 import m60 from "../public/m60.jpg"
+import v1 from "../public/v1.jpg"
+import v2 from "../public/v2.jpg"
+import v3 from "../public/v3.jpg"
 
 export const categories = [
   {
@@ -1832,7 +1835,7 @@ export const products = [
     oldPrice: "",
     discount: "",
     image: z5,
-    gallery: [z5],
+    gallery: [z5,v1,v2,v3],
     category: "Equipements",
     categoryId: "2",
     subCategory: "Machines",
@@ -2721,9 +2724,7 @@ export const products = [
     slug: "t-shirt-muay-thai-born-to-be-warrior",
     description:
       "Portez l'esprit du guerrier qui sommeille en vous avec ce t-shirt unique. Il présente une illustration audacieuse d'un combattant de Muay Thai aux muscles saillants et aux poings serrés, encadré par des motifs inspirés de l'arène et des dragons. Parfait pour les fans et pratiquants de Muay Thai et d'arts martiaux, ce t-shirt est conçu pour ceux qui sont nés pour le combat. Fabriqué en tissu léger et confortable, il est idéal pour l'entraînement ou pour afficher votre passion au quotidien.",
-    features: [
-      "Robustes et durables, les gants Pakka sont conçus pour les amateurs comme pour les professionnels, et sont disponibles en plusieurs designs modernes pour un look à la hauteur de vos performances. Préparez-vous à dominer le ring avec des gants qui allient style, confort et qualité artisanale.",
-    ],
+   
     price: 109,
     oldPrice: null,
     discount: 0,
