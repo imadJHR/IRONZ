@@ -30,8 +30,8 @@ import a47 from "../public/a47.jpg";
 import a51 from "../public/a51.jpg";
 import a53 from "../public/a53.jpg";
 import a54 from "../public/a54.jpg";
-import a55 from "../public/a55.jpeg";
-import a56 from "../public/a56.jpeg";
+import a55 from "../public/a55.jpg";
+import a56 from "../public/a56.jpg";
 import a58 from "../public/a58.jpg";
 import a59 from "../public/a59.jpg";
 import a60 from "../public/a60.jpg";
@@ -80,7 +80,9 @@ import l6 from "../public/l6.jpg";
 import l7 from "../public/l7.jpg";
 import l8 from "../public/l8.jpg";
 import l9 from "../public/l9.jpg";
-import l10 from "../public/l10.jpg";
+import l99 from "../public/l99.jpg";
+import l999 from "../public/l999.jpg";
+import l9999 from "../public/l9999.jpg";
 import l11 from "../public/l11.jpg";
 import l12 from "../public/l12.jpg";
 import l13 from "../public/l13.jpg";
@@ -1662,7 +1664,7 @@ export const products = [
     ],
     price: 299,
     image: l9,
-    gallery: [l9],
+    gallery: [l9, l99, l999, l9999],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.5,
@@ -1671,7 +1673,7 @@ export const products = [
     isFeatured: false,
     inStock: true,
     stockQuantity: 35,
-    colors: ["Beige", "Rose", "Bleu", "Vert", "Gris"],
+    colors: ["Beige", "Gris", "Rose", "Bleu"],
     relatedProducts: ["173", "68", "19"],
   },
   {
@@ -1685,7 +1687,7 @@ export const products = [
       "Confort et Polyvalence : Transportez-le facilement grâce à ses deux poignées robustes avec attache rembourrée ou utilisez la bandoulière réglable et amovible pour un port confortable à l'épaule."],
     price: 299,
     image: l11,
-    gallery: [l11, w1,w111],
+    gallery: [l11, w1, w111],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.5,
@@ -3047,7 +3049,7 @@ export const products = [
   {
     id: "157",
     name: "Ensemble Sweat shaper",
-    description:"Découvrez notre ensemble de sudation haute performance, conçu pour vous faire transpirer comme jamais ! Grâce à sa doublure intérieure innovante qui piège la chaleur, ce survêtement augmente votre température corporelle pour accélérer la combustion des calories et la perte de poids en eau. Son design noir élégant et sa coupe confortable en font l'allié parfait pour la salle de sport, le running ou toute activité physique. Intensifiez chaque effort et atteignez vos objectifs plus rapidement !",
+    description: "Découvrez notre ensemble de sudation haute performance, conçu pour vous faire transpirer comme jamais ! Grâce à sa doublure intérieure innovante qui piège la chaleur, ce survêtement augmente votre température corporelle pour accélérer la combustion des calories et la perte de poids en eau. Son design noir élégant et sa coupe confortable en font l'allié parfait pour la salle de sport, le running ou toute activité physique. Intensifiez chaque effort et atteignez vos objectifs plus rapidement !",
     slug: "Ensemble-Sweat-shaper",
     price: 299,
     taille: ["XL", "L"],
