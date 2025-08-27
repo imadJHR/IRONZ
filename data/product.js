@@ -147,6 +147,7 @@ import z3 from "../public/z3.jpg";
 import z4 from "../public/z4.jpg";
 import z5 from "../public/z5.jpg";
 import w1 from "../public/w1.jpg";
+import w111 from "../public/w111.jpg";
 import w2 from "../public/w2.jpg";
 import w11 from "../public/w11.jpg";
 import w4 from "../public/w4.jpg";
@@ -1684,7 +1685,7 @@ export const products = [
       "Confort et Polyvalence : Transportez-le facilement grâce à ses deux poignées robustes avec attache rembourrée ou utilisez la bandoulière réglable et amovible pour un port confortable à l'épaule."],
     price: 299,
     image: l11,
-    gallery: [l11, w1],
+    gallery: [l11, w1,w111],
     category: "Accessoires",
     categoryId: "4",
     rating: 4.5,
@@ -3046,6 +3047,7 @@ export const products = [
   {
     id: "157",
     name: "Ensemble Sweat shaper",
+    description:"Découvrez notre ensemble de sudation haute performance, conçu pour vous faire transpirer comme jamais ! Grâce à sa doublure intérieure innovante qui piège la chaleur, ce survêtement augmente votre température corporelle pour accélérer la combustion des calories et la perte de poids en eau. Son design noir élégant et sa coupe confortable en font l'allié parfait pour la salle de sport, le running ou toute activité physique. Intensifiez chaque effort et atteignez vos objectifs plus rapidement !",
     slug: "Ensemble-Sweat-shaper",
     price: 299,
     taille: ["XL", "L"],
