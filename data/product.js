@@ -2904,7 +2904,7 @@ export const products = [
       "Aide à maintenir des os, des cheveux, des ongles et une peau en bonne santé.",
       "Big Ramy est l'un des plus grands bodybuilders de tous les temps, ayant remporté plusieurs fois le titre de Mr. Olympia. En créant Big Ramy Labs et la marque RED REX, il a réuni des produits nutritionnels qu'il estime propices à la croissance et au développement de quiconque est prêt à fournir des efforts en salle de sport et à suivre une bonne nutrition. RED REX est une marque sérieuse et déterminée !",
     ],
-    price: 1900,
+    price: "330",
     oldPrice: "",
     discount: "",
     image: l74,
