@@ -2893,8 +2893,8 @@ export const products = [
   },
   {
     id: "151",
-    name: " Optigura Creatine Monohydrate 250g",
-    slug: " optigura-creatine-monohydrate-250g",
+    name: "Optigura Creatine Monohydrate 250g",
+    slug: "optigura-creatine-monohydrate-250g",
     description:
       "Optigura Créatine Monohydrate est un complément alimentaire de haute pureté, conçu pour augmenter la force et l’énergie pendant l’entraînement, tout en favorisant le développement de la masse musculaire. Formulé avec de la créatine monohydrate 100% pure, il assure une absorption optimale et des résultats maximaux, idéal pour les sportifs souhaitant améliorer leurs performances.",
     features: [
