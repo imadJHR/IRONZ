@@ -893,7 +893,7 @@ export const products = [
     image: a82,
     gallery: [a82],
     category: "Accessoires",
-    categoryId: "3",
+    categoryId: "4",
     rating: 4.7,
     reviewCount: 124,
     isNew: false,
@@ -2674,7 +2674,7 @@ export const products = [
     relatedProducts: ["1", "17"],
   },
   {
-    id: "143",
+    id: "1411",
     name: "Gants de Musculation FAFA SPORT avec Maintien Poignet",
     slug: "gants-musculation-fafa-sport-maintien-poignet",
     description:
