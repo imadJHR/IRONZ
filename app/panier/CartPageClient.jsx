@@ -38,16 +38,12 @@ export default function CartPageClient() {
     setMounted(true);
   }, []);
 
-  // Calculer le total du panier (CORRIGÉ)
+  // Calculer le total du panier
   const cartTotal = cart.reduce(
-    (total, item) =>
-      total + (Number(item.price) || 0) * (Number(item.quantity) || 0),
+    (total, item) => total + item.price * item.quantity,
     0
   );
-  const totalItems = cart.reduce(
-    (total, item) => total + (Number(item.quantity) || 0),
-    0
-  );
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   // Calculer les frais de livraison
   const shippingCost = cartTotal > 500 ? 0 : 30;
@@ -98,16 +94,12 @@ export default function CartPageClient() {
   };
 
   const formatPrice = (price) => {
-    const numericPrice = Number(price);
-    if (isNaN(numericPrice)) {
-      return "0 MAD"; // Fallback for safety
-    }
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
       currency: "MAD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(numericPrice);
+    }).format(price);
   };
 
   // Fonction pour obtenir la couleur hex
@@ -120,7 +112,7 @@ export default function CartPageClient() {
   const generateUniqueKey = (item, index) => {
     const baseKey = `${item.id}-${item.selectedColor || "default"}`;
     // Ajouter l'index pour garantir l'unicité même en cas de doublons
-    return `${baseKey}-${index}`; // Removed Date.now() for stability
+    return `${baseKey}-${index}-${Date.now()}`;
   };
 
   // Affichage pendant le chargement
@@ -147,8 +139,9 @@ export default function CartPageClient() {
               Votre panier est vide
             </h1>
             <p className="text-gray-500 dark:text-gray-400 mb-8">
-              Vous n'avez pas encore ajouté de produits à votre panier. Découvrez
-              notre catalogue pour trouver des produits qui vous plaisent.
+              Vous n'avez pas encore ajouté de produits à votre panier.
+              Découvrez notre catalogue pour trouver des produits qui vous
+              plaisent.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -454,6 +447,9 @@ export default function CartPageClient() {
                   <Truck className="h-4 w-4 mr-2 flex-shrink-0 text-green-500" />
                   <span>Livraison rapide</span>
                 </div>
+
+               
+               
               </div>
 
               {/* Alerte informative - Updated Design */}
@@ -475,9 +471,9 @@ export default function CartPageClient() {
                       Information importante
                     </h3>
                     <p className="text-yellow-700 dark:text-yellow-200/90 text-base leading-snug">
-                      Certains produits nécessitent un paiement d'avance. Le
-                      montant exact vous sera communiqué lors de la
-                      confirmation de commande.
+                      Certains produits nécessitent un
+                      paiement d'avance. Le montant exact vous sera communiqué
+                      lors de la confirmation de commande.
                     </p>
                   </div>
                 </div>
