@@ -1256,7 +1256,6 @@ function Navbar({ language, toggleLanguage }) {
                     <div className="ml-2 flex flex-col space-y-2">
                       <button
                         onClick={() => {
-                          // Add to cart logic would go here
                           toggleFavorites();
                         }}
                         className="p-1 text-yellow-500 hover:text-yellow-600 rounded-full hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
