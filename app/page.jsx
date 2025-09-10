@@ -62,6 +62,7 @@ import banner1 from "../public/des1.jpg";
 import banner2 from "../public/des2.jpg";
 import banner3 from "../public/des3.jpg";
 import banner4 from "../public/des4.jpg";
+import banner5 from "../public/phototest.webp";
 
 const faqs = [
   {
@@ -630,6 +631,17 @@ const banners = [
     imageTablet: img4,
     imageMobile: img8,
     title: "C-21 BIKE",
+    highlight: "Highlight",
+    description: "",
+    link: "https://www.ironz.ma/product/C-21-BIKE",
+    icon: "🌟",
+  },
+   {
+    id: 5,
+    imageDesktop: banner5,
+    imageTablet: banner5,
+    imageMobile: img8,
+    title: "test",
     highlight: "Highlight",
     description: "",
     link: "https://www.ironz.ma/product/C-21-BIKE",
