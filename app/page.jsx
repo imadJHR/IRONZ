@@ -966,7 +966,7 @@ export default function Home() {
                 Explorez nos collections
               </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-white font-sans tracking-tight">
-                Nos <span className="text-yellow-500">TEST</span>
+                Nos<span className="text-yellow-500">Category</span>
               </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
                 Découvrez notre sélection d'équipements premium pour tous vos
