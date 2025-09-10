@@ -167,7 +167,6 @@ import v5 from "../public/v5.jpg"
 import v6 from "../public/v6.jpg"
 import v7 from "../public/v7.jpg"
 import v8 from "../public/v8.jpg"
-import v9 from "../public/phototest.webp"
 
 export const categories = [
   {

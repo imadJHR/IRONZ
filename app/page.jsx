@@ -62,7 +62,6 @@ import banner1 from "../public/des1.jpg";
 import banner2 from "../public/des2.jpg";
 import banner3 from "../public/des3.jpg";
 import banner4 from "../public/des4.jpg";
-import banner5 from "../public/phototest.webp";
 
 const faqs = [
   {
