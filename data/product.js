@@ -3088,27 +3088,6 @@ export const products = [
 
     relatedProducts: ["1", "17"],
   },
-  {
-    id: "159",
-    name: "test",
-    description: "TEST notre ensemble de sudation haute performance, conçu pour vous faire transpirer comme jamais ! Grâce à sa doublure intérieure innovante qui piège la chaleur, ce survêtement augmente votre température corporelle pour accélérer la combustion des calories et la perte de poids en eau. Son design noir élégant et sa coupe confortable en font l'allié parfait pour la salle de sport, le running ou toute activité physique. Intensifiez chaque effort et atteignez vos objectifs plus rapidement !",
-    slug: "test",
-    price: 159,
-    taille: ["XL", "S"],
-    oldPrice: 200,
-    discount: 5,
-    image: v9,
-    gallery: [v9],
-    category: "Accessoires",
-    categoryId: "4",
-    rating: 4.9,
-    reviewCount: 70,
-    isNew: true,
-    isFeatured: true,
-    inStock: true,
-
-    relatedProducts: ["1", "17"],
-  },
 ];
 
 export const brands = [
