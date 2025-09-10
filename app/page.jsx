@@ -636,17 +636,6 @@ const banners = [
     link: "https://www.ironz.ma/product/C-21-BIKE",
     icon: "🌟",
   },
-   {
-    id: 5,
-    imageDesktop: banner5,
-    imageTablet: banner5,
-    imageMobile: img8,
-    title: "test",
-    highlight: "Highlight",
-    description: "",
-    link: "https://www.ironz.ma/product/C-21-BIKE",
-    icon: "🌟",
-  },
 ];
 
 export default function Home() {
