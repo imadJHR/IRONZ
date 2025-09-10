@@ -495,7 +495,7 @@ export const products = [
 
     relatedProducts: ["3", "7", "9"],
   },
-  {
+  {/*
     id: "15",
     name: "RED REX 100% BEEF PROTEIN ISOLATE 8 lbs",
     slug: "red-rex-beef",
@@ -523,7 +523,7 @@ export const products = [
     stockQuantity: 45,
     tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
     relatedProducts: ["8", "6", "8"],
-  },
+*/  },
   {
     id: "16",
     name: "Shaker sportif avec porte-clé protéine Whey  – Plus qu'un simple shaker !",
