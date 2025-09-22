@@ -1663,7 +1663,7 @@ export const products = [
       "Adapté à tous types d’exercices : renforcement musculaire, fitness, yoga, pilates, et plus",
     ],
     price: 299,
-    old price: "399",
+    old price: 399,
     image: l9,
     gallery: [l9, l99, l999, l9999],
     category: "Accessoires",
