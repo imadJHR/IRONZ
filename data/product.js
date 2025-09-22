@@ -1652,10 +1652,10 @@ export const products = [
   },
   {
     id: "105",
-    name: "Tapis Abdos",
-    slug: "Tapis-Abdos",
+    name: "Tapis de sport",
+    slug: "Tapis-sport",
     description:
-      "Tapis FAFA pour tous vos entraînements !Conçu pour tous les niveaux, le tapis FAFA offre confort et stabilité pour tous vos exercices. Avec ses deux faces antidérapantes, il garantit un entraînement sûr et efficace, sans glisser. Léger et facile à transporter, il vous accompagne partout pour vos séances quotidiennes.",
+      "Tapis de sport FAFA pour tous vos entraînements !Conçu pour tous les niveaux, le tapis FAFA offre confort et stabilité pour tous vos exercices. Avec ses deux faces antidérapantes, il garantit un entraînement sûr et efficace, sans glisser. Léger et facile à transporter, il vous accompagne partout pour vos séances quotidiennes.",
     features: [
       "Confort optimal grâce à sa mousse épaisse",
       "Deux faces antidérapantes pour plus de sécurité",
