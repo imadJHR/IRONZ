@@ -3012,7 +3012,7 @@ export const products = [
     categoryId: "2",
     rating: 4.9,
     reviewCount: 95,
-    isNew: true,
+    isNew: false,
     isFeatured: true,
     inStock: true,
     stockQuantity: 120,
