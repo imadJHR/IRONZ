@@ -75,28 +75,28 @@ export default function CartPageClient() {
   const totalWithShipping = cartTotal + shippingCost - discount;
 
   const handleQuantityChange = (id, selectedColor, newQuantity) => {
-  if (newQuantity >= 1 && newQuantity <= 99) {
+    if (newQuantity >= 1 && newQuantity <= 99) {
+      // Trouver l'article pour obtenir sa taille
+      const item = cart.find(item =>
+        item.id === id && item.selectedColor === selectedColor
+      );
+
+      if (item) {
+        updateQuantity(id, selectedColor, newQuantity, item.selectedTaille || null);
+      }
+    }
+  };
+
+  const handleRemoveItem = (id, selectedColor) => {
     // Trouver l'article pour obtenir sa taille
-    const item = cart.find(item => 
+    const item = cart.find(item =>
       item.id === id && item.selectedColor === selectedColor
     );
-    
-    if (item) {
-      updateQuantity(id, selectedColor, newQuantity, item.selectedTaille || null);
-    }
-  }
-};
 
- const handleRemoveItem = (id, selectedColor) => {
-  // Trouver l'article pour obtenir sa taille
-  const item = cart.find(item => 
-    item.id === id && item.selectedColor === selectedColor
-  );
-  
-  if (item) {
-    removeFromCart(id, selectedColor, item.selectedTaille || null);
-  }
-};
+    if (item) {
+      removeFromCart(id, selectedColor, item.selectedTaille || null);
+    }
+  };
 
   const handleClearCart = () => {
     if (window.confirm("Êtes-vous sûr de vouloir vider votre panier ?")) {
@@ -261,7 +261,7 @@ export default function CartPageClient() {
                   const itemPrice = Number(item.price) || 0;
                   const itemQuantity = Number(item.quantity) || 0;
                   const itemTotal = itemPrice * itemQuantity;
-                  
+
                   return (
                     <div
                       key={itemKey}
@@ -310,7 +310,7 @@ export default function CartPageClient() {
                                         "#F5F5DC" ||
                                         getColorHex(item.selectedColor) ===
                                         "#FFFF00") &&
-                                        "border border-gray-300 dark:border-gray-600"
+                                      "border border-gray-300 dark:border-gray-600"
                                     )}
                                     style={{
                                       background:

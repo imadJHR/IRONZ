@@ -508,6 +508,11 @@ export const products = [
       "Aide à maintenir des os, des cheveux, des ongles et une peau en bonne santé.",
       "Big Ramy est l'un des plus grands bodybuilders de tous les temps, ayant remporté plusieurs fois le titre de Mr. Olympia. En créant Big Ramy Labs et la marque RED REX, il a réuni des produits nutritionnels qu'il estime propices à la croissance et au développement de quiconque est prêt à fournir des efforts en salle de sport et à suivre une bonne nutrition. RED REX est une marque sérieuse et déterminée !",
     ],
+    virtualReview: {
+      "username": "Imad Johar",
+      "title": "Le meilleur Isolat de Protéine de Bœuf du marché !",
+      "body": "J'utilise des protéines en poudre depuis des années et j'ai voulu essayer le RED REX. La qualité est incroyable : 24g de protéines pures par portion, sans matière grasse, et avec très peu de glucides. Idéal pour ma phase de sèche. L'énorme pot de 8 lbs avec 100 servings est un excellent rapport qualité-prix. J'ai vu une différence nette en termes de récupération et de développement de la masse musculaire maigre. En plus, le fait que ce soit la marque de Big Ramy est un gage de sérieux et de qualité. Goût agréable, se mélange parfaitement sans grumeaux. Si vous cherchez une alternative sérieuse et puissante à la whey, ne cherchez plus. C'est mon nouveau go-to !"
+    },
     price: 1900,
     oldPrice: "",
     discount: "",

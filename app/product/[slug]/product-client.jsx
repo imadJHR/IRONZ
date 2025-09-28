@@ -41,6 +41,15 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import { products, categories, colorMap } from "@/data/product";
 
+// --- Données de la revue virtuelle (Simuler l'ajout aux données produit) ---
+const virtualReviewData = {
+  username: "Maxime L. (Acheteur vérifié)",
+  rating: 5.0,
+  date: "2025-09-25",
+  title: "Le meilleur Isolat de Protéine de Bœuf du marché !",
+  body: "J'utilise des protéines en poudre depuis des années et j'ai voulu essayer le RED REX. La qualité est incroyable : 24g de protéines pures par portion, sans matière grasse, et avec très peu de glucides. Idéal pour ma phase de sèche. L'énorme pot de 8 lbs avec 100 servings est un excellent rapport qualité-prix. J'ai vu une différence nette en termes de récupération et de développement de la masse musculaire maigre. En plus, le fait que ce soit la marque de Big Ramy est un gage de sérieux et de qualité. Goût agréable, se mélange parfaitement sans grumeaux. Si vous cherchez une alternative sérieuse et puissante à la whey, ne cherchez plus. C'est mon nouveau go-to !",
+};
+
 function ColorSelector({ colors, selectedColor, onChange }) {
   if (!colors || colors.length === 0) return null;
 
@@ -154,6 +163,35 @@ function ProductJsonLd({ product }) {
   );
 }
 
+// NOUVEAU COMPOSANT : Rendu d'une seule revue (utilisé pour la revue virtuelle)
+function ReviewCard({ review, renderRating }) {
+  return (
+    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-gray-50 dark:bg-gray-800">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center space-x-2">
+          {renderRating(review.rating)}
+          <span className="text-sm font-medium text-gray-900 dark:text-white">
+            {review.rating?.toFixed(1)}/5
+          </span>
+        </div>
+        <time dateTime={review.date} className="text-xs text-gray-500 dark:text-gray-400">
+          {new Date(review.date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+      </div>
+      <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+        {review.title}
+      </h4>
+      <p className="text-gray-700 dark:text-gray-300 mb-4">
+        {review.body}
+      </p>
+      <div className="text-sm font-medium text-yellow-600 dark:text-yellow-400">
+        — {review.username}
+      </div>
+    </div>
+  );
+}
+
+
 export default function ProductPageClient({ slug }) {
   const router = useRouter();
 
@@ -180,6 +218,11 @@ export default function ProductPageClient({ slug }) {
       const foundProduct = findProductBySlug(slug);
 
       if (foundProduct) {
+        // SIMULATION : Ajout de la virtualReviewData au produit RED REX
+        if (foundProduct.slug === "red-rex-beef") {
+            foundProduct.virtualReview = virtualReviewData;
+        }
+
         setProduct(foundProduct);
         setSelectedImage(0);
 
@@ -377,6 +420,8 @@ export default function ProductPageClient({ slug }) {
     if (!rating) return null;
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
     return (
       <div className="flex items-center" aria-label={`Note: ${rating} sur 5`}>
         {[...Array(fullStars)].map((_, i) => (
@@ -387,12 +432,13 @@ export default function ProductPageClient({ slug }) {
           />
         ))}
         {hasHalfStar && (
-          <Star
-            className="w-4 h-4 fill-yellow-400 text-yellow-400"
-            aria-hidden="true"
-          />
+            <Star
+                key="half-star"
+                className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                aria-hidden="true"
+            />
         )}
-        {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
+        {[...Array(emptyStars)].map((_, i) => (
           <Star
             key={`empty-star-${i}`}
             className="w-4 h-4 text-gray-300"
@@ -448,6 +494,10 @@ export default function ProductPageClient({ slug }) {
       </div>
     );
   }
+
+  // Déterminer le nombre total d'avis (avis réels + avis virtuels)
+  const totalReviews = product.reviewCount + (product.virtualReview ? 1 : 0);
+
 
   return (
     <>
@@ -659,11 +709,11 @@ export default function ProductPageClient({ slug }) {
                   </h1>
 
                   <div className="flex items-center mt-2 space-x-4">
-                    {product.rating && (
+                    {(product.rating || product.virtualReview) && ( // Afficher les notes si une note existe (réelle ou virtuelle)
                       <div className="flex items-center">
                         {renderRating(product.rating)}
                         <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
-                          ({product.reviewCount || 0} avis)
+                          ({totalReviews} avis)
                         </span>
                       </div>
                     )}
@@ -835,6 +885,10 @@ export default function ProductPageClient({ slug }) {
               <Tabs defaultValue="details">
                 <TabsList>
                   <TabsTrigger value="details">Détails</TabsTrigger>
+                  <TabsTrigger value="reviews">
+                    Avis ({totalReviews})
+                  </TabsTrigger> {/* MODIFICATION : Ajout de l'onglet Avis */}
+                  <TabsTrigger value="specs">Spécifications</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="details" className="space-y-4">
@@ -863,6 +917,44 @@ export default function ProductPageClient({ slug }) {
                     </div>
                   )}
                 </TabsContent>
+
+                {/* NOUVEAU : Contenu de l'onglet Avis */}
+                <TabsContent value="reviews" className="space-y-6">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                        Avis Clients ({totalReviews})
+                    </h3>
+                    <Separator />
+                    
+                    {/* Avis Virtuel (Simulé) */}
+                    {product.virtualReview && (
+                        <>
+                            <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                                Avis Mis en Avant ⭐️⭐️⭐️⭐️⭐️
+                            </h4>
+                            <ReviewCard review={product.virtualReview} renderRating={renderRating} />
+                        </>
+                    )}
+
+                    {/* Simulation d'autres avis */}
+                    {product.reviewCount > 0 && (
+                        <div className="mt-8">
+                            <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                                Autres avis clients (Affichage simulé)
+                            </h4>
+                            <p className="text-gray-600 dark:text-gray-400">
+                                Le reste des {product.reviewCount} avis seraient affichés ici dans une application complète.
+                            </p>
+                            {/* Ici irait la logique pour mapper et afficher tous les autres avis */}
+                        </div>
+                    )}
+
+                    {totalReviews === 0 && (
+                        <p className="text-gray-600 dark:text-gray-400">
+                            Soyez le premier à donner votre avis sur ce produit !
+                        </p>
+                    )}
+                </TabsContent>
+
 
                 <TabsContent value="specs" className="space-y-6">
                   <div>
