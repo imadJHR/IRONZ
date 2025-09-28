@@ -378,9 +378,8 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
             className="fixed bottom-4 right-4 z-50 w-full max-w-sm sm:max-w-md"
           >
             <div
-              className={`bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col h-full transition-all duration-300 ${
-                isMinimized ? "min-h-[60px]" : "min-h-[550px]"
-              }`}
+              className={`bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col h-full transition-all duration-300 ${isMinimized ? "min-h-[60px]" : "min-h-[550px]"
+                }`}
             >
               <div
                 className="bg-gradient-to-r from-yellow-500 to-yellow-600 dark:from-yellow-600 dark:to-yellow-700 p-4 flex items-center justify-between cursor-pointer"
@@ -455,11 +454,10 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                         className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
                       >
                         <div
-                          className={`max-w-xs rounded-2xl px-4 py-3 ${
-                            message.sender === "user"
+                          className={`max-w-xs rounded-2xl px-4 py-3 ${message.sender === "user"
                               ? "bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-br-none"
                               : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-none border border-gray-200 dark:border-gray-600"
-                          }`}
+                            }`}
                         >
                           {message.sender === "bot" && (
                             <div className="flex items-center mb-1">
@@ -481,11 +479,10 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                             {message.text}
                           </div>
                           <div
-                            className={`text-xs mt-1 flex justify-end ${
-                              message.sender === "user"
+                            className={`text-xs mt-1 flex justify-end ${message.sender === "user"
                                 ? "text-yellow-100/80"
                                 : "text-gray-500 dark:text-gray-400"
-                            }`}
+                              }`}
                           >
                             {formatTime(message.timestamp)}
                           </div>
@@ -569,11 +566,10 @@ Je suis équipé d'une IA avancée qui apprend de chaque conversation pour vous 
                         whileTap={
                           inputValue.trim() !== "" ? { scale: 0.95 } : {}
                         }
-                        className={`bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-full p-3 ${
-                          inputValue.trim() === ""
+                        className={`bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-full p-3 ${inputValue.trim() === ""
                             ? "opacity-50 cursor-not-allowed"
                             : "hover:from-yellow-600 hover:to-yellow-700 shadow-md"
-                        }`}
+                          }`}
                         aria-label="Envoyer le message"
                       >
                         <Send className="h-5 w-5" />
@@ -1027,8 +1023,8 @@ export default function Home() {
                         "accessoires",
                         "nutrition",
                       ].includes(category.id) && (
-                        <Sparkles className="h-6 w-6 text-yellow-500" />
-                      )}
+                          <Sparkles className="h-6 w-6 text-yellow-500" />
+                        )}
                     </div>
                   </div>
 
@@ -1702,7 +1698,7 @@ export default function Home() {
                     asChild
                     className="border-2 border-white text-white hover:bg-white/10 font-medium text-sm sm:text-base lg:text-lg px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-6 rounded-lg sm:rounded-xl"
                   >
-                    <Link href={`/produits/${featuredProduct.slug}`}>
+                    <Link href={`/product/${featuredProduct.slug}`}>
                       Voir les détails
                       <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                     </Link>

@@ -499,8 +499,7 @@ export const products = [
     id: "15",
     name: "RED REX 100% BEEF PROTEIN ISOLATE 8 lbs",
     slug: "red-rex-beef",
-    description:
-      "RED REX Isolat de Protéine de Boeuf (BPI) est une source exceptionnelle de protéines pures et d'acides aminés, ce qui en fait l'un des meilleurs choix pour construire du muscle et améliorer les performances sportives. Avec une valeur nutritionnelle optimale et un goût agréable, RED REX BPI fournit une protéine complète pour une énergie durable et le développement musculaire. RED REX BPI offre l'une des plus hautes concentrations de protéines fonctionnelles parmi toutes les sources de protéines.CE FORMAT VOUS OFFRE 100 SERVINGS PAR POT Une portion de cet isolat de protéine de boeuf contient une incroyable quantité de 24 grammes de protéines, avec seulement 3 grammes de glucides et zéro matière grasse. Il délivre la puissance protéique de la viande de boeuf, concentrée à 350 % par rapport au steak !",
+    description: "RED REX Isolat de Protéine de Boeuf (BPI) est une source exceptionnelle de protéines pures et d'acides aminés, ce qui en fait l'un des meilleurs choix pour construire du muscle et améliorer les performances sportives. Avec une valeur nutritionnelle optimale et un goût agréable, RED REX BPI fournit une protéine complète pour une énergie durable et le développement musculaire. RED REX BPI offre l'une des plus hautes concentrations de protéines fonctionnelles parmi toutes les sources de protéines.CE FORMAT VOUS OFFRE 100 SERVINGS PAR POT Une portion de cet isolat de protéine de boeuf contient une incroyable quantité de 24 grammes de protéines, avec seulement 3 grammes de glucides et zéro matière grasse. Il délivre la puissance protéique de la viande de boeuf, concentrée à 350 % par rapport au steak !",
     features: [
       "Fournit des nutriments pour le développement de la masse musculaire maigre",
       "Contribue à la perte de poids",
@@ -508,14 +507,92 @@ export const products = [
       "Aide à maintenir des os, des cheveux, des ongles et une peau en bonne santé.",
       "Big Ramy est l'un des plus grands bodybuilders de tous les temps, ayant remporté plusieurs fois le titre de Mr. Olympia. En créant Big Ramy Labs et la marque RED REX, il a réuni des produits nutritionnels qu'il estime propices à la croissance et au développement de quiconque est prêt à fournir des efforts en salle de sport et à suivre une bonne nutrition. RED REX est une marque sérieuse et déterminée !",
     ],
-    virtualReview: {
-      "username": "Imad Johar",
-      "title": "Le meilleur Isolat de Protéine de Bœuf du marché !",
-      "body": "J'utilise des protéines en poudre depuis des années et j'ai voulu essayer le RED REX. La qualité est incroyable : 24g de protéines pures par portion, sans matière grasse, et avec très peu de glucides. Idéal pour ma phase de sèche. L'énorme pot de 8 lbs avec 100 servings est un excellent rapport qualité-prix. J'ai vu une différence nette en termes de récupération et de développement de la masse musculaire maigre. En plus, le fait que ce soit la marque de Big Ramy est un gage de sérieux et de qualité. Goût agréable, se mélange parfaitement sans grumeaux. Si vous cherchez une alternative sérieuse et puissante à la whey, ne cherchez plus. C'est mon nouveau go-to !"
-    },
+    virtualReviews: [
+      {
+        "username": "Imad Johar",
+        "title": "Le meilleur Isolat de Protéine de Bœuf du marché !",
+        "body": "J'utilise des protéines en poudre depuis des années et j'ai voulu essayer le RED REX. La qualité est incroyable : 24g de protéines pures par portion, sans matière grasse, et avec très peu de glucides. Idéal pour ma phase de sèche. L'énorme pot de 8 lbs avec 100 servings est un excellent rapport qualité-prix. J'ai vu une différence nette en termes de récupération et de développement de la masse musculaire maigre. En plus, le fait que ce soit la marque de Big Ramy est un gage de sérieux et de qualité. Goût agréable, se mélange parfaitement sans grumeaux. Si vous cherchez une alternative sérieuse et puissante à la whey, ne cherchez plus. C'est mon nouveau go-to !",
+        "rating": 5,
+        "date": "2024-01-15",
+        "verified": true
+      },
+      {
+        "username": "Sarah M. (Acheteuse vérifiée)",
+        "title": "Incroyable pour la récupération musculaire",
+        "body": "Je suis athlète de crossfit et je cherchais une protéine sans lactose. Le RED REX BPI a dépassé toutes mes attentes ! La récupération est bien plus rapide, je ressens moins de courbatures après les entraînements intenses. Le goût vanille est vraiment agréable et se mélange facilement. 100 servings pour ce prix, c'est imbattable ! Je recommande à 100%.",
+        "rating": 5,
+        "date": "2024-01-12",
+        "verified": true
+      },
+      {
+        "username": "Marc T.",
+        "title": "Qualité professionnelle",
+        "body": "En tant que coach sportif, je teste régulièrement différents suppléments. Le RED REX est clairement au-dessus du lot. La pureté de l'isolat se ressent sur la digestion (aucun problème contrairement à d'autres marques). Mes clients qui l'ont adopté voient des résultats concrets. Le packaging est premium et la quantité généreuse.",
+        "rating": 5,
+        "date": "2024-01-08",
+        "verified": true
+      },
+      {
+        "username": "Julie L. (Acheteuse vérifiée)",
+        "title": "Parfait pour les intolérants au lactose",
+        "body": "Enfin une protéine de qualité qui ne me cause pas de problèmes digestifs ! Je suis intolérante au lactose et la whey me rendait toujours ballonnée. Le RED REX BPI est une solution parfaite. Le goût chocolat est délicieux, pas trop sucré. Je l'utilise depuis 2 mois et ma masse musculaire a vraiment augmenté.",
+        "rating": 4,
+        "date": "2024-01-05",
+        "verified": true
+      },
+      {
+        "username": "Karim B.",
+        "title": "Rapport qualité-prix exceptionnel",
+        "body": "8 lbs pour ce prix, c'est vraiment intéressant. La protéine est très fine, elle se dissout instantanément. J'apprécie particulièrement le fait qu'il n'y ait pas d'arômes artificiels prononcés. Les résultats sont là : prise de masse propre sans gain de graisse. Livraison rapide et emballage soigné.",
+        "rating": 5,
+        "date": "2024-01-02",
+        "verified": true
+      },
+      {
+        "username": "Thomas R. (Acheteur vérifié)",
+        "title": "Meilleure que les protéines classiques",
+        "body": "J'ai essayé de nombreuses marques de protéines et le RED REX se distingue vraiment. L'absorption est excellente, je sens que mon corps l'utilise efficacement. Le fait que ce soit de la protéine de bœuf isolée à 350% apporte une différence notable. Je le prends après l'entraînement et le matin au petit-déjeuner.",
+        "rating": 4,
+        "body": "J'ai essayé de nombreuses marques de protéines et le RED REX se distingue vraiment. L'absorption est excellente, je sens que mon corps l'utilise efficacement. Le fait que ce soit de la protéine de bœuf isolée à 350% apporte une différence notable. Je le prends après l'entraînement et le matin au petit-déjeuner. Seul petit bémol : le pot est un peu difficile à ouvrir au début.",
+        "date": "2023-12-28",
+        "verified": true
+      },
+      {
+        "username": "Nadia K.",
+        "title": "Idéal pour la sèche",
+        "body": "En période de coupe, c'est exactement ce qu'il me fallait. 24g de protéines pour seulement 3g de glucides et 0g de lipides, c'est parfait. Le goût neutre me permet de l'ajouter à mes smoothies sans altérer le goût des autres ingrédients. Ma définition musculaire s'est nettement améliorée depuis que je l'utilise.",
+        "rating": 5,
+        "date": "2023-12-25",
+        "verified": true
+      },
+      {
+        "username": "David P. (Acheteur vérifié)",
+        "title": "Marque de confiance",
+        "body": "Quand on sait que c'est la marque de Big Ramy, on ne peut qu'avoir confiance. La qualité est au rendez-vous. Je l'utilise depuis 3 mois et mes performances en salle ont augmenté. La récupération est excellente. Le service client est également très réactif (j'avais une question sur la posologie).",
+        "rating": 5,
+        "date": "2023-12-20",
+        "verified": true
+      },
+      {
+        "username": "Sophie D.",
+        "title": "Sans additifs inutiles",
+        "body": "J'apprécie particulièrement la liste d'ingrédients clean. Pas de sucres ajoutés, pas d'édulcorants artificiels en quantité excessive. La texture est lisse et agréable. Je le recommande aux personnes soucieuses de ce qu'elles consomment. Excellent produit pour un prix raisonnable.",
+        "rating": 4,
+        "date": "2023-12-18",
+        "verified": true
+      },
+      {
+        "username": "Mehdi A. (Acheteur vérifié)",
+        "title": "Résultats visibles rapidement",
+        "body": "Après seulement 1 mois d'utilisation combiné à un entraînement sérieux, j'ai pris 2kg de muscle sec. La protéine est très efficace et facile à digérer. Je la prends avec de l'eau après l'entraînement et parfois entre les repas. Le grand format est économique, je vais certainement le racheter.",
+        "rating": 5,
+        "date": "2023-12-15",
+        "verified": true
+      }
+    ],
     price: 1900,
-    oldPrice: "",
-    discount: "",
+    oldPrice: 2200,
+    discount: 14,
     image: a45,
     gallery: [a45],
     category: "Supplément",
