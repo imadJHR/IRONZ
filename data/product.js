@@ -1678,7 +1678,7 @@ export const products = [
     category: "Accessoires",
     categoryId: "4",
     rating: 5,
-    reviewCount: 74,
+    reviewCount: 1,
     isNew: false,
     isFeatured: false,
     inStock: true,
