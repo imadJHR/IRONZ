@@ -707,8 +707,8 @@ export const products = [
     rating: 4.9,
     reviewCount: 89,
     isNew: false,
-    isFeatured: true,
-    inStock: true,
+    isFeatured: false,
+    inStock: false,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
 
     relatedProducts: ["8", "12"],
@@ -736,8 +736,8 @@ export const products = [
     rating: 4.9,
     reviewCount: 89,
     isNew: false,
-    isFeatured: true,
-    inStock: true,
+    isFeatured: false,
+    inStock: false,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
 
     relatedProducts: ["8", "12"],
@@ -763,7 +763,7 @@ export const products = [
     reviewCount: 89,
     isNew: false,
     isFeatured: true,
-    inStock: true,
+    inStock: false,
     tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
 
     colors: ["Bleu", "Rouge", "Jaune"],
