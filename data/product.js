@@ -214,7 +214,7 @@ export const colorMap = {
 export const products = [
   {
     id: "2",
-    name: " Small",
+    name: "Bande de Résistance LIVEPRO  Small",
     slug: "bande-de-resistance-small",
     description:
       "Optimisez vos entraînements avec la bande de résistance LIVEPRO Small, conçue pour améliorer votre force, votre endurance et votre souplesse !",
