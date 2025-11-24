@@ -495,7 +495,44 @@ export const products = [
 
     relatedProducts: ["3", "7", "9"],
   },
-
+  {
+    id: "15",
+    name: "RED REX 100% BEEF PROTEIN ISOLATE 8 lbs",
+    slug: "red-rex-beef",
+    description: "RED REX Isolat de Protéine de Boeuf (BPI) est une source exceptionnelle de protéines pures et d'acides aminés, ce qui en fait l'un des meilleurs choix pour construire du muscle et améliorer les performances sportives. Avec une valeur nutritionnelle optimale et un goût agréable, RED REX BPI fournit une protéine complète pour une énergie durable et le développement musculaire. RED REX BPI offre l'une des plus hautes concentrations de protéines fonctionnelles parmi toutes les sources de protéines.CE FORMAT VOUS OFFRE 100 SERVINGS PAR POT Une portion de cet isolat de protéine de boeuf contient une incroyable quantité de 24 grammes de protéines, avec seulement 3 grammes de glucides et zéro matière grasse. Il délivre la puissance protéique de la viande de boeuf, concentrée à 350 % par rapport au steak !",
+    features: [
+      "Fournit des nutriments pour le développement de la masse musculaire maigre",
+      "Contribue à la perte de poids",
+      "Soutient le système immunitaire",
+      "Aide à maintenir des os, des cheveux, des ongles et une peau en bonne santé.",
+      "Big Ramy est l'un des plus grands bodybuilders de tous les temps, ayant remporté plusieurs fois le titre de Mr. Olympia. En créant Big Ramy Labs et la marque RED REX, il a réuni des produits nutritionnels qu'il estime propices à la croissance et au développement de quiconque est prêt à fournir des efforts en salle de sport et à suivre une bonne nutrition. RED REX est une marque sérieuse et déterminée !",
+    ],
+    virtualReviews: [
+      {
+        "username": "Imad Johar",
+        "title": "Le meilleur Isolat de Protéine de Bœuf du marché !",
+        "body": "J'utilise des protéines en poudre depuis des années et j'ai voulu essayer le RED REX. La qualité est incroyable : 24g de protéines pures par portion, sans matière grasse, et avec très peu de glucides. Idéal pour ma phase de sèche. L'énorme pot de 8 lbs avec 100 servings est un excellent rapport qualité-prix. J'ai vu une différence nette en termes de récupération et de développement de la masse musculaire maigre. En plus, le fait que ce soit la marque de Big Ramy est un gage de sérieux et de qualité. Goût agréable, se mélange parfaitement sans grumeaux. Si vous cherchez une alternative sérieuse et puissante à la whey, ne cherchez plus. C'est mon nouveau go-to !",
+        "rating": 5,
+        "date": "2024-01-15",
+        "verified": true
+      },
+    ],
+    price: 1900,
+    oldPrice: 2200,
+    discount: 14,
+    image: a45,
+    gallery: [a45],
+    category: "Supplément",
+    categoryId: "3",
+    rating: 4.7,
+    reviewCount: 124,
+    isNew: false,
+    isFeatured: true,
+    inStock: true,
+    stockQuantity: 45,
+    tags: ["musculation", "fitness", "entraînement", "banc", "clearance"],
+    relatedProducts: ["8", "6", "8"],
+  },
   {
     id: "16",
     name: "Shaker sportif avec porte-clé protéine Whey  – Plus qu'un simple shaker !",
