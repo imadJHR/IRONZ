@@ -2523,7 +2523,7 @@ export const products = [
       "Polyvalence d'Utilisation : Idéales pour le fitness, la musculation, le CrossFit, le yoga, le Pilates, les arts martiaux ou comme tapis de jeu sécurisé pour les enfants.",
       "Facile à Nettoyer : Les dalles sont résistantes à l'eau et se nettoient simplement avec un chiffon humide.",
     ],
-    price: 179,
+    price: 169,
     oldPrice: "",
     discount: "",
     image: l53,
