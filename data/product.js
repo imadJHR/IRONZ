@@ -212,35 +212,7 @@ export const colorMap = {
   "Multi 2": "linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1, #FFBE0B)",
 };
 export const products = [
-  {
-    id: "2",
-    name: "Bande de Résistance LIVEPRO  Small",
-    slug: "bande-de-resistance-small",
-    description:
-      "Optimisez vos entraînements avec la bande de résistance LIVEPRO Small, conçue pour améliorer votre force, votre endurance et votre souplesse !",
-    features: [
-      "Niveau de résistance modéré, parfait pour les tractions assistées, la musculation, le CrossFit, le Pilates et les étirements.",
-      "Matériau en latex premium, offrant une grande durabilité et une élasticité optimale.",
-      "Adaptée aux sportifs de tous niveaux, idéale pour progresser en douceur.",
-      "🔥 Ajoutez de l’intensité à vos séances et atteignez de nouveaux sommets avec la Super Band LIVEPRO Small ! 💯",
-    ],
-    price: 109,
-    oldPrice: "",
-    discount: "",
-    image: a5,
-    gallery: [a5],
-    category: "Accessoires",
-    categoryId: "4",
-    rating: 4.9,
-    reviewCount: 89,
-    isNew: false,
-    isFeatured: false,
-    inStock: true,
-    stockQuantity: 120,
-    tags: ["yoga", "fitness", "méditation", "tapis", "summer", "current"],
-    materials: ["TPE écologique", "Caoutchouc naturel"],
-    relatedProducts: ["8", "12"],
-  },
+ 
   {
     id: "3",
     name: "Chaussettes de Sport Antidérapantes",
