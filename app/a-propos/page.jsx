@@ -15,10 +15,10 @@ import {
   Instagram,
   Youtube,
 } from "lucide-react";
-import logo from "@/public/logo.png";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import logo from "../../public/logo.png";
+import { Button } from "../../components/ui/button";
+import { Badge } from "../../components/ui/badge";
+import { Separator } from "../../components/ui/separator";
 import Head from "next/head";
 import YouTube from "react-youtube";
 
