@@ -8,8 +8,8 @@ import img4 from "../../../public/accou.jpeg";
 import img5 from "../../../public/mir.jpeg";
 import img6 from "../../../public/plan.png";
 
-import { Button } from "@/components/ui/button";
-import ServiceContactForm from "@/components/service-contact-form";
+import { Button } from "../../../components/ui/button";
+import ServiceContactForm from "../../../components/service-contact-form";
 
 export const metadata = {
   title: "Revêtement Sol & Mur | IRONZ PRO",

@@ -15,8 +15,7 @@ import {
   Clock,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import ServiceContactForm from "@/components/service-contact-form";
+import { Button } from "../../../../components/ui/button";
 
 export const metadata = {
   title: "Aménagement Salle de Sport Professionnelle | IRONZ PRO",
