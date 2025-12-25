@@ -12,8 +12,7 @@ import {
   Star,
   Users,
 } from "lucide-react";
-import { Button } from "../../../components/ui/button";
-import ServiceContactForm from "../../../components/service-contact-form";
+import { Button } from "../../../../components/ui/button";
 
 export const metadata = {
   title: "Aménagement Home Gym - Salle de Sport à Domicile | IRONZ PRO",

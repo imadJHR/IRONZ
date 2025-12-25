@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import ServiceContactForm from "@/components/service-contact-form";
+import { Button } from "../../../components/ui/button";
+import ServiceContactForm from "../../../components/service-contact-form";
 
 export const metadata = {
   title: "Aménagement de Salle & Espace | IRONZ PRO",
