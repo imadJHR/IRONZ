@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 
-import { categories } from "@/data/product";
+import { categories } from "../../data/product";
 
 export const metadata = {
   title: "Toutes les catégories | IRONZ PRO",

@@ -19,12 +19,12 @@ import {
   ArrowLeft,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { blogPosts } from "@/data/blog-posts";
+import { Button } from "../../../components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
+import { Badge } from "../../../components/ui/badge";
+import { Textarea } from "../../../components/ui/textarea";
+import { Input } from "../../../components/ui/input";
+import { blogPosts } from "../../../data/blog-posts";
 
 export default function ArticlePage() {
   const params = useParams();
