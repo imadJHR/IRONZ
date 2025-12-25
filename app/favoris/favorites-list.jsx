@@ -4,9 +4,9 @@ import Link from "next/link"
 import { ShoppingCart, Heart, Trash2, Star } from "lucide-react"
 import { motion } from "framer-motion"
 
-import { useFavorites } from "@/context/favorites-context"
-import { useCart } from "@/context/cart-context"
-import { Button } from "@/components/ui/button"
+import { useFavorites } from "../../context/favorites-context"
+import { useCart } from "../../context/cart-context"
+import { Button } from "../../components/ui/button"
 
 export default function FavoritesList() {
   const { favorites, removeFromFavorites, clearFavorites } = useFavorites()

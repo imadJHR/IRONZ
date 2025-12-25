@@ -39,7 +39,7 @@ import {
   SheetClose,
   SheetFooter,
 } from "../../../components/ui/sheet";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "../../../components/ui/separator";
 
 import { products, categories, filters } from "../../../data/product";
 
