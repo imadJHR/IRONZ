@@ -1,4 +1,4 @@
-import { categories } from "@/data/product"
+import { categories } from "../data/product"
 
 export default function sitemap() {
   const baseUrl = "https://ironz.ma"
