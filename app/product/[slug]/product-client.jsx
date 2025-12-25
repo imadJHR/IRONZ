@@ -23,23 +23,23 @@ import {
   PinIcon as Pinterest,
   CircleCheck,
 } from "lucide-react";
-import { useCart } from "@/context/cart-context";
-import { useFavorites } from "@/context/favorites-context";
-import { cn } from "@/lib/utils";
+import { useCart } from "../../../context/cart-context";
+import { useFavorites } from "../../../context/favorites-context";
+import { cn } from "../../../lib/utils";
 
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "../../../components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
+import { Separator } from "../../../components/ui/separator";
+import { Badge } from "../../../components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+} from "../../../components/ui/tooltip";
+import { Alert, AlertDescription } from "../../../components/ui/alert";
 
-import { products, categories, colorMap } from "@/data/product";
+import { products, categories, colorMap } from "../../../data/product";
 
 // Image placeholder - vous devrez importer l'image réelle
 const a45 = "/placeholder.svg";

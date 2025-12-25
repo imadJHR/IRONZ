@@ -16,7 +16,7 @@ import {
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button"; // Adjust this import based on your actual button component path
+import { Button } from "../components/ui/button"; // Adjust this import based on your actual button component path
 import img1 from "../public/salle1.jpg"
 import img2 from "../public/salle2.jpg"
 import img3 from "../public/salle3.jpg"

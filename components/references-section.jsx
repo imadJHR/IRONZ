@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { Play } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "../components/ui/badge";
 import { motion } from "framer-motion";
 import ref1 from "../public/ref1.jpg";
 import ref2 from "../public/ref2.jpg";

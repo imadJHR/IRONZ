@@ -16,21 +16,21 @@ import {
   StarHalf,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useCart } from "@/context/cart-context";
-import { useFavorites } from "@/context/favorites-context";
-import { cn } from "@/lib/utils";
+import { useCart } from "../../context/cart-context";
+import { useFavorites } from "../../context/favorites-context";
+import { cn } from "../../lib/utils";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Slider } from "../../components/ui/slider";
+import { Badge } from "../../components/ui/badge";
+import { Checkbox } from "../../components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../../components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -39,8 +39,8 @@ import {
   SheetTrigger,
   SheetClose,
   SheetFooter,
-} from "@/components/ui/sheet";
-import { Separator } from "@/components/ui/separator";
+} from "../../components/ui/sheet";
+import { Separator } from "../../components/ui/separator";
 import {
   Pagination,
   PaginationContent,
@@ -48,10 +48,10 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "../../components/ui/pagination";
 
 // Import product data
-import { products, categories, filters } from "@/data/product";
+import { products, categories, filters } from "../../data/product";
 
 // SEO component for client components
 function ProductSEO() {

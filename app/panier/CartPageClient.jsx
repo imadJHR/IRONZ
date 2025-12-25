@@ -15,12 +15,12 @@ import {
   ShieldCheck,
   RefreshCw,
 } from "lucide-react";
-import { useCart } from "@/context/cart-context";
-import { cn } from "@/lib/utils";
+import { useCart } from "../../context/cart-context";
+import { cn } from "../../lib/utils";
 
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { colorMap } from "@/data/product";
+import { Button } from "../../components/ui/button";
+import { Separator } from "../../components/ui/separator";
+import { colorMap } from "../../data/product";
 
 export default function CartPageClient() {
   const router = useRouter();

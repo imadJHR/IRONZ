@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ReferencesSection from "../components/references-section";
 import logo from "../public/logo.png";
-import ServicesSection from "@/components/ServicesSection";
+import ServicesSection from "../components/ServicesSection";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
@@ -37,19 +37,19 @@ import {
   Package,
   Apple,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "../components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import BrandsMarquee from "@/components/brands-marquee";
-import { categories, brands, productUtils } from "@/data/product";
-import { useCart } from "@/context/cart-context";
-import { useFavorites } from "@/context/favorites-context";
-import { cn } from "@/lib/utils";
+} from "../components/ui/accordion";
+import BrandsMarquee from "../components/brands-marquee";
+import { categories, brands, productUtils } from "../data/product";
+import { useCart } from "../context/cart-context";
+import { useFavorites } from "../context/favorites-context";
+import { cn } from "../lib/utils";
 import img1 from "../public/1.jpg";
 import img2 from "../public/2.jpg";
 import img3 from "../public/3.jpg";
@@ -699,7 +699,6 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-br from-black/90 via-black/60 to-black/30" />
             <div className="absolute inset-0 bg-[url('/images/noise-texture.png')] opacity-10 mix-blend-overlay" />
           </div>
-
           {/* Swiper Container */}
           <div className="relative z-10 h-full w-full">
             <Swiper
@@ -743,7 +742,6 @@ export default function Home() {
                         placeholder="blur"
                         blurDataURL="/placeholder-blur.svg"
                       />
-
                       {/* Tablet (768px - 1023px) */}
                       <Image
                         src={banner.imageTablet || "/placeholder.svg"}
@@ -755,7 +753,6 @@ export default function Home() {
                         placeholder="blur"
                         blurDataURL="/placeholder-blur.svg"
                       />
-
                       {/* Mobile (<768px) */}
                       <Image
                         src={banner.imageMobile || "/placeholder.svg"}

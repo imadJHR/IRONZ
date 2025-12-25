@@ -2,9 +2,9 @@
 
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { CartProvider } from "@/context/cart-context";
-import { FavoritesProvider } from "@/context/favorites-context";
+import { ThemeProvider } from "../components/theme-provider";
+import { CartProvider } from "../context/cart-context";
+import { FavoritesProvider } from "../context/favorites-context";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,11 +33,11 @@ import {
   LogIn,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "@/context/cart-context";
-import { useFavorites } from "@/context/favorites-context";
+import { useCart } from "../context/cart-context";
+import { useFavorites } from "../context/favorites-context";
 import { useTheme } from "next-themes";
-import { cn } from "@/lib/utils";
-import { categories } from "@/data/product";
+import { cn } from "../lib/utils";
+import { categories } from "../data/product";
 import {
   ClerkProvider,
   SignInButton,
@@ -57,23 +57,46 @@ export default function ClientLayout({ children }) {
   };
 
   return (
-    <ClerkProvider>
-      <html lang={language} suppressHydrationWarning>
-        <body className={inter.className}>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-            <CartProvider>
-              <FavoritesProvider>
+   <ClerkProvider>
+  <html lang={language} suppressHydrationWarning>
+    <body className={inter.className}>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <CartProvider>
+          <FavoritesProvider>
+
+            {/*
+              ⭐ Detect if we are inside /admin
+              If true → hide Navbar + Footer
+            */}
+            {(() => {
+              const pathname = typeof window !== "undefined" ? window.location.pathname : "";
+              const isAdminPath = pathname.startsWith("/admin");
+
+              return (
                 <div className="flex flex-col min-h-screen">
-                  <Navbar language={language} toggleLanguage={toggleLanguage} />
-                  <main className="flex-grow pt-24">{children}</main>
-                  <Footer language={language} />
+
+                  {/* ⭐ Show Navbar only if NOT admin */}
+                  {!isAdminPath && (
+                    <Navbar language={language} toggleLanguage={toggleLanguage} />
+                  )}
+
+                  <main className={isAdminPath ? "" : "flex-grow pt-24"}>
+                    {children}
+                  </main>
+
+                  {/* ⭐ Show Footer only if NOT admin */}
+                  {!isAdminPath && <Footer language={language} />}
                 </div>
-              </FavoritesProvider>
-            </CartProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+              );
+            })()}
+
+          </FavoritesProvider>
+        </CartProvider>
+      </ThemeProvider>
+    </body>
+  </html>
+</ClerkProvider>
+
   );
 }
 
@@ -351,7 +374,7 @@ function Navbar({ language, toggleLanguage }) {
               <Link href="/" className="flex items-center">
                 <Image
                   src="/logo.png"
-                  alt="IRONZ PRO Logo"
+                  alt="IRONZ Logo"
                   width={160}
                   height={50}
                   className="h-20 w-auto object-contain dark:invert"
