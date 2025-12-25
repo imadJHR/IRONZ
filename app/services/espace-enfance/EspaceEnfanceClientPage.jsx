@@ -17,7 +17,7 @@ import {
   X,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import img1 from "../../../public/enfant1.webp";
 
 const FadeInWhenVisible = ({ children, delay = 0 }) => {

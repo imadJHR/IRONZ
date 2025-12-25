@@ -42,7 +42,7 @@ import {
   SheetTrigger,
   SheetClose,
   SheetFooter,
-} from "@/components/ui/sheet";
+} from "../../components/ui/sheet";
 import { Separator } from "../../components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "../../components/ui/tabs";
 
