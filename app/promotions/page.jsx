@@ -21,19 +21,19 @@ import {
   Percent,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useCart } from "@/context/cart-context";
-import { useFavorites } from "@/context/favorites-context";
-import { cn } from "@/lib/utils";
+import { useCart } from "../../context/cart-context";
+import { useFavorites } from "../../context/favorites-context";
+import { cn } from "../../lib/utils";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Badge } from "../../components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../../components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -43,11 +43,11 @@ import {
   SheetClose,
   SheetFooter,
 } from "@/components/ui/sheet";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "../../components/ui/separator";
+import { Tabs, TabsList, TabsTrigger } from "../../components/ui/tabs";
 
 // Import product data
-import { categories, filters, productUtils } from "@/data/product";
+import { categories, filters, productUtils } from "../../data/product";
 import { useSearchParams } from "next/navigation";
 
 // Main page component with Suspense boundary
