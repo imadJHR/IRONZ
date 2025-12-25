@@ -16,13 +16,13 @@ import {
 } from "lucide-react";
 import { IoLogoWhatsapp } from "react-icons/io";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Textarea } from "../../components/ui/textarea";
+import { Label } from "../../components/ui/label";
+import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
+import { Alert, AlertDescription } from "../../components/ui/alert";
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
