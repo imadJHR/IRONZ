@@ -1097,7 +1097,7 @@ function Navbar({ language, toggleLanguage }) {
                       </div>
                       <div className="ml-3 flex-1 min-w-0">
                         <Link
-                          href={`/product/${item.slug}`}
+                          href={`/produit/${item.slug}`}
                           onClick={toggleCart}
                           className="text-sm font-medium text-gray-900 dark:text-white hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-1"
                         >
@@ -1266,7 +1266,7 @@ function Navbar({ language, toggleLanguage }) {
                     </div>
                     <div className="ml-3 flex-1 min-w-0">
                       <Link
-                        href={`/product/${item.id}`}
+                        href={`/produit/${item.id}`}
                         className="text-sm font-medium text-gray-900 dark:text-white hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-1"
                         onClick={toggleFavorites}
                       >
@@ -1323,7 +1323,7 @@ function Navbar({ language, toggleLanguage }) {
             className="fixed right-4 bottom-4 p-3 rounded-full bg-yellow-500 text-white shadow-lg z-50 hover:bg-yellow-600 transition-colors"
             aria-label="Retour en haut"
           >
-            <ArrowUp className="h-5 w-5" />
+           
           </motion.button>
         )}
       </AnimatePresence>

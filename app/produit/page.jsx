@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   Search,
   Filter,
@@ -15,6 +14,8 @@ import {
   ArrowUpDown,
   Star,
   StarHalf,
+  Grid,
+  List,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart } from "../../context/cart-context";
@@ -86,10 +87,13 @@ function ProductSEO() {
   );
 }
 
+// Extract all unique subcategories from products
+const allSubCategories = [...new Set(products
+  .map(product => product.subCategory)
+  .filter(Boolean)
+  .sort())];
+
 export default function ProductsPage() {
-  const router = useRouter();
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [displayedProducts, setDisplayedProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
@@ -104,17 +108,6 @@ export default function ProductsPage() {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
-  // Fonction pour obtenir l'URL du produit
-  const getProductUrl = useCallback((product) => {
-    // Utilisez le slug s'il existe, sinon l'ID
-    return `/product/${product.slug || product.id}`;
-  }, []);
-
-  // Fonction pour naviguer vers la page du produit
-  const navigateToProduct = useCallback((product) => {
-    router.push(getProductUrl(product));
-  }, [router, getProductUrl]);
-
   // Simulate loading
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -123,20 +116,22 @@ export default function ProductsPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Filter and sort products
-  useEffect(() => {
+  // Filter and sort products using useMemo for performance
+  const filteredProducts = useMemo(() => {
     let result = [...products];
 
     // Apply search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
       result = result.filter(
         (product) =>
           product.name?.toLowerCase().includes(query) ||
           product.description?.toLowerCase().includes(query) ||
           product.category?.toLowerCase().includes(query) ||
-          (product.tags && product.tags.some((tag) => tag?.toLowerCase().includes(query))) ||
-          product.subCategory?.toLowerCase().includes(query)
+          product.subCategory?.toLowerCase().includes(query) ||
+          (product.tags && product.tags.some(tag => 
+            tag?.toLowerCase().includes(query)
+          ))
       );
     }
 
@@ -147,11 +142,14 @@ export default function ProductsPage() {
       );
     }
 
-    // Apply subcategory filter
+    // Apply subcategory filter - FIXED LOGIC
+    // Only filter by subcategories if at least one is selected
+    // This allows products to appear when subcategory filters are active
     if (selectedSubCategories.length > 0) {
-      result = result.filter((product) =>
-        product.subCategory && selectedSubCategories.includes(product.subCategory)
-      );
+      result = result.filter((product) => {
+        // Include products that have a matching subcategory
+        return product.subCategory && selectedSubCategories.includes(product.subCategory);
+      });
     }
 
     // Apply price filter
@@ -164,58 +162,53 @@ export default function ProductsPage() {
     // Apply sorting
     switch (sortOption) {
       case "price-asc":
-        result.sort(
+        return result.sort(
           (a, b) => Number.parseFloat(a.price) - Number.parseFloat(b.price)
         );
-        break;
       case "price-desc":
-        result.sort(
+        return result.sort(
           (a, b) => Number.parseFloat(b.price) - Number.parseFloat(a.price)
         );
-        break;
       case "newest":
-        result.sort((a, b) => {
+        return result.sort((a, b) => {
           if (a.isNew && !b.isNew) return -1;
           if (!a.isNew && b.isNew) return 1;
-          return 0;
+          return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
         });
-        break;
       case "rating":
-        result.sort((a, b) => b.rating - a.rating);
-        break;
+        return result.sort((a, b) => b.rating - a.rating);
       case "discount":
-        result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
-        break;
-      default:
-        result.sort((a, b) => {
+        return result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
+      default: // "featured"
+        return result.sort((a, b) => {
           if (a.isFeatured && !b.isFeatured) return -1;
           if (!a.isFeatured && b.isFeatured) return 1;
           return 0;
         });
-        break;
     }
-
-    setFilteredProducts(result);
-    setCurrentPage(1);
   }, [searchQuery, selectedCategories, selectedSubCategories, priceRange, sortOption]);
 
   // Pagination logic
-  useEffect(() => {
+  const displayedProducts = useMemo(() => {
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = filteredProducts.slice(
-      indexOfFirstProduct,
-      indexOfLastProduct
-    );
-    setDisplayedProducts(currentProducts);
+    return filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  }, [currentPage, filteredProducts, productsPerPage]);
 
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategories, selectedSubCategories, priceRange, sortOption]);
+
+  // Scroll to top when page changes
+  useEffect(() => {
     if (typeof window !== "undefined") {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
     }
-  }, [currentPage, filteredProducts, productsPerPage]);
+  }, [currentPage]);
 
   const handleCategoryToggle = useCallback((category) => {
     setSelectedCategories((prev) =>
@@ -245,21 +238,13 @@ export default function ProductsPage() {
     setSortOption("featured");
   }, []);
 
-  const toggleFavorite = useCallback((product, e) => {
-    e.stopPropagation(); // Empêche la navigation vers le produit
+  const toggleFavorite = useCallback((product) => {
     if (isInFavorites(product.id)) {
       removeFromFavorites(product.id);
     } else {
       addToFavorites(product);
     }
   }, [isInFavorites, addToFavorites, removeFromFavorites]);
-
-  const handleAddToCart = useCallback((product, e) => {
-    e.stopPropagation(); // Empêche la navigation vers le produit
-    addToCart(product);
-  }, [addToCart]);
-
-  const paginate = useCallback((pageNumber) => setCurrentPage(pageNumber), []);
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
@@ -366,6 +351,13 @@ export default function ProductsPage() {
     );
   }, []);
 
+  // Get active filters count for badge
+  const activeFiltersCount = 
+    (searchQuery ? 1 : 0) +
+    selectedCategories.length +
+    selectedSubCategories.length +
+    (priceRange[0] > filters.price.min || priceRange[1] < filters.price.max ? 1 : 0);
+
   return (
     <>
       <ProductSEO />
@@ -386,10 +378,15 @@ export default function ProductsPage() {
               <SheetTrigger asChild>
                 <Button
                   variant="outline"
-                  className="md:hidden flex items-center gap-2 h-10"
+                  className="md:hidden flex items-center gap-2 h-10 relative"
                 >
                   <Filter className="h-4 w-4" />
                   Filtres
+                  {activeFiltersCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                      {activeFiltersCount}
+                    </span>
+                  )}
                 </Button>
               </SheetTrigger>
               <SheetContent
@@ -399,10 +396,33 @@ export default function ProductsPage() {
                 <SheetHeader>
                   <SheetTitle>Filtres</SheetTitle>
                 </SheetHeader>
-                <div className="py-4">
-                  <div className="mb-6">
+                <div className="py-4 space-y-6">
+                  <div>
+                    <h3 className="font-medium mb-3">Recherche</h3>
+                    <div className="relative">
+                      <Input
+                        type="text"
+                        placeholder="Rechercher..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-10"
+                      />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      {searchQuery && (
+                        <button
+                          onClick={() => setSearchQuery("")}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          aria-label="Effacer la recherche"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
                     <h3 className="font-medium mb-3">Catégories</h3>
-                    <div className="space-y-3">
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
                       {categories.map((category) => (
                         <div key={category.id} className="flex items-center">
                           <Checkbox
@@ -414,7 +434,7 @@ export default function ProductsPage() {
                           />
                           <label
                             htmlFor={`mobile-category-${category.id}`}
-                            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                           >
                             {category.name}
                           </label>
@@ -423,10 +443,10 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  <div className="mb-6">
+                  <div>
                     <h3 className="font-medium mb-3">Sous-catégories</h3>
-                    <div className="space-y-3">
-                      {Array.from(new Set(products.map(product => product.subCategory).filter(Boolean))).map((subCategory) => (
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                      {allSubCategories.map((subCategory) => (
                         <div key={subCategory} className="flex items-center">
                           <Checkbox
                             id={`mobile-subcategory-${subCategory}`}
@@ -435,7 +455,7 @@ export default function ProductsPage() {
                           />
                           <label
                             htmlFor={`mobile-subcategory-${subCategory}`}
-                            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                           >
                             {subCategory}
                           </label>
@@ -444,7 +464,7 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  <div className="mb-6">
+                  <div>
                     <h3 className="font-medium mb-3">Prix</h3>
                     <div className="px-2">
                       <Slider
@@ -522,11 +542,12 @@ export default function ProductsPage() {
                   <DropdownMenuItem
                     key={option.value}
                     onClick={() => setSortOption(option.value)}
+                    className="cursor-pointer"
                   >
-                    <span className="flex items-center w-full">
+                    <span className="flex items-center w-full justify-between">
                       {option.label}
                       {sortOption === option.value && (
-                        <Check className="ml-auto h-4 w-4" />
+                        <Check className="h-4 w-4" />
                       )}
                     </span>
                   </DropdownMenuItem>
@@ -534,7 +555,7 @@ export default function ProductsPage() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <div className="hidden md:flex items-center border rounded-md">
+            <div className="hidden md:flex items-center border rounded-md overflow-hidden">
               <button
                 onClick={() => setViewMode("grid")}
                 className={cn(
@@ -546,12 +567,7 @@ export default function ProductsPage() {
                 aria-label="Vue en grille"
                 aria-pressed={viewMode === "grid"}
               >
-                <div className="grid grid-cols-2 gap-1">
-                  <div className="w-1.5 h-1.5 rounded-sm bg-current"></div>
-                  <div className="w-1.5 h-1.5 rounded-sm bg-current"></div>
-                  <div className="w-1.5 h-1.5 rounded-sm bg-current"></div>
-                  <div className="w-1.5 h-1.5 rounded-sm bg-current"></div>
-                </div>
+                <Grid className="h-4 w-4" />
               </button>
               <button
                 onClick={() => setViewMode("list")}
@@ -564,23 +580,15 @@ export default function ProductsPage() {
                 aria-label="Vue en liste"
                 aria-pressed={viewMode === "list"}
               >
-                <div className="flex flex-col gap-1">
-                  <div className="w-4 h-1 rounded-sm bg-current"></div>
-                  <div className="w-4 h-1 rounded-sm bg-current"></div>
-                  <div className="w-4 h-1 rounded-sm bg-current"></div>
-                </div>
+                <List className="h-4 w-4" />
               </button>
             </div>
           </div>
 
-          {(selectedCategories.length > 0 ||
-            selectedSubCategories.length > 0 ||
-            priceRange[0] > filters.price.min ||
-            priceRange[1] < filters.price.max ||
-            searchQuery) && (
+          {activeFiltersCount > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-sm text-gray-500 dark:text-gray-400 mr-1">
-                Filtres:
+                Filtres actifs:
               </span>
 
               <div className="flex flex-wrap gap-2 flex-1">
@@ -593,6 +601,7 @@ export default function ProductsPage() {
                     <button
                       onClick={() => setSearchQuery("")}
                       aria-label="Supprimer le filtre de recherche"
+                      className="hover:text-red-500"
                     >
                       <X className="h-3 w-3 flex-shrink-0" />
                     </button>
@@ -609,6 +618,7 @@ export default function ProductsPage() {
                     <button
                       onClick={() => handleCategoryToggle(category)}
                       aria-label={`Supprimer le filtre de catégorie ${category}`}
+                      className="hover:text-red-500"
                     >
                       <X className="h-3 w-3 flex-shrink-0" />
                     </button>
@@ -623,12 +633,9 @@ export default function ProductsPage() {
                   >
                     <span className="truncate">{subCategory}</span>
                     <button
-                      onClick={() => {
-                        setSelectedSubCategories(prev =>
-                          prev.filter((sc) => sc !== subCategory)
-                        );
-                      }}
+                      onClick={() => handleSubCategoryToggle(subCategory)}
                       aria-label={`Supprimer le filtre de sous-catégorie ${subCategory}`}
+                      className="hover:text-red-500"
                     >
                       <X className="h-3 w-3 flex-shrink-0" />
                     </button>
@@ -650,6 +657,7 @@ export default function ProductsPage() {
                         setPriceRange([filters.price.min, filters.price.max])
                       }
                       aria-label="Supprimer le filtre de prix"
+                      className="hover:text-red-500"
                     >
                       <X className="h-3 w-3 flex-shrink-0" />
                     </button>
@@ -661,7 +669,7 @@ export default function ProductsPage() {
                 variant="ghost"
                 size="sm"
                 onClick={clearFilters}
-                className="text-xs ml-auto"
+                className="text-xs ml-auto hover:text-red-500 hover:bg-red-50"
               >
                 Effacer tout
               </Button>
@@ -673,8 +681,34 @@ export default function ProductsPage() {
           <aside className="hidden md:block w-64 flex-shrink-0">
             <div className="sticky top-24 space-y-6">
               <div>
-                <h3 className="font-medium mb-3">Catégories</h3>
-                <div className="space-y-2">
+                <h3 className="font-medium mb-3">Recherche</h3>
+                <div className="relative">
+                  <Input
+                    type="text"
+                    placeholder="Rechercher..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                </div>
+              </div>
+
+              <Separator />
+
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-medium">Catégories</h3>
+                  {selectedCategories.length > 0 && (
+                    <button
+                      onClick={() => setSelectedCategories([])}
+                      className="text-xs text-gray-500 hover:text-red-500"
+                    >
+                      Effacer
+                    </button>
+                  )}
+                </div>
+                <div className="space-y-2 max-h-80 overflow-y-auto">
                   {categories.map((category) => (
                     <div key={category.id} className="flex items-center">
                       <Checkbox
@@ -686,7 +720,7 @@ export default function ProductsPage() {
                       />
                       <label
                         htmlFor={`category-${category.id}`}
-                        className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer hover:text-gray-900 dark:hover:text-gray-100"
                       >
                         {category.name}
                       </label>
@@ -698,9 +732,19 @@ export default function ProductsPage() {
               <Separator />
 
               <div>
-                <h3 className="font-medium mb-3">Sous-catégories</h3>
-                <div className="space-y-2">
-                  {Array.from(new Set(products.map(product => product.subCategory).filter(Boolean))).map((subCategory) => (
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-medium">Sous-catégories</h3>
+                  {selectedSubCategories.length > 0 && (
+                    <button
+                      onClick={() => setSelectedSubCategories([])}
+                      className="text-xs text-gray-500 hover:text-red-500"
+                    >
+                      Effacer
+                    </button>
+                  )}
+                </div>
+                <div className="space-y-2 max-h-80 overflow-y-auto">
+                  {allSubCategories.map((subCategory) => (
                     <div key={subCategory} className="flex items-center">
                       <Checkbox
                         id={`subcategory-${subCategory}`}
@@ -709,7 +753,7 @@ export default function ProductsPage() {
                       />
                       <label
                         htmlFor={`subcategory-${subCategory}`}
-                        className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer hover:text-gray-900 dark:hover:text-gray-100"
                       >
                         {subCategory}
                       </label>
@@ -748,9 +792,9 @@ export default function ProductsPage() {
               <Button
                 variant="outline"
                 onClick={clearFilters}
-                className="w-full"
+                className="w-full hover:bg-red-50 hover:text-red-600 hover:border-red-200"
               >
-                Réinitialiser les filtres
+                Réinitialiser tous les filtres
               </Button>
             </div>
           </aside>
@@ -798,37 +842,30 @@ export default function ProductsPage() {
                 {displayedProducts.map((product) => (
                   <motion.article
                     key={`${product.id}-${product.name}`}
-                    className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow h-full flex flex-col cursor-pointer group"
+                    className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow h-full flex flex-col group"
                     variants={itemVariants}
-                    onClick={() => navigateToProduct(product)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        navigateToProduct(product);
-                      }
-                    }}
-                    aria-label={`Voir les détails de ${product.name}`}
+                    whileHover={{ y: -4 }}
                   >
                     <div className="relative h-40 xs:h-48 overflow-hidden">
-                      <Image
-                        src={
-                          product.image ||
-                          "/placeholder.svg?height=192&width=256" ||
-                          "/placeholder.svg"
-                        }
-                        alt={product.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        priority={currentPage === 1 && product.id <= 4}
-                      />
+                      <Link href={`/produit/${product.slug || product.id}`}>
+                        <Image
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=256" ||
+                            "/placeholder.svg"
+                          }
+                          alt={product.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          priority={currentPage === 1 && product.id <= 4}
+                        />
+                      </Link>
                       <div className="absolute top-2 right-2 z-10">
                         <button
-                          onClick={(e) => toggleFavorite(product, e)}
+                          onClick={() => toggleFavorite(product)}
                           className={cn(
-                            "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
+                            "h-8 w-8 rounded-full flex items-center justify-center transition-all duration-200",
                             isInFavorites(product.id)
                               ? "bg-red-50 text-red-500 hover:bg-red-100"
                               : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
@@ -841,19 +878,19 @@ export default function ProductsPage() {
                         >
                           <Heart
                             className={cn(
-                              "h-4 w-4",
+                              "h-4 w-4 transition-transform duration-200",
                               isInFavorites(product.id) && "fill-red-500"
                             )}
                           />
                         </button>
                       </div>
                       {product.isNew && (
-                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">
+                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600 border-0">
                           Nouveau
                         </Badge>
                       )}
                       {product.discount > 0 && (
-                        <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600">
+                        <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600 border-0">
                           -{product.discount}%
                         </Badge>
                       )}
@@ -861,10 +898,16 @@ export default function ProductsPage() {
                     <div className="p-3 xs:p-4 flex flex-col flex-grow">
                       <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
                         {product.category}
+                        {product.subCategory && ` • ${product.subCategory}`}
                       </div>
-                      <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors line-clamp-2 text-sm xs:text-base">
-                        {product.name}
-                      </h2>
+                      <Link
+                        href={`/produit/${product.slug || product.id}`}
+                        className="group"
+                      >
+                        <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors line-clamp-2 text-sm xs:text-base">
+                          {product.name}
+                        </h2>
+                      </Link>
                       <div className="mb-2">{renderRating(product.rating)}</div>
                       <div className="mt-auto pt-2 flex items-center justify-between">
                         <div className="flex flex-col xs:flex-row xs:items-center">
@@ -879,7 +922,7 @@ export default function ProductsPage() {
                         </div>
                         <Button
                           size="sm"
-                          onClick={(e) => handleAddToCart(product, e)}
+                          onClick={() => addToCart(product)}
                           className="h-8 bg-yellow-500 hover:bg-yellow-600 w-8 p-0"
                           aria-label={`Ajouter ${product.name} au panier`}
                         >
@@ -900,39 +943,32 @@ export default function ProductsPage() {
                 {displayedProducts.map((product) => (
                   <motion.article
                     key={product.id}
-                    className="flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group"
+                    className="flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow group"
                     variants={itemVariants}
-                    onClick={() => navigateToProduct(product)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        navigateToProduct(product);
-                      }
-                    }}
-                    aria-label={`Voir les détails de ${product.name}`}
+                    whileHover={{ x: 4 }}
                   >
                     <div className="relative h-48 sm:h-auto sm:w-48 overflow-hidden">
-                      <Image
-                        src={
-                          product.image ||
-                          "/placeholder.svg?height=192&width=192" ||
-                          "/placeholder.svg"
-                        }
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 640px) 100vw, 192px"
-                        priority={currentPage === 1 && product.id <= 4}
-                      />
+                      <Link href={`/produit/${product.slug || product.id}`}>
+                        <Image
+                          src={
+                            product.image ||
+                            "/placeholder.svg?height=192&width=192" ||
+                            "/placeholder.svg"
+                          }
+                          alt={product.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 640px) 100vw, 192px"
+                          priority={currentPage === 1 && product.id <= 4}
+                        />
+                      </Link>
                       {product.isNew && (
-                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">
+                        <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600 border-0">
                           Nouveau
                         </Badge>
                       )}
                       {product.discount > 0 && (
-                        <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600">
+                        <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600 border-0">
                           -{product.discount}%
                         </Badge>
                       )}
@@ -940,10 +976,16 @@ export default function ProductsPage() {
                     <div className="flex-1 p-4 flex flex-col">
                       <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
                         {product.category}
+                        {product.subCategory && ` • ${product.subCategory}`}
                       </div>
-                      <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">
-                        {product.name}
-                      </h2>
+                      <Link
+                        href={`/produit/${product.slug || product.id}`}
+                        className="group"
+                      >
+                        <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">
+                          {product.name}
+                        </h2>
+                      </Link>
                       <div className="mb-2">{renderRating(product.rating)}</div>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
                         {product.description}
@@ -961,15 +1003,15 @@ export default function ProductsPage() {
                             </>
                           ) : (
                             <span className="text-lg font-bold text-gray-900 dark:text-white">
-                                {formatPrice(product.price)}
-                              </span>
+                              {formatPrice(product.price)}
+                            </span>
                           )}
                         </div>
                         <div className="flex items-center gap-2">
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={(e) => toggleFavorite(product, e)}
+                            onClick={() => toggleFavorite(product)}
                             className={cn(
                               "h-8 w-8 p-0",
                               isInFavorites(product.id) &&
@@ -991,7 +1033,7 @@ export default function ProductsPage() {
                           <Button
                             size="sm"
                             className="bg-yellow-500 hover:bg-yellow-600"
-                            onClick={(e) => handleAddToCart(product, e)}
+                            onClick={() => addToCart(product)}
                             aria-label={`Ajouter ${product.name} au panier`}
                           >
                             <ShoppingCart className="h-4 w-4 mr-2" />
@@ -1052,7 +1094,7 @@ export default function ProductsPage() {
                           ) : (
                             <PaginationItem key={pageNumber}>
                               <PaginationLink
-                                onClick={() => paginate(pageNumber)}
+                                onClick={() => setCurrentPage(pageNumber)}
                                 isActive={currentPage === pageNumber}
                                 className="cursor-pointer"
                                 aria-current={

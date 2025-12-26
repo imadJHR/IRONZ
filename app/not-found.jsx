@@ -73,7 +73,7 @@ export default function NotFound() {
   // Popular pages for quick navigation
   const popularPages = [
     { name: "Accueil", path: "/" },
-    { name: "Produits", path: "/produits" },
+    { name: "Produits", path: "/produit" },
     { name: "Services", path: "/services" },
     { name: "À propos", path: "/a-propos" },
     { name: "Contact", path: "/contact" },

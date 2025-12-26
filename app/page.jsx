@@ -63,35 +63,665 @@ import banner2 from "../public/des2.jpg";
 import banner3 from "../public/des3.jpg";
 import banner4 from "../public/des4.jpg";
 
-const faqs = [
-  {
-    question:
-      "Comment choisir le bon équipement pour ma salle de sport à domicile ?",
-    answer:
-      "Pour choisir le bon équipement, considérez d'abord vos objectifs fitness, l'espace disponible et votre budget. Nous recommandons de commencer par des équipements polyvalents comme un banc réglable, des haltères ajustables et un tapis de sol. N'hésitez pas à contacter notre équipe pour des conseils personnalisés.",
-  },
-  {
-    question: "Quels sont les délais de livraison ?",
-    answer:
-      "Nos délais de livraison varient selon votre localisation. En général, comptez 2-3 jours. Vous recevrez un email de confirmation avec un numéro de suivi dès l'expédition de votre commande.",
-  },
-  {
-    question: "Proposez-vous un service d'installation pour les équipements ?",
-    answer:
-      "Oui, nous proposons un service d'installation professionnel pour les équipements volumineux comme les stations de musculation et les tapis de course. Ce service est disponible dans certaines régions et peut être ajouté lors de votre commande. Contactez notre service client pour plus d'informations.",
-  },
-  {
-    question: "Quelle est votre politique de retour ?",
-    answer:
-      "Nous offrons une garantie de satisfaction de 30 jours. Si vous n'êtes pas satisfait de votre achat, vous pouvez retourner le produit dans son emballage d'origine pour un remboursement complet ou un échange. Les frais de retour sont à la charge du client, sauf en cas de produit défectueux.",
-  },
-  {
-    question:
-      "Vos suppléments sont-ils testés pour les substances interdites ?",
-    answer:
-      "Absolument. Tous nos suppléments nutritionnels sont fabriqués dans des installations certifiées et sont testés par des laboratoires indépendants pour garantir leur pureté et l'absence de substances interdites. Nous fournissons des certificats d'analyse sur demande.",
-  },
-];
+// Client wrapper for Tabs section
+const ClientTabsSection = ({ 
+  featuredProducts, 
+  newArrivals, 
+  bestSellers, 
+  specialOffers,
+  formatPrice,
+  toggleFavorite,
+  isInFavorites,
+  addToCart
+}) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <section className="py-12 sm:py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-96 flex items-center justify-center">
+            <div className="text-gray-500">Chargement des produits...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="py-12 sm:py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+            Nos <span className="text-yellow-500">Produits</span>
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Découvrez notre sélection de produits de qualité professionnelle
+          </p>
+        </div>
+
+        <Tabs defaultValue="featured" className="w-full">
+          <div className="w-full px-4 sm:px-6 mb-8 overflow-x-auto no-scrollbar">
+            <div className="inline-flex w-full max-w-4xl mx-auto">
+              <TabsList className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-1 border border-gray-200 dark:border-gray-700 backdrop-blur-sm bg-opacity-60 dark:bg-opacity-60">
+                <TabsTrigger
+                  value="featured"
+                  className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
+                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-50 data-[state=active]:to-amber-50 dark:data-[state=active]:from-orange-900/30 dark:data-[state=active]:to-amber-900/30
+                  data-[state=active]:text-orange-600 dark:data-[state=active]:text-amber-400
+                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Flame className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+                    Populaires
+                  </span>
+                  <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-orange-500 dark:bg-amber-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
+                </TabsTrigger>
+
+                <TabsTrigger
+                  value="new"
+                  className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
+                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-50 data-[state=active]:to-cyan-50 dark:data-[state=active]:from-blue-900/30 dark:data-[state=active]:to-cyan-900/30
+                  data-[state=active]:text-blue-600 dark:data-[state=active]:text-cyan-400
+                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                    Nouveautés
+                  </span>
+                  <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-blue-500 dark:bg-cyan-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
+                </TabsTrigger>
+
+                <TabsTrigger
+                  value="bestsellers"
+                  className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
+                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-50 data-[state=active]:to-amber-50 dark:data-[state=active]:from-yellow-900/30 dark:data-[state=active]:to-amber-900/30
+                  data-[state=active]:text-yellow-600 dark:data-[state=active]:text-amber-400
+                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Trophy className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
+                    Meilleures Ventes
+                  </span>
+                  <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-yellow-500 dark:bg-amber-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
+                </TabsTrigger>
+
+                <TabsTrigger
+                  value="offers"
+                  className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
+                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-50 data-[state=active]:to-pink-50 dark:data-[state=active]:from-red-900/30 dark:data-[state=active]:to-pink-900/30
+                  data-[state=active]:text-red-600 dark:data-[state=active]:text-pink-400
+                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Tag className="h-4 w-4 text-red-500 dark:text-red-400" />
+                    Offres Spéciales
+                  </span>
+                  <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-red-500 dark:bg-pink-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
+                </TabsTrigger>
+              </TabsList>
+            </div>
+          </div>
+
+          <TabsContent value="featured">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {featuredProducts.map((product) => (
+                <motion.div
+                  key={product.id}
+                  whileHover={{ y: -5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
+                >
+                  <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
+                    <Image
+                      src={
+                        product.image ||
+                        "/placeholder.svg?height=192&width=256" ||
+                        "/placeholder.svg"
+                      }
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
+                    <div className="absolute top-2 right-2 z-10">
+                      <button
+                        onClick={() => toggleFavorite(product)}
+                        className={cn(
+                          "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
+                          isInFavorites(product.id)
+                            ? "bg-red-50 text-red-500 hover:bg-red-100"
+                            : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
+                        )}
+                        aria-label={
+                          isInFavorites(product.id)
+                            ? "Retirer des favoris"
+                            : "Ajouter aux favoris"
+                        }
+                      >
+                        <Heart
+                          className={cn(
+                            "h-4 w-4",
+                            isInFavorites(product.id) && "fill-red-500"
+                          )}
+                        />
+                      </button>
+                    </div>
+                    {product.isNew && (
+                      <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                        Nouveau
+                      </div>
+                    )}
+                    {product.discount > 0 && (
+                      <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                        -{product.discount}%
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-3 sm:p-4">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                      {product.category}
+                    </div>
+                    <Link href={`/produit/${product.slug}`}>
+                      <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
+                        {product.name}
+                      </h3>
+                    </Link>
+                    <div className="flex items-center mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={cn(
+                            "h-3 w-3 sm:h-4 sm:w-4",
+                            i < Math.floor(product.rating)
+                              ? "text-yellow-400 fill-yellow-400"
+                              : "text-gray-300 dark:text-gray-600"
+                          )}
+                        />
+                      ))}
+                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                        ({product.reviewCount || 0})
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        {product.oldPrice ? (
+                          <div className="flex flex-col">
+                            <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
+                              {formatPrice(product.price)}
+                            </span>
+                            <span className="text-xs sm:text-sm text-gray-500 line-through">
+                              {formatPrice(product.oldPrice)}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
+                            {formatPrice(product.price)}
+                          </span>
+                        )}
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => addToCart(product)}
+                        className="h-8 w-8 sm:h-9 sm:w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
+                      >
+                        <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="new">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {newArrivals.map((product) => (
+                <motion.div
+                  key={product.id}
+                  whileHover={{ y: -5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
+                >
+                  <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
+                    <Image
+                      src={
+                        product.image ||
+                        "/placeholder.svg?height=192&width=256" ||
+                        "/placeholder.svg"
+                      }
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
+                    <div className="absolute top-2 right-2 z-10">
+                      <button
+                        onClick={() => toggleFavorite(product)}
+                        className={cn(
+                          "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
+                          isInFavorites(product.id)
+                            ? "bg-red-50 text-red-500 hover:bg-red-100"
+                            : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
+                        )}
+                        aria-label={
+                          isInFavorites(product.id)
+                            ? "Retirer des favoris"
+                            : "Ajouter aux favoris"
+                        }
+                      >
+                        <Heart
+                          className={cn(
+                            "h-4 w-4",
+                            isInFavorites(product.id) && "fill-red-500"
+                          )}
+                        />
+                      </button>
+                    </div>
+                    <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                      Nouveau
+                    </div>
+                    {product.discount > 0 && (
+                      <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                        -{product.discount}%
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-3 sm:p-4">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                      {product.category}
+                    </div>
+                    <Link href={`/produits/${product.slug}`}>
+                      <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
+                        {product.name}
+                      </h3>
+                    </Link>
+                    <div className="flex items-center mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={cn(
+                            "h-3 w-3 sm:h-4 sm:w-4",
+                            i < Math.floor(product.rating)
+                              ? "text-yellow-400 fill-yellow-400"
+                              : "text-gray-300 dark:text-gray-600"
+                          )}
+                        />
+                      ))}
+                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                        ({product.reviewCount || 0})
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        {product.oldPrice ? (
+                          <div className="flex flex-col">
+                            <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
+                              {formatPrice(product.price)}
+                            </span>
+                            <span className="text-xs sm:text-sm text-gray-500 line-through">
+                              {formatPrice(product.oldPrice)}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
+                            {formatPrice(product.price)}
+                          </span>
+                        )}
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => addToCart(product)}
+                        className="h-8 w-8 sm:h-9 sm:w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
+                      >
+                        <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="bestsellers">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {bestSellers.map((product) => (
+                <motion.div
+                  key={product.id}
+                  whileHover={{ y: -5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
+                >
+                  <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
+                    <Image
+                      src={
+                        product.image ||
+                        "/placeholder.svg?height=192&width=256" ||
+                        "/placeholder.svg"
+                      }
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
+                    <div className="absolute top-2 right-2 z-10">
+                      <button
+                        onClick={() => toggleFavorite(product)}
+                        className={cn(
+                          "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
+                          isInFavorites(product.id)
+                            ? "bg-red-50 text-red-500 hover:bg-red-100"
+                            : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
+                        )}
+                        aria-label={
+                          isInFavorites(product.id)
+                            ? "Retirer des favoris"
+                            : "Ajouter aux favoris"
+                        }
+                      >
+                        <Heart
+                          className={cn(
+                            "h-4 w-4",
+                            isInFavorites(product.id) && "fill-red-500"
+                          )}
+                        />
+                      </button>
+                    </div>
+                    {product.isNew && (
+                      <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                        Nouveau
+                      </div>
+                    )}
+                    {product.discount > 0 && (
+                      <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                        -{product.discount}%
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-3 sm:p-4">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                      {product.category}
+                    </div>
+                    <Link href={`/produit/${product.slug}`}>
+                      <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
+                        {product.name}
+                      </h3>
+                    </Link>
+                    <div className="flex items-center mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={cn(
+                            "h-3 w-3 sm:h-4 sm:w-4",
+                            i < Math.floor(product.rating)
+                              ? "text-yellow-400 fill-yellow-400"
+                              : "text-gray-300 dark:text-gray-600"
+                          )}
+                        />
+                      ))}
+                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                        ({product.reviewCount || 0})
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        {product.oldPrice ? (
+                          <div className="flex flex-col">
+                            <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
+                              {formatPrice(product.price)}
+                            </span>
+                            <span className="text-xs sm:text-sm text-gray-500 line-through">
+                              {formatPrice(product.oldPrice)}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
+                            {formatPrice(product.price)}
+                          </span>
+                        )}
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => addToCart(product)}
+                        className="h-8 w-8 sm:h-9 sm:w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
+                      >
+                        <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="offers">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {specialOffers.map((product) => (
+                <motion.div
+                  key={product.id}
+                  whileHover={{ y: -5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
+                >
+                  <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
+                    <Image
+                      src={
+                        product.image ||
+                        "/placeholder.svg?height=192&width=256" ||
+                        "/placeholder.svg"
+                      }
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute top-2 right-2 z-10">
+                      <button
+                        onClick={() => toggleFavorite(product)}
+                        className={cn(
+                          "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
+                          isInFavorites(product.id)
+                            ? "bg-red-50 text-red-500 hover:bg-red-100"
+                            : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
+                        )}
+                        aria-label={
+                          isInFavorites(product.id)
+                            ? "Retirer des favoris"
+                            : "Ajouter aux favoris"
+                        }
+                      >
+                        <Heart
+                          className={cn(
+                            "h-4 w-4",
+                            isInFavorites(product.id) && "fill-red-500"
+                          )}
+                        />
+                      </button>
+                    </div>
+                    {product.isNew && (
+                      <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                        Nouveau
+                      </div>
+                    )}
+                    <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                      -{product.discount}%
+                    </div>
+                  </div>
+                  <div className="p-3 sm:p-4">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                      {product.category}
+                    </div>
+                    <Link href={`/produits/${product.slug}`}>
+                      <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
+                        {product.name}
+                      </h3>
+                    </Link>
+                    <div className="flex items-center mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={cn(
+                            "h-3 w-3 sm:h-4 sm:w-4",
+                            i < Math.floor(product.rating)
+                              ? "text-yellow-400 fill-yellow-400"
+                              : "text-gray-300 dark:text-gray-600"
+                          )}
+                        />
+                      ))}
+                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                        ({product.reviewCount || 0})
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
+                            {formatPrice(product.price)}
+                          </span>
+                          <span className="text-xs sm:text-sm text-gray-500 line-through">
+                            {formatPrice(product.oldPrice)}
+                          </span>
+                        </div>
+                        <div className="text-xs text-green-600 dark:text-green-400 font-medium">
+                          Économisez{" "}
+                          {formatPrice(product.oldPrice - product.price)}
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        onClick={() => addToCart(product)}
+                        className="h-8 w-8 sm:h-9 sm:w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
+                      >
+                        <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        <div className="text-center mt-8 sm:mt-12">
+          <Button
+            asChild
+            size="lg"
+            className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-xl shadow-md"
+          >
+            <Link href="/product">
+              Voir tous les produits
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Client wrapper for FAQ section
+const ClientFaqSection = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const faqs = [
+    {
+      question:
+        "Comment choisir le bon équipement pour ma salle de sport à domicile ?",
+      answer:
+        "Pour choisir le bon équipement, considérez d'abord vos objectifs fitness, l'espace disponible et votre budget. Nous recommandons de commencer par des équipements polyvalents comme un banc réglable, des haltères ajustables et un tapis de sol. N'hésitez pas à contacter notre équipe pour des conseils personnalisés.",
+    },
+    {
+      question: "Quels sont les délais de livraison ?",
+      answer:
+        "Nos délais de livraison varient selon votre localisation. En général, comptez 2-3 jours. Vous recevrez un email de confirmation avec un numéro de suivi dès l'expédition de votre commande.",
+    },
+    {
+      question: "Proposez-vous un service d'installation pour les équipements ?",
+      answer:
+        "Oui, nous proposons un service d'installation professionnel pour les équipements volumineux comme les stations de musculation et les tapis de course. Ce service est disponible dans certaines régions et peut être ajouté lors de votre commande. Contactez notre service client pour plus d'informations.",
+    },
+    {
+      question: "Quelle est votre politique de retour ?",
+      answer:
+        "Nous offrons une garantie de satisfaction de 30 jours. Si vous n'êtes pas satisfait de votre achat, vous pouvez retourner le produit dans son emballage d'origine pour un remboursement complet ou un échange. Les frais de retour sont à la charge du client, sauf en cas de produit défectueux.",
+    },
+    {
+      question:
+        "Vos suppléments sont-ils testés pour les substances interdites ?",
+      answer:
+        "Absolument. Tous nos suppléments nutritionnels sont fabriqués dans des installations certifiées et sont testés par des laboratoires indépendants pour garantir leur pureté et l'absence de substances interdites. Nous fournissons des certificats d'analyse sur demande.",
+    },
+  ];
+
+  if (!isMounted) {
+    return (
+      <section className="py-12 sm:py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-64 flex items-center justify-center">
+            <div className="text-gray-500">Chargement des FAQ...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="py-12 sm:py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+            Questions <span className="text-yellow-500">Fréquentes</span>
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Trouvez rapidement des réponses à vos questions
+          </p>
+        </div>
+
+        <div className="max-w-3xl mx-auto">
+          <Accordion type="single" collapsible className="w-full">
+            {faqs.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="bg-white dark:bg-gray-700 mb-4 rounded-xl border border-gray-100 dark:border-gray-600 shadow-sm"
+              >
+                <AccordionTrigger className="text-left font-medium text-base sm:text-lg px-4 sm:px-6 py-4 text-gray-900 dark:text-white">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-600 dark:text-gray-300 px-4 sm:px-6 pb-4 text-sm sm:text-base">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+
+          <div className="mt-8 sm:mt-10 text-center">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              Vous ne trouvez pas la réponse à votre question ?
+            </p>
+            <Button
+              asChild
+              className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-xl shadow-md"
+            >
+              <Link href="/contact">
+                Contactez-nous
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -595,7 +1225,7 @@ const banners = [
     title: "RED REX 100% BEEF PROTEIN",
     highlight: "Highlight",
     description: "",
-    link: "https://www.ironz.ma/product/RED-REX-BEEF-PROTEIN-ISOLATE-4lbs",
+    link: "https://www.ironz.ma/produit/RED-REX-BEEF-PROTEIN-ISOLATE-4lbs",
     icon: "🌟",
   },
   {
@@ -606,7 +1236,7 @@ const banners = [
     title: "PERFORMANCE UTILITY BENCH",
     highlight: "Highlight",
     description: "",
-    link: "https://www.ironz.ma/product/PERFORMANCE-UTILITY-BENCH",
+    link: "https://www.ironz.ma/produit/PERFORMANCE-UTILITY-BENCH",
     icon: "🌟",
   },
   {
@@ -617,7 +1247,7 @@ const banners = [
     title: "PERFORMANCE HOME GYM",
     highlight: "Highlight",
     description: "",
-    link: "https://www.ironz.ma/product/PERFORMANCE-HOME-GYM",
+    link: "https://www.ironz.ma/produit/PERFORMANCE-HOME-GYM",
     icon: "🌟",
   },
   {
@@ -628,7 +1258,7 @@ const banners = [
     title: "C-21 BIKE",
     highlight: "Highlight",
     description: "",
-    link: "https://www.ironz.ma/product/C-21-BIKE",
+    link: "https://www.ironz.ma/produit/C-21-BIKE",
     icon: "🌟",
   },
 ];
@@ -1068,534 +1698,17 @@ export default function Home() {
 
         <ServicesSection />
 
-        {/* Products Section - Tabs responsives et cartes de produits améliorées */}
-        <section className="py-12 sm:py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-                Nos <span className="text-yellow-500">Produits</span>
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Découvrez notre sélection de produits de qualité professionnelle
-              </p>
-            </div>
-
-            <Tabs defaultValue="featured" className="w-full">
-              <div className="w-full px-4 sm:px-6 mb-8 overflow-x-auto no-scrollbar">
-                <div className="inline-flex w-full max-w-4xl mx-auto">
-                  <TabsList className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-1 border border-gray-200 dark:border-gray-700 backdrop-blur-sm bg-opacity-60 dark:bg-opacity-60">
-                    <TabsTrigger
-                      value="featured"
-                      className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
-                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-50 data-[state=active]:to-amber-50 dark:data-[state=active]:from-orange-900/30 dark:data-[state=active]:to-amber-900/30
-                  data-[state=active]:text-orange-600 dark:data-[state=active]:text-amber-400
-                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
-                    >
-                      <span className="relative z-10 flex items-center gap-2">
-                        <Flame className="h-4 w-4 text-orange-500 dark:text-orange-400" />
-                        Populaires
-                      </span>
-                      <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-orange-500 dark:bg-amber-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
-                    </TabsTrigger>
-
-                    <TabsTrigger
-                      value="new"
-                      className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
-                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-50 data-[state=active]:to-cyan-50 dark:data-[state=active]:from-blue-900/30 dark:data-[state=active]:to-cyan-900/30
-                  data-[state=active]:text-blue-600 dark:data-[state=active]:text-cyan-400
-                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
-                    >
-                      <span className="relative z-10 flex items-center gap-2">
-                        <Sparkles className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                        Nouveautés
-                      </span>
-                      <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-blue-500 dark:bg-cyan-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
-                    </TabsTrigger>
-
-                    <TabsTrigger
-                      value="bestsellers"
-                      className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
-                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-50 data-[state=active]:to-amber-50 dark:data-[state=active]:from-yellow-900/30 dark:data-[state=active]:to-amber-900/30
-                  data-[state=active]:text-yellow-600 dark:data-[state=active]:text-amber-400
-                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
-                    >
-                      <span className="relative z-10 flex items-center gap-2">
-                        <Trophy className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
-                        Meilleures Ventes
-                      </span>
-                      <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-yellow-500 dark:bg-amber-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
-                    </TabsTrigger>
-
-                    <TabsTrigger
-                      value="offers"
-                      className="relative text-sm sm:text-base whitespace-nowrap rounded-md px-4 py-2 transition-all duration-200
-                  data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-50 data-[state=active]:to-pink-50 dark:data-[state=active]:from-red-900/30 dark:data-[state=active]:to-pink-900/30
-                  data-[state=active]:text-red-600 dark:data-[state=active]:text-pink-400
-                  hover:bg-gray-100 dark:hover:bg-gray-700/50"
-                    >
-                      <span className="relative z-10 flex items-center gap-2">
-                        <Tag className="h-4 w-4 text-red-500 dark:text-red-400" />
-                        Offres Spéciales
-                      </span>
-                      <span className="absolute -bottom-1 left-1/2 w-4/5 h-0.5 bg-red-500 dark:bg-pink-400 rounded-full transform -translate-x-1/2 opacity-0 data-[state=active]:opacity-100 transition-opacity" />
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
-              </div>
-
-              <TabsContent value="featured">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                  {featuredProducts.map((product) => (
-                    <motion.div
-                      key={product.id}
-                      whileHover={{ y: -5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
-                    >
-                      <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
-                        <Image
-                          src={
-                            product.image ||
-                            "/placeholder.svg?height=192&width=256" ||
-                            "/placeholder.svg"
-                          }
-                          alt={product.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        />
-                        <div className="absolute top-2 right-2 z-10">
-                          <button
-                            onClick={() => toggleFavorite(product)}
-                            className={cn(
-                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
-                              isInFavorites(product.id)
-                                ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
-                            )}
-                            aria-label={
-                              isInFavorites(product.id)
-                                ? "Retirer des favoris"
-                                : "Ajouter aux favoris"
-                            }
-                          >
-                            <Heart
-                              className={cn(
-                                "h-4 w-4",
-                                isInFavorites(product.id) && "fill-red-500"
-                              )}
-                            />
-                          </button>
-                        </div>
-                        {product.isNew && (
-                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-                            Nouveau
-                          </div>
-                        )}
-                        {product.discount > 0 && (
-                          <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-                            -{product.discount}%
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-3 sm:p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                          {product.category}
-                        </div>
-                        <Link href={`/produits/${product.slug}`}>
-                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
-                            {product.name}
-                          </h3>
-                        </Link>
-                        <div className="flex items-center mb-2">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={cn(
-                                "h-3 w-3 sm:h-4 sm:w-4",
-                                i < Math.floor(product.rating)
-                                  ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300 dark:text-gray-600"
-                              )}
-                            />
-                          ))}
-                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-                            ({product.reviewCount || 0})
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            {product.oldPrice ? (
-                              <div className="flex flex-col">
-                                <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
-                                  {formatPrice(product.price)}
-                                </span>
-                                <span className="text-xs sm:text-sm text-gray-500 line-through">
-                                  {formatPrice(product.oldPrice)}
-                                </span>
-                              </div>
-                            ) : (
-                              <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
-                                {formatPrice(product.price)}
-                              </span>
-                            )}
-                          </div>
-                          <Button
-                            size="sm"
-                            onClick={() => addToCart(product)}
-                            className="h-8 w-8 sm:h-9 sm:w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
-                          >
-                            <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="new">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                  {newArrivals.map((product) => (
-                    <motion.div
-                      key={product.id}
-                      whileHover={{ y: -5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
-                    >
-                      <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
-                        <Image
-                          src={
-                            product.image ||
-                            "/placeholder.svg?height=192&width=256" ||
-                            "/placeholder.svg"
-                          }
-                          alt={product.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        />
-                        <div className="absolute top-2 right-2 z-10">
-                          <button
-                            onClick={() => toggleFavorite(product)}
-                            className={cn(
-                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
-                              isInFavorites(product.id)
-                                ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
-                            )}
-                            aria-label={
-                              isInFavorites(product.id)
-                                ? "Retirer des favoris"
-                                : "Ajouter aux favoris"
-                            }
-                          >
-                            <Heart
-                              className={cn(
-                                "h-4 w-4",
-                                isInFavorites(product.id) && "fill-red-500"
-                              )}
-                            />
-                          </button>
-                        </div>
-                        <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-                          Nouveau
-                        </div>
-                        {product.discount > 0 && (
-                          <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-                            -{product.discount}%
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-3 sm:p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                          {product.category}
-                        </div>
-                        <Link href={`/produits/${product.slug}`}>
-                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
-                            {product.name}
-                          </h3>
-                        </Link>
-                        <div className="flex items-center mb-2">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={cn(
-                                "h-3 w-3 sm:h-4 sm:w-4",
-                                i < Math.floor(product.rating)
-                                  ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300 dark:text-gray-600"
-                              )}
-                            />
-                          ))}
-                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-                            ({product.reviewCount || 0})
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            {product.oldPrice ? (
-                              <div className="flex flex-col">
-                                <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
-                                  {formatPrice(product.price)}
-                                </span>
-                                <span className="text-xs sm:text-sm text-gray-500 line-through">
-                                  {formatPrice(product.oldPrice)}
-                                </span>
-                              </div>
-                            ) : (
-                              <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
-                                {formatPrice(product.price)}
-                              </span>
-                            )}
-                          </div>
-                          <Button
-                            size="sm"
-                            onClick={() => addToCart(product)}
-                            className="h-8 w-8 sm:h-9 sm:w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
-                          >
-                            <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="bestsellers">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                  {bestSellers.map((product) => (
-                    <motion.div
-                      key={product.id}
-                      whileHover={{ y: -5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
-                    >
-                      <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
-                        <Image
-                          src={
-                            product.image ||
-                            "/placeholder.svg?height=192&width=256" ||
-                            "/placeholder.svg"
-                          }
-                          alt={product.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        />
-                        <div className="absolute top-2 right-2 z-10">
-                          <button
-                            onClick={() => toggleFavorite(product)}
-                            className={cn(
-                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
-                              isInFavorites(product.id)
-                                ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
-                            )}
-                            aria-label={
-                              isInFavorites(product.id)
-                                ? "Retirer des favoris"
-                                : "Ajouter aux favoris"
-                            }
-                          >
-                            <Heart
-                              className={cn(
-                                "h-4 w-4",
-                                isInFavorites(product.id) && "fill-red-500"
-                              )}
-                            />
-                          </button>
-                        </div>
-                        {product.isNew && (
-                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-                            Nouveau
-                          </div>
-                        )}
-                        {product.discount > 0 && (
-                          <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-                            -{product.discount}%
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-3 sm:p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                          {product.category}
-                        </div>
-                        <Link href={`/produits/${product.slug}`}>
-                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
-                            {product.name}
-                          </h3>
-                        </Link>
-                        <div className="flex items-center mb-2">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={cn(
-                                "h-3 w-3 sm:h-4 sm:w-4",
-                                i < Math.floor(product.rating)
-                                  ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300 dark:text-gray-600"
-                              )}
-                            />
-                          ))}
-                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-                            ({product.reviewCount || 0})
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            {product.oldPrice ? (
-                              <div className="flex flex-col">
-                                <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
-                                  {formatPrice(product.price)}
-                                </span>
-                                <span className="text-xs sm:text-sm text-gray-500 line-through">
-                                  {formatPrice(product.oldPrice)}
-                                </span>
-                              </div>
-                            ) : (
-                              <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
-                                {formatPrice(product.price)}
-                              </span>
-                            )}
-                          </div>
-                          <Button
-                            size="sm"
-                            onClick={() => addToCart(product)}
-                            className="h-8 w-8 sm:h-9 sm:w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
-                          >
-                            <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="offers">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {specialOffers.map((product) => (
-                    <motion.div
-                      key={product.id}
-                      whileHover={{ y: -5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
-                    >
-                      <div className="relative h-40 sm:h-48 md:h-52 overflow-hidden group">
-                        <Image
-                          src={
-                            product.image ||
-                            "/placeholder.svg?height=192&width=256" ||
-                            "/placeholder.svg"
-                          }
-                          alt={product.name}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                        <div className="absolute top-2 right-2 z-10">
-                          <button
-                            onClick={() => toggleFavorite(product)}
-                            className={cn(
-                              "h-8 w-8 rounded-full flex items-center justify-center transition-colors shadow-md",
-                              isInFavorites(product.id)
-                                ? "bg-red-50 text-red-500 hover:bg-red-100"
-                                : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
-                            )}
-                            aria-label={
-                              isInFavorites(product.id)
-                                ? "Retirer des favoris"
-                                : "Ajouter aux favoris"
-                            }
-                          >
-                            <Heart
-                              className={cn(
-                                "h-4 w-4",
-                                isInFavorites(product.id) && "fill-red-500"
-                              )}
-                            />
-                          </button>
-                        </div>
-                        {product.isNew && (
-                          <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-                            Nouveau
-                          </div>
-                        )}
-                        <div className="absolute bottom-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-                          -{product.discount}%
-                        </div>
-                      </div>
-                      <div className="p-3 sm:p-4">
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                          {product.category}
-                        </div>
-                        <Link href={`/produits/${product.slug}`}>
-                          <h3 className="font-medium text-gray-900 dark:text-white mb-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 h-10 sm:h-12 text-sm sm:text-base">
-                            {product.name}
-                          </h3>
-                        </Link>
-                        <div className="flex items-center mb-2">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={cn(
-                                "h-3 w-3 sm:h-4 sm:w-4",
-                                i < Math.floor(product.rating)
-                                  ? "text-yellow-400 fill-yellow-400"
-                                  : "text-gray-300 dark:text-gray-600"
-                              )}
-                            />
-                          ))}
-                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-                            ({product.reviewCount || 0})
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="flex flex-col">
-                              <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">
-                                {formatPrice(product.price)}
-                              </span>
-                              <span className="text-xs sm:text-sm text-gray-500 line-through">
-                                {formatPrice(product.oldPrice)}
-                              </span>
-                            </div>
-                            <div className="text-xs text-green-600 dark:text-green-400 font-medium">
-                              Économisez{" "}
-                              {formatPrice(product.oldPrice - product.price)}
-                            </div>
-                          </div>
-                          <Button
-                            size="sm"
-                            onClick={() => addToCart(product)}
-                            className="h-8 w-8 sm:h-9 sm:w-9 bg-yellow-500 hover:bg-yellow-600 p-0 rounded-full shadow-md"
-                          >
-                            <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
-
-            <div className="text-center mt-8 sm:mt-12">
-              <Button
-                asChild
-                size="lg"
-                className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-xl shadow-md"
-              >
-                <Link href="/product">
-                  Voir tous les produits
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
+        {/* Products Section - Using Client Wrapper */}
+        <ClientTabsSection
+          featuredProducts={featuredProducts}
+          newArrivals={newArrivals}
+          bestSellers={bestSellers}
+          specialOffers={specialOffers}
+          formatPrice={formatPrice}
+          toggleFavorite={toggleFavorite}
+          isInFavorites={isInFavorites}
+          addToCart={addToCart}
+        />
 
         {/* Featured Product Section - Mise en page améliorée */}
         <section className="py-12 sm:py-16 md:py-24 bg-black text-white">
@@ -1695,7 +1808,7 @@ export default function Home() {
                     asChild
                     className="border-2 border-white text-white hover:bg-white/10 font-medium text-sm sm:text-base lg:text-lg px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-6 rounded-lg sm:rounded-xl"
                   >
-                    <Link href={`/product/${featuredProduct.slug}`}>
+                    <Link href={`/produit/${featuredProduct.slug}`}>
                       Voir les détails
                       <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                     </Link>
@@ -1827,53 +1940,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* FAQ Section - Accordéon amélioré */}
-        <section className="py-12 sm:py-16 md:py-24 bg-gray-50 dark:bg-gray-800">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
-                Questions <span className="text-yellow-500">Fréquentes</span>
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Trouvez rapidement des réponses à vos questions
-              </p>
-            </div>
-
-            <div className="max-w-3xl mx-auto">
-              <Accordion type="single" collapsible className="w-full">
-                {faqs.map((faq, index) => (
-                  <AccordionItem
-                    key={index}
-                    value={`item-${index}`}
-                    className="bg-white dark:bg-gray-700 mb-4 rounded-xl border border-gray-100 dark:border-gray-600 shadow-sm"
-                  >
-                    <AccordionTrigger className="text-left font-medium text-base sm:text-lg px-4 sm:px-6 py-4 text-gray-900 dark:text-white">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-gray-600 dark:text-gray-300 px-4 sm:px-6 pb-4 text-sm sm:text-base">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-
-              <div className="mt-8 sm:mt-10 text-center">
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Vous ne trouvez pas la réponse à votre question ?
-                </p>
-                <Button
-                  asChild
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-xl shadow-md"
-                >
-                  <Link href="/contact">
-                    Contactez-nous
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* FAQ Section - Using Client Wrapper */}
+        <ClientFaqSection />
 
         {/* Newsletter Section - Design amélioré */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white dark:bg-gray-900">
