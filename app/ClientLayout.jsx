@@ -394,7 +394,7 @@ function Navbar({ language, toggleLanguage }) {
                 <button
                   className={cn(
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all",
-                    isActive("/categories") || isActive("/product")
+                    isActive("/categories") || isActive("/produit")
                       ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
                       : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
                   )}
@@ -414,7 +414,7 @@ function Navbar({ language, toggleLanguage }) {
                   ))}
                   <div className="h-px bg-gray-100 dark:bg-gray-800 my-1" />
                   <Link
-                    href="/product"
+                    href="/produit"
                     className="flex items-center justify-center px-3 py-2 text-sm font-medium text-yellow-600 dark:text-yellow-400 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                   >
                     {language === "fr"
@@ -760,7 +760,7 @@ function Navbar({ language, toggleLanguage }) {
                             </Link>
                           ))}
                           <Link
-                            href="/product"
+                            href="/produit"
                             onClick={() => setMobileMenuOpen(false)}
                             className="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                           >
@@ -774,11 +774,11 @@ function Navbar({ language, toggleLanguage }) {
 
                     {!mobileProductsOpen && (
                       <Link
-                        href="/product"
+                        href="/produit"
                         onClick={() => setMobileMenuOpen(false)}
                         className={cn(
                           "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                          isActive("/product")
+                          isActive("/produit")
                             ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
                             : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         )}
