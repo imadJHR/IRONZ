@@ -8,10 +8,10 @@ export const metadata = {
       description:
         "Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de loisirs.",
       type: "website",
-      url: "https://votreboutique.com/produits",
+      url: "https://ironz.ma/produits",
       images: [
         {
-          url: "https://votreboutique.com/og-image.jpg",
+          url: "https://ironz.ma/og-image.jpg",
           width: 1200,
           height: 630,
           alt: "Produits sportifs",

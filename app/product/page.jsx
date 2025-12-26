@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Search,
   Filter,
@@ -86,6 +87,7 @@ function ProductSEO() {
 }
 
 export default function ProductsPage() {
+  const router = useRouter();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -102,6 +104,17 @@ export default function ProductsPage() {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
+  // Fonction pour obtenir l'URL du produit
+  const getProductUrl = useCallback((product) => {
+    // Utilisez le slug s'il existe, sinon l'ID
+    return `/product/${product.slug || product.id}`;
+  }, []);
+
+  // Fonction pour naviguer vers la page du produit
+  const navigateToProduct = useCallback((product) => {
+    router.push(getProductUrl(product));
+  }, [router, getProductUrl]);
+
   // Simulate loading
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -114,12 +127,11 @@ export default function ProductsPage() {
   useEffect(() => {
     let result = [...products];
 
-    // Apply search filter (CORRECTED BLOCK)
+    // Apply search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
         (product) =>
-          // Ajout de ?. pour éviter les erreurs si les champs sont undefined
           product.name?.toLowerCase().includes(query) ||
           product.description?.toLowerCase().includes(query) ||
           product.category?.toLowerCase().includes(query) ||
@@ -205,47 +217,53 @@ export default function ProductsPage() {
     }
   }, [currentPage, filteredProducts, productsPerPage]);
 
-  const handleCategoryToggle = (category) => {
+  const handleCategoryToggle = useCallback((category) => {
     setSelectedCategories((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)
         : [...prev, category]
     );
-  };
+  }, []);
 
-  const handleSubCategoryToggle = (subCategory) => {
+  const handleSubCategoryToggle = useCallback((subCategory) => {
     setSelectedSubCategories((prev) =>
       prev.includes(subCategory)
         ? prev.filter((sc) => sc !== subCategory)
         : [...prev, subCategory]
     );
-  };
+  }, []);
 
-  const handlePriceChange = (value) => {
+  const handlePriceChange = useCallback((value) => {
     setPriceRange(value);
-  };
+  }, []);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setSearchQuery("");
     setSelectedCategories([]);
     setSelectedSubCategories([]);
     setPriceRange([filters.price.min, filters.price.max]);
     setSortOption("featured");
-  };
+  }, []);
 
-  const toggleFavorite = (product) => {
+  const toggleFavorite = useCallback((product, e) => {
+    e.stopPropagation(); // Empêche la navigation vers le produit
     if (isInFavorites(product.id)) {
       removeFromFavorites(product.id);
     } else {
       addToFavorites(product);
     }
-  };
+  }, [isInFavorites, addToFavorites, removeFromFavorites]);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handleAddToCart = useCallback((product, e) => {
+    e.stopPropagation(); // Empêche la navigation vers le produit
+    addToCart(product);
+  }, [addToCart]);
+
+  const paginate = useCallback((pageNumber) => setCurrentPage(pageNumber), []);
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  const getPageNumbers = () => {
+  const getPageNumbers = useCallback(() => {
     const pageNumbers = [];
     const maxVisiblePages = 5;
 
@@ -283,7 +301,7 @@ export default function ProductsPage() {
     }
 
     return pageNumbers;
-  };
+  }, [currentPage, totalPages]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -308,16 +326,16 @@ export default function ProductsPage() {
     },
   };
 
-  const formatPrice = (price) => {
+  const formatPrice = useCallback((price) => {
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
       currency: "MAD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
-  };
+  }, []);
 
-  const renderRating = (rating) => {
+  const renderRating = useCallback((rating) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
 
@@ -346,7 +364,7 @@ export default function ProductsPage() {
         <span className="ml-1 text-xs text-gray-500">({rating})</span>
       </div>
     );
-  };
+  }, []);
 
   return (
     <>
@@ -780,10 +798,20 @@ export default function ProductsPage() {
                 {displayedProducts.map((product) => (
                   <motion.article
                     key={`${product.id}-${product.name}`}
-                    className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow h-full flex flex-col"
+                    className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow h-full flex flex-col cursor-pointer group"
                     variants={itemVariants}
+                    onClick={() => navigateToProduct(product)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        navigateToProduct(product);
+                      }
+                    }}
+                    aria-label={`Voir les détails de ${product.name}`}
                   >
-                    <div className="relative h-40 xs:h-48 overflow-hidden group">
+                    <div className="relative h-40 xs:h-48 overflow-hidden">
                       <Image
                         src={
                           product.image ||
@@ -798,7 +826,7 @@ export default function ProductsPage() {
                       />
                       <div className="absolute top-2 right-2 z-10">
                         <button
-                          onClick={() => toggleFavorite(product)}
+                          onClick={(e) => toggleFavorite(product, e)}
                           className={cn(
                             "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
                             isInFavorites(product.id)
@@ -834,14 +862,9 @@ export default function ProductsPage() {
                       <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
                         {product.category}
                       </div>
-                      <Link
-                        href={`/product/${product.slug || product.id}`}
-                        className="group"
-                      >
-                        <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors line-clamp-2 text-sm xs:text-base">
-                          {product.name}
-                        </h2>
-                      </Link>
+                      <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors line-clamp-2 text-sm xs:text-base">
+                        {product.name}
+                      </h2>
                       <div className="mb-2">{renderRating(product.rating)}</div>
                       <div className="mt-auto pt-2 flex items-center justify-between">
                         <div className="flex flex-col xs:flex-row xs:items-center">
@@ -856,7 +879,7 @@ export default function ProductsPage() {
                         </div>
                         <Button
                           size="sm"
-                          onClick={() => addToCart(product)}
+                          onClick={(e) => handleAddToCart(product, e)}
                           className="h-8 bg-yellow-500 hover:bg-yellow-600 w-8 p-0"
                           aria-label={`Ajouter ${product.name} au panier`}
                         >
@@ -877,8 +900,18 @@ export default function ProductsPage() {
                 {displayedProducts.map((product) => (
                   <motion.article
                     key={product.id}
-                    className="flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
+                    className="flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group"
                     variants={itemVariants}
+                    onClick={() => navigateToProduct(product)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        navigateToProduct(product);
+                      }
+                    }}
+                    aria-label={`Voir les détails de ${product.name}`}
                   >
                     <div className="relative h-48 sm:h-auto sm:w-48 overflow-hidden">
                       <Image
@@ -908,14 +941,9 @@ export default function ProductsPage() {
                       <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
                         {product.category}
                       </div>
-                      <Link
-                        href={`/product/${product.slug || product.id}`}
-                        className="group"
-                      >
-                        <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">
-                          {product.name}
-                        </h2>
-                      </Link>
+                      <h2 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">
+                        {product.name}
+                      </h2>
                       <div className="mb-2">{renderRating(product.rating)}</div>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
                         {product.description}
@@ -933,15 +961,15 @@ export default function ProductsPage() {
                             </>
                           ) : (
                             <span className="text-lg font-bold text-gray-900 dark:text-white">
-                              {formatPrice(product.price)}
-                            </span>
+                                {formatPrice(product.price)}
+                              </span>
                           )}
                         </div>
                         <div className="flex items-center gap-2">
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => toggleFavorite(product)}
+                            onClick={(e) => toggleFavorite(product, e)}
                             className={cn(
                               "h-8 w-8 p-0",
                               isInFavorites(product.id) &&
@@ -963,7 +991,7 @@ export default function ProductsPage() {
                           <Button
                             size="sm"
                             className="bg-yellow-500 hover:bg-yellow-600"
-                            onClick={() => addToCart(product)}
+                            onClick={(e) => handleAddToCart(product, e)}
                             aria-label={`Ajouter ${product.name} au panier`}
                           >
                             <ShoppingCart className="h-4 w-4 mr-2" />

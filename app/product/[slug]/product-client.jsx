@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -41,9 +41,7 @@ import { Alert, AlertDescription } from "../../../components/ui/alert";
 
 import { products, categories, colorMap } from "../../../data/product";
 
-// Image placeholder - vous devrez importer l'image réelle
-const a45 = "/placeholder.svg";
-
+// Composant pour sélectionner la couleur
 function ColorSelector({ colors, selectedColor, onChange }) {
   if (!colors || colors.length === 0) return null;
 
@@ -97,6 +95,7 @@ function ColorSelector({ colors, selectedColor, onChange }) {
   );
 }
 
+// Composant pour sélectionner la taille
 function TailleSelector({ tailles, selectedTaille, onChange }) {
   if (!tailles || tailles.length === 0) return null;
 
@@ -127,6 +126,7 @@ function TailleSelector({ tailles, selectedTaille, onChange }) {
   );
 }
 
+// Composant pour le schéma JSON-LD
 function ProductJsonLd({ product }) {
   if (!product) return null;
 
@@ -155,6 +155,7 @@ function ProductJsonLd({ product }) {
   );
 }
 
+// Composant pour les avis virtuels
 function VirtualReviews({ reviews }) {
   if (!reviews || reviews.length === 0) return null;
 
@@ -209,11 +210,12 @@ function VirtualReviews({ reviews }) {
   );
 }
 
-export default function ProductPageClient({ slug }) {
+// Composant principal ProductPageClient
+export default function ProductPageClient({ slug, initialProduct }) {
   const router = useRouter();
 
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState(initialProduct || null);
+  const [loading, setLoading] = useState(!initialProduct);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -226,7 +228,62 @@ export default function ProductPageClient({ slug }) {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
+  // Fonction pour trouver un produit par slug
+  const findProductBySlug = useCallback((slugParam) => {
+    if (!slugParam) return null;
+    
+    const searchSlug = String(slugParam).toLowerCase();
+    return products.find(
+      (product) =>
+        product.slug && String(product.slug).toLowerCase() === searchSlug
+    );
+  }, []);
+
+  // Fonction pour obtenir les informations de catégorie
+  const getCategoryInfo = useCallback((categoryId) => {
+    return categories.find((cat) => cat.id === categoryId);
+  }, []);
+
+  // Fonction pour obtenir les produits similaires
+  const getRelatedProducts = useCallback((productParam, limit = 4) => {
+    if (!productParam || !productParam.categoryId) return [];
+    
+    return products
+      .filter((p) => {
+        if (productParam.relatedProducts && productParam.relatedProducts.includes(p.id)) {
+          return true;
+        }
+        return p.categoryId === productParam.categoryId && p.id !== productParam.id;
+      })
+      .slice(0, limit);
+  }, []);
+
+  // Effet pour charger les données du produit
   useEffect(() => {
+    // Si initialProduct est fourni, utilisez-le directement
+    if (initialProduct) {
+      setProduct(initialProduct);
+      setLoading(false);
+      
+      // Définir les valeurs par défaut
+      if (initialProduct.colors && initialProduct.colors.length > 0) {
+        setSelectedColor(initialProduct.colors[0]);
+      }
+      
+      if (initialProduct.taille && initialProduct.taille.length > 0) {
+        setSelectedTaille(initialProduct.taille[0]);
+      }
+      
+      const catInfo = getCategoryInfo(initialProduct.categoryId);
+      setCategoryInfo(catInfo);
+      
+      const related = getRelatedProducts(initialProduct);
+      setRelatedProducts(related);
+      
+      return;
+    }
+
+    // Sinon, chargez le produit depuis les données locales
     setLoading(true);
     setError(null);
 
@@ -237,12 +294,11 @@ export default function ProductPageClient({ slug }) {
         setProduct(foundProduct);
         setSelectedImage(0);
 
-        // Définir la couleur par défaut si disponible
+        // Définir les valeurs par défaut
         if (foundProduct.colors && foundProduct.colors.length > 0) {
           setSelectedColor(foundProduct.colors[0]);
         }
 
-        // Définir la taille par défaut si disponible
         if (foundProduct.taille && foundProduct.taille.length > 0) {
           setSelectedTaille(foundProduct.taille[0]);
         }
@@ -263,8 +319,9 @@ export default function ProductPageClient({ slug }) {
       setError("Une erreur s'est produite lors du chargement du produit");
       setLoading(false);
     }
-  }, [slug, router]);
+  }, [slug, initialProduct, findProductBySlug, getCategoryInfo, getRelatedProducts]);
 
+  // Gérer le clic en dehors du dropdown de partage
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -281,56 +338,62 @@ export default function ProductPageClient({ slug }) {
     };
   }, [showShareDropdown]);
 
-  const handleQuantityChange = (value) => {
+  // Gérer le changement de quantité
+  const handleQuantityChange = useCallback((value) => {
     const newQuantity = Math.max(1, Math.min(99, value));
     setQuantity(newQuantity);
-  };
+  }, []);
 
-  const handleAddToCart = () => {
-    if (product) {
-      // Vérifier si une taille est sélectionnée si le produit a des tailles
-      if (product.taille && product.taille.length > 0 && !selectedTaille) {
-        alert("Veuillez sélectionner une taille avant d'ajouter au panier");
-        return;
-      }
+  // Ajouter au panier
+  const handleAddToCart = useCallback(() => {
+    if (!product) return;
 
-      // Vérifier si une couleur est sélectionnée si le produit a des couleurs
-      if (product.colors && product.colors.length > 0 && !selectedColor) {
-        alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
-        return;
-      }
-
-      // Créer un objet produit avec toutes les données nécessaires
-      const productWithOptions = {
-        ...product,
-        selectedColor: selectedColor,
-        selectedTaille: selectedTaille,
-        quantity: quantity,
-      };
-
-      // Ajouter le produit au panier
-      addToCart(productWithOptions);
-
-      // Notification
-      alert(
-        `${product.name} ${selectedTaille ? `(Taille: ${selectedTaille})` : ""
-        } ${selectedColor ? `(Couleur: ${selectedColor})` : ""
-        } ajouté au panier`
-      );
+    // Vérifier si une taille est sélectionnée si le produit a des tailles
+    if (product.taille && product.taille.length > 0 && !selectedTaille) {
+      alert("Veuillez sélectionner une taille avant d'ajouter au panier");
+      return;
     }
-  };
 
-  const toggleFavorite = () => {
-    if (product) {
-      if (isInFavorites(product.id)) {
-        removeFromFavorites(product.id);
-      } else {
-        addToFavorites(product);
-      }
+    // Vérifier si une couleur est sélectionnée si le produit a des couleurs
+    if (product.colors && product.colors.length > 0 && !selectedColor) {
+      alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
+      return;
     }
-  };
 
-  const handleShare = () => {
+    // Créer un objet produit avec toutes les données nécessaires
+    const productWithOptions = {
+      ...product,
+      selectedColor: selectedColor,
+      selectedTaille: selectedTaille,
+      quantity: quantity,
+    };
+
+    // Ajouter le produit au panier
+    addToCart(productWithOptions);
+
+    // Notification
+    alert(
+      `${product.name} ${selectedTaille ? `(Taille: ${selectedTaille})` : ""
+      } ${selectedColor ? `(Couleur: ${selectedColor})` : ""
+      } ajouté au panier`
+    );
+  }, [product, selectedTaille, selectedColor, quantity, addToCart]);
+
+  // Gérer les favoris
+  const toggleFavorite = useCallback(() => {
+    if (!product) return;
+    
+    if (isInFavorites(product.id)) {
+      removeFromFavorites(product.id);
+    } else {
+      addToFavorites(product);
+    }
+  }, [product, isInFavorites, addToFavorites, removeFromFavorites]);
+
+  // Gérer le partage
+  const handleShare = useCallback(() => {
+    if (!product) return;
+    
     if (navigator.share) {
       navigator
         .share({
@@ -342,9 +405,12 @@ export default function ProductPageClient({ slug }) {
     } else {
       setShowShareDropdown(!showShareDropdown);
     }
-  };
+  }, [product, showShareDropdown]);
 
-  const getShareLinks = () => {
+  // Obtenir les liens de partage
+  const getShareLinks = useCallback(() => {
+    if (!product) return [];
+    
     const url = encodeURIComponent(window.location.href);
     const title = encodeURIComponent(product.name);
     const text = encodeURIComponent(product.description);
@@ -388,42 +454,20 @@ export default function ProductPageClient({ slug }) {
         label: "Partager par email",
       },
     ];
-  };
+  }, [product]);
 
-  const findProductBySlug = (slug) => {
-    const searchSlug = String(slug).toLowerCase();
-    return products.find(
-      (product) =>
-        product.slug && String(product.slug).toLowerCase() === searchSlug
-    );
-  };
-
-  const getCategoryInfo = (categoryId) => {
-    return categories.find((cat) => cat.id === categoryId);
-  };
-
-  const getRelatedProducts = (product, limit = 4) => {
-    if (!product || !product.categoryId) return [];
-    return products
-      .filter((p) => {
-        if (product.relatedProducts && product.relatedProducts.includes(p.id)) {
-          return true;
-        }
-        return p.categoryId === product.categoryId && p.id !== product.id;
-      })
-      .slice(0, limit);
-  };
-
-  const formatPrice = (price) => {
+  // Formater le prix
+  const formatPrice = useCallback((price) => {
     return new Intl.NumberFormat("fr-FR", {
       style: "currency",
       currency: "MAD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
-  };
+  }, []);
 
-  const renderRating = (rating) => {
+  // Rendre les étoiles de notation
+  const renderRating = useCallback((rating) => {
     if (!rating) return null;
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
@@ -451,8 +495,9 @@ export default function ProductPageClient({ slug }) {
         ))}
       </div>
     );
-  };
+  }, []);
 
+  // État de chargement
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-16">
@@ -484,6 +529,7 @@ export default function ProductPageClient({ slug }) {
     );
   }
 
+  // État d'erreur
   if (error || !product) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
@@ -505,6 +551,7 @@ export default function ProductPageClient({ slug }) {
       <ProductJsonLd product={product} />
 
       <main className="bg-gray-50 dark:bg-gray-900 pt-8 pb-16">
+        {/* Fil d'Ariane */}
         <div className="container mx-auto px-4 mb-6">
           <nav
             className="flex items-center text-sm text-gray-500 dark:text-gray-400"
@@ -544,9 +591,11 @@ export default function ProductPageClient({ slug }) {
           </nav>
         </div>
 
+        {/* Détails du produit */}
         <div className="container mx-auto px-4">
           <article className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+              {/* Galerie d'images */}
               <div className="space-y-4">
                 <div className="relative h-96 bg-white dark:bg-gray-700 rounded-lg overflow-hidden">
                   <Image
@@ -605,6 +654,7 @@ export default function ProductPageClient({ slug }) {
                 )}
               </div>
 
+              {/* Informations du produit */}
               <div className="space-y-6">
                 <div>
                   <div className="flex items-center justify-between">
@@ -855,6 +905,7 @@ export default function ProductPageClient({ slug }) {
                       Ajouter au panier
                     </Button>
                   </div>
+                  
                   {!product.inStock && (
                     <Alert variant="destructive">
                       <Info className="h-4 w-4 mr-2" aria-hidden="true" />
@@ -886,6 +937,7 @@ export default function ProductPageClient({ slug }) {
               </div>
             </div>
 
+            {/* Onglets Détails/Avis */}
             <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-8">
               <Tabs defaultValue="details">
                 <TabsList>
@@ -928,7 +980,7 @@ export default function ProductPageClient({ slug }) {
 
                     {/* Avis virtuel dans l'onglet des avis */}
                     {product.virtualReview && (
-                      <VirtualReview review={product.virtualReview} />
+                      <VirtualReviews reviews={[product.virtualReview]} />
                     )}
 
                     {/* Section pour les avis supplémentaires */}
@@ -961,6 +1013,7 @@ export default function ProductPageClient({ slug }) {
           </article>
         </div>
 
+        {/* Produits similaires */}
         {relatedProducts.length > 0 && (
           <section
             className="container mx-auto px-4 mt-16"
@@ -1052,6 +1105,7 @@ export default function ProductPageClient({ slug }) {
           </section>
         )}
 
+        {/* Bouton retour */}
         <div className="container mx-auto px-4 mt-12">
           <Button variant="outline" asChild className="flex items-center">
             <Link href="/product">
