@@ -2069,7 +2069,7 @@ export const products = [
       "Poids : Remplissage lourd pour une résistance et une efficacité d'entraînement optimales",
       "Poids : Remplissage lourd pour une résistance et une efficacité d'entraînement optimales",
     ],
-    price: "1199",
+    price: "1900",
     oldPrice: null,
     discount: 0,
     image: l37,
