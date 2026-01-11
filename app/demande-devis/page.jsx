@@ -2,10 +2,37 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../../public/logo.png";
+import {
+  ArrowLeft,
+  CheckCircle,
+  Clock,
+  ShieldCheck,
+  Star,
+  FileText,
+  MessageSquare,
+  Phone,
+  Mail,
+  MapPin,
+  Sparkles,
+  Zap,
+  Award,
+  Users,
+  Target,
+  ChevronRight,
+  ArrowRight,
+  Send,
+  Check,
+  Calendar,
+  DollarSign,
+  Package,
+  Building,
+  User,
+  PhoneCall,
+  MailCheck,
+  MessageCircle,
+} from "lucide-react";
 
 export default function DemandeDevisPage() {
   const router = useRouter();
@@ -30,54 +57,59 @@ export default function DemandeDevisPage() {
     {
       id: "amenagement-salle",
       name: "Aménagement de salle",
-      image:
-        "https://www.optiondinterieur.com/wp-content/uploads/2021/07/espace-musculation-fitness-dans-maison-decoration-naturelle-bois-mur-vegetal.jpg",
-      description:
-        "Conception et aménagement d'espaces fitness professionnels ou personnels",
+      icon: <Building className="w-6 h-6" />,
+      color: "from-yellow-500 to-orange-500",
+      description: "Conception d'espaces fitness professionnels ou personnels",
+      features: ["Plan 3D", "Installation complète", "Formation incluse"]
     },
     {
       id: "personnalisation-accessoires",
       name: "Personnalisation d'accessoires",
-      image: "/placeholder.svg?height=80&width=80&text=Personnalisation",
-      description:
-        "Création d'accessoires fitness sur mesure selon vos besoins spécifiques",
+      icon: <Package className="w-6 h-6" />,
+      color: "from-blue-500 to-purple-500",
+      description: "Création d'accessoires fitness sur mesure",
+      features: ["Logo gravé", "Couleurs personnalisées", "Matériaux premium"]
     },
     {
       id: "espace-enfance",
       name: "Espace enfance",
-      image: "/placeholder.svg?height=80&width=80&text=Enfance",
-      description:
-        "Aménagement d'espaces fitness adaptés aux enfants et adolescents",
+      icon: <Users className="w-6 h-6" />,
+      color: "from-green-500 to-emerald-500",
+      description: "Aménagement d'espaces adaptés aux enfants",
+      features: ["Sécurité certifiée", "Design ludique", "Équipement adapté"]
     },
     {
       id: "revetement-sol-mur",
       name: "Revêtement sol & mur",
-      image: "/placeholder.svg?height=80&width=80&text=Revêtement",
-      description:
-        "Solutions de revêtement spécialisées pour les espaces sportifs",
+      icon: <Target className="w-6 h-6" />,
+      color: "from-red-500 to-pink-500",
+      description: "Solutions de revêtement spécialisées sportives",
+      features: ["Antidérapant", "Facile à nettoyer", "Résistance aux chocs"]
     },
     {
       id: "conception-produits",
       name: "Conception de produits",
-      image: "/placeholder.svg?height=80&width=80&text=Conception",
-      description:
-        "Développement de produits fitness innovants et personnalisés",
+      icon: <Sparkles className="w-6 h-6" />,
+      color: "from-purple-500 to-indigo-500",
+      description: "Développement de produits fitness innovants",
+      features: ["Prototypage", "Test qualité", "Production sur mesure"]
     },
     {
       id: "autre",
       name: "Autre service",
-      image: "/placeholder.svg?height=80&width=80&text=Autre",
-      description:
-        "Besoin spécifique non listé ? Décrivez votre projet et nous vous répondrons",
+      icon: <MessageSquare className="w-6 h-6" />,
+      color: "from-gray-500 to-gray-700",
+      description: "Besoin spécifique non listé ? Parlons-en",
+      features: ["Étude personnalisée", "Devis gratuit", "Accompagnement"]
     },
   ];
 
   const budgetOptions = [
-    { value: "8000-10000", label: "8 000 MAD - 25 000 MAD" },
-    { value: "10000-20000", label: "28 000 MAD - 35 000 MAD" },
-    { value: "20000-50000", label: "35 000 MAD - 50 000 MAD" },
-    { value: "plus-50000", label: "Plus de 100 000 MAD" },
-    { value: "a-definir", label: "À définir" },
+    { value: "8000-25000", label: "8 000 MAD - 25 000 MAD", icon: <DollarSign className="w-4 h-4" /> },
+    { value: "28000-35000", label: "28 000 MAD - 35 000 MAD", icon: <DollarSign className="w-4 h-4" /> },
+    { value: "35000-50000", label: "35 000 MAD - 50 000 MAD", icon: <DollarSign className="w-4 h-4" /> },
+    { value: "100000-plus", label: "Plus de 100 000 MAD", icon: <DollarSign className="w-4 h-4" /> },
+    { value: "a-definir", label: "À définir avec notre équipe", icon: <MessageCircle className="w-4 h-4" /> },
   ];
 
   const handleChange = (e) => {
@@ -124,7 +156,6 @@ export default function DemandeDevisPage() {
   const nextStep = () => {
     if (validateStep(currentStep)) {
       setCurrentStep(currentStep + 1);
-      // Scroll to top of form
       if (formRef.current) {
         formRef.current.scrollIntoView({ behavior: "smooth" });
       }
@@ -133,7 +164,6 @@ export default function DemandeDevisPage() {
 
   const prevStep = () => {
     setCurrentStep(currentStep - 1);
-    // Scroll to top of form
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -154,7 +184,6 @@ export default function DemandeDevisPage() {
     setIsSubmitting(true);
 
     try {
-      // Format the message for WhatsApp
       const selectedService =
         services.find((s) => s.id === formData.service)?.name ||
         formData.service;
@@ -162,36 +191,35 @@ export default function DemandeDevisPage() {
         budgetOptions.find((b) => b.value === formData.budget)?.label ||
         "Non spécifié";
 
-      const whatsappMessage = `Nouvelle demande de devis:
-      
-  *Nom complet:* ${formData.firstName} ${formData.lastName}
-  *Email:* ${formData.email}
-  *Téléphone:* ${formData.phone}
-  *Entreprise:* ${formData.company || "Non spécifié"}
-  *Service demandé:* ${selectedService}
-  *Budget estimé:* ${selectedBudget}
-  
-  *Message:*
-  ${formData.message}
-  
-  Envoyé depuis le site web IRONZ PRO`;
+      const whatsappMessage = `📋 NOUVELLE DEMANDE DE DEVIS IRONZ PRO
 
-      // Encode the message for URL
+👤 *Informations client:*
+• Nom: ${formData.firstName} ${formData.lastName}
+• Email: ${formData.email}
+• Téléphone: ${formData.phone}
+• Entreprise: ${formData.company || "Non spécifié"}
+
+🎯 *Détails du projet:*
+• Service: ${selectedService}
+• Budget: ${selectedBudget}
+
+💬 *Description du projet:*
+${formData.message}
+
+📅 *Envoyé le:* ${new Date().toLocaleDateString('fr-FR')}
+🕒 *À:* ${new Date().toLocaleTimeString('fr-FR')}
+
+🔗 *Source:* Site web IRONZ PRO`;
+
       const encodedMessage = encodeURIComponent(whatsappMessage);
+      const whatsappNumber = "212674114446";
 
-      // Your WhatsApp number (replace with your actual number, remove any spaces or special characters)
-      const whatsappNumber = "212674114446"; // Example: +212 674-114446 becomes 212674114446
-
-      // Open WhatsApp with the pre-filled message
       window.open(
         `https://wa.me/${whatsappNumber}?text=${encodedMessage}`,
         "_blank"
       );
 
-      // Mark as submitted
       setIsSubmitted(true);
-
-      // Reset form
       setFormData({
         firstName: "",
         lastName: "",
@@ -213,6 +241,7 @@ export default function DemandeDevisPage() {
       setIsSubmitting(false);
     }
   };
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -232,26 +261,27 @@ export default function DemandeDevisPage() {
       transition: {
         type: "spring",
         stiffness: 100,
+        damping: 12,
       },
     },
   };
 
   const formVariants = {
-    hidden: { opacity: 0, x: -50 },
+    hidden: { opacity: 0, x: -30 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
         type: "spring",
         stiffness: 100,
-        duration: 0.5,
+        damping: 15,
       },
     },
     exit: {
       opacity: 0,
-      x: 50,
+      x: 30,
       transition: {
-        duration: 0.3,
+        duration: 0.2,
       },
     },
   };
@@ -264,279 +294,202 @@ export default function DemandeDevisPage() {
       transition: {
         type: "spring",
         stiffness: 100,
-        duration: 0.3,
+        damping: 15,
       },
     },
     hover: {
-      scale: 1.05,
-      boxShadow:
-        "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      scale: 1.02,
+      y: -4,
       transition: {
         type: "spring",
         stiffness: 300,
-        damping: 15,
+        damping: 20,
       },
     },
     tap: {
       scale: 0.98,
+    },
+  };
+
+  const stepIndicatorVariants = {
+    hidden: { scale: 0 },
+    visible: {
+      scale: 1,
       transition: {
         type: "spring",
-        stiffness: 300,
+        stiffness: 200,
         damping: 15,
       },
     },
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+      {/* Header Section */}
       <section className="relative pt-28 pb-20 md:pt-36 md:pb-32 overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-20">
-          <Image
-            src={logo}
-            alt="Background"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-yellow-400/30 via-transparent to-transparent" />
-        </div>
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+        <div className="absolute top-0 right-0 w-72 h-72 bg-yellow-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative container mx-auto px-4">
+          {/* Breadcrumb */}
+          <nav className="mb-8">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-yellow-500 transition-colors group"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              Retour à l'accueil
+            </Link>
+          </nav>
+
+          {/* Hero Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl mx-auto text-center"
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto text-center"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-orange-500">
-              Demande de Devis
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
+              <Sparkles className="w-4 h-4 text-yellow-500" />
+              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-600">
+                Devis personnalisé
+              </span>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter mb-6">
+              Demande de <span className="text-yellow-500">Devis</span>
             </h1>
-            <p className="text-xl text-gray-700 dark:text-gray-300 mb-8">
-              Obtenez un devis personnalisé pour tous nos services
-              professionnels. Notre équipe d'experts vous répondra sous 24h.
+
+            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+              Transformez votre vision en réalité avec notre expertise premium.
+              Obtenez un devis personnalisé sous <span className="font-bold text-yellow-500">24 heures</span>.
             </p>
+
+            {/* Stats */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
-              className="flex flex-wrap justify-center gap-4"
+              initial="hidden"
+              animate="visible"
+              variants={containerVariants}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-2xl mx-auto"
+            >
+              {[
+                { icon: <Clock className="w-5 h-5" />, value: "24h", label: "Réponse rapide" },
+                { icon: <CheckCircle className="w-5 h-5" />, value: "100%", label: "Satisfaction" },
+                { icon: <ShieldCheck className="w-5 h-5" />, value: "Gratuit", label: "Devis offert" },
+                { icon: <Star className="w-5 h-5" />, value: "500+", label: "Projets réalisés" },
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 shadow-sm"
+                >
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    {stat.icon}
+                    <span className="text-2xl font-black text-gray-900 dark:text-white">{stat.value}</span>
+                  </div>
+                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                    {stat.label}
+                  </p>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <a
                 href="#form-section"
-                className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-full transition-all transform hover:scale-105 shadow-lg"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-yellow-500/20"
               >
-                Demander un devis
+                <FileText className="w-5 h-5" />
+                Obtenir mon devis
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>
               <Link
-                href="/services"
-                className="px-8 py-4 bg-white dark:bg-gray-800 border-2 border-yellow-500 text-yellow-500 font-bold rounded-full hover:bg-yellow-50 dark:hover:bg-gray-700 transition-all transform hover:scale-105 shadow-lg"
+                href="/contact"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-900 dark:text-white font-black uppercase italic tracking-widest rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-sm"
               >
-                Découvrir nos services
+                <PhoneCall className="w-5 h-5" />
+                Nous contacter
               </Link>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Form Section */}
-      <section
-        id="form-section"
-        className="py-16 md:py-24 bg-white dark:bg-gray-900"
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Main Form Section */}
+      <section id="form-section" className="py-16 md:py-24 relative">
+        <div className="container mx-auto px-4">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             variants={containerVariants}
             className="max-w-7xl mx-auto"
           >
-            <div className="text-center mb-16">
-              <motion.h2
-                variants={itemVariants}
-                className="text-3xl md:text-4xl font-bold mb-6"
-              >
-                Votre Projet, Notre{" "}
-                <span className="text-yellow-500">Expertise</span>
-              </motion.h2>
-              <motion.p
-                variants={itemVariants}
-                className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
-              >
-                Remplissez le formulaire ci-dessous pour nous faire part de
-                votre projet. Notre équipe vous contactera rapidement avec une
-                proposition adaptée à vos besoins.
-              </motion.p>
-            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              {/* Left Column - Benefits & Process */}
+              <motion.div variants={itemVariants} className="lg:col-span-1">
+                <div className="sticky top-32 space-y-8">
+                  {/* Process Steps */}
+                  <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 shadow-lg">
+                    <h3 className="text-2xl font-black uppercase italic mb-6 text-gray-900 dark:text-white">
+                      Comment ça marche ?
+                    </h3>
+                    
+                    <div className="space-y-6">
+                      {[
+                        { step: "1", title: "Formulaire", desc: "Remplissez votre demande", icon: <FileText className="w-5 h-5" /> },
+                        { step: "2", title: "Analyse", desc: "Étude par notre équipe d'experts", icon: <Users className="w-5 h-5" /> },
+                        { step: "3", title: "Devis", desc: "Proposition personnalisée", icon: <DollarSign className="w-5 h-5" /> },
+                        { step: "4", title: "Validation", desc: "Démarrage du projet", icon: <CheckCircle className="w-5 h-5" /> },
+                      ].map((item) => (
+                        <div key={item.step} className="flex items-start gap-4">
+                          <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${currentStep >= parseInt(item.step) ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-400'}`}>
+                            <span className="text-sm font-bold">{item.step}</span>
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-gray-900 dark:text-white">{item.title}</h4>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-              {/* Left Column - Benefits */}
-              <motion.div variants={itemVariants} className="lg:col-span-2">
-                <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg h-full">
-                  <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-                    Pourquoi nous choisir ?
-                  </h3>
-
-                  <ul className="space-y-6">
-                    <motion.li
-                      variants={itemVariants}
-                      className="flex items-start"
-                    >
-                      <div className="flex-shrink-0 w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mr-4">
-                        <svg
-                          className="w-6 h-6 text-yellow-500"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
-                          Expertise professionnelle
-                        </h4>
-                        <p className="text-gray-600 dark:text-gray-400">
-                          Notre équipe d'experts possède une expérience
-                          approfondie dans tous nos domaines de services.
-                        </p>
-                      </div>
-                    </motion.li>
-
-                    <motion.li
-                      variants={itemVariants}
-                      className="flex items-start"
-                    >
-                      <div className="flex-shrink-0 w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mr-4">
-                        <svg
-                          className="w-6 h-6 text-yellow-500"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
-                          Réponse rapide
-                        </h4>
-                        <p className="text-gray-600 dark:text-gray-400">
-                          Nous vous répondons sous 24h avec un devis détaillé et
-                          personnalisé selon vos besoins.
-                        </p>
-                      </div>
-                    </motion.li>
-
-                    <motion.li
-                      variants={itemVariants}
-                      className="flex items-start"
-                    >
-                      <div className="flex-shrink-0 w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mr-4">
-                        <svg
-                          className="w-6 h-6 text-yellow-500"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
-                          Tarifs transparents
-                        </h4>
-                        <p className="text-gray-600 dark:text-gray-400">
-                          Nos devis sont clairs et détaillés, sans frais cachés
-                          ni mauvaises surprises.
-                        </p>
-                      </div>
-                    </motion.li>
-
-                    <motion.li
-                      variants={itemVariants}
-                      className="flex items-start"
-                    >
-                      <div className="flex-shrink-0 w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mr-4">
-                        <svg
-                          className="w-6 h-6 text-yellow-500"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-semibold mb-1 text-gray-900 dark:text-white">
-                          Satisfaction garantie
-                        </h4>
-                        <p className="text-gray-600 dark:text-gray-400">
-                          Nous nous engageons à vous offrir un service de
-                          qualité qui répond parfaitement à vos attentes.
-                        </p>
-                      </div>
-                    </motion.li>
-                  </ul>
-
-                  <div className="mt-8 p-6 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
-                    <h4 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white flex items-center">
-                      <svg
-                        className="w-5 h-5 mr-2 text-yellow-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+                  {/* Contact Info */}
+                  <div className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 dark:from-yellow-500/5 dark:to-orange-500/5 border border-yellow-500/20 dark:border-yellow-500/10 rounded-3xl p-8">
+                    <h4 className="font-black uppercase italic text-yellow-600 dark:text-yellow-400 mb-6">
+                      <MessageCircle className="inline w-5 h-5 mr-2" />
                       Besoin d'aide ?
                     </h4>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
-                      Notre équipe est disponible pour répondre à toutes vos
-                      questions.
-                    </p>
-                    <div className="flex items-center">
-                      <svg
-                        className="w-5 h-5 text-yellow-500 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                        />
-                      </svg>
-                      <span className="text-gray-900 dark:text-white font-medium">
-                        +212 674-114446
-                      </span>
+                    
+                    <div className="space-y-4">
+                      <a href="tel:+212674114446" className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-yellow-500 transition-colors group">
+                        <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center group-hover:border-yellow-500 transition-colors">
+                          <Phone className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium">Appelez-nous</div>
+                          <div className="font-bold">+212 674-114446</div>
+                        </div>
+                      </a>
+                      
+                      <a href="mailto:muscleironz2019@gmail.com" className="flex items-center gap-3 text-gray-700 dark:text-gray-300 hover:text-yellow-500 transition-colors group">
+                        <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center group-hover:border-yellow-500 transition-colors">
+                          <Mail className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium">Écrivez-nous</div>
+                          <div className="font-bold">muscleironz2019@gmail.com</div>
+                        </div>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -545,93 +498,87 @@ export default function DemandeDevisPage() {
               {/* Right Column - Form */}
               <motion.div
                 variants={itemVariants}
-                className="lg:col-span-3"
+                className="lg:col-span-2"
                 ref={formRef}
               >
                 {isSubmitted ? (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ type: "spring", stiffness: 100 }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg text-center"
+                    className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 md:p-12 text-center shadow-xl"
                   >
-                    <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <svg
-                        className="w-10 h-10 text-green-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                    <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-8">
+                      <Check className="w-12 h-12 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+                    
+                    <h3 className="text-3xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
                       Demande envoyée avec succès !
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
-                      Votre demande a été envoyée sur WhatsApp. Notre équipe va
-                      l'étudier et vous contactera dans les plus brefs délais.
+                    
+                    <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg max-w-2xl mx-auto">
+                      Votre demande a été transférée sur WhatsApp. Notre équipe d'experts l'étudiera et vous contactera dans les <span className="font-bold text-yellow-500">24 heures</span> pour discuter de votre projet.
                     </p>
-                    <div className="flex flex-wrap justify-center gap-4">
+
+                    <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 dark:from-green-500/5 dark:to-emerald-500/5 border border-green-500/20 dark:border-green-500/10 rounded-2xl p-6 mb-8 max-w-md mx-auto">
+                      <div className="flex items-center justify-center gap-3 mb-4">
+                        <Clock className="w-5 h-5 text-green-500" />
+                        <span className="font-bold text-green-600 dark:text-green-400">Prochaines étapes</span>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Notre commercial vous appellera pour discuter des détails et vous proposer un rendez-vous avec notre équipe technique.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
                       <button
                         onClick={() => setIsSubmitted(false)}
-                        className="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-medium rounded-lg transition-colors"
+                        className="px-8 py-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold rounded-2xl transition-colors"
                       >
                         Nouvelle demande
                       </button>
                       <Link href="/">
-                        <button className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium rounded-lg transition-colors">
+                        <button className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-2xl transition-colors">
                           Retour à l'accueil
                         </button>
                       </Link>
                     </div>
                   </motion.div>
                 ) : (
-                  <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-                    <div className="mb-8">
+                  <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6 md:p-8 shadow-xl">
+                    {/* Form Header */}
+                    <div className="mb-10">
                       <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                          Votre demande de devis
+                        <h3 className="text-3xl font-black uppercase italic text-gray-900 dark:text-white">
+                          Votre projet, <span className="text-yellow-500">notre expertise</span>
                         </h3>
-                        <div className="flex items-center">
-                          <span
-                            className={`w-3 h-3 rounded-full ${
-                              currentStep >= 1
-                                ? "bg-yellow-500"
-                                : "bg-gray-300 dark:bg-gray-600"
-                            } mr-1`}
-                          ></span>
-                          <span
-                            className={`w-3 h-3 rounded-full ${
-                              currentStep >= 2
-                                ? "bg-yellow-500"
-                                : "bg-gray-300 dark:bg-gray-600"
-                            } mr-1`}
-                          ></span>
-                          <span
-                            className={`w-3 h-3 rounded-full ${
-                              currentStep >= 3
-                                ? "bg-yellow-500"
-                                : "bg-gray-300 dark:bg-gray-600"
-                            }`}
-                          ></span>
+                        <div className="flex items-center gap-2">
+                          {[1, 2, 3].map((step) => (
+                            <motion.div
+                              key={step}
+                              variants={stepIndicatorVariants}
+                              initial="hidden"
+                              animate="visible"
+                              className={`w-3 h-3 rounded-full ${currentStep >= step ? 'bg-yellow-500' : 'bg-gray-300 dark:bg-gray-700'}`}
+                            />
+                          ))}
                         </div>
                       </div>
-                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-yellow-500 to-orange-500 transition-all duration-300 ease-in-out"
-                          style={{ width: `${(currentStep / 3) * 100}%` }}
-                        ></div>
+                      
+                      <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <motion.div
+                          className="absolute h-full bg-gradient-to-r from-yellow-500 to-orange-500"
+                          initial={{ width: `${((currentStep - 1) / 3) * 100}%` }}
+                          animate={{ width: `${((currentStep - 1) / 3) * 100}%` }}
+                          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                        />
                       </div>
                     </div>
 
+                    {/* Form Content */}
                     <form onSubmit={handleSubmit}>
                       <AnimatePresence mode="wait">
+                        {/* Step 1: Personal Information */}
                         {currentStep === 1 && (
                           <motion.div
                             key="step1"
@@ -640,165 +587,113 @@ export default function DemandeDevisPage() {
                             exit="exit"
                             variants={formVariants}
                           >
-                            <h4 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
-                              Vos informations personnelles
+                            <h4 className="text-2xl font-black uppercase italic mb-8 text-gray-900 dark:text-white">
+                              <User className="inline w-6 h-6 mr-3 text-yellow-500" />
+                              Vos informations
                             </h4>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                               <div>
-                                <label
-                                  htmlFor="firstName"
-                                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                >
+                                <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
                                   Prénom *
                                 </label>
                                 <input
                                   type="text"
-                                  id="firstName"
                                   name="firstName"
                                   value={formData.firstName}
                                   onChange={handleChange}
-                                  className={`w-full px-4 py-3 rounded-lg border ${
-                                    errors.firstName
-                                      ? "border-red-500 dark:border-red-500"
-                                      : "border-gray-300 dark:border-gray-600"
-                                  } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors`}
+                                  className={`w-full px-5 py-4 rounded-2xl border-2 ${errors.firstName ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'} bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors`}
                                   placeholder="Votre prénom"
                                 />
                                 {errors.firstName && (
-                                  <p className="mt-1 text-sm text-red-500">
-                                    {errors.firstName}
-                                  </p>
+                                  <p className="mt-2 text-sm text-red-500">{errors.firstName}</p>
                                 )}
                               </div>
 
                               <div>
-                                <label
-                                  htmlFor="lastName"
-                                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                >
+                                <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
                                   Nom *
                                 </label>
                                 <input
                                   type="text"
-                                  id="lastName"
                                   name="lastName"
                                   value={formData.lastName}
                                   onChange={handleChange}
-                                  className={`w-full px-4 py-3 rounded-lg border ${
-                                    errors.lastName
-                                      ? "border-red-500 dark:border-red-500"
-                                      : "border-gray-300 dark:border-gray-600"
-                                  } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors`}
+                                  className={`w-full px-5 py-4 rounded-2xl border-2 ${errors.lastName ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'} bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors`}
                                   placeholder="Votre nom"
                                 />
                                 {errors.lastName && (
-                                  <p className="mt-1 text-sm text-red-500">
-                                    {errors.lastName}
-                                  </p>
+                                  <p className="mt-2 text-sm text-red-500">{errors.lastName}</p>
                                 )}
                               </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                               <div>
-                                <label
-                                  htmlFor="email"
-                                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                >
+                                <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
                                   Email *
                                 </label>
                                 <input
                                   type="email"
-                                  id="email"
                                   name="email"
                                   value={formData.email}
                                   onChange={handleChange}
-                                  className={`w-full px-4 py-3 rounded-lg border ${
-                                    errors.email
-                                      ? "border-red-500 dark:border-red-500"
-                                      : "border-gray-300 dark:border-gray-600"
-                                  } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors`}
+                                  className={`w-full px-5 py-4 rounded-2xl border-2 ${errors.email ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'} bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors`}
                                   placeholder="votre@email.com"
                                 />
                                 {errors.email && (
-                                  <p className="mt-1 text-sm text-red-500">
-                                    {errors.email}
-                                  </p>
+                                  <p className="mt-2 text-sm text-red-500">{errors.email}</p>
                                 )}
                               </div>
 
                               <div>
-                                <label
-                                  htmlFor="phone"
-                                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                                >
+                                <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
                                   Téléphone *
                                 </label>
                                 <input
                                   type="tel"
-                                  id="phone"
                                   name="phone"
                                   value={formData.phone}
                                   onChange={handleChange}
-                                  className={`w-full px-4 py-3 rounded-lg border ${
-                                    errors.phone
-                                      ? "border-red-500 dark:border-red-500"
-                                      : "border-gray-300 dark:border-gray-600"
-                                  } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors`}
-                                  placeholder="Votre numéro de téléphone"
+                                  className={`w-full px-5 py-4 rounded-2xl border-2 ${errors.phone ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'} bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors`}
+                                  placeholder="+212 6 00 00 00 00"
                                 />
                                 {errors.phone && (
-                                  <p className="mt-1 text-sm text-red-500">
-                                    {errors.phone}
-                                  </p>
+                                  <p className="mt-2 text-sm text-red-500">{errors.phone}</p>
                                 )}
                               </div>
                             </div>
 
-                            <div className="mb-8">
-                              <label
-                                htmlFor="company"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                              >
+                            <div className="mb-10">
+                              <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
                                 Entreprise (optionnel)
                               </label>
                               <input
                                 type="text"
-                                id="company"
                                 name="company"
                                 value={formData.company}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors"
+                                className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors"
                                 placeholder="Nom de votre entreprise"
                               />
                             </div>
 
                             <div className="flex justify-end">
-                              <button
+                              <motion.button
                                 type="button"
                                 onClick={nextStep}
-                                className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium rounded-lg transition-colors flex items-center"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3"
                               >
                                 Étape suivante
-                                <svg
-                                  className="ml-2 w-5 h-5"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 5l7 7-7 7"
-                                  />
-                                </svg>
-                              </button>
+                                <ArrowRight className="w-5 h-5" />
+                              </motion.button>
                             </div>
                           </motion.div>
                         )}
 
+                        {/* Step 2: Project Details */}
                         {currentStep === 2 && (
                           <motion.div
                             key="step2"
@@ -807,153 +702,134 @@ export default function DemandeDevisPage() {
                             exit="exit"
                             variants={formVariants}
                           >
-                            <h4 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
-                              Votre projet
+                            <h4 className="text-2xl font-black uppercase italic mb-8 text-gray-900 dark:text-white">
+                              <Target className="inline w-6 h-6 mr-3 text-yellow-500" />
+                              Détails du projet
                             </h4>
 
-                            <div className="mb-8">
-                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                            <div className="mb-10">
+                              <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-4">
                                 Service souhaité *
                               </label>
 
                               {errors.service && (
-                                <p className="mb-2 text-sm text-red-500">
-                                  {errors.service}
-                                </p>
+                                <p className="mb-4 text-sm text-red-500">{errors.service}</p>
                               )}
 
-                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {services.map((service) => (
-                                  <motion.div
+                                  <motion.button
                                     key={service.id}
+                                    type="button"
                                     variants={serviceCardVariants}
                                     initial="hidden"
                                     animate="visible"
                                     whileHover="hover"
                                     whileTap="tap"
-                                    className={`cursor-pointer p-4 rounded-xl border-2 ${
-                                      formData.service === service.id
-                                        ? "border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20"
-                                        : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
-                                    } transition-colors`}
-                                    onClick={() =>
-                                      handleServiceSelect(service.id)
-                                    }
+                                    onClick={() => handleServiceSelect(service.id)}
+                                    className={`p-5 rounded-2xl border-2 text-left ${formData.service === service.id ? `border-yellow-500 bg-gradient-to-r ${service.color}/10` : 'border-gray-200 dark:border-gray-700 hover:border-yellow-500'} transition-all`}
                                   >
-                                    <div className="flex flex-col items-center text-center">
-                                      <h5 className="font-medium text-gray-900 dark:text-white mb-1">
-                                        {service.name}
-                                      </h5>
-                                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        {service.description}
-                                      </p>
+                                    <div className="flex items-start gap-4">
+                                      <div className={`p-3 rounded-xl bg-gradient-to-r ${service.color} text-white`}>
+                                        {service.icon}
+                                      </div>
+                                      <div>
+                                        <h5 className="font-bold text-gray-900 dark:text-white mb-1">
+                                          {service.name}
+                                        </h5>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                          {service.description}
+                                        </p>
+                                        <div className="flex flex-wrap gap-2">
+                                          {service.features.map((feature, idx) => (
+                                            <span key={idx} className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-600 dark:text-gray-400">
+                                              {feature}
+                                            </span>
+                                          ))}
+                                        </div>
+                                      </div>
                                     </div>
-                                  </motion.div>
+                                  </motion.button>
                                 ))}
                               </div>
                             </div>
 
                             <div className="mb-8">
-                              <label
-                                htmlFor="budget"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                              >
+                              <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
                                 Budget estimé
                               </label>
-                              <select
-                                id="budget"
-                                name="budget"
-                                value={formData.budget}
-                                onChange={handleChange}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors"
-                              >
-                                <option value="">
-                                  Sélectionnez votre budget
-                                </option>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {budgetOptions.map((option) => (
-                                  <option
+                                  <label
                                     key={option.value}
-                                    value={option.value}
+                                    className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer ${formData.budget === option.value ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-yellow-500'}`}
                                   >
-                                    {option.label}
-                                  </option>
+                                    <input
+                                      type="radio"
+                                      name="budget"
+                                      value={option.value}
+                                      checked={formData.budget === option.value}
+                                      onChange={handleChange}
+                                      className="hidden"
+                                    />
+                                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${formData.budget === option.value ? 'border-yellow-500 bg-yellow-500' : 'border-gray-300 dark:border-gray-600'}`}>
+                                      {formData.budget === option.value && (
+                                        <Check className="w-3 h-3 text-white" />
+                                      )}
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                     
+                                      <span className="font-medium">{option.label}</span>
+                                    </div>
+                                  </label>
                                 ))}
-                              </select>
+                              </div>
                             </div>
 
-                            <div className="mb-8">
-                              <label
-                                htmlFor="message"
-                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                              >
+                            <div className="mb-10">
+                              <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
                                 Description de votre projet *
                               </label>
                               <textarea
-                                id="message"
                                 name="message"
                                 value={formData.message}
                                 onChange={handleChange}
                                 rows={5}
-                                className={`w-full px-4 py-3 rounded-lg border ${
-                                  errors.message
-                                    ? "border-red-500 dark:border-red-500"
-                                    : "border-gray-300 dark:border-gray-600"
-                                } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors`}
-                                placeholder="Décrivez votre projet, vos besoins et vos attentes..."
-                              ></textarea>
+                                className={`w-full px-5 py-4 rounded-2xl border-2 ${errors.message ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'} bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors resize-none`}
+                                placeholder="Décrivez votre projet en détail : objectifs, contraintes, délais, spécifications techniques..."
+                              />
                               {errors.message && (
-                                <p className="mt-1 text-sm text-red-500">
-                                  {errors.message}
-                                </p>
+                                <p className="mt-2 text-sm text-red-500">{errors.message}</p>
                               )}
                             </div>
 
                             <div className="flex justify-between">
-                              <button
+                              <motion.button
                                 type="button"
                                 onClick={prevStep}
-                                className="px-6 py-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors flex items-center"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="px-8 py-4 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-700 dark:text-gray-300 font-bold rounded-2xl transition-colors flex items-center gap-3"
                               >
-                                <svg
-                                  className="mr-2 w-5 h-5"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M15 19l-7-7 7-7"
-                                  />
-                                </svg>
+                                <ArrowLeft className="w-5 h-5" />
                                 Retour
-                              </button>
+                              </motion.button>
 
-                              <button
+                              <motion.button
                                 type="button"
                                 onClick={nextStep}
-                                className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium rounded-lg transition-colors flex items-center"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3"
                               >
                                 Étape suivante
-                                <svg
-                                  className="ml-2 w-5 h-5"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 5l7 7-7 7"
-                                  />
-                                </svg>
-                              </button>
+                                <ArrowRight className="w-5 h-5" />
+                              </motion.button>
                             </div>
                           </motion.div>
                         )}
 
+                        {/* Step 3: Confirmation */}
                         {currentStep === 3 && (
                           <motion.div
                             key="step3"
@@ -962,191 +838,120 @@ export default function DemandeDevisPage() {
                             exit="exit"
                             variants={formVariants}
                           >
-                            <h4 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
-                              Confirmation de votre demande
+                            <h4 className="text-2xl font-black uppercase italic mb-8 text-gray-900 dark:text-white">
+                              <CheckCircle className="inline w-6 h-6 mr-3 text-yellow-500" />
+                              Confirmation
                             </h4>
 
-                            <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 mb-8">
-                              <h5 className="font-medium text-lg mb-4 text-gray-900 dark:text-white">
-                                Récapitulatif
+                            <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 mb-10">
+                              <h5 className="text-xl font-black uppercase italic mb-6 text-gray-900 dark:text-white">
+                                Récapitulatif de votre demande
                               </h5>
 
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                <div>
-                                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Nom complet
-                                  </p>
-                                  <p className="font-medium text-gray-900 dark:text-white">
-                                    {formData.firstName} {formData.lastName}
-                                  </p>
+                              <div className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                  <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
+                                    <h6 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-2">Client</h6>
+                                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                                      {formData.firstName} {formData.lastName}
+                                    </p>
+                                  </div>
+                                  
+                                  <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
+                                    <h6 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-2">Contact</h6>
+                                    <div className="space-y-1">
+                                      <p className="font-medium text-gray-900 dark:text-white">{formData.email}</p>
+                                      <p className="font-medium text-gray-900 dark:text-white">{formData.phone}</p>
+                                    </div>
+                                  </div>
+
+                                  <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
+                                    <h6 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-2">Service</h6>
+                                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                                      {services.find(s => s.id === formData.service)?.name || "Non spécifié"}
+                                    </p>
+                                  </div>
+
+                                  <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
+                                    <h6 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-2">Budget</h6>
+                                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                                      {budgetOptions.find(b => b.value === formData.budget)?.label || "À définir"}
+                                    </p>
+                                  </div>
                                 </div>
 
-                                <div>
-                                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Email
-                                  </p>
-                                  <p className="font-medium text-gray-900 dark:text-white">
-                                    {formData.email}
-                                  </p>
-                                </div>
+                                {formData.company && (
+                                  <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
+                                    <h6 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-2">Entreprise</h6>
+                                    <p className="text-lg font-bold text-gray-900 dark:text-white">{formData.company}</p>
+                                  </div>
+                                )}
 
-                                <div>
-                                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Téléphone
-                                  </p>
-                                  <p className="font-medium text-gray-900 dark:text-white">
-                                    {formData.phone}
-                                  </p>
+                                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
+                                  <h6 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-2">Description du projet</h6>
+                                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{formData.message}</p>
                                 </div>
-
-                                <div>
-                                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Entreprise
-                                  </p>
-                                  <p className="font-medium text-gray-900 dark:text-white">
-                                    {formData.company || "Non spécifié"}
-                                  </p>
-                                </div>
-
-                                <div>
-                                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Service demandé
-                                  </p>
-                                  <p className="font-medium text-gray-900 dark:text-white">
-                                    {services.find(
-                                      (s) => s.id === formData.service
-                                    )?.name || "Non spécifié"}
-                                  </p>
-                                </div>
-
-                                <div>
-                                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Budget estimé
-                                  </p>
-                                  <p className="font-medium text-gray-900 dark:text-white">
-                                    {budgetOptions.find(
-                                      (b) => b.value === formData.budget
-                                    )?.label || "Non spécifié"}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                  Description du projet
-                                </p>
-                                <p className="font-medium text-gray-900 dark:text-white whitespace-pre-line">
-                                  {formData.message}
-                                </p>
                               </div>
                             </div>
 
-                            <div className="mb-8">
-                              <div className="flex items-start mb-4">
+                            <div className="mb-10">
+                              <label className="flex items-start gap-3 cursor-pointer">
+                                <div className={`flex-shrink-0 w-5 h-5 mt-1 border-2 rounded ${formData.terms ? 'bg-yellow-500 border-yellow-500' : 'border-gray-300 dark:border-gray-600'}`}>
+                                  {formData.terms && <Check className="w-full h-full text-white" />}
+                                </div>
                                 <input
                                   type="checkbox"
-                                  id="terms"
                                   name="terms"
                                   checked={formData.terms}
                                   onChange={handleChange}
-                                  className="mt-1 h-4 w-4 text-yellow-500 focus:ring-yellow-500 border-gray-300 rounded"
+                                  className="hidden"
                                 />
-                                <label
-                                  htmlFor="terms"
-                                  className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
-                                >
-                                  J'accepte que mes données soient traitées pour
-                                  le traitement de ma demande conformément à la
-                                  politique de confidentialité d'IRONZ PRO. *
-                                </label>
-                              </div>
+                                <span className="text-sm text-gray-700 dark:text-gray-300">
+                                  J'accepte que mes données soient traitées pour le traitement de ma demande conformément à la politique de confidentialité d'IRONZ PRO. *
+                                </span>
+                              </label>
                               {errors.terms && (
-                                <p className="text-sm text-red-500">
-                                  {errors.terms}
-                                </p>
+                                <p className="mt-2 text-sm text-red-500">{errors.terms}</p>
                               )}
 
                               {errors.submit && (
-                                <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300 mb-4">
+                                <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl text-red-700 dark:text-red-300">
                                   {errors.submit}
                                 </div>
                               )}
                             </div>
 
                             <div className="flex justify-between">
-                              <button
+                              <motion.button
                                 type="button"
                                 onClick={prevStep}
-                                className="px-6 py-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg transition-colors flex items-center"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="px-8 py-4 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-700 dark:text-gray-300 font-bold rounded-2xl transition-colors flex items-center gap-3"
                               >
-                                <svg
-                                  className="mr-2 w-5 h-5"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M15 19l-7-7 7-7"
-                                  />
-                                </svg>
+                                <ArrowLeft className="w-5 h-5" />
                                 Retour
-                              </button>
+                              </motion.button>
 
-                              <button
+                              <motion.button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className={`px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium rounded-lg transition-colors flex items-center ${
-                                  isSubmitting
-                                    ? "opacity-70 cursor-not-allowed"
-                                    : ""
-                                }`}
+                                whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                                whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                                className={`px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:from-yellow-600 hover:to-orange-600'}`}
                               >
                                 {isSubmitting ? (
                                   <>
-                                    <svg
-                                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <circle
-                                        className="opacity-25"
-                                        cx="12"
-                                        cy="12"
-                                        r="10"
-                                        stroke="currentColor"
-                                        strokeWidth="4"
-                                      ></circle>
-                                      <path
-                                        className="opacity-75"
-                                        fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                      ></path>
-                                    </svg>
+                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                                     Envoi en cours...
                                   </>
                                 ) : (
                                   <>
+                                    <Send className="w-5 h-5" />
                                     Envoyer ma demande
-                                    <svg
-                                      className="ml-2 w-5 h-5"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      stroke="currentColor"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 5l7 7-7 7"
-                                      />
-                                    </svg>
                                   </>
                                 )}
-                              </button>
+                              </motion.button>
                             </div>
                           </motion.div>
                         )}
@@ -1160,46 +965,34 @@ export default function DemandeDevisPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="max-w-7xl mx-auto"
-          ></motion.div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-yellow-500 to-orange-500">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Final CTA */}
+      <section className="py-20 bg-gradient-to-r from-yellow-500 to-orange-500">
+        <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+            <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-white">
               Prêt à concrétiser votre projet ?
             </h2>
-            <p className="text-xl text-white/90 mb-8">
-              Contactez-nous dès aujourd'hui pour bénéficier d'une consultation
-              gratuite et sans engagement.
+            <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
+              Contactez-nous dès aujourd'hui pour bénéficier d'une consultation gratuite et sans engagement avec nos experts.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#form-section"
-                className="px-8 py-4 bg-white hover:bg-gray-100 text-yellow-500 font-bold rounded-full transition-all transform hover:scale-105 shadow-lg"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-gray-100 text-yellow-500 font-black uppercase italic tracking-widest rounded-2xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
               >
-                Demander un devis
+                <FileText className="w-5 h-5" />
+                Obtenir mon devis
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>
               <Link href="/contact">
-                <button className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-all transform hover:scale-105 shadow-lg">
-                  Nous contacter
+                <button className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white/10 font-black uppercase italic tracking-widest rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-lg">
+                  <PhoneCall className="w-5 h-5" />
+                  Nous appeler
                 </button>
               </Link>
             </div>

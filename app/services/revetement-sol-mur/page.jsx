@@ -1,6 +1,29 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle, ArrowRight, Phone } from "lucide-react";
+import { motion } from "framer-motion";
+import { 
+  ArrowLeft, 
+  CheckCircle, 
+  ArrowRight, 
+  Shield, 
+  Heart, 
+  Users, 
+  Zap,
+  Sparkles,
+  Trophy,
+  Crown,
+  Target,
+  Package,
+  Home,
+  PenTool,
+  Truck,
+  Calendar,
+  Star
+} from "lucide-react";
+import { IoLogoWhatsapp } from "react-icons/io";
 import img1 from "../../../public/dalles.jpeg";
 import img2 from "../../../public/pvc.png";
 import img3 from "../../../public/poly.png";
@@ -8,656 +31,631 @@ import img4 from "../../../public/accou.jpeg";
 import img5 from "../../../public/mir.jpeg";
 import img6 from "../../../public/plan.png";
 
-import { Button } from "../../../components/ui/button";
-import ServiceContactForm from "../../../components/service-contact-form";
-
-export const metadata = {
-  title: "Revêtement Sol & Mur | IRONZ PRO",
-  description:
-    "Services professionnels de revêtement de sol et mur pour salles de sport et espaces fitness par IRONZ PRO",
+const FadeInWhenVisible = ({ children, delay = 0 }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{
+        duration: 0.6,
+        ease: "easeOut",
+        delay,
+      }}
+    >
+      {children}
+    </motion.div>
+  );
 };
 
 export default function RevetementSolMurPage() {
+  const [activeMaterial, setActiveMaterial] = useState("caoutchouc");
+
+  const stats = [
+    { value: "100%", label: "Sécurité garantie", icon: <Shield className="w-5 h-5" /> },
+    { value: "500+", label: "Projets réalisés", icon: <Home className="w-5 h-5" /> },
+    { value: "25", label: "Types de revêtements", icon: <Package className="w-5 h-5" /> },
+    { value: "5", label: "Ans de garantie", icon: <Calendar className="w-5 h-5" /> },
+  ];
+
+  const materials = [
+    {
+      id: "caoutchouc",
+      name: "Dalles caoutchouc",
+      description: "Haute densité pour zones de musculation et crossfit",
+      image: img1,
+      benefits: [
+        "Épaisseurs de 10 à 40mm",
+        "Résistant aux impacts lourds",
+        "Installation facile et rapide",
+        "Absorption acoustique optimale",
+      ],
+      color: "from-yellow-500 to-orange-500",
+    },
+    {
+      id: "pvc",
+      name: "PVC sportif",
+      description: "Parfait pour zones cardio et fitness",
+      image: img2,
+      benefits: [
+        "Surface antidérapante",
+        "Résistant à l'usure et aux UV",
+        "Large choix de coloris",
+        "Facile d'entretien",
+      ],
+      color: "from-blue-500 to-purple-500",
+    },
+    {
+      id: "polyurethane",
+      name: "Résine polyuréthane",
+      description: "Solution haut de gamme pour espaces multifonctionnels",
+      image: img3,
+      benefits: [
+        "Surface sans joint",
+        "Absorption acoustique exceptionnelle",
+        "Personnalisation graphique",
+        "Très haute durabilité",
+      ],
+      color: "from-green-500 to-emerald-500",
+    },
+    {
+      id: "acoustique",
+      name: "Panneaux acoustiques",
+      description: "Amélioration acoustique et esthétique",
+      image: img4,
+      benefits: [
+        "Réduction significative du bruit",
+        "Design personnalisable",
+        "Installation simple",
+        "Isolation thermique",
+      ],
+      color: "from-red-500 to-pink-500",
+    },
+    {
+      id: "miroirs",
+      name: "Miroirs de sécurité",
+      description: "Sécurité et fonctionnalité pour salles de sport",
+      image: img5,
+      benefits: [
+        "Verre anti-bris sécurisé",
+        "Installation professionnelle",
+        "Dimensions sur mesure",
+        "Traitement anti-buée",
+      ],
+      color: "from-gray-500 to-blue-500",
+    },
+    {
+      id: "mural",
+      name: "Protections murales",
+      description: "Protection des murs et amélioration esthétique",
+      image: img6,
+      benefits: [
+        "Résistance aux chocs",
+        "Facile à nettoyer",
+        "Personnalisation graphique",
+        "Installation rapide",
+      ],
+      color: "from-indigo-500 to-purple-500",
+    },
+  ];
+
+  const benefits = [
+    {
+      title: "Sécurité optimale",
+      description: "Nos revêtements minimisent les risques de blessures et offrent une sécurité maximale.",
+      icon: <Shield className="w-6 h-6" />,
+      color: "from-yellow-500 to-orange-500",
+    },
+    {
+      title: "Performance accrue",
+      description: "Surfaces adaptées pour optimiser les performances et le confort des sportifs.",
+      icon: <Zap className="w-6 h-6" />,
+      color: "from-blue-500 to-purple-500",
+    },
+    {
+      title: "Durabilité exceptionnelle",
+      description: "Matériaux haute qualité pour une résistance maximale à l'usure et aux impacts.",
+      icon: <Heart className="w-6 h-6" />,
+      color: "from-green-500 to-emerald-500",
+    },
+    {
+      title: "Esthétique personnalisée",
+      description: "Large gamme de couleurs et options de personnalisation pour votre espace.",
+      icon: <PenTool className="w-6 h-6" />,
+      color: "from-red-500 to-pink-500",
+    },
+  ];
+
+  const packages = [
+    {
+      name: "Revêtement Standard",
+      description: "Solution économique pour petits espaces",
+      icon: <Star className="h-10 w-10" />,
+      features: [
+        "Dalles caoutchouc standard",
+        "Installation basique",
+        "Garantie 2 ans",
+        "Entretien limité",
+        "Couleurs standards",
+      ],
+      price: "À partir de 150 MAD/m²",
+      popular: false,
+      color: "from-yellow-500 to-orange-500",
+    },
+    {
+      name: "Revêtement Premium",
+      description: "Solution complète pour salles professionnelles",
+      icon: <Trophy className="h-10 w-10" />,
+      features: [
+        "Matériaux premium au choix",
+        "Installation professionnelle",
+        "Personnalisation des couleurs",
+        "Garantie 5 ans",
+        "Entretien inclus 1 an",
+      ],
+      price: "À partir de 300 MAD/m²",
+      popular: true,
+      color: "from-black to-yellow-500",
+    },
+    {
+      name: "Revêtement Élite",
+      description: "Solution sur mesure pour projets haut de gamme",
+      icon: <Crown className="h-10 w-10" />,
+      features: [
+        "Matériaux premium combinés",
+        "Design personnalisé complet",
+        "Installation VIP",
+        "Garantie 7 ans",
+        "Maintenance 3 ans incluse",
+      ],
+      price: "Sur devis personnalisé",
+      popular: false,
+      color: "from-gray-900 to-yellow-600",
+    },
+  ];
+
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <main className="min-h-screen bg-white dark:bg-gray-950">
       {/* Hero Section */}
-      <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-black text-white overflow-hidden">
-        <div className="">
-          <Image
-            src={img6}
-            alt="Revêtement sol et mur"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
+      <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-gray-900 via-gray-900 to-black overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-orange-500/10" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/services"
-            className="inline-flex items-center text-yellow-400 hover:text-yellow-300 mb-6 transition-colors"
+        <div className="relative container mx-auto px-4">
+          {/* Breadcrumb */}
+          <nav className="mb-8">
+            <Link
+              href="/services"
+              className="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-yellow-500 transition-colors group"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              Retour aux services
+            </Link>
+          </nav>
+
+          {/* Hero Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-5xl"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour aux services
-          </Link>
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
+              <Sparkles className="w-4 h-4 text-yellow-500" />
+              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                Revêtements
+              </span>
+            </div>
 
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">
-              Revêtement <span className="text-yellow-400">Sol & Mur</span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase italic tracking-tighter mb-6 text-white leading-[0.9]">
+              Revêtement <span className="text-yellow-500">Sol & Mur</span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8">
-              Des solutions de revêtement professionnelles pour optimiser la
-              sécurité, la performance et l'esthétique de votre espace fitness.
+
+            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl leading-relaxed">
+              Solutions professionnelles de revêtement pour optimiser la sécurité, 
+              la performance et l'esthétique de votre espace fitness.
             </p>
-            <div className="flex flex-wrap gap-4">
+
+            {/* Stats */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.1,
+                  },
+                },
+              }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mb-10"
+            >
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.8 },
+                    visible: {
+                      opacity: 1,
+                      scale: 1,
+                      transition: {
+                        duration: 0.5,
+                        ease: "easeOut",
+                      },
+                    },
+                  }}
+                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 md:p-6 text-center"
+                >
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    {stat.icon}
+                    <span className="text-3xl md:text-4xl font-black text-yellow-500">
+                      {stat.value}
+                    </span>
+                  </div>
+                  <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-400">
+                    {stat.label}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/demande-devis">
-                <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium text-lg px-8 py-6">
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg hover:shadow-xl"
+                >
                   Demander un devis
-                </Button>
+                  <ArrowRight className="w-5 h-5" />
+                </motion.button>
               </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Overview */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
-              Des revêtements adaptés à chaque activité
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Nous proposons une large gamme de revêtements spécialement conçus
-              pour les espaces fitness, offrant performance, durabilité et
-              esthétique.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-transform hover:-translate-y-1 duration-300">
-              <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-6">
-                <svg
-                  className="w-7 h-7 text-yellow-600 dark:text-yellow-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-heading font-bold mb-3">
-                Sols sportifs
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Des revêtements de sol spécialement conçus pour les activités
-                sportives, offrant amortissement, adhérence et durabilité.
-              </p>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Dalles caoutchouc haute densité
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Sols PVC sportifs
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Résines polyuréthanes
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-transform hover:-translate-y-1 duration-300">
-              <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-6">
-                <svg
-                  className="w-7 h-7 text-yellow-600 dark:text-yellow-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-heading font-bold mb-3">
-                Revêtements muraux
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Des solutions pour protéger et embellir vos murs, tout en
-                améliorant l'acoustique et l'isolation de votre espace.
-              </p>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Panneaux acoustiques
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Miroirs de sécurité
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Protections murales
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-transform hover:-translate-y-1 duration-300">
-              <div className="w-14 h-14 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-6">
-                <svg
-                  className="w-7 h-7 text-yellow-600 dark:text-yellow-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-heading font-bold mb-3">
-                Solutions personnalisées
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Des revêtements sur mesure pour répondre aux besoins spécifiques
-                de chaque activité, avec des options de personnalisation
-                graphique et fonctionnelle.
-              </p>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Marquages et signalétique
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Zones d'entraînement dédiées
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Personnalisation aux couleurs de votre marque
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Types of Flooring */}
-      <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl text-yellow-400 md:text-4xl font-heading font-bold mb-6">
-              Nos types de revêtements
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Découvrez notre gamme complète de revêtements adaptés à chaque
-              type d'activité et d'espace.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-              <div className="relative h-48">
-                <Image
-                  src={img1}
-                  alt="Dalles caoutchouc"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">
-                  Dalles caoutchouc
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Idéales pour les zones de musculation et de crossfit, ces
-                  dalles offrent une excellente absorption des chocs et une
-                  grande résistance.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Épaisseurs de 10 à 40mm
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Résistant aux impacts lourds
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Installation facile et rapide
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-              <div className="relative h-48">
-                <Image
-                  src={img2}
-                  alt="PVC sportif"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">
-                  PVC sportif
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Parfait pour les zones de cardio et de fitness, ce revêtement
-                  offre confort, durabilité et facilité d'entretien.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Surface antidérapante
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Résistant à l'usure et aux UV
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Large choix de coloris
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-              <div className="relative h-48">
-                <Image
-                  src={img3}
-                  alt="Résine polyuréthane"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">
-                  Résine polyuréthane
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Solution haut de gamme pour les espaces multifonctionnels,
-                  offrant une surface lisse, uniforme et hautement
-                  personnalisable.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Surface sans joint
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Excellente absorption acoustique
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Personnalisation graphique avancée
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-              <div className="relative h-48">
-                <Image
-                  src={img4}
-                  alt="Panneaux acoustiques"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">
-                  Panneaux acoustiques
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Améliorez l'acoustique de votre espace fitness tout en créant
-                  une ambiance esthétique et confortable.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Réduction significative du bruit
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Design personnalisable
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Installation simple et rapide
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-              <div className="relative h-48">
-                <Image
-                  src={img5}
-                  alt="Miroirs de sécurité"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">
-                  Miroirs de sécurité
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Des miroirs spécialement conçus pour les salles de sport,
-                  offrant sécurité et fonctionnalité.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Verre de sécurité anti-bris
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Installation professionnelle
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Dimensions sur mesure
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-              <div className="relative h-48">
-                <Image
-                  src={img6}
-                  alt="Protections murales"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-heading font-bold mb-3">
-                  Protections murales
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Protégez vos murs des impacts et de l'usure tout en améliorant
-                  l'esthétique de votre espace.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Matériaux résistants aux chocs
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Facile à nettoyer et entretenir
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      Options de personnalisation graphique
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-              Nos réalisations
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Découvrez quelques-uns de nos projets de revêtement réalisés pour
-              nos clients.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <div
-                key={item}
-                className="group relative overflow-hidden rounded-xl bg-gray-200 dark:bg-gray-800 aspect-square"
+              
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 }}
+                onClick={() => window.open('https://wa.me/212674114446', '_blank')}
+                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all border border-white/10"
               >
-                <Image
-                  src={`/placeholder.svg?height=600&width=600&text=Projet+${item}`}
-                  alt={`Projet de revêtement ${item}`}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <h3 className="text-white text-xl font-bold mb-2">
-                    Projet {item}
-                  </h3>
-                  <p className="text-gray-200 text-sm mb-4">
-                    {item % 2 === 0
-                      ? "Revêtement de sol pour salle de musculation"
-                      : "Revêtement mural pour espace fitness"}
-                  </p>
-                 
-                </div>
+                <IoLogoWhatsapp className="w-5 h-5" />
+                WhatsApp Direct
+                <ArrowRight className="w-5 h-5" />
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Materials Grid */}
+      <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+        
+        <div className="relative container mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
+                <Package className="w-4 h-4 text-yellow-500" />
+                <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                  Nos revêtements
+                </span>
               </div>
+
+              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+                Types de <span className="text-yellow-500">revêtements</span>
+              </h2>
+              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Découvrez notre gamme complète de revêtements adaptés à chaque 
+                type d'activité et d'espace.
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* Materials Tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            {materials.map((material) => (
+              <button
+                key={material.id}
+                onClick={() => setActiveMaterial(material.id)}
+                className={`px-6 py-3 rounded-xl font-bold uppercase text-sm transition-all ${
+                  activeMaterial === material.id
+                    ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-black shadow-lg"
+                    : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-yellow-100 dark:hover:bg-yellow-900/20"
+                }`}
+              >
+                {material.name}
+              </button>
+            ))}
+          </div>
+
+          {/* Active Material Detail */}
+          <FadeInWhenVisible>
+            {materials.map((material) => (
+              activeMaterial === material.id && (
+                <div key={material.id} className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                  <div className="grid grid-cols-1 lg:grid-cols-2">
+                    <div className="relative h-80 lg:h-auto">
+                      <Image
+                        src={material.image || "/placeholder.svg"}
+                        alt={material.name}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
+                        <h3 className="text-3xl font-black uppercase italic text-white">
+                          {material.name}
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="p-8 lg:p-10 flex flex-col justify-center">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${material.color} flex items-center justify-center`}>
+                          <Package className="w-6 h-6 text-white" />
+                        </div>
+                        <h3 className="text-2xl font-black uppercase italic text-gray-900 dark:text-white">
+                          {material.name}
+                        </h3>
+                      </div>
+                      
+                      <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+                        {material.description}
+                      </p>
+                      
+                      <ul className="space-y-4 mb-8">
+                        {material.benefits.map((benefit, index) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <CheckCircle className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-gray-700 dark:text-gray-300">
+                              {benefit}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      <Link href="/demande-devis">
+                        <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
+                          Demander un devis
+                          <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )
+            ))}
+          </FadeInWhenVisible>
+
+          {/* All Materials Grid */}
+          <FadeInWhenVisible delay={0.2}>
+            <div className="mt-16">
+              <h3 className="text-2xl font-black uppercase italic text-center mb-8 text-gray-900 dark:text-white">
+                Tous nos revêtements
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {materials.map((material, index) => (
+                  <div
+                    key={material.id}
+                    onClick={() => setActiveMaterial(material.id)}
+                    className={`group cursor-pointer bg-white dark:bg-gray-800 rounded-3xl overflow-hidden border-2 transition-all duration-300 hover:-translate-y-2 ${
+                      activeMaterial === material.id
+                        ? "border-yellow-500 shadow-xl"
+                        : "border-gray-100 dark:border-gray-700 hover:border-yellow-500/50"
+                    }`}
+                  >
+                    <div className="relative h-48">
+                      <Image
+                        src={material.image || "/placeholder.svg"}
+                        alt={material.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h4 className="text-lg font-bold text-white">
+                          {material.name}
+                        </h4>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {material.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
+                <Target className="w-4 h-4 text-yellow-500" />
+                <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                  Les avantages
+                </span>
+              </div>
+
+              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+                Pourquoi <span className="text-yellow-500">nos revêtements</span>
+              </h2>
+              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Des solutions professionnelles qui allient performance, sécurité 
+                et esthétique.
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {benefits.map((benefit, index) => (
+              <FadeInWhenVisible key={index} delay={index * 0.1}>
+                <div className="group h-full">
+                  <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${benefit.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      <div className="text-white">
+                        {benefit.icon}
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {benefit.description}
+                    </p>
+                  </div>
+                </div>
+              </FadeInWhenVisible>
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
-      {/* Benefits Section */}
-      <section className="py-16 md:py-24 bg-gray-100 dark:bg-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-              Pourquoi choisir nos revêtements?
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              Des solutions professionnelles qui allient performance, sécurité
-              et esthétique.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 text-center">
-              <div className="w-16 h-16 mx-auto bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-4">
-                <svg
-                  className="w-8 h-8 text-yellow-600 dark:text-yellow-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
+      {/* Packages Section */}
+      <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+        
+        <div className="relative container mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
+                <Crown className="w-4 h-4 text-yellow-500" />
+                <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                  Nos solutions
+                </span>
               </div>
-              <h3 className="text-lg font-heading font-bold mb-2">
-                Sécurité optimale
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Nos revêtements sont conçus pour minimiser les risques de
-                blessures et offrir une sécurité maximale aux utilisateurs.
+
+              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+                Offres <span className="text-yellow-500">sur mesure</span>
+              </h2>
+              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Des solutions adaptées à chaque espace et budget
               </p>
             </div>
+          </FadeInWhenVisible>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 text-center">
-              <div className="w-16 h-16 mx-auto bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-4">
-                <svg
-                  className="w-8 h-8 text-yellow-600 dark:text-yellow-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-heading font-bold mb-2">
-                Performance accrue
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Des surfaces adaptées à chaque activité pour optimiser les
-                performances et le confort des sportifs.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            {packages.map((pkg, index) => (
+              <FadeInWhenVisible key={index} delay={index * 0.1}>
+                <div className="relative group h-full">
+                  {pkg.popular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+                      <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-6 py-2 rounded-full font-black uppercase italic tracking-widest text-sm">
+                        Plus populaire
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className={`bg-gradient-to-br ${pkg.color} rounded-3xl p-0.5 h-full ${pkg.popular ? 'scale-[1.02]' : ''}`}>
+                    <div className="bg-white dark:bg-gray-800 rounded-[1.25rem] p-8 h-full">
+                      <div className="text-center mb-8">
+                        <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mx-auto mb-4">
+                          <div className="text-white">
+                            {pkg.icon}
+                          </div>
+                        </div>
+                        
+                        <h3 className="text-2xl font-black uppercase italic mb-2 text-gray-900 dark:text-white">
+                          {pkg.name}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {pkg.description}
+                        </p>
+                      </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 text-center">
-              <div className="w-16 h-16 mx-auto bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-4">
-                <svg
-                  className="w-8 h-8 text-yellow-600 dark:text-yellow-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-heading font-bold mb-2">
-                Durabilité exceptionnelle
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Des matériaux de haute qualité pour une résistance maximale à
-                l'usure, aux impacts et au temps.
-              </p>
-            </div>
+                      <div className="space-y-4 mb-8">
+                        {pkg.features.map((feature, idx) => (
+                          <div key={idx} className="flex items-start gap-3">
+                            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <CheckCircle className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-gray-700 dark:text-gray-300">
+                              {feature}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 text-center">
-              <div className="w-16 h-16 mx-auto bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mb-4">
-                <svg
-                  className="w-8 h-8 text-yellow-600 dark:text-yellow-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg font-heading font-bold mb-2">
-                Esthétique personnalisée
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Une large gamme de couleurs et d'options de personnalisation
-                pour créer un espace à votre image.
-              </p>
-            </div>
+                      <div className="text-center pt-8 border-t border-gray-100 dark:border-gray-700">
+                        <div className="text-3xl font-black text-gray-900 dark:text-white mb-6">
+                          {pkg.price}
+                        </div>
+                        
+                        <Link href="/demande-devis">
+                          <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
+                            Demander un devis
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeInWhenVisible>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-yellow-400">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-black">
-              Transformez votre espace dès maintenant
-            </h2>
-            <p className="text-xl text-black/80 mb-8">
-              Contactez-nous pour bénéficier d'une consultation gratuite et sans
-              engagement.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/demande-devis">
-                <Button className="bg-black hover:bg-gray-800 text-white font-medium text-lg px-8 py-6">
-                  Demander un devis gratuit
-                </Button>
-              </Link>
+      <section className="py-20 bg-gradient-to-r from-yellow-500 to-orange-500">
+        <div className="container mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-black">
+                Transformez votre espace dès maintenant
+              </h2>
+              <p className="text-xl text-black/90 mb-10 max-w-2xl mx-auto">
+                Contactez-nous pour bénéficier d'une consultation gratuite et sans engagement
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/demande-devis">
+                  <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+                    Demander un devis
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </Link>
+                <button
+                  onClick={() => window.open('https://wa.me/212674114446', '_blank')}
+                  className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
+                >
+                  <IoLogoWhatsapp className="w-6 h-6" />
+                  WhatsApp Direct
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-          </div>
+          </FadeInWhenVisible>
         </div>
       </section>
+
+      {/* WhatsApp Floating Button */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5 }}
+        className="fixed bottom-6 right-6 z-50"
+      >
+        <button
+          onClick={() => window.open('https://wa.me/212674114446', '_blank')}
+          className="w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-2xl transition-all flex items-center justify-center"
+        >
+          <IoLogoWhatsapp className="w-7 h-7" />
+        </button>
+      </motion.div>
     </main>
   );
 }

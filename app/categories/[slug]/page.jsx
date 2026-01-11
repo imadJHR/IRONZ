@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -12,10 +11,21 @@ import {
   Check,
   ArrowUpDown,
   Star,
+  StarHalf,
   Heart,
   ShoppingCart,
+  ArrowLeft,
+  Eye,
+  Truck,
+  ShieldCheck,
+  Package,
+  Clock,
+  Sparkles,
+  Zap,
+  Flame,
+  Award,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../../../context/cart-context";
 import { useFavorites } from "../../../context/favorites-context";
 import { cn } from "../../../lib/utils";
@@ -24,6 +34,8 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Slider } from "../../../components/ui/slider";
 import { Badge } from "../../../components/ui/badge";
+import { Checkbox } from "../../../components/ui/checkbox";
+import { Label } from "../../../components/ui/label";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,25 +48,98 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetClose,
   SheetFooter,
 } from "../../../components/ui/sheet";
 import { Separator } from "../../../components/ui/separator";
 
-import { products, categories, filters } from "../../../data/product";
+// ✅ Mapping slug -> nom catégorie
+const CATEGORY_MAP = {
+  musculation: "MUSCULATION",
+  cardio: "CARDIO",
+  crossfit: "CROSSFIT",
+  boxe: "BOXE",
+  accessoires: "ACCESSOIRES",
+  nutrition: "NUTRITION",
+  equipements: "ÉQUIPEMENTS",
+  supplement: "SUPPLÉMENTS",
+};
+
+const CATEGORY_ICONS = {
+  musculation: <Flame className="h-5 w-5" />,
+  cardio: <Zap className="h-5 w-5" />,
+  crossfit: <Award className="h-5 w-5" />,
+  boxe: <Sparkles className="h-5 w-5" />,
+  accessoires: <Package className="h-5 w-5" />,
+  nutrition: <Truck className="h-5 w-5" />,
+  equipements: <ShieldCheck className="h-5 w-5" />,
+  supplement: <Clock className="h-5 w-5" />,
+};
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
+const PLACEHOLDER = "/placeholder.svg";
+
+/**
+ * ✅ Cloudinary-safe image component
+ */
+function CloudImg({ src, alt, fill = false, className = "", cloudinary = true }) {
+  const [imgSrc, setImgSrc] = useState(src || PLACEHOLDER);
+
+  useEffect(() => {
+    if (cloudinary && src) {
+      // Simple Cloudinary transformation
+      const transformedSrc = src.startsWith('http') 
+        ? src 
+        : `https://res.cloudinary.com/demo/image/upload/c_fill,w_400,h_400,q_auto/${src}`;
+      setImgSrc(transformedSrc);
+    } else {
+      setImgSrc(src || PLACEHOLDER);
+    }
+  }, [src, cloudinary]);
+
+  const handleError = () => {
+    setImgSrc(PLACEHOLDER);
+  };
+
+  if (fill) {
+    return (
+      <img
+        src={imgSrc}
+        alt={alt || ""}
+        onError={handleError}
+        className={cn("absolute inset-0 h-full w-full object-cover", className)}
+      />
+    );
+  }
+
+  return (
+    <img
+      src={imgSrc}
+      alt={alt || ""}
+      onError={handleError}
+      className={className}
+    />
+  );
+}
 
 export default function CategoryPage() {
   const params = useParams();
-  const { slug } = params;
+  const slug = params?.slug;
 
-  const [category, setCategory] = useState(null);
+  const [categoryName, setCategoryName] = useState("");
+  const [categoryIcon, setCategoryIcon] = useState(null);
+  
+  // Data
+  const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [availableSubCategories, setAvailableSubCategories] = useState([]);
+
+  // Filters State
   const [searchQuery, setSearchQuery] = useState("");
-  const [priceRange, setPriceRange] = useState([
-    filters.price.min,
-    filters.price.max,
-  ]);
+  const [priceRange, setPriceRange] = useState([0, 20000]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [sortOption, setSortOption] = useState("featured");
+  
+  // UI State
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
@@ -62,60 +147,98 @@ export default function CategoryPage() {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
+  // 1. Déterminer le nom et l'icône de la catégorie
   useEffect(() => {
-    // Add null check for slug
     if (!slug) return;
-    
-    const categorySlug = slug.toLowerCase();
-    const foundCategory = categories.find((cat) =>
-      cat.href?.toLowerCase().includes(categorySlug)
-    );
-
-    if (foundCategory) {
-      setCategory(foundCategory);
-    }
-
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    const name = CATEGORY_MAP[slug.toLowerCase()] || 
+                 slug.charAt(0).toUpperCase() + slug.slice(1).toUpperCase();
+    setCategoryName(name);
+    setCategoryIcon(CATEGORY_ICONS[slug.toLowerCase()] || <Package className="h-5 w-5" />);
   }, [slug]);
 
+  // 2. Fetch products from backend
   useEffect(() => {
-    if (!category) return;
+    const fetchCategoryProducts = async () => {
+      if (!slug) return;
+      
+      setIsLoading(true);
+      try {
+        const res = await fetch(`${API_URL}/products?limit=1000`);
+        
+        if (!res.ok) throw new Error("Failed to fetch");
+        
+        const json = await res.json();
+        const allProducts = Array.isArray(json.data) ? json.data : [];
 
-    let result = products.filter(
-      (product) =>
-        product.category?.toLowerCase() === category.name?.toLowerCase() ||
-        product.categoryId === category.id
-    );
+        const catSlug = slug.toLowerCase();
+        
+        // Filtrer par catégorie
+        const catProducts = allProducts.filter(p => {
+            const pCat = (p.category || "").toLowerCase();
+            return pCat.includes(catSlug) || 
+                   (CATEGORY_MAP[catSlug] && pCat.includes(CATEGORY_MAP[catSlug].toLowerCase()));
+        });
 
+        setProducts(catProducts);
+        setFilteredProducts(catProducts);
+
+        // Extraire les sous-catégories
+        const subCats = [...new Set(catProducts.map(p => p.subCategory).filter(Boolean))];
+        setAvailableSubCategories(subCats.sort());
+
+        // Ajuster le range de prix
+        if (catProducts.length > 0) {
+            const maxP = Math.max(...catProducts.map(p => p.price || 0));
+            setPriceRange([0, Math.ceil(maxP * 1.1)]);
+        }
+
+      } catch (err) {
+        console.error("Erreur chargement catégorie:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategoryProducts();
+  }, [slug]);
+
+  // 3. Filtrage local
+  useEffect(() => {
+    let result = [...products];
+
+    // Recherche
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
-        (product) =>
-          product.name?.toLowerCase().includes(query) ||
-          product.description?.toLowerCase().includes(query) ||
-          (product.tags &&
-            product.tags.some((tag) => tag?.toLowerCase().includes(query)))
+        (p) =>
+          p.name?.toLowerCase().includes(query) ||
+          p.description?.toLowerCase().includes(query) ||
+          (p.tags && p.tags.some((tag) => tag?.toLowerCase().includes(query)))
       );
     }
 
+    // Prix
     result = result.filter(
-      (product) =>
-        product.price >= priceRange[0] && product.price <= priceRange[1]
+      (p) => (p.price || 0) >= priceRange[0] && (p.price || 0) <= priceRange[1]
     );
 
+    // Sous-catégories
+    if (selectedSubCategories.length > 0) {
+      result = result.filter(p => 
+        p.subCategory && selectedSubCategories.includes(p.subCategory)
+      );
+    }
+
+    // Tri
     switch (sortOption) {
       case "price-asc":
-        result.sort((a, b) => a.price - b.price);
+        result.sort((a, b) => (a.price || 0) - (b.price || 0));
         break;
       case "price-desc":
-        result.sort((a, b) => b.price - a.price);
+        result.sort((a, b) => (b.price || 0) - (a.price || 0));
         break;
       case "newest":
-        result.sort((a, b) => new Date(b.date) - new Date(a.date));
+        result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case "rating":
         result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
@@ -124,596 +247,695 @@ export default function CategoryPage() {
         result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
         break;
       default:
+        result.sort((a, b) => (b.isFeatured === a.isFeatured ? 0 : b.isFeatured ? 1 : -1));
         break;
     }
 
     setFilteredProducts(result);
-  }, [category, searchQuery, priceRange, sortOption]);
+  }, [products, searchQuery, priceRange, sortOption, selectedSubCategories]);
 
-  const handlePriceChange = (value) => {
-    setPriceRange(value);
+  const handlePriceChange = (value) => setPriceRange(value);
+  
+  const handleSubCategoryToggle = (subCat) => {
+    setSelectedSubCategories(prev => 
+      prev.includes(subCat) 
+        ? prev.filter(sc => sc !== subCat)
+        : [...prev, subCat]
+    );
   };
 
   const clearFilters = () => {
     setSearchQuery("");
-    setPriceRange([filters.price.min, filters.price.max]);
+    setSelectedSubCategories([]);
+    if (products.length > 0) {
+        const maxP = Math.max(...products.map(p => p.price || 0));
+        setPriceRange([0, Math.ceil(maxP * 1.1)]);
+    } else {
+        setPriceRange([0, 20000]);
+    }
     setSortOption("featured");
   };
 
   const toggleFavorite = (product) => {
-    if (isInFavorites(product.id)) {
-      removeFromFavorites(product.id);
+    const id = product._id || product.id;
+    if (isInFavorites(id)) {
+      removeFromFavorites(id);
     } else {
-      addToFavorites(product);
+      addToFavorites({ ...product, id });
     }
+  };
+
+  const onAddToCart = (product) => {
+    addToCart({ ...product, id: product._id || product.id });
+  };
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("fr-MA", {
+      style: "currency",
+      currency: "MAD",
+      minimumFractionDigits: 0,
+    }).format(price || 0);
+  };
+
+  const renderRating = (rating) => {
+    const r = Number(rating) || 0;
+    const full = Math.floor(r);
+    const half = r - full >= 0.5;
+    
+    return (
+      <div className="flex items-center gap-0.5">
+        {[...Array(full)].map((_, i) => (
+          <Star key={`f-${i}`} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+        ))}
+        {half && <StarHalf className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />}
+        {[...Array(5 - full - (half ? 1 : 0))].map((_, i) => (
+          <Star key={`e-${i}`} className="w-3.5 h-3.5 text-gray-300" />
+        ))}
+        <span className="ml-1 text-xs text-gray-500">({r.toFixed(1)})</span>
+      </div>
+    );
   };
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
-      },
-    },
-  };
-
-  // Format price
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("fr-FR", {
-      style: "currency",
-      currency: "MAD",
-    }).format(price);
-  };
-
-  // Render star rating
-  const renderRating = (rating) => {
-    const safeRating = rating || 0;
-    const fullStars = Math.floor(safeRating);
-    const hasHalfStar = safeRating % 1 >= 0.5;
-
-    return (
-      <div className="flex items-center">
-        {[...Array(fullStars)].map((_, i) => (
-          <Star
-            key={`star-${i}`}
-            className="w-4 h-4 fill-yellow-400 text-yellow-400"
-          />
-        ))}
-        {hasHalfStar && (
-          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-        )}
-        {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
-          <Star key={`empty-star-${i}`} className="w-4 h-4 text-gray-300" />
-        ))}
-        <span className="ml-1 text-xs text-gray-500">({safeRating})</span>
-      </div>
-    );
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0 },
   };
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-32">
-        <div className="animate-pulse">
-          <div className="h-10 w-64 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
-          <div className="h-4 w-full max-w-3xl bg-gray-200 dark:bg-gray-700 rounded mb-8"></div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {[...Array(8)].map((_, index) => (
-              <div
-                key={index}
-                className="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden"
-              >
-                <div className="h-48 bg-gray-200 dark:bg-gray-700"></div>
-                <div className="p-4 space-y-3">
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-                  <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
-                </div>
-              </div>
-            ))}
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-28 pb-16">
+        <div className="container mx-auto px-4">
+          <div className="animate-pulse space-y-8">
+            <div className="h-10 w-64 bg-gray-200 dark:bg-gray-800 rounded-2xl" />
+            <div className="h-4 w-full max-w-2xl bg-gray-200 dark:bg-gray-800 rounded-2xl" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-900 h-80" />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  if (!category) {
-    return (
-      <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold mb-4">Catégorie non trouvée</h1>
-        <p className="mb-8">
-          La catégorie que vous recherchez n&apos;existe pas ou a été supprimée.
-        </p>
-        <Button asChild>
-          <Link href="/product">Voir tous les produits</Link>
-        </Button>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Breadcrumb */}
-      <div className="mb-6">
-        <nav className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-          <Link
-            href="/"
-            className="hover:text-gray-900 dark:hover:text-white"
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-28 pb-16">
+      <div className="container mx-auto px-4">
+        
+        {/* Header Section */}
+        <div className="mb-12">
+          {/* Breadcrumb */}
+          <nav
+            className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-500 dark:text-gray-400 font-medium"
+            aria-label="Fil d'Ariane"
           >
-            Accueil
-          </Link>
-          <ChevronRight className="h-4 w-4 mx-2" />
-          <Link
-            href="/product"
-            className="hover:text-gray-900 dark:hover:text-white"
-          >
-            Produits
-          </Link>
-          <ChevronRight className="h-4 w-4 mx-2" />
-          <span className="text-gray-900 dark:text-white font-medium">
-            {category.name}
-          </span>
-        </nav>
-      </div>
+            <Link href="/" className="hover:text-yellow-500 transition-colors">
+              ACCUEIL
+            </Link>
+            <ChevronRight className="h-4 w-4" />
+            <Link href="/product" className="hover:text-yellow-500 transition-colors">
+              PRODUITS
+            </Link>
+            <ChevronRight className="h-4 w-4" />
+            <span className="text-gray-900 dark:text-white font-bold">
+              {categoryName}
+            </span>
+          </nav>
 
-      <div className="mb-8 py-16">
-        <h1 className="text-3xl text-yellow-500 font-bold mb-2">
-          {category.name}
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 max-w-3xl">
-          {category.description || "Découvrez notre sélection de produits dans cette catégorie."}
-        </p>
-      </div>
-
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        <div className="w-full md:w-auto flex items-center gap-2">
-          <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                className="md:hidden flex items-center gap-2"
-              >
-                <Filter className="h-4 w-4" />
-                Filtres
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="left"
-              className="w-[300px] sm:w-[350px] overflow-y-auto"
-            >
-              <SheetHeader>
-                <SheetTitle>Filtres</SheetTitle>
-              </SheetHeader>
-              <div className="py-4">
-                <div className="mb-6">
-                  <h3 className="font-medium mb-3">Prix</h3>
-                  <div className="px-2">
-                    <Slider
-                      defaultValue={priceRange}
-                      min={filters.price.min}
-                      max={filters.price.max}
-                      step={filters.price.step}
-                      value={priceRange}
-                      onValueChange={handlePriceChange}
-                      className="mb-6"
-                    />
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">
-                        {formatPrice(priceRange[0])}
-                      </span>
-                      <span className="text-sm">
-                        {formatPrice(priceRange[1])}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <SheetFooter>
-                <div className="flex justify-between w-full">
-                  <Button variant="outline" onClick={clearFilters}>
-                    Réinitialiser
-                  </Button>
-                  <SheetClose asChild>
-                    <Button>Appliquer</Button>
-                  </SheetClose>
-                </div>
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
-
-          <div className="relative w-full md:w-[300px]">
-            <Input
-              type="text"
-              placeholder="Rechercher un produit..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div className="w-full md:w-auto flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                <ArrowUpDown className="h-4 w-4" />
-                Trier par
-                <ChevronRight className="h-4 w-4 ml-1 rotate-90" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[200px]">
-              {filters.sortOptions.map((option) => (
-                <DropdownMenuItem
-                  key={option.value}
-                  onClick={() => setSortOption(option.value)}
-                >
-                  <span className="flex items-center w-full">
-                    {option.label}
-                    {sortOption === option.value && (
-                      <Check className="ml-auto h-4 w-4" />
-                    )}
-                  </span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <div className="hidden md:flex items-center border rounded-md">
-            <button
-              onClick={() => setViewMode("grid")}
-              className={cn(
-                "p-2 transition-colors",
-                viewMode === "grid"
-                  ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                  : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              )}
-              aria-label="Grid view"
-            >
-              <div className="grid grid-cols-2 gap-1">
-                <div className="w-1.5 h-1.5 rounded-sm bg-current"></div>
-                <div className="w-1.5 h-1.5 rounded-sm bg-current"></div>
-                <div className="w-1.5 h-1.5 rounded-sm bg-current"></div>
-                <div className="w-1.5 h-1.5 rounded-sm bg-current"></div>
-              </div>
-            </button>
-            <button
-              onClick={() => setViewMode("list")}
-              className={cn(
-                "p-2 transition-colors",
-                viewMode === "list"
-                  ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-                  : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              )}
-              aria-label="List view"
-            >
-              <div className="flex flex-col gap-1">
-                <div className="w-4 h-1 rounded-sm bg-current"></div>
-                <div className="w-4 h-1 rounded-sm bg-current"></div>
-                <div className="w-4 h-1 rounded-sm bg-current"></div>
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {(priceRange[0] > filters.price.min ||
-        priceRange[1] < filters.price.max ||
-        searchQuery) && (
-        <div className="flex flex-wrap items-center gap-2 mb-6">
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            Filtres actifs:
-          </span>
-
-          {searchQuery && (
-            <Badge variant="outline" className="flex items-center gap-1">
-              Recherche: {searchQuery}
-              <button onClick={() => setSearchQuery("")}>
-                <X className="h-3 w-3" />
-              </button>
-            </Badge>
-          )}
-
-          {(priceRange[0] > filters.price.min ||
-            priceRange[1] < filters.price.max) && (
-            <Badge variant="outline" className="flex items-center gap-1">
-              Prix: {formatPrice(priceRange[0])} -{" "}
-              {formatPrice(priceRange[1])}
-              <button
-                onClick={() =>
-                  setPriceRange([filters.price.min, filters.price.max])
-                }
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </Badge>
-          )}
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={clearFilters}
-            className="text-xs"
-          >
-            Effacer tous les filtres
-          </Button>
-        </div>
-      )}
-
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="hidden md:block w-64 flex-shrink-0">
-          <div className="sticky top-24 space-y-6">
+          {/* Category Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
             <div>
-              <h3 className="font-medium mb-3">Prix</h3>
-              <div className="px-2">
-                <Slider
-                  defaultValue={priceRange}
-                  min={filters.price.min}
-                  max={filters.price.max}
-                  step={filters.price.step}
-                  value={priceRange}
-                  onValueChange={handlePriceChange}
-                  className="mb-6"
-                />
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">
-                    {formatPrice(priceRange[0])}
-                  </span>
-                  <span className="text-sm">
-                    {formatPrice(priceRange[1])}
-                  </span>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center">
+                  {categoryIcon}
                 </div>
+                <h1 className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white leading-none">
+                  {categoryName} <span className="text-yellow-500">Collection</span>
+                </h1>
               </div>
+              <div className="h-2 w-24 bg-yellow-500 mt-4 rounded-full" />
             </div>
+            <Link href="/product" className="text-gray-400 hover:text-yellow-500 font-black uppercase italic text-sm transition-colors flex items-center gap-2">
+              <ArrowLeft size={18} /> Voir tous les produits
+            </Link>
+          </div>
 
-            <Separator />
-
-            <Button
-              variant="outline"
-              onClick={clearFilters}
-              className="w-full"
-            >
-              Réinitialiser les filtres
-            </Button>
+          {/* Category Description */}
+          <div className="max-w-3xl">
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg border-l-4 border-yellow-500 pl-6 py-2">
+              Découvrez notre sélection premium d'équipements {categoryName.toLowerCase()} pour optimiser vos performances. 
+              Des produits testés et approuvés par des athlètes professionnels.
+            </p>
           </div>
         </div>
 
-        <div className="flex-1">
-          {filteredProducts.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="mb-4 text-gray-400">
-                <Search className="h-12 w-12 mx-auto" />
-              </div>
-              <h3 className="text-lg font-medium mb-2">
-                Aucun produit trouvé
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400 mb-4">
-                Essayez de modifier vos filtres ou votre recherche.
-              </p>
-              <Button onClick={clearFilters}>
-                Réinitialiser les filtres
-              </Button>
+        {/* Stats Bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 text-center">
+            <div className="text-3xl font-black text-yellow-500 mb-2">{products.length}</div>
+            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Produits</div>
+          </div>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 text-center">
+            <div className="text-3xl font-black text-yellow-500 mb-2">{availableSubCategories.length}</div>
+            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Sous-catégories</div>
+          </div>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 text-center">
+            <div className="text-3xl font-black text-yellow-500 mb-2">
+              {formatPrice(Math.min(...products.map(p => p.price || 0)))}
             </div>
-          ) : viewMode === "grid" ? (
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {filteredProducts.map((product) => (
-                <motion.div
-                  key={product.id}
-                  className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
-                  variants={itemVariants}
-                >
-                  <div className="relative h-48 overflow-hidden group">
-                    <Image
-                      src={
-                        product.image ||
-                        "/placeholder.svg?height=192&width=256"
-                      }
-                      alt={product.name || "Product"}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    />
-                    <div className="absolute top-2 right-2 z-10">
-                      <button
-                        onClick={() => toggleFavorite(product)}
-                        className={cn(
-                          "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
-                          isInFavorites(product.id)
-                            ? "bg-red-50 text-red-500 hover:bg-red-100"
-                            : "bg-white/80 backdrop-blur-sm text-gray-600 hover:text-red-500 hover:bg-red-50"
-                        )}
-                        aria-label={
-                          isInFavorites(product.id)
-                            ? "Retirer des favoris"
-                            : "Ajouter aux favoris"
-                        }
-                      >
-                        <Heart
-                          className={cn(
-                            "h-4 w-4",
-                            isInFavorites(product.id) && "fill-red-500"
-                          )}
+            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Prix minimum</div>
+          </div>
+          <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 text-center">
+            <div className="text-3xl font-black text-yellow-500 mb-2">
+              {formatPrice(Math.max(...products.map(p => p.price || 0)))}
+            </div>
+            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Prix maximum</div>
+          </div>
+        </div>
+
+        {/* Controls Bar */}
+        <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-4 md:p-6 mb-8 shadow-sm">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            {/* Mobile Filter Button & Search */}
+            <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-3">
+              <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="lg:hidden w-full sm:w-auto gap-2 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                    <Filter className="h-4 w-4" /> Filtres
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[320px] sm:w-[400px] overflow-y-auto bg-white dark:bg-gray-900">
+                  <SheetHeader className="mb-6">
+                    <SheetTitle className="text-xl font-black uppercase italic">Filtres</SheetTitle>
+                  </SheetHeader>
+                  
+                  <div className="py-4 space-y-8">
+                    {/* Mobile Subcategories */}
+                    {availableSubCategories.length > 0 && (
+                      <div>
+                        <h3 className="font-black uppercase italic text-sm mb-4 text-gray-900 dark:text-white">Sous-catégories</h3>
+                        <div className="space-y-3">
+                          {availableSubCategories.map((sub) => (
+                            <div key={sub} className="flex items-center space-x-3">
+                              <Checkbox 
+                                id={`mobile-sub-${sub}`} 
+                                checked={selectedSubCategories.includes(sub)}
+                                onCheckedChange={() => handleSubCategoryToggle(sub)}
+                                className="border-gray-300 data-[state=checked]:bg-yellow-500 data-[state=checked]:border-yellow-500"
+                              />
+                              <Label htmlFor={`mobile-sub-${sub}`} className="text-sm font-medium cursor-pointer text-gray-700 dark:text-gray-300">
+                                {sub}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                        <Separator className="my-6" />
+                      </div>
+                    )}
+
+                    {/* Mobile Price */}
+                    <div>
+                      <h3 className="font-black uppercase italic text-sm mb-4 text-gray-900 dark:text-white">Prix</h3>
+                      <div className="px-2">
+                        <Slider
+                          defaultValue={priceRange}
+                          min={0}
+                          max={20000}
+                          step={100}
+                          value={priceRange}
+                          onValueChange={handlePriceChange}
+                          className="mb-6"
                         />
-                      </button>
-                    </div>
-                    {product.isNew && (
-                      <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">
-                        Nouveau
-                      </Badge>
-                    )}
-                    {product.discount > 0 && (
-                      <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600">
-                        -{product.discount}%
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
-                      {product.category || "Catégorie"}
-                    </div>
-                    <Link href={`/produit/${product.slug || product.id}`}>
-                      <h3 className="font-medium text-gray-900 dark:text-white mb-1 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
-                        {product.name || "Produit"}
-                      </h3>
-                    </Link>
-                    <div className="mb-2">{renderRating(product.rating)}</div>
-                    <div className="flex items-center justify-between mt-2">
-                      <div className="flex items-center">
-                        {product.oldPrice ? (
-                          <>
-                            <span className="text-lg font-bold text-gray-900 dark:text-white">
-                              {formatPrice(product.price)}
-                            </span>
-                            <span className="ml-2 text-sm line-through text-gray-500">
-                              {formatPrice(product.oldPrice)}
-                            </span>
-                          </>
-                        ) : (
-                          <span className="text-lg font-bold text-gray-900 dark:text-white">
-                            {formatPrice(product.price)}
-                          </span>
-                        )}
+                        <div className="flex items-center justify-between text-sm font-black">
+                          <span className="text-gray-900 dark:text-white">{formatPrice(priceRange[0])}</span>
+                          <span className="text-gray-900 dark:text-white">{formatPrice(priceRange[1])}</span>
+                        </div>
                       </div>
-                      <Button
-                        size="sm"
-                        onClick={() => addToCart(product)}
-                        className="h-8 text-white bg-yellow-500 w-8 p-0"
-                      >
-                        <ShoppingCart className="h-4 w-4" />
-                      </Button>
                     </div>
                   </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              className="space-y-4"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {filteredProducts.map((product) => (
-                <motion.div
-                  key={product.id}
-                  className="flex flex-col sm:flex-row bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
-                  variants={itemVariants}
+                  
+                  <SheetFooter className="mt-8">
+                    <Button 
+                      onClick={() => setIsFilterOpen(false)} 
+                      className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-black uppercase italic tracking-widest py-6 rounded-xl"
+                    >
+                      Voir {filteredProducts.length} produits
+                    </Button>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
+
+              <div className="relative w-full sm:w-[320px]">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="Rechercher un produit..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-12 pr-10 h-12 rounded-xl border-2 border-gray-200 dark:border-gray-700 focus:border-yellow-500"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Sort & View Controls */}
+            <div className="w-full lg:w-auto flex items-center justify-between lg:justify-end gap-3">
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-500 dark:text-gray-400 hidden sm:inline">Trier :</span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="gap-2 min-w-[160px] justify-between rounded-xl border-2 border-gray-200 dark:border-gray-700 h-12">
+                      <span className="truncate font-medium">
+                        {sortOption === "featured" && "Populaires"}
+                        {sortOption === "newest" && "Nouveautés"}
+                        {sortOption === "price-asc" && "Prix croissant"}
+                        {sortOption === "price-desc" && "Prix décroissant"}
+                        {sortOption === "rating" && "Mieux notés"}
+                      </span>
+                      <ArrowUpDown className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-[200px] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
+                    <DropdownMenuItem onClick={() => setSortOption("featured")} className="cursor-pointer py-3">
+                      Populaires
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setSortOption("newest")} className="cursor-pointer py-3">
+                      Nouveautés
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setSortOption("price-asc")} className="cursor-pointer py-3">
+                      Prix croissant
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setSortOption("price-desc")} className="cursor-pointer py-3">
+                      Prix décroissant
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setSortOption("rating")} className="cursor-pointer py-3">
+                      Mieux notés
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              <div className="hidden sm:flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={cn(
+                    "p-2 rounded-lg transition-all",
+                    viewMode === "grid" 
+                      ? "bg-white dark:bg-gray-700 shadow-sm text-yellow-500" 
+                      : "text-gray-500 hover:text-gray-700"
+                  )}
                 >
-                  <div className="relative h-48 sm:h-auto sm:w-48 overflow-hidden">
-                    <Image
-                      src={
-                        product.image ||
-                        "/placeholder.svg?height=192&width=192"
-                      }
-                      alt={product.name || "Product"}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, 192px"
-                    />
-                    {product.isNew && (
-                      <Badge className="absolute top-2 left-2 bg-green-500 hover:bg-green-600">
-                        Nouveau
-                      </Badge>
-                    )}
-                    {product.discount > 0 && (
-                      <Badge className="absolute bottom-2 left-2 bg-red-500 hover:bg-red-600">
-                        -{product.discount}%
-                      </Badge>
-                    )}
+                  <div className="grid grid-cols-2 gap-1 w-5 h-5">
+                    <div className="bg-current rounded-[2px]" />
+                    <div className="bg-current rounded-[2px]" />
+                    <div className="bg-current rounded-[2px]" />
+                    <div className="bg-current rounded-[2px]" />
                   </div>
-                  <div className="flex-1 p-4 flex flex-col">
-                    <div className="mb-1 text-xs text-gray-500 dark:text-gray-400">
-                      {product.category || "Catégorie"}
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={cn(
+                    "p-2 rounded-lg transition-all",
+                    viewMode === "list" 
+                      ? "bg-white dark:bg-gray-700 shadow-sm text-yellow-500" 
+                      : "text-gray-500 hover:text-gray-700"
+                  )}
+                >
+                  <div className="flex flex-col gap-1 w-5 h-5">
+                    <div className="bg-current h-1 rounded-[2px]" />
+                    <div className="bg-current h-1 rounded-[2px]" />
+                    <div className="bg-current h-1 rounded-[2px]" />
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Active Filters Badges */}
+        <AnimatePresence>
+          {(priceRange[0] > 0 || priceRange[1] < 20000 || searchQuery || selectedSubCategories.length > 0) && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="flex flex-wrap items-center gap-2 mb-8 p-4 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800"
+            >
+              <span className="text-sm font-black uppercase italic text-gray-500 dark:text-gray-400">Filtres actifs:</span>
+              
+              {searchQuery && (
+                <Badge className="gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl border-0">
+                  "{searchQuery}"
+                  <X className="h-3 w-3 cursor-pointer" onClick={() => setSearchQuery("")} />
+                </Badge>
+              )}
+
+              {selectedSubCategories.map(sub => (
+                <Badge key={sub} className="gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl border-0">
+                  {sub}
+                  <X className="h-3 w-3 cursor-pointer" onClick={() => handleSubCategoryToggle(sub)} />
+                </Badge>
+              ))}
+
+              {(priceRange[0] > 0 || priceRange[1] < 20000) && (
+                <Badge className="gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl border-0">
+                  Prix: {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+                  <button onClick={() => setPriceRange([0, 20000])}>
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              )}
+
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={clearFilters} 
+                className="text-xs h-8 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl"
+              >
+                Tout effacer
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Desktop Sidebar Filters */}
+          <div className="hidden lg:block w-80 flex-shrink-0">
+            <div className="sticky top-32 space-y-8">
+              <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-6">
+                <h3 className="text-xl font-black uppercase italic mb-6 text-gray-900 dark:text-white">
+                  <Filter className="inline h-5 w-5 mr-2" />
+                  Filtres
+                </h3>
+
+                {/* Subcategories Filter */}
+                {availableSubCategories.length > 0 && (
+                  <div className="mb-8">
+                    <h4 className="font-black uppercase italic text-sm mb-4 text-gray-900 dark:text-white">Sous-catégories</h4>
+                    <div className="space-y-3 max-h-72 overflow-y-auto pr-2 custom-scrollbar">
+                      {availableSubCategories.map((sub) => (
+                        <div key={sub} className="flex items-center space-x-3">
+                          <Checkbox 
+                            id={`desktop-sub-${sub}`} 
+                            checked={selectedSubCategories.includes(sub)}
+                            onCheckedChange={() => handleSubCategoryToggle(sub)}
+                            className="border-gray-300 data-[state=checked]:bg-yellow-500 data-[state=checked]:border-yellow-500"
+                          />
+                          <Label htmlFor={`desktop-sub-${sub}`} className="text-sm font-medium cursor-pointer text-gray-700 dark:text-gray-300 hover:text-yellow-500 transition-colors">
+                            {sub}
+                          </Label>
+                        </div>
+                      ))}
                     </div>
-                    <Link href={`/produit/${product.slug || product.id}`}>
-                      <h3 className="font-medium text-gray-900 dark:text-white mb-1 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
-                        {product.name || "Produit"}
-                      </h3>
-                    </Link>
-                    <div className="mb-2">{renderRating(product.rating)}</div>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
-                      {product.description || "Aucune description disponible."}
-                    </p>
-                    <div className="mt-auto flex items-center justify-between">
-                      <div className="flex items-center">
-                        {product.oldPrice ? (
-                          <>
-                            <span className="text-lg font-bold text-gray-900 dark:text-white">
-                              {formatPrice(product.price)}
+                    <Separator className="my-6" />
+                  </div>
+                )}
+
+                {/* Price Filter */}
+                <div>
+                  <h4 className="font-black uppercase italic text-sm mb-4 text-gray-900 dark:text-white">Prix</h4>
+                  <Slider
+                    defaultValue={priceRange}
+                    min={0}
+                    max={20000}
+                    step={100}
+                    value={priceRange}
+                    onValueChange={handlePriceChange}
+                    className="mb-8"
+                  />
+                  <div className="flex items-center justify-between text-sm font-black text-gray-900 dark:text-white">
+                    <span>{formatPrice(priceRange[0])}</span>
+                    <span>{formatPrice(priceRange[1])}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Help Card */}
+              <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 dark:from-yellow-500/5 dark:to-orange-500/5 p-6 rounded-3xl border border-yellow-500/30 dark:border-yellow-500/20">
+                <h4 className="font-black uppercase italic text-yellow-600 dark:text-yellow-400 mb-3">Besoin d'aide ?</h4>
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                  Nos experts sont disponibles pour vous conseiller sur le meilleur équipement pour vos besoins.
+                </p>
+                <Link href="/contact">
+                  <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-black uppercase italic tracking-widest rounded-xl py-5">
+                    Contactez-nous
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Product Grid */}
+          <div className="flex-1">
+            {filteredProducts.length === 0 ? (
+              <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-3xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+                <Search className="h-16 w-16 mx-auto text-gray-300 dark:text-gray-600 mb-6" />
+                <h3 className="text-2xl font-black uppercase italic mb-4">Aucun produit trouvé</h3>
+                <p className="text-gray-500 dark:text-gray-400 mb-8">Essayez d'ajuster vos filtres ou votre recherche.</p>
+                <Button 
+                  onClick={clearFilters} 
+                  variant="outline" 
+                  className="border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-yellow-500 hover:text-yellow-500 rounded-xl px-8 py-6"
+                >
+                  Réinitialiser les filtres
+                </Button>
+              </div>
+            ) : viewMode === "grid" ? (
+              <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {filteredProducts.map((product) => {
+                  const id = product._id || product.id;
+                  const isFav = isInFavorites(id);
+                  
+                  return (
+                    <motion.div
+                      key={id}
+                      variants={itemVariants}
+                      whileHover={{ y: -8 }}
+                      className="group bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-2xl transition-all duration-500"
+                    >
+                      {/* Image Area */}
+                      <div className="relative h-72 overflow-hidden bg-gray-50 dark:bg-gray-950">
+                        <Link href={`/produit/${product.slug || id}`}>
+                          <CloudImg
+                            fill
+                            src={product.image}
+                            alt={product.name}
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                        </Link>
+                        
+                        {/* Badges */}
+                        <div className="absolute top-4 left-4 flex flex-col gap-2">
+                          {product.isNewProduct && (
+                            <span className="bg-green-500 text-white text-xs font-black uppercase px-3 py-1.5 rounded-lg shadow-lg">
+                              Nouveau
                             </span>
-                            <span className="ml-2 text-sm line-through text-gray-500">
-                              {formatPrice(product.oldPrice)}
+                          )}
+                          {Number(product.discount) > 0 && (
+                            <span className="bg-red-500 text-white text-xs font-black uppercase px-3 py-1.5 rounded-lg shadow-lg">
+                              -{product.discount}%
                             </span>
-                          </>
-                        ) : (
-                          <span className="text-lg font-bold text-gray-900 dark:text-white">
-                            {formatPrice(product.price)}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
+                          )}
+                        </div>
+
+                        {/* Fav Button */}
+                        <button
                           onClick={() => toggleFavorite(product)}
                           className={cn(
-                            "h-8 w-8 p-0",
-                            isInFavorites(product.id) &&
-                              "text-red-500 border-red-200 hover:text-red-600 hover:border-red-300"
+                            "absolute top-4 right-4 h-10 w-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg z-10",
+                            isFav 
+                              ? "bg-red-500 text-white" 
+                              : "bg-white/90 text-gray-400 hover:bg-white hover:text-red-500 hover:scale-110"
                           )}
                         >
-                          <Heart
-                            className={cn(
-                              "h-4 w-4",
-                              isInFavorites(product.id) && "fill-red-500"
-                            )}
-                          />
-                        </Button>
-                        <Button size="sm" onClick={() => addToCart(product)}>
-                          <ShoppingCart className="h-4 text-yellow-500 w-4 mr-2" />
-                          Ajouter
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
+                          <Heart className={cn("h-5 w-5", isFav && "fill-current")} />
+                        </button>
 
-          {filteredProducts.length > 0 && (
-            <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
-              Affichage de {filteredProducts.length} produit
-              {filteredProducts.length > 1 ? "s" : ""}
+                        {/* Quick View Overlay */}
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                          <Link href={`/produit/${product.slug || id}`}>
+                            <Button className="bg-white text-black hover:bg-yellow-500 font-black uppercase italic tracking-widest rounded-xl px-6 py-3">
+                              <Eye className="h-4 w-4 mr-2" />
+                              Voir le produit
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Content Area */}
+                      <div className="p-6">
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-3 uppercase font-black tracking-widest">
+                          {product.subCategory || product.category}
+                        </div>
+                        
+                        <Link href={`/produit/${product.slug || id}`} className="block mb-4">
+                          <h3 className="font-black text-xl text-gray-900 dark:text-white leading-tight group-hover:text-yellow-500 transition line-clamp-2 min-h-[3.5rem]">
+                            {product.name}
+                          </h3>
+                        </Link>
+
+                        <div className="mb-6">
+                          {renderRating(product.rating)}
+                        </div>
+
+                        <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
+                          <div>
+                            <div className="font-black text-2xl text-gray-900 dark:text-white">
+                              {formatPrice(product.price)}
+                            </div>
+                            {product.oldPrice > 0 && (
+                              <div className="text-sm text-gray-400 line-through">
+                                {formatPrice(product.oldPrice)}
+                              </div>
+                            )}
+                          </div>
+                          
+                          <Button 
+                            size="icon" 
+                            className="rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black shadow-lg h-12 w-12 hover:scale-110 transition-all"
+                            onClick={() => onAddToCart(product)}
+                          >
+                            <ShoppingCart className="h-6 w-6" />
+                          </Button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            ) : (
+              // LIST VIEW
+              <motion.div
+                className="space-y-4"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {filteredProducts.map((product) => {
+                  const id = product._id || product.id;
+                  
+                  return (
+                    <motion.div
+                      key={id}
+                      variants={itemVariants}
+                      whileHover={{ x: 4 }}
+                      className="group bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-xl transition-all flex flex-col sm:flex-row"
+                    >
+                      <div className="relative w-full sm:w-64 h-64 sm:h-auto bg-gray-50 dark:bg-gray-950 flex-shrink-0">
+                        <Link href={`/produit/${product.slug || id}`}>
+                          <CloudImg
+                            fill
+                            src={product.image}
+                            alt={product.name}
+                            className="object-cover"
+                          />
+                        </Link>
+                        {Number(product.discount) > 0 && (
+                          <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-black uppercase px-3 py-1 rounded-lg">
+                            -{product.discount}%
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="p-6 flex flex-col flex-1 justify-between">
+                        <div>
+                          <div className="flex justify-between items-start mb-4">
+                            <div className="flex-1">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 uppercase font-black tracking-widest mb-2">
+                                {product.subCategory || product.category}
+                              </div>
+                              <Link href={`/produit/${product.slug || id}`}>
+                                <h3 className="font-black text-2xl text-gray-900 dark:text-white group-hover:text-yellow-500 transition mb-3">
+                                  {product.name}
+                                </h3>
+                              </Link>
+                              <div className="mb-4">{renderRating(product.rating)}</div>
+                              <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 max-w-2xl">
+                                {product.description}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => toggleFavorite(product)}
+                              className={cn(
+                                "p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ml-4",
+                                isInFavorites(id) ? "text-red-500" : "text-gray-400"
+                              )}
+                            >
+                              <Heart className={cn("h-5 w-5", isInFavorites(id) && "fill-current")} />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-6 border-t border-gray-100 dark:border-gray-800">
+                          <div className="flex items-baseline gap-3">
+                            <span className="font-black text-3xl text-gray-900 dark:text-white">
+                              {formatPrice(product.price)}
+                            </span>
+                            {product.oldPrice > 0 && (
+                              <span className="text-sm text-gray-400 line-through">
+                                {formatPrice(product.oldPrice)}
+                              </span>
+                            )}
+                          </div>
+                          
+                          <div className="flex items-center gap-3">
+                            <Link href={`/produit/${product.slug || id}`}>
+                              <Button variant="outline" className="border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-yellow-500 hover:text-yellow-500 rounded-xl">
+                                <Eye className="h-4 w-4 mr-2" />
+                                Voir
+                              </Button>
+                            </Link>
+                            <Button 
+                              onClick={() => onAddToCart(product)}
+                              className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-black uppercase italic tracking-widest rounded-xl"
+                            >
+                              <ShoppingCart className="h-4 w-4 mr-2" />
+                              Ajouter
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            )}
+
+            {/* Results Count */}
+            <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p className="text-gray-500 dark:text-gray-400 font-medium">
+                  Affichage de <span className="font-black text-gray-900 dark:text-white">{filteredProducts.length}</span> produits
+                  {filteredProducts.length !== products.length && ` sur ${products.length}`}
+                </p>
+                <Button
+                  variant="outline"
+                  onClick={clearFilters}
+                  className="border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-yellow-500 hover:text-yellow-500 rounded-xl"
+                >
+                  Réinitialiser tous les filtres
+                </Button>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

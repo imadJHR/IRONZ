@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   ShoppingCart,
@@ -14,13 +13,63 @@ import {
   Truck,
   ShieldCheck,
   RefreshCw,
+  ArrowRight,
+  AlertCircle,
+  Info,
+  CreditCard,
+  Clock,
 } from "lucide-react";
 import { useCart } from "../../context/cart-context";
 import { cn } from "../../lib/utils";
 
-import { Button } from "../../components/ui/button";
-import { Separator } from "../../components/ui/separator";
-import { colorMap } from "../../data/product";
+const PLACEHOLDER = "/placeholder.svg";
+
+// --- COLOR MAP FIXÉ ---
+const COLOR_MAP = {
+  Rouge: "#EF4444",
+  Bleu: "#3B82F6",
+  Vert: "#22C55E",
+  Noir: "#000000",
+  Blanc: "#FFFFFF",
+  Jaune: "#EAB308",
+  Orange: "#F97316",
+  Violet: "#8B5CF6",
+  Rose: "#EC4899",
+  Gris: "#6B7280",
+  Multicolore: "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)",
+};
+
+/* -----------------------------
+   ✅ COMPOSANT IMAGE SÉCURISÉ
+------------------------------ */
+function CloudImg({ src, alt, fill = false, className = "", priority = false }) {
+  const [imgSrc, setImgSrc] = useState(src || PLACEHOLDER);
+  useEffect(() => { setImgSrc(src || PLACEHOLDER); }, [src]);
+
+  if (fill) {
+    return (
+      <img
+        src={imgSrc}
+        alt={alt || ""}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        onError={() => setImgSrc(PLACEHOLDER)}
+        className={cn("absolute inset-0 h-full w-full object-contain", className)}
+      />
+    );
+  }
+
+  return (
+    <img
+      src={imgSrc}
+      alt={alt || ""}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+      onError={() => setImgSrc(PLACEHOLDER)}
+      className={className}
+    />
+  );
+}
 
 export default function CartPageClient() {
   const router = useRouter();
@@ -32,494 +81,408 @@ export default function CartPageClient() {
   const [discount, setDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
 
-  // Avoid hydration mismatches
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Debug: log cart contents to console
-  useEffect(() => {
-    console.log("Cart contents:", cart);
-    console.log("Cart length:", cart.length);
-  }, [cart]);
-
-  // Safely calculate the cart total, preventing NaN errors
   const cartTotal = cart.reduce(
-    (total, item) =>
-      total + (Number(item.price) || 0) * (Number(item.quantity) || 0),
+    (total, item) => total + (Number(item.price) || 0) * (Number(item.quantity) || 0),
     0
   );
+
   const totalItems = cart.reduce(
     (total, item) => total + (Number(item.quantity) || 0),
     0
   );
 
-  // Recalculate discount if the cart total changes
   useEffect(() => {
-    if (!appliedCoupon) {
-      setDiscount(0);
-      return;
-    }
-    // Re-apply the correct discount based on the current cart total
-    if (appliedCoupon === "promo10") {
-      setDiscount(cartTotal * 0.1);
-    } else if (appliedCoupon === "promo20") {
-      setDiscount(cartTotal * 0.2);
-    } else if (appliedCoupon === "welcome") {
-      setDiscount(50);
-    }
+    if (!appliedCoupon) { setDiscount(0); return; }
+    if (appliedCoupon === "promo10") setDiscount(cartTotal * 0.1);
+    else if (appliedCoupon === "welcome") setDiscount(50);
   }, [cartTotal, appliedCoupon]);
 
-  // Calculate shipping cost
   const shippingCost = cartTotal > 500 ? 0 : 30;
   const totalWithShipping = cartTotal + shippingCost - discount;
 
-  const handleQuantityChange = (id, selectedColor, newQuantity) => {
-    if (newQuantity >= 1 && newQuantity <= 99) {
-      // Trouver l'article pour obtenir sa taille
-      const item = cart.find(item =>
-        item.id === id && item.selectedColor === selectedColor
-      );
-
-      if (item) {
-        updateQuantity(id, selectedColor, newQuantity, item.selectedTaille || null);
-      }
-    }
-  };
-
-  const handleRemoveItem = (id, selectedColor) => {
-    // Trouver l'article pour obtenir sa taille
-    const item = cart.find(item =>
-      item.id === id && item.selectedColor === selectedColor
-    );
-
-    if (item) {
-      removeFromCart(id, selectedColor, item.selectedTaille || null);
-    }
-  };
-
-  const handleClearCart = () => {
-    if (window.confirm("Êtes-vous sûr de vouloir vider votre panier ?")) {
-      clearCart();
+  const handleQuantityChange = (id, color, taille, newQty) => {
+    if (newQty >= 1 && newQty <= 99) {
+      updateQuantity(id, color, newQty, taille || null);
     }
   };
 
   const handleCouponSubmit = (e) => {
     e.preventDefault();
-
-    // Reset messages
     setCouponError(null);
     setCouponSuccess(null);
-    setAppliedCoupon(null);
-    setDiscount(0);
+    const code = couponCode.trim().toLowerCase();
+    if (!code) return;
 
-    const trimmedCode = couponCode.trim();
-    if (!trimmedCode) {
-      setCouponError("Veuillez saisir un code promo");
-      return;
-    }
-
-    // Simulate coupon verification
-    if (trimmedCode.toLowerCase() === "promo10") {
-      setCouponSuccess("Code promo appliqué avec succès ! -10%");
+    if (code === "ironz10") {
+      setCouponSuccess("-10% appliqués avec succès !");
       setDiscount(cartTotal * 0.1);
       setAppliedCoupon("promo10");
-    } else if (trimmedCode.toLowerCase() === "promo20") {
-      setCouponSuccess("Code promo appliqué avec succès ! -20%");
-      setDiscount(cartTotal * 0.2);
-      setAppliedCoupon("promo20");
-    } else if (trimmedCode.toLowerCase() === "welcome") {
-      setCouponSuccess("Code promo appliqué avec succès ! -50 MAD");
-      setDiscount(50);
-      setAppliedCoupon("welcome");
     } else {
       setCouponError("Code promo invalide ou expiré");
     }
   };
 
   const formatPrice = (price) => {
-    // Ensure price is a number before formatting
-    const numericPrice = Number(price) || 0;
-    return new Intl.NumberFormat("fr-FR", {
+    return new Intl.NumberFormat("fr-MA", {
       style: "currency",
       currency: "MAD",
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(numericPrice);
+    }).format(Number(price) || 0);
   };
 
-  // Function to get the color hex code
-  const getColorHex = (colorName) => {
-    if (!colorName) return "#808080"; // Default gray
-    return colorMap[colorName] || "#808080";
-  };
-
-  // Display a loading spinner until the component is mounted on the client
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500"></div>
       </div>
     );
   }
 
-  // Display "Empty Cart" message if there are no items
   if (!cart || cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
-          <div className="max-w-md mx-auto text-center">
-            <div className="flex justify-center mb-6">
-              <div className="h-24 w-24 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                <ShoppingCart className="h-12 w-12 text-gray-400 dark:text-gray-500" />
-              </div>
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Votre panier est vide
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400 mb-8">
-              Vous n'avez pas encore ajouté de produits à votre panier.
-              Découvrez notre catalogue pour trouver des produits qui vous
-              plaisent.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                variant="outline"
-                asChild
-                className="flex items-center bg-transparent"
-              >
-                <Link href="/">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Retour à l'accueil
-                </Link>
-              </Button>
-              <Button
-                asChild
-                className="bg-yellow-500 hover:bg-yellow-600 text-black"
-              >
-                <Link href="/product">
-                  <ShoppingBag className="h-4 w-4 mr-2" />
-                  Parcourir les produits
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen bg-white dark:bg-gray-950 pt-40 text-center px-4">
+        <ShoppingCart className="mx-auto h-24 w-24 text-gray-100 dark:text-zinc-800 mb-8" />
+        <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter mb-4">
+          Ton Panier est <span className="text-yellow-500">Vide</span>
+        </h1>
+        <p className="text-gray-500 mb-10 font-bold uppercase italic text-xs tracking-widest">
+          N'attends pas demain pour tes objectifs.
+        </p>
+        <Link
+          href="/produit"
+          className="inline-flex items-center gap-3 bg-black text-white px-10 py-5 rounded-2xl font-black uppercase italic tracking-widest hover:bg-yellow-500 hover:text-black transition-all shadow-xl"
+        >
+          Découvrir le catalogue <ArrowRight size={20} />
+        </Link>
       </div>
     );
   }
 
-  // Main cart view
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-28 pb-16">
+      <div className="container mx-auto px-4">
+        
+        {/* Header Style B */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-yellow-400 dark:text-white mb-2">
-              Mon Panier
+            <h1 className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white leading-none">
+              Mon <span className="text-yellow-500">Panier</span>
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              {totalItems} article{totalItems > 1 ? "s" : ""} dans votre panier
-            </p>
+            <div className="h-2 w-24 bg-yellow-500 mt-4 rounded-full" />
           </div>
           <Link
-            href="/product"
-            className="inline-flex items-center text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 font-medium"
+            href="/produit"
+            className="text-gray-400 hover:text-yellow-500 font-black uppercase italic text-sm transition-colors flex items-center gap-2"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Continuer mes achats
+            <ArrowLeft size={18} /> Continuer mes achats
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
-          <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                    Articles ({totalItems})
-                  </h2>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleClearCart}
-                    className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Vider le panier
-                  </Button>
+        {/* Information importante - Bannière en haut */}
+        <div className="mb-8">
+          <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 dark:from-yellow-500/5 dark:to-orange-500/5 border-2 border-yellow-500/30 dark:border-yellow-500/20 rounded-2xl p-6 md:p-8">
+            <div className="flex items-start gap-4">
+              <div className="hidden sm:flex shrink-0">
+                <div className="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                  <AlertCircle className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
                 </div>
               </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="sm:hidden">
+                    <div className="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                      <AlertCircle className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg md:text-xl font-black uppercase italic text-gray-900 dark:text-white flex items-center gap-2">
+                    <CreditCard className="w-5 h-5 text-yellow-500" />
+                    Information importante
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" />
+                    <p className="text-gray-700 dark:text-gray-300 text-sm md:text-base leading-relaxed font-medium">
+                      <span className="font-bold text-yellow-600 dark:text-yellow-400">
+                        Certains produits nécessitent un paiement d'avance.
+                      </span>{" "}
+                      Le montant exact vous sera communiqué lors de la confirmation de commande.
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Clock className="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" />
+                    <p className="text-gray-700 dark:text-gray-300 text-sm md:text-base leading-relaxed font-medium">
+                      <span className="font-bold text-yellow-600 dark:text-yellow-400">
+                        Traitement rapide :
+                      </span>{" "}
+                      Votre commande est traitée sous 24h après confirmation du paiement.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-              {/* Items List */}
-              <div className="divide-y divide-gray-200 dark:divide-gray-700">
-                {cart.map((item) => {
-                  // Create a unique key for each item
-                  const itemKey = `${item.id}-${item.selectedColor || "default"}`;
-                  const itemPrice = Number(item.price) || 0;
-                  const itemQuantity = Number(item.quantity) || 0;
-                  const itemTotal = itemPrice * itemQuantity;
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Articles */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] border border-gray-100 dark:border-zinc-800 overflow-hidden shadow-sm">
+              <div className="p-6 md:p-8 border-b border-gray-50 dark:border-zinc-800 flex justify-between items-center">
+                <h2 className="text-xl font-black uppercase italic tracking-tighter">
+                  Récapitulatif ({totalItems})
+                </h2>
+                <button
+                  onClick={() => window.confirm("Vider le panier ?") && clearCart()}
+                  className="text-red-500 text-[10px] font-black uppercase tracking-widest hover:underline flex items-center gap-1"
+                >
+                  <Trash2 size={14} /> Vider
+                </button>
+              </div>
 
+              <div className="divide-y divide-gray-100 dark:divide-zinc-800">
+                {cart.map((item, idx) => {
+                  const id = item._id || item.id;
+                  const itemKey = `${id}-${item.selectedColor || 'none'}-${item.selectedTaille || 'none'}-${idx}`;
+                  
                   return (
                     <div
                       key={itemKey}
-                      className="p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4"
+                      className="p-6 md:p-8 lg:p-10 flex flex-col sm:flex-row items-center gap-6 md:gap-8 group transition-colors hover:bg-gray-50/50 dark:hover:bg-zinc-800/30"
                     >
-                      <div className="relative h-24 w-24 flex-shrink-0 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-                        <Image
-                          src={item.image || "/placeholder.svg"}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                          sizes="96px"
-                        />
+                      {/* Image du produit */}
+                      <div className="relative h-28 w-28 md:h-32 md:w-32 shrink-0 bg-gray-50 dark:bg-gray-800 rounded-2xl md:rounded-3xl overflow-hidden border border-gray-100 dark:border-zinc-800 transition-transform group-hover:scale-105">
+                        <CloudImg fill src={item.image} alt={item.name} className="p-4" />
                       </div>
 
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
-                          <div className="flex-1">
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
-                              <Link
-                                href={`/produits/${item.slug || item.id}`}
-                                className="hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors"
-                              >
-                                {item.name}
-                              </Link>
-                            </h3>
-
-                            {item.category && (
-                              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                                {item.category}
-                              </p>
-                            )}
-
-                            {item.selectedColor && (
-                              <div className="flex items-center mb-2">
-                                <span className="text-sm text-gray-500 dark:text-gray-400 mr-2">
-                                  Couleur:
-                                </span>
-                                <div className="flex items-center">
-                                  <div
-                                    className={cn(
-                                      "w-4 h-4 rounded-full mr-2",
-                                      (getColorHex(item.selectedColor) ===
-                                        "#FFFFFF" ||
-                                        getColorHex(item.selectedColor) ===
-                                        "#F5F5DC" ||
-                                        getColorHex(item.selectedColor) ===
-                                        "#FFFF00") &&
-                                      "border border-gray-300 dark:border-gray-600"
-                                    )}
-                                    style={{
-                                      background:
-                                        item.selectedColor === "Multicolore"
-                                          ? "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)"
-                                          : getColorHex(item.selectedColor),
-                                    }}
-                                  />
-                                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    {item.selectedColor}
-                                  </span>
-                                </div>
-                              </div>
-                            )}
-
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                              {formatPrice(itemPrice)} / unité
-                            </p>
-                          </div>
-
-                          <div className="text-right">
-                            <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                              {formatPrice(itemTotal)}
-                            </span>
-                          </div>
+                      <div className="flex-1 text-center sm:text-left min-w-0">
+                        <span className="text-[10px] font-black text-yellow-600 uppercase tracking-[0.2em] mb-1 block">
+                          {item.category}
+                        </span>
+                        <Link
+                          href={`/produit/${item.slug || id}`}
+                          className="text-xl md:text-2xl font-black uppercase italic text-gray-900 dark:text-white hover:text-yellow-500 transition-colors line-clamp-1 leading-none mb-3"
+                        >
+                          {item.name}
+                        </Link>
+                        
+                        <div className="flex flex-wrap justify-center sm:justify-start gap-3 mb-4 md:mb-6">
+                          {item.selectedTaille && (
+                            <div className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-black uppercase tracking-widest text-gray-500">
+                              Taille: {item.selectedTaille}
+                            </div>
+                          )}
+                          {item.selectedColor && (
+                            <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-black uppercase tracking-widest text-gray-500">
+                              Couleur:{" "}
+                              <div
+                                className="w-3 h-3 rounded-full border border-white"
+                                style={{ background: COLOR_MAP[item.selectedColor] || item.selectedColor }}
+                              />
+                            </div>
+                          )}
                         </div>
 
-                        <div className="flex items-center justify-between mt-4">
-                          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
+                        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
+                          <div className="flex items-center bg-gray-50 dark:bg-gray-800 rounded-2xl p-1 border border-gray-100 dark:border-zinc-700">
                             <button
-                              onClick={() =>
-                                handleQuantityChange(
-                                  item.id,
-                                  item.selectedColor,
-                                  itemQuantity - 1
-                                )
-                              }
-                              disabled={itemQuantity <= 1}
-                              className="px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                              onClick={() => handleQuantityChange(id, item.selectedColor, item.selectedTaille, item.quantity - 1)}
+                              className="p-2 hover:text-yellow-600 disabled:opacity-20"
+                              disabled={item.quantity <= 1}
                             >
-                              <Minus className="h-4 w-4" />
+                              <Minus size={16} />
                             </button>
-                            <span className="px-4 py-2 text-gray-700 dark:text-gray-300 font-medium min-w-[50px] text-center">
-                              {itemQuantity}
+                            <span className="w-10 md:w-12 text-center font-black italic text-base md:text-lg">
+                              {item.quantity}
                             </span>
                             <button
-                              onClick={() =>
-                                handleQuantityChange(
-                                  item.id,
-                                  item.selectedColor,
-                                  itemQuantity + 1
-                                )
-                              }
-                              className="px-3 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                              onClick={() => handleQuantityChange(id, item.selectedColor, item.selectedTaille, item.quantity + 1)}
+                              className="p-2 hover:text-yellow-600"
                             >
-                              <Plus className="h-4 w-4" />
+                              <Plus size={16} />
                             </button>
                           </div>
-
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() =>
-                              handleRemoveItem(item.id, item.selectedColor)
-                            }
-                            className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                          <button
+                            onClick={() => removeFromCart(id, item.selectedColor, item.selectedTaille)}
+                            className="text-gray-300 hover:text-red-500 transition-colors px-4 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
                           >
-                            <Trash2 className="h-4 w-4 mr-1" />
-                            Supprimer
-                          </Button>
+                            <Trash2 size={20} />
+                          </button>
                         </div>
+                      </div>
+
+                      <div className="text-center sm:text-right sm:ml-auto w-full sm:w-auto mt-4 sm:mt-0">
+                        <p className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white italic tracking-tighter">
+                          {formatPrice(item.price * item.quantity)}
+                        </p>
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                          P.U: {formatPrice(item.price)}
+                        </p>
                       </div>
                     </div>
                   );
                 })}
               </div>
             </div>
+
+            {/* Information complémentaire - Mobile seulement */}
+            <div className="lg:hidden bg-gradient-to-r from-blue-500/5 to-purple-500/5 dark:from-blue-500/5 dark:to-purple-500/5 border-2 border-blue-500/20 dark:border-blue-500/10 rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                  <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h4 className="font-bold uppercase text-sm text-gray-900 dark:text-white">
+                  Paiement sécurisé
+                </h4>
+              </div>
+              <p className="text-gray-700 dark:text-gray-300 text-xs leading-relaxed">
+                Pour les produits nécessitant un paiement d'avance, nous vous contacterons directement pour organiser le paiement sécurisé. Aucun paiement ne sera effectué sans votre confirmation préalable.
+              </p>
+            </div>
           </div>
 
-          {/* Order Summary */}
+          {/* Checkout Block Style B */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm p-6 sticky top-24">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                Récapitulatif de commande
+            <div className="bg-black text-white rounded-[2rem] md:rounded-[3rem] p-6 md:p-8 lg:p-10 sticky top-24 md:top-28 shadow-2xl border-t-4 md:border-t-8 border-yellow-500">
+              <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter mb-8 md:mb-10 text-white leading-none">
+                Paiement <br /> <span className="text-yellow-500">Total.</span>
               </h2>
 
-              <form onSubmit={handleCouponSubmit} className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Code promo
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                    placeholder="Entrez votre code"
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                  />
-                  <Button
-                    type="submit"
-                    size="sm"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-black"
-                  >
-                    Appliquer
-                  </Button>
-                </div>
-
-                {couponError && (
-                  <p className="mt-2 text-sm text-red-600 dark:text-red-400">
-                    {couponError}
-                  </p>
-                )}
-
-                {couponSuccess && (
-                  <p className="mt-2 text-sm text-green-600 dark:text-green-400">
-                    {couponSuccess}
-                  </p>
-                )}
-              </form>
-
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-base">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Sous-total ({totalItems} articles)
+              <div className="space-y-4 md:space-y-5 mb-8 md:mb-10">
+                <div className="flex justify-between items-end border-b border-white/10 pb-3 md:pb-4">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+                    Sous-total
                   </span>
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="font-black italic text-base md:text-lg">
                     {formatPrice(cartTotal)}
                   </span>
                 </div>
-
                 {discount > 0 && (
-                  <div className="flex justify-between text-base">
-                    <span className="text-green-600 dark:text-green-400">
+                  <div className="flex justify-between items-end border-b border-white/10 pb-3 md:pb-4 text-yellow-500">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">
                       Réduction
                     </span>
-                    <span className="font-medium text-green-600 dark:text-green-400">
+                    <span className="font-black italic text-base md:text-lg">
                       -{formatPrice(discount)}
                     </span>
                   </div>
                 )}
-
-                <div className="flex justify-between text-base">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Frais de livraison
+                <div className="flex justify-between items-end border-b border-white/10 pb-3 md:pb-4">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+                    Expédition
                   </span>
-                  <span className="font-medium text-gray-900 dark:text-white">
-                    {shippingCost === 0 ? "Gratuit" : formatPrice(shippingCost)}
+                  <span className="font-black italic text-base md:text-lg">
+                    {shippingCost === 0 ? "GRATUIT" : formatPrice(shippingCost)}
                   </span>
                 </div>
-
-                <Separator />
-
-                <div className="flex justify-between text-lg font-semibold">
-                  <span className="text-gray-900 dark:text-white">Total</span>
-                  <span className="text-gray-900 dark:text-white">
+                <div className="pt-4 md:pt-6 flex justify-between items-end">
+                  <span className="text-yellow-500 font-black uppercase italic text-xl md:text-2xl tracking-tighter">
+                    Net à payer
+                  </span>
+                  <span className="text-3xl md:text-4xl lg:text-5xl font-black italic tracking-tighter text-white">
                     {formatPrice(totalWithShipping)}
                   </span>
                 </div>
               </div>
 
-              <Button
-                onClick={() => router.push("/checkout")}
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 mb-6"
-                size="lg"
-              >
-                Passer à la caisse
-              </Button>
-
-              <div className="space-y-3 text-sm text-gray-500 dark:text-gray-400">
-                <div className="flex items-center">
-                  <Truck className="h-4 w-4 mr-2 flex-shrink-0 text-green-500" />
-                  <span>Livraison rapide et sécurisée</span>
-                </div>
-                <div className="flex items-center">
-                  <ShieldCheck className="h-4 w-4 mr-2 flex-shrink-0 text-blue-500" />
-                  <span>Paiement 100% sécurisé</span>
-                </div>
-                <div className="flex items-center">
-                  <RefreshCw className="h-4 w-4 mr-2 flex-shrink-0 text-orange-500" />
-                  <span>Retours faciles sous 14 jours</span>
-                </div>
-              </div>
-
-              <div className="border-l-4 mt-6 border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
-                <div className="flex items-start">
-                  <svg
-                    className="h-5 w-5 text-yellow-500 dark:text-yellow-300 mt-0.5 mr-3 flex-shrink-0"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
+              {/* Coupon Form */}
+              <form onSubmit={handleCouponSubmit} className="mb-8 md:mb-10 group">
+                <div className="flex bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 focus-within:border-yellow-500 transition-all">
+                  <input
+                    type="text"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    placeholder="CODE PROMO"
+                    className="flex-1 bg-transparent px-4 md:px-5 py-3 md:py-4 text-xs font-black uppercase italic outline-none text-white placeholder-gray-500"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-white text-black px-4 md:px-6 font-black text-[10px] uppercase hover:bg-yellow-500 transition-colors"
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M8.257 3.099c.765-1.36 2.722-0.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <div>
-                    <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-100 mb-1.5">
-                      Information importante
-                    </h3>
-                    <p className="text-yellow-700 dark:text-yellow-200/90 text-base leading-snug">
-                      Certains produits nécessitent un paiement d'avance. Le
-                      montant exact vous sera communiqué lors de la
-                      confirmation de commande.
-                    </p>
-                  </div>
+                    Appliquer
+                  </button>
                 </div>
+                {couponError && (
+                  <p className="text-red-500 text-[10px] font-black uppercase mt-2 px-2">
+                    {couponError}
+                  </p>
+                )}
+                {couponSuccess && (
+                  <p className="text-green-500 text-[10px] font-black uppercase mt-2 px-2">
+                    {couponSuccess}
+                  </p>
+                )}
+              </form>
+
+              <button
+                onClick={() => router.push("/checkout")}
+                className="w-full bg-yellow-500 text-black py-4 md:py-6 rounded-2xl font-black uppercase italic tracking-widest hover:bg-white transition-all transform active:scale-95 shadow-xl shadow-yellow-500/10 mb-6 md:mb-8 text-sm md:text-base"
+              >
+                Passer la commande
+              </button>
+
+              {/* Trust badges */}
+              <div className="space-y-3 md:space-y-4 pt-4 border-t border-white/5">
+                <div className="flex items-center gap-3 md:gap-4 text-[10px] font-black uppercase tracking-widest text-gray-500">
+                  <Truck size={14} className="text-yellow-500" /> Livraison Express
+                </div>
+                <div className="flex items-center gap-3 md:gap-4 text-[10px] font-black uppercase tracking-widest text-gray-500">
+                  <ShieldCheck size={14} className="text-yellow-500" /> Paiement sécurisé
+                </div>
+                
               </div>
+
+             
             </div>
+          </div>
+        </div>
+
+        {/* Pied de page avec informations supplémentaires */}
+        <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-100 dark:border-zinc-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                <Truck className="w-5 h-5 text-green-600 dark:text-green-400" />
+              </div>
+              <h4 className="font-black uppercase italic text-gray-900 dark:text-white">
+                Livraison Express
+              </h4>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Livraison en 24-48h dans les grandes villes marocaines. Suivi en temps réel.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-100 dark:border-zinc-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <ShieldCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h4 className="font-black uppercase italic text-gray-900 dark:text-white">
+                Paiement Sécurisé
+              </h4>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Transactions 100% sécurisées. Paiement à la livraison disponible pour la plupart des produits.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-gray-100 dark:border-zinc-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
+                <RefreshCw className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h4 className="font-black uppercase italic text-gray-900 dark:text-white">
+                Satisfaction Garantie
+              </h4>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Retours acceptés sous 14 jours. Assistance client dédiée 7j/7.
+            </p>
           </div>
         </div>
       </div>
