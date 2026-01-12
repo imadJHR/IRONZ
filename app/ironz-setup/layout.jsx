@@ -3,9 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Lock, User, Key, ArrowRight, Loader2, ShieldCheck, AlertCircle } from 'lucide-react';
 
-// ⚠️ SECURITY NOTE: Since this is client-side only, 
-// a tech-savvy user could technically bypass this by editing LocalStorage.
-// For a personal admin panel, this is usually fine.
+
 
 const ADMIN_CREDENTIALS = {
   username: 'ironz_admin',
