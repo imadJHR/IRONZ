@@ -1040,7 +1040,7 @@ function Footer({ language }) {
                 alt="IRONZ Logo"
                 width={180}
                 height={60}
-                className="h-14 w-auto object-contain invert"
+                className="h-14 w-auto object-contain"
                 unoptimized={true} // Fix for Cloudinary
               />
             </div>
