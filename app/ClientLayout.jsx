@@ -1039,9 +1039,9 @@ function Footer({ language }) {
                 src="/logo.png"
                 alt="IRONZ Logo"
                 width={180}
-                height={60}
+                height={70}
                 className="h-14 w-auto object-contain"
-                unoptimized={true} // Fix for Cloudinary
+                unoptimized={true} 
               />
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
