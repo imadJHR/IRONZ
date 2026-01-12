@@ -16,25 +16,18 @@ import {
   Tag,
   Upload,
   Layers,
-  Scale,
-  Truck,
-  Shield,
-  Palette,
-  Ruler,
-  Star,
   ShoppingBag,
   TrendingUp,
   DollarSign,
   Percent,
   Hash,
-  Calendar,
   Package2,
   FileText,
   Grid3x3,
   CheckCircle,
   AlertCircle,
-  Trash2,
   Zap,
+  LayoutList
 } from 'lucide-react';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api';
@@ -78,10 +71,10 @@ export default function EditProductPage() {
   const [autoDiscount, setAutoDiscount] = useState(false);
 
   // Images
-  const [mainImage, setMainImage] = useState(null); // Fichier (nouvel upload)
-  const [mainImagePreview, setMainImagePreview] = useState(''); // URL (existant ou preview)
-  const [galleryImages, setGalleryImages] = useState([]); // Fichiers (nouveaux uploads)
-  const [galleryPreviews, setGalleryPreviews] = useState([]); // URLs (existants + previews)
+  const [mainImage, setMainImage] = useState(null); 
+  const [mainImagePreview, setMainImagePreview] = useState(''); 
+  const [galleryImages, setGalleryImages] = useState([]); 
+  const [galleryPreviews, setGalleryPreviews] = useState([]); 
 
   // Arrays
   const [features, setFeatures] = useState([]);
@@ -105,7 +98,7 @@ export default function EditProductPage() {
     oldPrice: '',
     discount: '',
     category: 'Equipements',
-    subCategory: '',
+    subCategory: '', // Added subCategory
     rating: '',
     reviewCount: '',
     isNewProduct: false,
@@ -114,12 +107,12 @@ export default function EditProductPage() {
     stockQuantity: '',
     sku: '',
     warranty: '',
-    // Dimensions éclatées
+    // Dimensions
     width: '',
     height: '',
     depth: '',
     weight: '',
-    // Shipping éclaté
+    // Shipping
     shippingDimensions: '',
     shippingWeight: '',
     shippingMethod: '',
@@ -139,13 +132,15 @@ export default function EditProductPage() {
         const res = await fetch(`${API_URL}/products/id/${id}`);
         const result = await res.json();
 
-        if (!result.success) {
-            throw new Error('Produit introuvable');
+        if (!result.success && !result.data) {
+             // Fallback handling if your API structure differs (direct object vs {data: object})
+             if(result._id) result.data = result; 
+             else throw new Error('Produit introuvable');
         }
 
-        const product = result.data;
+        const product = result.data || result;
 
-        // Mapper les données reçues (format imbriqué) vers le state local (format plat)
+        // Mapper les données reçues
         setFormData({
           name: product.name || '',
           description: product.description || '',
@@ -153,9 +148,9 @@ export default function EditProductPage() {
           oldPrice: product.oldPrice || '',
           discount: product.discount || '',
           category: product.category || 'Equipements',
-          subCategory: product.subCategory || '',
-          rating: product.rating || '',
-          reviewCount: product.reviewCount || '',
+          subCategory: product.subCategory || '', // Map subCategory from JSON
+          rating: product.rating || 0,
+          reviewCount: product.reviewCount || 0,
           isNewProduct: product.isNewProduct || false,
           isFeatured: product.isFeatured || false,
           inStock: product.inStock,
@@ -163,13 +158,11 @@ export default function EditProductPage() {
           sku: product.sku || '',
           warranty: product.warranty || '',
           
-          // Mapping Dimensions
           width: product.dimensions?.width || '',
           height: product.dimensions?.height || '',
           depth: product.dimensions?.depth || '',
           weight: product.dimensions?.weight || '',
           
-          // Mapping Shipping
           shippingDimensions: product.shipping?.dimensions || '',
           shippingWeight: product.shipping?.weight || '',
           shippingMethod: product.shipping?.method || '',
@@ -184,16 +177,13 @@ export default function EditProductPage() {
         setMaterials(product.materials || []);
 
         // Gestion des images
-        if (product.image) {
-            setMainImagePreview(product.image); // URL Cloudinary existante
-        }
-        if (product.gallery && product.gallery.length > 0) {
-            setGalleryPreviews(product.gallery); // URLs Cloudinary existantes
-        }
+        if (product.image) setMainImagePreview(product.image);
+        if (product.gallery && product.gallery.length > 0) setGalleryPreviews(product.gallery);
 
         // Définir la catégorie active pour l'UI
-        const catObj = categories.find(c => c.dbValue === product.category);
+        const catObj = categories.find(c => c.dbValue.toLowerCase() === (product.category || '').toLowerCase());
         if (catObj) setActiveTab(catObj.id);
+        else setActiveTab('equipements'); 
 
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -234,7 +224,7 @@ export default function EditProductPage() {
     }
   }, [autoDiscount, formData.price, formData.oldPrice, formData.discount]);
 
-  // Handle main image upload (Replacement)
+  // Handle main image upload
   const handleMainImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -249,31 +239,24 @@ export default function EditProductPage() {
     showNotification('Nouvelle image principale sélectionnée');
   };
 
-  // Handle gallery upload (Appending)
+  // Handle gallery upload
   const handleGalleryUpload = (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
     const validFiles = files.filter((file) => file.size <= 5 * 1024 * 1024);
 
-    // Ajout aux fichiers à uploader
     setGalleryImages(prev => [...prev, ...validFiles]);
-
-    // Ajout aux previews (mixte URLs existantes + blobs locaux)
     const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
     setGalleryPreviews(prev => [...prev, ...newPreviews]);
 
     showNotification(`${validFiles.length} image(s) ajoutée(s)`);
   };
 
-  // Remove gallery image (Visual only for now)
   const removeGalleryImage = (index) => {
-    // Note: Une logique plus complexe serait nécessaire pour supprimer des images spécifiques du serveur
-    // Ici on les retire juste de la vue et de la liste d'upload si c'est des nouveaux fichiers
     const newPreviews = galleryPreviews.filter((_, i) => i !== index);
     setGalleryPreviews(newPreviews);
-    // On ne touche pas à galleryImages (fichiers) car l'index ne correspond pas forcément si on a mixé URLs et Fichiers
-    showNotification("Image retirée de la vue (Sauvegarder pour confirmer)");
+    showNotification("Image retirée de la vue");
   };
 
   const handleInputChange = (e) => {
@@ -284,7 +267,7 @@ export default function EditProductPage() {
     }));
   };
 
-  const handleAddItem = (array, setArray, newItem, setNewItem, typeLabel) => {
+  const handleAddItem = (array, setArray, newItem, setNewItem) => {
     const value = newItem.trim();
     if (!value) return;
     if (array.includes(value)) {
@@ -302,10 +285,10 @@ export default function EditProductPage() {
     setArray(newArray);
   };
 
-  const handleKeyPress = (e, array, setArray, newItem, setNewItem, typeLabel) => {
+  const handleKeyPress = (e, array, setArray, newItem, setNewItem) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleAddItem(array, setArray, newItem, setNewItem, typeLabel);
+      handleAddItem(array, setArray, newItem, setNewItem);
     }
   };
 
@@ -323,8 +306,8 @@ export default function EditProductPage() {
     new Intl.NumberFormat('fr-MA', { style: 'currency', currency: 'MAD' }).format(amount);
 
   const validateForm = () => {
-    if (!formData.name.trim()) { showNotification('Product name required', 'error'); return false; }
-    if (!formData.price || parseFloat(formData.price) <= 0) { showNotification('Valid price required', 'error'); return false; }
+    if (!formData.name.trim()) { showNotification('Nom du produit requis', 'error'); return false; }
+    if (!formData.price || parseFloat(formData.price) <= 0) { showNotification('Prix valide requis', 'error'); return false; }
     return true;
   };
 
@@ -343,11 +326,13 @@ export default function EditProductPage() {
       formDataToSend.append('description', formData.description.trim());
       formDataToSend.append('price', formData.price);
       formDataToSend.append('category', formData.category);
+      
+      // SUB-CATEGORY
+      if (formData.subCategory) formDataToSend.append('subCategory', formData.subCategory.trim());
 
       // Optional fields
       if (formData.oldPrice) formDataToSend.append('oldPrice', formData.oldPrice);
       if (formData.discount) formDataToSend.append('discount', formData.discount);
-      if (formData.subCategory) formDataToSend.append('subCategory', formData.subCategory.trim());
       if (formData.rating) formDataToSend.append('rating', formData.rating);
       if (formData.reviewCount) formDataToSend.append('reviewCount', formData.reviewCount);
       if (formData.stockQuantity) formDataToSend.append('stockQuantity', formData.stockQuantity);
@@ -359,14 +344,14 @@ export default function EditProductPage() {
       formDataToSend.append('isFeatured', formData.isFeatured.toString());
       formDataToSend.append('inStock', formData.inStock.toString());
 
-      // Arrays
+      // Arrays (JSON Stringified)
       formDataToSend.append('features', JSON.stringify(features));
       formDataToSend.append('tags', JSON.stringify(tags));
       formDataToSend.append('colors', JSON.stringify(colors));
       formDataToSend.append('taille', JSON.stringify(taille));
       formDataToSend.append('materials', JSON.stringify(materials));
 
-      // Objects
+      // Nested Objects
       const dimensions = {
         width: parseFloat(formData.width) || 0,
         height: parseFloat(formData.height) || 0,
@@ -383,13 +368,8 @@ export default function EditProductPage() {
       };
       formDataToSend.append('shipping', JSON.stringify(shipping));
 
-      // Images Handling for Update
-      // 1. Image Principale: Seulement si un nouveau fichier a été choisi
-      if (mainImage) {
-        formDataToSend.append('image', mainImage);
-      }
-
-      // 2. Galerie: On envoie les NOUVEAUX fichiers
+      // Images
+      if (mainImage) formDataToSend.append('image', mainImage);
       galleryImages.forEach((file) => {
         formDataToSend.append('gallery', file);
       });
@@ -499,7 +479,7 @@ export default function EditProductPage() {
                 </div>
                 <div>
                   <div className="text-sm text-gray-600">Catégorie</div>
-                  <div className="font-bold text-gray-900">{selectedCategory?.label}</div>
+                  <div className="font-bold text-gray-900">{selectedCategory?.label || formData.category}</div>
                 </div>
               </div>
 
@@ -798,8 +778,9 @@ export default function EditProductPage() {
 
                   {/* Basic Information */}
                   <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-3">
+                    
+                    {/* Nom du produit */}
+                    <div className="space-y-3">
                         <label htmlFor="name" className="flex items-center gap-2 text-sm font-bold text-gray-900">
                           <ShoppingBag className="w-4 h-4 text-yellow-500" />
                           <span>Nom du produit</span>
@@ -813,8 +794,10 @@ export default function EditProductPage() {
                           className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
                           required
                         />
-                      </div>
+                    </div>
 
+                    {/* SKU & SubCategory */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-3">
                         <label htmlFor="sku" className="flex items-center gap-2 text-sm font-bold text-gray-900">
                           <Hash className="w-4 h-4 text-purple-500" />
@@ -825,6 +808,22 @@ export default function EditProductPage() {
                           name="sku"
                           value={formData.sku}
                           onChange={handleInputChange}
+                          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
+                        />
+                      </div>
+
+                      {/* ADDED: SubCategory Field */}
+                      <div className="space-y-3">
+                        <label htmlFor="subCategory" className="flex items-center gap-2 text-sm font-bold text-gray-900">
+                          <LayoutList className="w-4 h-4 text-orange-500" />
+                          Sous-catégorie
+                        </label>
+                        <input
+                          id="subCategory"
+                          name="subCategory"
+                          value={formData.subCategory}
+                          onChange={handleInputChange}
+                          placeholder="Ex: Protéine, Vitamines..."
                           className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
                         />
                       </div>
@@ -841,7 +840,7 @@ export default function EditProductPage() {
                         name="description"
                         value={formData.description}
                         onChange={handleInputChange}
-                        rows={4}
+                        rows={6}
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
                         required
                       />
@@ -988,44 +987,52 @@ export default function EditProductPage() {
                   </div>
 
                   {/* SPÉCIFICATIONS PAR CATÉGORIE */}
-                  {activeTab === 'equipements' && (
-                    <>
-                      <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-yellow-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-yellow-600">SPÉCIFICATIONS</span></div></div>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <input name="width" type="number" value={formData.width} onChange={handleInputChange} placeholder="Largeur (cm)" className="p-3 border rounded-xl" />
-                        <input name="height" type="number" value={formData.height} onChange={handleInputChange} placeholder="Hauteur (cm)" className="p-3 border rounded-xl" />
-                        <input name="depth" type="number" value={formData.depth} onChange={handleInputChange} placeholder="Profondeur (cm)" className="p-3 border rounded-xl" />
-                        <input name="weight" type="number" value={formData.weight} onChange={handleInputChange} placeholder="Poids (kg)" className="p-3 border rounded-xl" />
-                      </div>
-                      {/* Materials */}
-                      <div className="mt-4">
-                        <label className="text-sm font-bold block mb-2">Matériaux</label>
-                        <div className="flex gap-2">
-                           <input value={newMaterial} onChange={e => setNewMaterial(e.target.value)} onKeyPress={e => handleKeyPress(e, materials, setMaterials, newMaterial, setNewMaterial)} placeholder="Ajouter un matériau" className="flex-1 p-3 border rounded-xl"/>
-                           <button type="button" onClick={() => handleAddItem(materials, setMaterials, newMaterial, setNewMaterial)} className="bg-purple-100 text-purple-600 px-4 rounded-xl font-bold">+</button>
-                        </div>
-                        <div className="flex flex-wrap gap-2 mt-2">{materials.map((m, i) => <span key={i} className="bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(materials, setMaterials, i)}>{m} ×</span>)}</div>
-                      </div>
-                    </>
-                  )}
+                  <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-yellow-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-yellow-600">DIMENSIONS & MATÉRIAUX</span></div></div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="space-y-1">
+                        <label className="text-xs text-gray-500">Largeur</label>
+                        <input name="width" type="number" value={formData.width} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border rounded-xl" />
+                    </div>
+                    <div className="space-y-1">
+                        <label className="text-xs text-gray-500">Hauteur</label>
+                        <input name="height" type="number" value={formData.height} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border rounded-xl" />
+                    </div>
+                    <div className="space-y-1">
+                        <label className="text-xs text-gray-500">Profondeur</label>
+                        <input name="depth" type="number" value={formData.depth} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border rounded-xl" />
+                    </div>
+                    <div className="space-y-1">
+                        <label className="text-xs text-gray-500">Poids</label>
+                        <input name="weight" type="number" value={formData.weight} onChange={handleInputChange} placeholder="kg" className="w-full p-3 border rounded-xl" />
+                    </div>
+                  </div>
 
-                  {activeTab === 'accessoires' && (
-                     <>
-                      <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-yellow-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-yellow-600">DÉTAILS ACCESSOIRES</span></div></div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                         <div>
-                            <label className="font-bold text-sm block mb-2">Couleurs</label>
-                            <div className="flex gap-2"><input value={newColor} onChange={e => setNewColor(e.target.value)} onKeyPress={e => handleKeyPress(e, colors, setColors, newColor, setNewColor)} className="flex-1 p-3 border rounded-xl" placeholder="Ajouter couleur"/><button type="button" onClick={() => handleAddItem(colors, setColors, newColor, setNewColor)} className="bg-pink-100 text-pink-600 px-4 rounded-xl">+</button></div>
-                            <div className="flex flex-wrap gap-2 mt-2">{colors.map((c, i) => <span key={i} className="bg-pink-50 text-pink-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(colors, setColors, i)}>{c} ×</span>)}</div>
-                         </div>
-                         <div>
-                            <label className="font-bold text-sm block mb-2">Tailles</label>
-                            <div className="flex gap-2"><input value={newTaille} onChange={e => setNewTaille(e.target.value)} onKeyPress={e => handleKeyPress(e, taille, setTaille, newTaille, setNewTaille)} className="flex-1 p-3 border rounded-xl" placeholder="Ajouter taille"/><button type="button" onClick={() => handleAddItem(taille, setTaille, newTaille, setNewTaille)} className="bg-cyan-100 text-cyan-600 px-4 rounded-xl">+</button></div>
-                            <div className="flex flex-wrap gap-2 mt-2">{taille.map((t, i) => <span key={i} className="bg-cyan-50 text-cyan-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(taille, setTaille, i)}>{t} ×</span>)}</div>
-                         </div>
-                      </div>
-                     </>
-                  )}
+                  {/* Materials Generic */}
+                  <div className="mt-4">
+                    <label className="text-sm font-bold block mb-2">Matériaux</label>
+                    <div className="flex gap-2">
+                        <input value={newMaterial} onChange={e => setNewMaterial(e.target.value)} onKeyPress={e => handleKeyPress(e, materials, setMaterials, newMaterial, setNewMaterial)} placeholder="Ajouter un matériau" className="flex-1 p-3 border rounded-xl"/>
+                        <button type="button" onClick={() => handleAddItem(materials, setMaterials, newMaterial, setNewMaterial)} className="bg-purple-100 text-purple-600 px-4 rounded-xl font-bold">+</button>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-2">{materials.map((m, i) => <span key={i} className="bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(materials, setMaterials, i)}>{m} ×</span>)}</div>
+                  </div>
+
+                  {/* Options (Variants) */}
+                  <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-yellow-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-yellow-600">VARIANTES</span></div></div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                        <label className="font-bold text-sm block mb-2">Couleurs</label>
+                        <div className="flex gap-2"><input value={newColor} onChange={e => setNewColor(e.target.value)} onKeyPress={e => handleKeyPress(e, colors, setColors, newColor, setNewColor)} className="flex-1 p-3 border rounded-xl" placeholder="Ajouter couleur"/><button type="button" onClick={() => handleAddItem(colors, setColors, newColor, setNewColor)} className="bg-pink-100 text-pink-600 px-4 rounded-xl">+</button></div>
+                        <div className="flex flex-wrap gap-2 mt-2">{colors.map((c, i) => <span key={i} className="bg-pink-50 text-pink-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(colors, setColors, i)}>{c} ×</span>)}</div>
+                        </div>
+                        <div>
+                        <label className="font-bold text-sm block mb-2">Tailles</label>
+                        <div className="flex gap-2"><input value={newTaille} onChange={e => setNewTaille(e.target.value)} onKeyPress={e => handleKeyPress(e, taille, setTaille, newTaille, setNewTaille)} className="flex-1 p-3 border rounded-xl" placeholder="Ajouter taille"/><button type="button" onClick={() => handleAddItem(taille, setTaille, newTaille, setNewTaille)} className="bg-cyan-100 text-cyan-600 px-4 rounded-xl">+</button></div>
+                        <div className="flex flex-wrap gap-2 mt-2">{taille.map((t, i) => <span key={i} className="bg-cyan-50 text-cyan-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(taille, setTaille, i)}>{t} ×</span>)}</div>
+                        </div>
+                  </div>
+                     
 
                   {/* Tags */}
                   <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-yellow-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-yellow-600">TAGS & SEO</span></div></div>
