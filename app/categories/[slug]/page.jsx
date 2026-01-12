@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -8,7 +8,6 @@ import {
   Search,
   Filter,
   X,
-  Check,
   ArrowUpDown,
   Star,
   StarHalf,
@@ -52,18 +51,24 @@ import {
 } from "../../../components/ui/sheet";
 import { Separator } from "../../../components/ui/separator";
 
-// ✅ Mapping slug -> nom catégorie
-const CATEGORY_MAP = {
-  musculation: "MUSCULATION",
-  cardio: "CARDIO",
-  crossfit: "CROSSFIT",
-  boxe: "BOXE",
-  accessoires: "ACCESSOIRES",
-  nutrition: "NUTRITION",
-  equipements: "ÉQUIPEMENTS",
-  supplement: "SUPPLÉMENTS",
+// --- HELPERS ---
+
+// 1. Helper to normalize DB categories to URL slugs
+// e.g. "Arts Martiaux" -> "arts-martiaux", "Supplément" -> "supplement"
+const createSlug = (text) => {
+  if (!text) return "";
+  return text
+    .toString()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Remove accents
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-");
 };
 
+// Icons mapping based on partial slug match (visual only)
 const CATEGORY_ICONS = {
   musculation: <Flame className="h-5 w-5" />,
   cardio: <Zap className="h-5 w-5" />,
@@ -75,24 +80,24 @@ const CATEGORY_ICONS = {
   supplement: <Clock className="h-5 w-5" />,
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
+const API_URL = "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
 const PLACEHOLDER = "/placeholder.svg";
 
 /**
- * ✅ Cloudinary-safe image component
+ * Cloudinary-safe image component
  */
 function CloudImg({ src, alt, fill = false, className = "", cloudinary = true }) {
   const [imgSrc, setImgSrc] = useState(src || PLACEHOLDER);
 
   useEffect(() => {
-    if (cloudinary && src) {
-      // Simple Cloudinary transformation
+    if (cloudinary && src && typeof src === "string") {
+      // Prevent crash if src is not valid, pass through if it's already a full URL
       const transformedSrc = src.startsWith('http') 
         ? src 
-        : `https://res.cloudinary.com/demo/image/upload/c_fill,w_400,h_400,q_auto/${src}`;
+        : `https://res.cloudinary.com/dypjgpisl/image/upload/q_auto,f_auto/${src}`; // Adjusted to your likely cloud name or generic
       setImgSrc(transformedSrc);
     } else {
-      setImgSrc(src || PLACEHOLDER);
+      setImgSrc(PLACEHOLDER);
     }
   }, [src, cloudinary]);
 
@@ -123,23 +128,24 @@ function CloudImg({ src, alt, fill = false, className = "", cloudinary = true })
 
 export default function CategoryPage() {
   const params = useParams();
-  const slug = params?.slug;
+  // Get slug from URL (e.g., "supplement")
+  const slug = params?.slug?.toString(); 
 
+  // --- STATE ---
   const [categoryName, setCategoryName] = useState("");
-  const [categoryIcon, setCategoryIcon] = useState(null);
+  const [categoryIcon, setCategoryIcon] = useState(<Package className="h-5 w-5" />);
   
-  // Data
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [availableSubCategories, setAvailableSubCategories] = useState([]);
 
-  // Filters State
+  // Filters
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 20000]);
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [sortOption, setSortOption] = useState("featured");
   
-  // UI State
+  // UI
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
@@ -147,16 +153,7 @@ export default function CategoryPage() {
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
-  // 1. Déterminer le nom et l'icône de la catégorie
-  useEffect(() => {
-    if (!slug) return;
-    const name = CATEGORY_MAP[slug.toLowerCase()] || 
-                 slug.charAt(0).toUpperCase() + slug.slice(1).toUpperCase();
-    setCategoryName(name);
-    setCategoryIcon(CATEGORY_ICONS[slug.toLowerCase()] || <Package className="h-5 w-5" />);
-  }, [slug]);
-
-  // 2. Fetch products from backend
+  // --- FETCH DATA ---
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       if (!slug) return;
@@ -164,36 +161,57 @@ export default function CategoryPage() {
       setIsLoading(true);
       try {
         const res = await fetch(`${API_URL}/products?limit=1000`);
-        
         if (!res.ok) throw new Error("Failed to fetch");
         
         const json = await res.json();
-        const allProducts = Array.isArray(json.data) ? json.data : [];
-
-        const catSlug = slug.toLowerCase();
         
-        // Filtrer par catégorie
+        // Handle API response structure (array vs { products: [] } vs { data: [] })
+        let allProducts = [];
+        if (Array.isArray(json)) allProducts = json;
+        else if (json.data && Array.isArray(json.data)) allProducts = json.data;
+        else if (json.products && Array.isArray(json.products)) allProducts = json.products;
+
+        // --- CORE LOGIC FIX ---
+        // Filter products where the "slugified" category matches the URL slug
+        const targetSlug = slug.toLowerCase();
+        
         const catProducts = allProducts.filter(p => {
-            const pCat = (p.category || "").toLowerCase();
-            return pCat.includes(catSlug) || 
-                   (CATEGORY_MAP[catSlug] && pCat.includes(CATEGORY_MAP[catSlug].toLowerCase()));
+            if (!p.category) return false;
+            // Compare URL slug with generated slug of DB category
+            // e.g. URL: "arts-martiaux" === DB: "Arts Martiaux" (slugified)
+            return createSlug(p.category) === targetSlug;
         });
 
         setProducts(catProducts);
         setFilteredProducts(catProducts);
 
-        // Extraire les sous-catégories
+        // Update Category Name and Icon based on found data or slug
+        if (catProducts.length > 0) {
+            // Use the actual casing from the database (e.g. "Supplément")
+            setCategoryName(catProducts[0].category);
+        } else {
+            // Fallback: capitalize the slug
+            setCategoryName(slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, " "));
+        }
+
+        // Set Icon dynamically based on keywords in the slug
+        const matchedIconKey = Object.keys(CATEGORY_ICONS).find(key => targetSlug.includes(key));
+        if (matchedIconKey) {
+            setCategoryIcon(CATEGORY_ICONS[matchedIconKey]);
+        }
+
+        // Extract Subcategories
         const subCats = [...new Set(catProducts.map(p => p.subCategory).filter(Boolean))];
         setAvailableSubCategories(subCats.sort());
 
-        // Ajuster le range de prix
+        // Adjust Price Range
         if (catProducts.length > 0) {
             const maxP = Math.max(...catProducts.map(p => p.price || 0));
-            setPriceRange([0, Math.ceil(maxP * 1.1)]);
+            setPriceRange([0, Math.ceil(maxP * 1.1)]); // 10% buffer
         }
 
       } catch (err) {
-        console.error("Erreur chargement catégorie:", err);
+        console.error("Error loading category:", err);
       } finally {
         setIsLoading(false);
       }
@@ -202,11 +220,11 @@ export default function CategoryPage() {
     fetchCategoryProducts();
   }, [slug]);
 
-  // 3. Filtrage local
+  // --- FILTERING LOGIC ---
   useEffect(() => {
     let result = [...products];
 
-    // Recherche
+    // Search
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
@@ -217,19 +235,19 @@ export default function CategoryPage() {
       );
     }
 
-    // Prix
+    // Price
     result = result.filter(
       (p) => (p.price || 0) >= priceRange[0] && (p.price || 0) <= priceRange[1]
     );
 
-    // Sous-catégories
+    // Subcategories
     if (selectedSubCategories.length > 0) {
       result = result.filter(p => 
         p.subCategory && selectedSubCategories.includes(p.subCategory)
       );
     }
 
-    // Tri
+    // Sorting
     switch (sortOption) {
       case "price-asc":
         result.sort((a, b) => (a.price || 0) - (b.price || 0));
@@ -246,13 +264,15 @@ export default function CategoryPage() {
       case "discount":
         result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
         break;
-      default:
+      default: // featured / popularity
         result.sort((a, b) => (b.isFeatured === a.isFeatured ? 0 : b.isFeatured ? 1 : -1));
         break;
     }
 
     setFilteredProducts(result);
   }, [products, searchQuery, priceRange, sortOption, selectedSubCategories]);
+
+  // --- HANDLERS ---
 
   const handlePriceChange = (value) => setPriceRange(value);
   
@@ -326,9 +346,10 @@ export default function CategoryPage() {
     visible: { opacity: 1, y: 0 },
   };
 
+  // --- RENDER LOADING ---
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-28 pb-16">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-32 pb-16">
         <div className="container mx-auto px-4">
           <div className="animate-pulse space-y-8">
             <div className="h-10 w-64 bg-gray-200 dark:bg-gray-800 rounded-2xl" />
@@ -344,8 +365,9 @@ export default function CategoryPage() {
     );
   }
 
+  // --- RENDER CONTENT ---
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-28 pb-16">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-32 pb-16">
       <div className="container mx-auto px-4">
         
         {/* Header Section */}
@@ -359,11 +381,11 @@ export default function CategoryPage() {
               ACCUEIL
             </Link>
             <ChevronRight className="h-4 w-4" />
-            <Link href="/product" className="hover:text-yellow-500 transition-colors">
-              PRODUITS
+            <Link href="/categories" className="hover:text-yellow-500 transition-colors">
+              CATÉGORIES
             </Link>
             <ChevronRight className="h-4 w-4" />
-            <span className="text-gray-900 dark:text-white font-bold">
+            <span className="text-gray-900 dark:text-white font-bold uppercase">
               {categoryName}
             </span>
           </nav>
@@ -372,10 +394,10 @@ export default function CategoryPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
             <div>
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-yellow-500/30">
                   {categoryIcon}
                 </div>
-                <h1 className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white leading-none">
+                <h1 className="text-3xl md:text-6xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white leading-none">
                   {categoryName} <span className="text-yellow-500">Collection</span>
                 </h1>
               </div>
@@ -389,8 +411,8 @@ export default function CategoryPage() {
           {/* Category Description */}
           <div className="max-w-3xl">
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg border-l-4 border-yellow-500 pl-6 py-2">
-              Découvrez notre sélection premium d'équipements {categoryName.toLowerCase()} pour optimiser vos performances. 
-              Des produits testés et approuvés par des athlètes professionnels.
+              Découvrez notre sélection premium pour {categoryName}. 
+              Des produits de qualité professionnelle pour vos entraînements.
             </p>
           </div>
         </div>
@@ -407,13 +429,13 @@ export default function CategoryPage() {
           </div>
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 text-center">
             <div className="text-3xl font-black text-yellow-500 mb-2">
-              {formatPrice(Math.min(...products.map(p => p.price || 0)))}
+              {products.length > 0 ? formatPrice(Math.min(...products.map(p => p.price || 0))) : "-"}
             </div>
             <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Prix minimum</div>
           </div>
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 border border-gray-100 dark:border-gray-800 text-center">
             <div className="text-3xl font-black text-yellow-500 mb-2">
-              {formatPrice(Math.max(...products.map(p => p.price || 0)))}
+               {products.length > 0 ? formatPrice(Math.max(...products.map(p => p.price || 0))) : "-"}
             </div>
             <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Prix maximum</div>
           </div>
@@ -422,6 +444,7 @@ export default function CategoryPage() {
         {/* Controls Bar */}
         <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-4 md:p-6 mb-8 shadow-sm">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            
             {/* Mobile Filter Button & Search */}
             <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-3">
               <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
@@ -430,7 +453,7 @@ export default function CategoryPage() {
                     <Filter className="h-4 w-4" /> Filtres
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-[320px] sm:w-[400px] overflow-y-auto bg-white dark:bg-gray-900">
+                <SheetContent side="left" className="w-[320px] sm:w-[400px] overflow-y-auto bg-white dark:bg-gray-900 z-[100]">
                   <SheetHeader className="mb-6">
                     <SheetTitle className="text-xl font-black uppercase italic">Filtres</SheetTitle>
                   </SheetHeader>
@@ -464,7 +487,7 @@ export default function CategoryPage() {
                       <h3 className="font-black uppercase italic text-sm mb-4 text-gray-900 dark:text-white">Prix</h3>
                       <div className="px-2">
                         <Slider
-                          defaultValue={priceRange}
+                          defaultValue={[0, 20000]}
                           min={0}
                           max={20000}
                           step={100}
@@ -668,7 +691,7 @@ export default function CategoryPage() {
                 <div>
                   <h4 className="font-black uppercase italic text-sm mb-4 text-gray-900 dark:text-white">Prix</h4>
                   <Slider
-                    defaultValue={priceRange}
+                    defaultValue={[0, 20000]}
                     min={0}
                     max={20000}
                     step={100}

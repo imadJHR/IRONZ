@@ -2,57 +2,56 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req) {
-  try {
-    const body = await req.json();
-    
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      return NextResponse.json(
-        { success: false, message: "Configuration serveur incomplète" },
-        { status: 500 }
-      );
-    }
+    try {
+        const body = await req.json();
 
-    const {
-      orderNumber,
-      firstName,
-      lastName,
-      email,
-      phone,
-      address,
-      city,
-      postalCode,
-      country,
-      paymentMethod,
-      shippingMethod,
-      notes,
-      items,
-      subtotal,
-      total,
-    } = body;
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+            return NextResponse.json(
+                { success: false, message: "Configuration serveur incomplète" },
+                { status: 500 }
+            );
+        }
+        const {
+            orderNumber,
+            firstName,
+            lastName,
+            email,
+            phone,
+            address,
+            city,
+            postalCode,
+            country,
+            paymentMethod,
+            shippingMethod,
+            notes,
+            items,
+            subtotal,
+            total,
+        } = body;
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
 
-    // --- PRÉPARATION DES DONNÉES ---
+        // --- PRÉPARATION DES DONNÉES ---
 
-    // Nettoyage du numéro de téléphone pour le lien WhatsApp (enlève les espaces et tirets)
-    const cleanPhone = phone.replace(/[^\d+]/g, '');
-    const whatsappLink = `https://wa.me/${cleanPhone.startsWith('0') ? cleanPhone.replace('0', '212') : cleanPhone}`;
+        // Nettoyage du numéro de téléphone pour le lien WhatsApp (enlève les espaces et tirets)
+        const cleanPhone = phone.replace(/[^\d+]/g, '');
+        const whatsappLink = `https://wa.me/${cleanPhone.startsWith('0') ? cleanPhone.replace('0', '212') : cleanPhone}`;
 
-    // Date et Heure
-    const now = new Date();
-    const dateFormatted = now.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-    const timeFormatted = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        // Date et Heure
+        const now = new Date();
+        const dateFormatted = now.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+        const timeFormatted = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
-    // Génération des lignes produits
-    const itemsHtml = items
-      .map(
-        (item) => `
+        // Génération des lignes produits
+        const itemsHtml = items
+            .map(
+                (item) => `
         <tr style="border-bottom: 1px solid #e5e7eb;">
             <td style="padding: 12px 0;">
                 <div style="font-weight: bold; color: #111; font-size: 14px;">${item.name}</div>
@@ -64,11 +63,11 @@ export async function POST(req) {
             <td style="padding: 12px 0; text-align: center; color: #111; font-weight: bold;">x ${item.quantity}</td>
             <td style="padding: 12px 0; text-align: right; color: #111;">${new Intl.NumberFormat('fr-MA', { style: 'currency', currency: 'MAD' }).format(item.price)}</td>
         </tr>`
-      )
-      .join("");
+            )
+            .join("");
 
-    // --- TEMPLATE HTML (Optimisé pour le Vendeur) ---
-    const htmlTemplate = `
+        // --- TEMPLATE HTML (Optimisé pour le Vendeur) ---
+        const htmlTemplate = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -215,23 +214,23 @@ export async function POST(req) {
     </html>
     `;
 
-    const mailOptions = {
-      from: `"Notification Commande" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_TO, // L'email du vendeur (VOUS)
-      cc: email, // Le client reçoit une copie (optionnel, enlevez cette ligne si vous voulez recevoir l'email SEULEMENT pour vous)
-      replyTo: email, // IMPORTANT: Si vous cliquez sur répondre, ça écrit au client
-      subject: `🔔 NOUVELLE COMMANDE: ${total} - ${firstName} ${lastName}`,
-      html: htmlTemplate,
-    };
+        const mailOptions = {
+            from: `"Notification Commande" <${process.env.EMAIL_USER}>`,
+            to: process.env.EMAIL_TO, // L'email du vendeur (VOUS)
+            cc: email, // Le client reçoit une copie (optionnel, enlevez cette ligne si vous voulez recevoir l'email SEULEMENT pour vous)
+            replyTo: email, // IMPORTANT: Si vous cliquez sur répondre, ça écrit au client
+            subject: `🔔 NOUVELLE COMMANDE: ${total} - ${firstName} ${lastName}`,
+            html: htmlTemplate,
+        };
 
-    await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
 
-    return NextResponse.json({ success: true, message: "Email sent" });
-  } catch (error) {
-    console.error("ERREUR DANS L'API:", error);
-    return NextResponse.json(
-      { success: false, message: "Failed to send email" },
-      { status: 500 }
-    );
-  }
+        return NextResponse.json({ success: true, message: "Email sent" });
+    } catch (error) {
+        console.error("ERREUR DANS L'API:", error);
+        return NextResponse.json(
+            { success: false, message: "Failed to send email" },
+            { status: 500 }
+        );
+    }
 }
