@@ -186,16 +186,7 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
           >
             <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
-          <button
-            onClick={handleFavoriteClick}
-            className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-red-50 transition-all"
-            aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
-          >
-            <Star className={cn(
-              "h-4 w-4 sm:h-5 sm:w-5",
-              isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"
-            )} />
-          </button>
+         
         </div>
 
         {/* Badges */}

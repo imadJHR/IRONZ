@@ -363,10 +363,10 @@ function HeroBannerSlide({ product, index, totalSlides }) {
         {/* Sportif Gradient Overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
-        
+
         {/* Diagonal Lines Pattern - Sportif Element */}
         <div className="absolute inset-0 opacity-10">
-          <div 
+          <div
             className="h-full w-full"
             style={{
               backgroundImage: `repeating-linear-gradient(
@@ -390,57 +390,6 @@ function HeroBannerSlide({ product, index, totalSlides }) {
       <div className="relative h-full z-10 flex items-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            {/* Product Badge */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="mb-4 sm:mb-6"
-            >
-              <span className="inline-flex items-center gap-2 bg-yellow-500/20 backdrop-blur-sm border border-yellow-500/30 text-yellow-400 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider">
-                <Flame className="w-3 h-3 sm:w-4 sm:h-4" />
-                Produit Vedette
-              </span>
-            </motion.div>
-
-            {/* Product Name */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white uppercase leading-[0.9] tracking-tight mb-4 sm:mb-6"
-            >
-              <span className="block">{product.name}</span>
-              {product.brand && (
-                <span className="block text-yellow-500 text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-2">
-                  {product.brand}
-                </span>
-              )}
-            </motion.h1>
-
-            {/* Price Display */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8"
-            >
-              <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black text-white">
-                {formatPrice(product.price)}
-              </span>
-              {product.oldPrice && (
-                <>
-                  <span className="text-lg sm:text-xl md:text-2xl text-gray-400 line-through">
-                    {formatPrice(product.oldPrice)}
-                  </span>
-                  <span className="bg-red-500 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm font-bold">
-                    -{Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}%
-                  </span>
-                </>
-              )}
-            </motion.div>
-
-            {/* CTA Button - VOIR DÉTAILS */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -448,16 +397,14 @@ function HeroBannerSlide({ product, index, totalSlides }) {
             >
               <Link
                 href={`/produit/${product.slug || productId}`}
-                className="group relative inline-flex items-center justify-center overflow-hidden"
+                className="group relative inline-flex items-center justify-center mt-36 overflow-hidden"
               >
                 {/* Button Background with Animation */}
                 <span className="relative flex items-center gap-3 sm:gap-4 bg-yellow-500 hover:bg-yellow-400 text-black px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl font-black text-sm sm:text-base md:text-lg lg:text-xl uppercase tracking-wide transition-all duration-300 hover:scale-105 shadow-[0_0_40px_rgba(234,179,8,0.4)] hover:shadow-[0_0_60px_rgba(234,179,8,0.6)]">
-                  
+
                   {/* Shine Effect */}
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-full transition-transform duration-700 ease-out" />
-                  
-                  <Eye className="w-5 h-5 sm:w-6 sm:h-6 relative z-10" />
-                  <span className="relative z-10">Voir Détails</span>
+                  <span className="relative italic z-10">Voir Détails</span>
                   <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
                 </span>
 
@@ -536,7 +483,7 @@ export default function Home() {
           const vRes = await fetch(`${API_URL}/products?isFeatured=true&limit=6`);
           const vJson = await vRes.json();
           const vList = vJson.data || [];
-          
+
           if (vList.length > 0) {
             setVedetteProducts(vList);
           } else {
@@ -625,9 +572,9 @@ export default function Home() {
         >
           {vedetteProducts.map((product, i) => (
             <SwiperSlide key={product._id || i}>
-              <HeroBannerSlide 
-                product={product} 
-                index={i} 
+              <HeroBannerSlide
+                product={product}
+                index={i}
                 totalSlides={vedetteProducts.length}
               />
             </SwiperSlide>
@@ -660,7 +607,7 @@ export default function Home() {
         <section className="py-10 sm:py-14 md:py-16 bg-gradient-to-br from-red-600 via-red-500 to-orange-500 relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
-            <div 
+            <div
               className="h-full w-full"
               style={{
                 backgroundImage: `repeating-linear-gradient(
@@ -779,7 +726,7 @@ export default function Home() {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80" />
-                  
+
                   {/* Category Badge */}
                   <div className="absolute top-4 left-4">
                     <span className="bg-yellow-500/90 text-black px-3 py-1 rounded-full text-xs font-bold uppercase">
@@ -880,7 +827,7 @@ export default function Home() {
 
           {/* Grid Pattern */}
           <div className="absolute inset-0 opacity-5">
-            <div 
+            <div
               className="h-full w-full"
               style={{
                 backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
@@ -1119,7 +1066,7 @@ export default function Home() {
         <CloudImg src={logo} alt="logo" className="w-6 h-6 sm:w-8 sm:h-8" />
       </motion.button>
 
-      
+
 
     </main>
   );
