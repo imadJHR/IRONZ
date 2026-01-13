@@ -136,14 +136,14 @@ function SwiperNavButtons({ prevRef, nextRef, className = "" }) {
         className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-yellow-500 hover:border-yellow-500 hover:text-black transition-all shadow-lg group"
         aria-label="Previous"
       >
-        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
+        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 bg-yellow-500 rounded-full group-hover:scale-110 transition-transform" />
       </button>
       <button
         ref={nextRef}
         className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-yellow-500 hover:border-yellow-500 hover:text-black transition-all shadow-lg group"
         aria-label="Next"
       >
-        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
+        <ChevronRight className="w-4 h-4 sm:w-5 bg-yellow-500 rounded-full sm:h-5 group-hover:scale-110 transition-transform" />
       </button>
     </div>
   );
@@ -678,24 +678,32 @@ export default function Home() {
       )}
 
       {/* ===== 3. CATEGORIES ===== */}
-      <section className="py-14 sm:py-18 md:py-24 lg:py-28">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-12">
-            <div>
-              <span className="text-yellow-500 font-bold uppercase tracking-widest text-xs sm:text-sm block mb-2">
-                Explorez
-              </span>
-              <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black uppercase italic tracking-tight">
-                Nos <span className="text-yellow-500">Catégories</span>
+          <section className="py-16 sm:py-24 bg-neutral-900 text-white overflow-hidden relative">
+        {/* Decorative Background Element */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-yellow-500/5 -skew-x-12 pointer-events-none" />
+
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12 sm:mb-16">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="h-1 w-12 bg-yellow-500 skew-x-[-20deg]" />
+                <span className="text-yellow-500 font-black uppercase tracking-[0.2em] text-sm italic">
+                  Explorez
+                </span>
+              </div>
+              <h2 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-black uppercase italic tracking-tighter leading-[0.9]">
+                Nos <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">Catégories</span>
               </h2>
             </div>
+            {/* Custom navigation buttons would go here - styled angular */}
             <SwiperNavButtons prevRef={categoryPrevRef} nextRef={categoryNextRef} />
           </div>
 
           <Swiper
             modules={[Navigation]}
-            spaceBetween={16}
+            spaceBetween={24}
             slidesPerView={1.15}
+            className="!overflow-visible"
             navigation={{
               prevEl: categoryPrevRef.current,
               nextEl: categoryNextRef.current,
@@ -705,46 +713,65 @@ export default function Home() {
               swiper.params.navigation.nextEl = categoryNextRef.current;
             }}
             breakpoints={{
-              480: { slidesPerView: 1.5, spaceBetween: 16 },
-              640: { slidesPerView: 2, spaceBetween: 20 },
-              768: { slidesPerView: 2.3, spaceBetween: 20 },
-              1024: { slidesPerView: 3, spaceBetween: 24 },
-              1280: { slidesPerView: 3.5, spaceBetween: 28 },
+              480: { slidesPerView: 1.5, spaceBetween: 24 },
+              640: { slidesPerView: 2, spaceBetween: 28 },
+              768: { slidesPerView: 2.3, spaceBetween: 32 },
+              1024: { slidesPerView: 3, spaceBetween: 36 },
+              1280: { slidesPerView: 3.5, spaceBetween: 40 },
             }}
           >
             {categories.map((cat, i) => (
-              <SwiperSlide key={i}>
+              <SwiperSlide key={i} className="pt-4 pb-8 pl-2">
                 <Link
                   href={cat.href}
-                  className="group relative h-60 xs:h-72 sm:h-80 md:h-96 lg:h-[420px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl block bg-gray-100"
+                  className="group relative h-[400px] xs:h-[450px] sm:h-[500px] block w-full"
                 >
-                  <CloudImg
-                    src={cat.image}
-                    alt={cat.name}
-                    className="transition-transform duration-700 group-hover:scale-110"
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-80" />
+                  {/* The Skewed Card Container */}
+                  <div className="absolute inset-0 transform -skew-x-6 border-r-4 border-b-4 border-transparent hover:border-yellow-500 transition-all duration-300 bg-neutral-800 overflow-hidden group-hover:-translate-y-2 group-hover:shadow-[10px_10px_0px_0px_rgba(234,179,8,0.2)]">
 
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-yellow-500/90 text-black px-3 py-1 rounded-full text-xs font-bold uppercase">
-                      {cat.count || 'Collection'}
-                    </span>
+                    {/* Image Background */}
+                    <CloudImg
+                      src={cat.image}
+                      alt={cat.name}
+                      className="transition-transform duration-700 ease-out group-hover:scale-110 group-hover:skew-x-3 opacity-80 group-hover:opacity-100"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+
+                    {/* Heavy Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-300" />
+
+                    {/* Decorative Big Number (Outline) */}
+                    <div className="absolute -top-4 -right-2 z-0">
+                      <span className="text-9xl font-black italic text-transparent opacity-20 group-hover:opacity-10 transition-opacity duration-300"
+                        style={{ WebkitTextStroke: '2px #fff' }}>
+                        0{i + 1}
+                      </span>
+                    </div>
+
+                    {/* Content Wrapper - Unskewing text slightly for readability if desired, or keeping it for effect */}
+                    <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end z-10">
+
+                      {/* Badge */}
+                      <div className="mb-auto">
+                        <span className="inline-block bg-yellow-500 text-black px-3 py-1 text-xs font-black uppercase italic tracking-wider transform skew-x-6">
+                          {cat.count || 'Collection'}
+                        </span>
+                      </div>
+
+                      <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase italic leading-[0.85] text-white mb-4 drop-shadow-md">
+                          {cat.name}
+                        </h3>
+
+                        <div className="h-[2px] w-0 group-hover:w-full bg-yellow-500 transition-all duration-500 ease-out mb-4" />
+
+                        <p className="text-yellow-400 font-bold italic tracking-wide uppercase inline-flex items-center gap-3 opacity-0 group-hover:opacity-100 transform translate-x-[-20px] group-hover:translate-x-0 transition-all duration-300 delay-75">
+                          S'entrainer <ArrowRight className="w-5 h-5 animate-pulse" />
+                        </p>
+                      </div>
+                    </div>
                   </div>
-
-                  <div className="absolute bottom-5 xs:bottom-6 left-5 xs:left-6 right-5 xs:right-6 text-white">
-                    <h3 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-black uppercase italic mb-2 leading-tight">
-                      {cat.name}
-                    </h3>
-                    <p className="text-yellow-500 font-bold group-hover:translate-x-2 transition-transform inline-flex items-center gap-2 text-sm sm:text-base">
-                      Explorer <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </p>
-                  </div>
-
-                  {/* Hover Border Effect */}
-                  <div className="absolute inset-0 border-4 border-yellow-500/0 group-hover:border-yellow-500/50 rounded-2xl sm:rounded-3xl transition-all duration-300" />
                 </Link>
               </SwiperSlide>
             ))}
