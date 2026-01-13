@@ -678,7 +678,7 @@ export default function Home() {
       )}
 
       {/* ===== 3. CATEGORIES ===== */}
-          <section className="py-16 sm:py-24 bg-neutral-900 text-white overflow-hidden relative">
+      <section className="py-16 sm:py-24 bg-neutral-900 text-white overflow-hidden relative">
         {/* Decorative Background Element */}
         <div className="absolute top-0 right-0 w-1/3 h-full bg-yellow-500/5 -skew-x-12 pointer-events-none" />
 
