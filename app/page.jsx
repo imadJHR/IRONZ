@@ -414,8 +414,8 @@ function ProductCardModern({ product, addToCart, toggleFavorite, isFavorite, ind
           <button
             onClick={handleToggleFavorite}
             className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all ${isFavorite
-                ? 'bg-red-500 hover:bg-red-600 text-white'
-                : 'bg-white hover:bg-gray-100 text-gray-700'
+              ? 'bg-red-500 hover:bg-red-600 text-white'
+              : 'bg-white hover:bg-gray-100 text-gray-700'
               }`}
             aria-label={isFavorite ? `Retirer ${product.name} des favoris` : `Ajouter ${product.name} aux favoris`}
           >
@@ -493,112 +493,86 @@ function HeroBannerSlide({ product, index, totalSlides }) {
   const productId = product._id || product.id;
 
   return (
-    <div className="relative h-full w-full">
-      {/* Background Image with Parallax Effect */}
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="relative h-full w-full overflow-hidden bg-zinc-900">
+      {/* --- LAYER 1: IMAGE --- */}
+      <div className="absolute inset-0">
         <motion.div
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 6, ease: "easeOut" }}
+          transition={{ duration: 8, ease: "easeOut" }}
           className="h-full w-full"
         >
           <CloudImg
             src={product.image}
             alt={product.name}
-            className="object-cover object-center"
-            fill
+            // IMPORTANT : object-center force l'image à rester centrée
+            className="h-full w-full object-cover object-center opacity-70"
+            width={1280}
+            height={500}
             priority={index === 0}
-            sizes="100vw"
           />
         </motion.div>
-
-        {/* Sportif Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
-
-        {/* Diagonal Lines Pattern - Sportif Element */}
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="h-full w-full"
-            style={{
-              backgroundImage: `repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 10px,
-                rgba(234, 179, 8, 0.3) 10px,
-                rgba(234, 179, 8, 0.3) 11px
-              )`
-            }}
-          />
-        </div>
-
-        {/* Yellow Accent Corner */}
-        <div className="absolute top-0 right-0 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-80 lg:h-80">
-          <div className="absolute top-0 right-0 w-full h-full bg-yellow-500/20 transform rotate-45 translate-x-1/2 -translate-y-1/2" />
-        </div>
+        {/* Texture Mesh */}
+       
       </div>
 
-      {/* Main Content */}
-      <div className="relative h-full z-10 flex items-center">
+      {/* --- LAYER 2: CONTENT --- */}
+      <div className="relative h-full z-10 flex items-center justify-center sm:justify-start">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
+          <div className="max-w-4xl relative text-center sm:text-left">
+
+            {/* Tag Ironz */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
+              transition={{ delay: 0.3 }}
+              className="flex items-center justify-center sm:justify-start gap-3 mb-2 sm:mb-4"
+            >
+              <span className="h-1 w-6 sm:w-8 bg-yellow-500"></span>
+              <span className="text-yellow-500 font-black italic uppercase tracking-widest text-xs sm:text-sm">
+                Ironz Collection
+              </span>
+            </motion.div>
+
+           
+
+            {/* BOUTON */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="flex justify-center sm:justify-start"
             >
               <Link
                 href={`/produit/${product.slug || productId}`}
-                className="group relative inline-flex items-center justify-center mt-36 overflow-hidden"
+                className="group relative inline-block"
               >
-                {/* Button Background with Animation */}
-                <span className="relative flex items-center gap-3 sm:gap-4 bg-yellow-500 hover:bg-yellow-400 text-black px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl font-black text-sm sm:text-base md:text-lg lg:text-xl uppercase tracking-wide transition-all duration-300 hover:scale-105 shadow-[0_0_40px_rgba(234,179,8,0.4)] hover:shadow-[0_0_60px_rgba(234,179,8,0.6)]">
+                <div className="absolute inset-0 bg-yellow-500 -skew-x-12 transform transition-transform duration-300 group-hover:bg-white shadow-[0_0_20px_rgba(234,179,8,0.4)]" />
 
-                  {/* Shine Effect */}
-                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-full transition-transform duration-700 ease-out" />
-                  <span className="relative italic z-10">Voir Détails</span>
-                  <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
-                </span>
-
-                {/* Decorative Elements */}
-                <span className="absolute -inset-1 bg-yellow-500/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative flex items-center gap-3 px-6 py-3 sm:px-8 sm:py-4">
+                  <span className="font-black italic uppercase text-black text-base sm:text-lg tracking-wide">
+                    Voir le produit
+                  </span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-black group-hover:translate-x-1 transition-transform" />
+                </div>
               </Link>
             </motion.div>
 
-            {/* Slide Counter */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="mt-8 sm:mt-12 flex items-center gap-4"
-            >
-              <div className="flex items-center gap-2 text-white/60 text-sm sm:text-base">
-                <span className="text-yellow-500 font-bold text-lg sm:text-xl">{String(index + 1).padStart(2, '0')}</span>
-                <span className="w-8 sm:w-12 h-px bg-white/30" />
-                <span>{String(totalSlides).padStart(2, '0')}</span>
-              </div>
-            </motion.div>
           </div>
         </div>
       </div>
 
-      {/* Side Decorative Element */}
-      <div className="absolute right-4 sm:right-8 lg:right-12 top-1/2 -translate-y-1/2 hidden md:block">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-px h-16 lg:h-24 bg-gradient-to-b from-transparent via-yellow-500/50 to-transparent" />
-          <div className="text-white/40 text-xs uppercase tracking-widest transform -rotate-90 origin-center whitespace-nowrap">
-            IRONZ SPORTS
-          </div>
-          <div className="w-px h-16 lg:h-24 bg-gradient-to-b from-transparent via-yellow-500/50 to-transparent" />
+      {/* --- LAYER 3: COMPTEUR MOBILE --- */}
+      <div className="absolute bottom-4 left-4 sm:left-8 z-20">
+        <div className="flex items-center gap-1 font-mono text-xs sm:text-sm bg-black/50 backdrop-blur px-2 py-1 rounded">
+          <span className="text-yellow-500 font-bold">{String(index + 1).padStart(2, '0')}</span>
+          <span className="text-white/40">/</span>
+          <span className="text-white/40">{String(totalSlides).padStart(2, '0')}</span>
         </div>
       </div>
-
-      {/* Bottom Decorative Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 sm:h-1.5 bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500 opacity-80" />
     </div>
   );
 }
-
 /* -----------------------------
    LATEST PRODUCTS SECTION
 ------------------------------ */
@@ -693,8 +667,8 @@ function LatestProductsSection({ products, addToCart, toggleFavorite, isInFavori
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded-lg transition-all ${viewMode === 'grid'
-                    ? 'bg-yellow-500 text-black'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-yellow-500 text-black'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 aria-label="Vue grille"
               >
@@ -703,8 +677,8 @@ function LatestProductsSection({ products, addToCart, toggleFavorite, isInFavori
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded-lg transition-all ${viewMode === 'list'
-                    ? 'bg-yellow-500 text-black'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-yellow-500 text-black'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 aria-label="Vue liste"
               >
@@ -718,8 +692,8 @@ function LatestProductsSection({ products, addToCart, toggleFavorite, isInFavori
                 <button
                   onClick={() => setSelectedCategory('all')}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === 'all'
-                      ? 'bg-yellow-500 text-black'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    ? 'bg-yellow-500 text-black'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                     }`}
                 >
                   Tous
@@ -729,8 +703,8 @@ function LatestProductsSection({ products, addToCart, toggleFavorite, isInFavori
                     key={category}
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === category
-                        ? 'bg-yellow-500 text-black'
-                        : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? 'bg-yellow-500 text-black'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                       }`}
                   >
                     {category}
@@ -902,8 +876,8 @@ function LatestProductsSection({ products, addToCart, toggleFavorite, isInFavori
                               <button
                                 onClick={() => toggleFavorite(product)}
                                 className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${isInFavorites(product._id || product.id)
-                                    ? 'bg-red-500 hover:bg-red-600 text-white'
-                                    : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                                  ? 'bg-red-500 hover:bg-red-600 text-white'
+                                  : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
                                   }`}
                               >
                                 <Heart className={`w-5 h-5 ${isInFavorites(product._id || product.id) ? 'fill-current' : ''}`} />
@@ -966,7 +940,7 @@ export default function Home() {
   const [vedetteProducts, setVedetteProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
-  
+
   // Latest products pagination
   const [latestProducts, setLatestProducts] = useState([]);
   const [latestPage, setLatestPage] = useState(1);
@@ -1031,20 +1005,20 @@ export default function Home() {
   // Load latest products with pagination
   const loadLatestProducts = async (page = 1) => {
     if (loadingLatest) return;
-    
+
     setLoadingLatest(true);
     try {
       const res = await fetch(`${API_URL}/products?page=${page}&limit=12&sort=-createdAt`);
       const json = await res.json();
       const newProducts = json.data || [];
       const total = json.total || 0;
-      
+
       if (page === 1) {
         setLatestProducts(newProducts);
       } else {
         setLatestProducts(prev => [...prev, ...newProducts]);
       }
-      
+
       setLatestPage(page);
       setLatestTotal(total);
       setHasMoreLatest(newProducts.length === 12);
@@ -1102,26 +1076,23 @@ export default function Home() {
     <main className="min-h-screen bg-white dark:bg-gray-950 overflow-x-hidden">
 
       {/* ===== 1. HERO BANNER - SPORTIF DESIGN ===== */}
-      <section className="relative h-[500px] xs:h-[550px] sm:h-[600px] md:h-[650px] lg:h-[700px] xl:h-[750px] 2xl:h-[800px] bg-black">
+      <section className="relative w-full bg-zinc-950 h-[380px] xs:h-[420px] sm:h-[480px] lg:h-[550px] group overflow-hidden">
         <Swiper
           modules={[Autoplay, Pagination, Navigation, EffectFade]}
           effect="fade"
           fadeEffect={{ crossFade: true }}
           loop={vedetteProducts.length > 1}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
-          speed={800}
+          speed={1000}
           pagination={{
             clickable: true,
-            renderBullet: (index, className) => {
-              return `<span class="${className} !w-3 !h-3 sm:!w-4 sm:!h-4 !rounded-full !bg-white/30 !border-2 !border-transparent transition-all duration-300"></span>`;
-            },
-            bulletActiveClass: '!bg-yellow-500 !border-yellow-500 !scale-125'
+            el: '.custom-pagination', // On garde la barre jaune
           }}
           navigation={{
-            prevEl: '.hero-prev',
-            nextEl: '.hero-next',
+            prevEl: '.nav-prev',
+            nextEl: '.nav-next',
           }}
-          className="h-full"
+          className="h-full w-full"
         >
           {vedetteProducts.map((product, i) => (
             <SwiperSlide key={product._id || i}>
@@ -1134,25 +1105,22 @@ export default function Home() {
           ))}
         </Swiper>
 
-        {/* Navigation Buttons - Sportif Style */}
-        <button className="hero-prev absolute left-3 xs:left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14 rounded-full bg-black/30 backdrop-blur-md border-2 border-white/20 text-white flex items-center justify-center hover:bg-yellow-500 hover:border-yellow-500 hover:text-black transition-all duration-300 group">
-          <ChevronLeft className="w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7 group-hover:-translate-x-0.5 transition-transform" />
-        </button>
-        <button className="hero-next absolute right-3 xs:right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 xs:w-12 xs:h-12 sm:w-14 sm:h-14 rounded-full bg-black/30 backdrop-blur-md border-2 border-white/20 text-white flex items-center justify-center hover:bg-yellow-500 hover:border-yellow-500 hover:text-black transition-all duration-300 group">
-          <ChevronRight className="w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7 group-hover:translate-x-0.5 transition-transform" />
-        </button>
+        {/* --- NAVIGATION BUTTONS (Mobile & Desktop) --- */}
+        {/* Position : Bottom Right (Coin inférieur droit) */}
+        <div className="absolute bottom-0 right-0 z-30 flex">
+          {/* BOUTON PRECEDENT */}
+          <button className="nav-prev w-12 h-12 sm:w-16 sm:h-16 bg-zinc-900/90 backdrop-blur border-l border-t border-white/10 flex items-center justify-center text-white hover:bg-yellow-500 hover:text-black transition-all duration-300 active:scale-95">
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+          </button>
+          {/* BOUTON SUIVANT */}
+          <button className="nav-next w-12 h-12 sm:w-16 sm:h-16 bg-zinc-900/90 backdrop-blur border-l border-r border-t border-white/10 flex items-center justify-center text-white hover:bg-yellow-500 hover:text-black transition-all duration-300 active:scale-95">
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+          </button>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-        >
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-white/50 text-xs uppercase tracking-widest hidden sm:block">Scroll</span>
-            <ChevronDown className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-500/80" />
-          </div>
-        </motion.div>
+        </div>
+
+        {/* Barre de progression jaune en bas (elle passera SOUS les boutons grâce au z-index) */}
+        <div className="absolute bottom-0 left-0 h-1 bg-yellow-500 z-20 custom-pagination-progressbar" />
       </section>
 
       {/* ===== 2. FLASH DEALS ===== */}
