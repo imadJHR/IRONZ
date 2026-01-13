@@ -493,7 +493,7 @@ function HeroBannerSlide({ product, index, totalSlides }) {
   const productId = product._id || product.id;
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-zinc-900">
+    <div className="relative  h-full w-full overflow-hidden bg-white ">
       {/* --- LAYER 1: IMAGE --- */}
       <div className="absolute inset-0">
         <motion.div
@@ -506,7 +506,7 @@ function HeroBannerSlide({ product, index, totalSlides }) {
             src={product.image}
             alt={product.name}
             // IMPORTANT : object-center force l'image à rester centrée
-            className="h-full w-full object-cover object-center opacity-70"
+            className="h-full w-full object-contain object-center "
             width={1280}
             height={500}
             priority={index === 0}
@@ -517,9 +517,9 @@ function HeroBannerSlide({ product, index, totalSlides }) {
       </div>
 
       {/* --- LAYER 2: CONTENT --- */}
-      <div className="relative h-full z-10 flex items-center justify-center sm:justify-start">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl relative text-center sm:text-left">
+      <div className="relative h-full  z-10 flex items-center justify-center sm:justify-start">
+        <div className="container  mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl relative mt-58 text-center sm:text-left">
 
             {/* Tag Ironz */}
             <motion.div
@@ -1076,7 +1076,7 @@ export default function Home() {
     <main className="min-h-screen bg-white dark:bg-gray-950 overflow-x-hidden">
 
       {/* ===== 1. HERO BANNER - SPORTIF DESIGN ===== */}
-      <section className="relative w-full bg-zinc-950 h-[380px] xs:h-[420px] sm:h-[480px] lg:h-[550px] group overflow-hidden">
+      <section className="relative w-full bg-zinc-950 h-[380px] xs:h-[420px] sm:h-[480px] lg:h-[650px] group overflow-hidden">
         <Swiper
           modules={[Autoplay, Pagination, Navigation, EffectFade]}
           effect="fade"
