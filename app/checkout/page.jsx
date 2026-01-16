@@ -136,14 +136,15 @@ export default function CheckoutPage() {
 
   const validateForm = () => {
     const newErrors = {};
+    // ✅ MODIFICATION : 'email' et 'postalCode' retirés des champs requis
     const requiredFields = [
       "firstName",
       "lastName",
-      "email",
+      // "email", (Optionnel)
       "phone",
       "address",
       "city",
-      "postalCode",
+      // "postalCode", (Optionnel)
       "country",
     ];
 
@@ -153,6 +154,7 @@ export default function CheckoutPage() {
       }
     });
 
+    // Validation conditionnelle : Seulement si le champ est rempli
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Adresse email invalide";
     }
@@ -161,6 +163,7 @@ export default function CheckoutPage() {
       newErrors.phone = "Numéro de téléphone invalide";
     }
 
+    // Validation conditionnelle : Seulement si le champ est rempli
     if (
       formData.country === "Maroc" &&
       formData.postalCode &&
@@ -224,7 +227,6 @@ export default function CheckoutPage() {
     };
 
     try {
-      // ✅ CHANGED: Point to your local Next.js API route
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -273,7 +275,7 @@ export default function CheckoutPage() {
                 
                 <div className="bg-gradient-to-r from-green-500/5 to-yellow-500/5 dark:from-green-500/5 dark:to-yellow-500/5 border border-green-200 dark:border-green-800 rounded-2xl p-6 mb-8">
                   <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter mb-4">
-                    Commande #{orderNumber}
+                   
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed mb-4">
                     Notre service commercial va vous contacter dans les <span className="font-bold text-yellow-600 dark:text-yellow-400">24 heures</span> par téléphone pour confirmer votre commande.
@@ -296,7 +298,7 @@ export default function CheckoutPage() {
                       <Truck className="w-5 h-5 text-yellow-500" />
                       <span className="font-black uppercase text-sm text-gray-900 dark:text-white">Livraison rapide</span>
                     </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">En 24-48h dans les grandes villes</p>
+                    
                   </div>
                 </div>
 
@@ -306,7 +308,7 @@ export default function CheckoutPage() {
                       Retour à l'accueil
                     </Button>
                   </Link>
-                  <Link href="/product" className="flex-1">
+                  <Link href="/produit" className="flex-1">
                     <Button variant="outline" className="w-full border-2 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-white hover:border-yellow-500 hover:text-yellow-500 py-4 rounded-2xl font-black uppercase italic tracking-widest transition-all">
                       Continuer mes achats
                     </Button>
@@ -470,8 +472,9 @@ export default function CheckoutPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div className="space-y-2">
+                    {/* ✅ MODIFICATION : Label Email optionnel */}
                     <Label htmlFor="email" className="text-xs font-black uppercase tracking-widest text-gray-500">
-                      Email <span className="text-red-500">*</span>
+                      Email <span className="text-gray-400 font-normal lowercase not-italic tracking-normal">(optionnel)</span>
                     </Label>
                     <Input
                       id="email"
@@ -533,8 +536,9 @@ export default function CheckoutPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                   <div className="space-y-2">
+                    {/* ✅ MODIFICATION : Label Code Postal optionnel */}
                     <Label htmlFor="postalCode" className="text-xs font-black uppercase tracking-widest text-gray-500">
-                      Code postal <span className="text-red-500">*</span>
+                      Code postal <span className="text-gray-400 font-normal lowercase not-italic tracking-normal">(optionnel)</span>
                     </Label>
                     <Input
                       id="postalCode"
@@ -587,22 +591,6 @@ export default function CheckoutPage() {
                     placeholder="Instructions spéciales pour la livraison, code d'accès, interphone..."
                   />
                 </div>
-
-                <div className="flex items-center mb-8">
-                  <Checkbox
-                    id="saveInfo"
-                    name="saveInfo"
-                    checked={formData.saveInfo}
-                    onCheckedChange={(checked) =>
-                      setFormData({ ...formData, saveInfo: checked })
-                    }
-                    className="border-gray-300 dark:border-gray-600 data-[state=checked]:bg-yellow-500 data-[state=checked]:border-yellow-500"
-                  />
-                  <Label htmlFor="saveInfo" className="ml-3 cursor-pointer text-sm text-gray-600 dark:text-gray-400">
-                    Sauvegarder ces informations pour mes prochaines commandes
-                  </Label>
-                </div>
-
                 <Button
                   onClick={handleNextStep}
                   className="w-full bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-black dark:text-gray-900 py-4 md:py-6 rounded-2xl font-black uppercase italic tracking-widest text-base md:text-lg transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl shadow-yellow-500/10"
@@ -682,13 +670,15 @@ export default function CheckoutPage() {
                         <div className="font-medium">{formData.firstName} {formData.lastName}</div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 p-3 bg-white dark:bg-zinc-900 rounded-xl">
-                      <Mail className="w-5 h-5 text-yellow-500 mt-0.5" />
-                      <div>
-                        <div className="text-xs font-black uppercase text-gray-400 mb-1">Email</div>
-                        <div className="font-medium">{formData.email}</div>
+                    {formData.email && (
+                      <div className="flex items-start gap-3 p-3 bg-white dark:bg-zinc-900 rounded-xl">
+                        <Mail className="w-5 h-5 text-yellow-500 mt-0.5" />
+                        <div>
+                          <div className="text-xs font-black uppercase text-gray-400 mb-1">Email</div>
+                          <div className="font-medium">{formData.email}</div>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     <div className="flex items-start gap-3 p-3 bg-white dark:bg-zinc-900 rounded-xl">
                       <Smartphone className="w-5 h-5 text-yellow-500 mt-0.5" />
                       <div>
@@ -700,7 +690,9 @@ export default function CheckoutPage() {
                       <MapPin className="w-5 h-5 text-yellow-500 mt-0.5" />
                       <div>
                         <div className="text-xs font-black uppercase text-gray-400 mb-1">Adresse</div>
-                        <div className="font-medium">{formData.address}, {formData.city} {formData.postalCode}</div>
+                        <div className="font-medium">
+                          {formData.address}, {formData.city} {formData.postalCode}
+                        </div>
                       </div>
                     </div>
                   </div>
