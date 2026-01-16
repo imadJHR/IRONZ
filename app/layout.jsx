@@ -1,5 +1,6 @@
 import React from "react";
 import ClientLayout from "./ClientLayout";
+import Script from "next/script"; // 1. Import Script component
 
 export const metadata = {
   title: "IRONZ- Équipements Professionnels et Matériaux",
@@ -20,7 +21,6 @@ export const metadata = {
     ],
     apple: [{ url: "/public/logo.png", sizes: "180x180", type: "image/png" }],
   },
-  // Open Graph - Used by both Facebook and Instagram
   openGraph: {
     title: "IRONZ PRO - Équipements Professionnels et Matériaux",
     description:
@@ -44,12 +44,11 @@ export const metadata = {
     locale: "fr_MA",
     type: "website",
     facebook: {
-      appId: "your-facebook-app-id",
+      appId: "your-facebook-app-id", // Ensure you replace this if you have one
     },
   },
-
   facebook: {
-    domainVerification: "your-facebook-domain-verification-code",
+    domainVerification: "your-facebook-domain-verification-code", // Replace with actual code
   },
   robots: {
     index: true,
@@ -67,15 +66,47 @@ export const metadata = {
   verification: {
     yandex: "your-yandex-verification-code",
   },
-  // Additional meta tags that might help with social sharing
   other: {
-    // Instagram doesn't have specific meta tags but uses Open Graph
-    // You can add additional tags that might help
     "instagram:creator": "@ironz_equipements",
     "instagram:site": "@ironz_official",
   },
 };
 
 export default function RootLayout({ children }) {
-  return <ClientLayout> {children}</ClientLayout>;
+  return (
+    <ClientLayout>
+      {/* 2. Facebook Pixel Script */}
+      <Script
+        id="fb-pixel"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '2235692166803820');
+            fbq('track', 'PageView');
+          `,
+        }}
+      />
+      
+      {/* 3. NoScript Fallback (for users with JS disabled) */}
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style={{ display: "none" }}
+          src="https://www.facebook.com/tr?id=2235692166803820&ev=PageView&noscript=1"
+          alt=""
+        />
+      </noscript>
+
+      {children}
+    </ClientLayout>
+  );
 }
