@@ -102,6 +102,13 @@ export default function CheckoutPage() {
     }
   }, [cart, router, orderComplete, mounted]);
 
+  // ✅ AJOUT : Scroll to top quand la commande est complétée
+  useEffect(() => {
+    if (orderComplete) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [orderComplete]);
+
   const shippingCosts = {
     standard: 30,
     express: 50,
@@ -136,15 +143,12 @@ export default function CheckoutPage() {
 
   const validateForm = () => {
     const newErrors = {};
-    // ✅ MODIFICATION : 'email' et 'postalCode' retirés des champs requis
     const requiredFields = [
       "firstName",
       "lastName",
-      // "email", (Optionnel)
       "phone",
       "address",
       "city",
-      // "postalCode", (Optionnel)
       "country",
     ];
 
@@ -154,7 +158,6 @@ export default function CheckoutPage() {
       }
     });
 
-    // Validation conditionnelle : Seulement si le champ est rempli
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Adresse email invalide";
     }
@@ -163,7 +166,6 @@ export default function CheckoutPage() {
       newErrors.phone = "Numéro de téléphone invalide";
     }
 
-    // Validation conditionnelle : Seulement si le champ est rempli
     if (
       formData.country === "Maroc" &&
       formData.postalCode &&
@@ -201,7 +203,6 @@ export default function CheckoutPage() {
       .padStart(6, "0")}`;
     setOrderNumber(randomOrderNumber);
 
-    // Prepare data for the API
     const orderData = {
       orderNumber: randomOrderNumber,
       firstName: formData.firstName,
@@ -239,6 +240,7 @@ export default function CheckoutPage() {
 
       if (response.ok && result.success) {
         setOrderComplete(true);
+        // Le scroll vers le haut est géré par le useEffect [orderComplete]
         clearCart();
       } else {
         throw new Error(result.message || "Failed to submit order");
@@ -275,7 +277,7 @@ export default function CheckoutPage() {
                 
                 <div className="bg-gradient-to-r from-green-500/5 to-yellow-500/5 dark:from-green-500/5 dark:to-yellow-500/5 border border-green-200 dark:border-green-800 rounded-2xl p-6 mb-8">
                   <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter mb-4">
-                   
+                   N° Commande: {orderNumber}
                   </h2>
                   <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed mb-4">
                     Notre service commercial va vous contacter dans les <span className="font-bold text-yellow-600 dark:text-yellow-400">24 heures</span> par téléphone pour confirmer votre commande.
@@ -298,7 +300,7 @@ export default function CheckoutPage() {
                       <Truck className="w-5 h-5 text-yellow-500" />
                       <span className="font-black uppercase text-sm text-gray-900 dark:text-white">Livraison rapide</span>
                     </div>
-                    
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Expédition après confirmation</p>
                   </div>
                 </div>
 
@@ -472,7 +474,6 @@ export default function CheckoutPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div className="space-y-2">
-                    {/* ✅ MODIFICATION : Label Email optionnel */}
                     <Label htmlFor="email" className="text-xs font-black uppercase tracking-widest text-gray-500">
                       Email <span className="text-gray-400 font-normal lowercase not-italic tracking-normal">(optionnel)</span>
                     </Label>
@@ -536,7 +537,6 @@ export default function CheckoutPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                   <div className="space-y-2">
-                    {/* ✅ MODIFICATION : Label Code Postal optionnel */}
                     <Label htmlFor="postalCode" className="text-xs font-black uppercase tracking-widest text-gray-500">
                       Code postal <span className="text-gray-400 font-normal lowercase not-italic tracking-normal">(optionnel)</span>
                     </Label>
