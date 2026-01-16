@@ -380,7 +380,7 @@ export default function CategoryPage() {
               </div>
               <div className="h-2 w-24 bg-yellow-500 mt-4 rounded-full" />
             </div>
-            <Link href="/product" className="text-gray-400 hover:text-yellow-500 font-black uppercase italic text-xs md:text-sm transition-colors flex items-center gap-2">
+            <Link href="/produit" className="text-gray-400 hover:text-yellow-500 font-black uppercase italic text-xs md:text-sm transition-colors flex items-center gap-2">
               <ArrowLeft size={16} className="md:w-[18px] md:h-[18px]" /> Voir tous les produits
             </Link>
           </div>
@@ -747,8 +747,6 @@ export default function CategoryPage() {
                             </span>
                           )}
                         </div>
-
-                        {/* Fav Button */}
                     
 
                         {/* Quick View Overlay (Hidden on Mobile) */}
@@ -762,7 +760,6 @@ export default function CategoryPage() {
                         </div>
                       </div>
 
-                      {/* Content Area */}
                       <div className="p-4 md:p-6">
                         <div className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 mb-2 md:mb-3 uppercase font-black tracking-widest truncate">
                           {product.subCategory || product.category}
