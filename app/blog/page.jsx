@@ -122,7 +122,7 @@ export default function BlogPage() {
                 >
                   À ne pas manquer
                 </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+                <h2 className="text-4xlxl md:text-4xl font-bold text-center mb-4">
                   Nos articles vedettes
                 </h2>
                 <div className="w-24 h-1 bg-yellow-500 rounded-full"></div>
