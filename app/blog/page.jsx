@@ -101,64 +101,7 @@ export default function BlogPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-300 leading-tight">
-              Explorez notre univers
-            </h1>
-
-            <p className="text-lg md:text-xl text-gray-300 mb-10">
-              Découvrez des articles inspirants, des conseils d'experts et les
-              dernières tendances pour votre bien-être.
-            </p>
-
-            <form
-              onSubmit={handleSearch}
-              className="relative max-w-xl mx-auto mb-10"
-            >
-              <div className="relative">
-                <Input
-                  type="text"
-                  placeholder="Rechercher un article..."
-                  className="w-full pl-12 pr-4 py-3 h-14 bg-white/10 backdrop-blur-sm border-gray-700 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 rounded-full shadow-lg transition-all duration-300 focus:bg-white/15"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <Button
-                  type="submit"
-                  className="absolute right-1.5 top-1/2 transform -translate-y-1/2 bg-yellow-500 hover:bg-yellow-600 text-black rounded-full px-6 py-2 h-11 font-medium transition-all duration-300 hover:shadow-md hover:shadow-yellow-500/20"
-                >
-                  Rechercher
-                </Button>
-              </div>
-            </form>
-
-            <div className="flex flex-wrap justify-center gap-3">
-              {popularTags.slice(0, 6).map((tag) => (
-                <motion.div
-                  key={tag}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Badge
-                    variant="outline"
-                    className="px-4 py-1.5 cursor-pointer border-gray-600 hover:bg-yellow-500 hover:text-black hover:border-yellow-500 transition-all duration-300"
-                    onClick={() => setSearchTerm(tag)}
-                  >
-                    <Tag className="h-3 w-3 mr-1.5" />
-                    {tag}
-                  </Badge>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+       
       </section>
 
       {/* Featured Posts */}
