@@ -115,18 +115,7 @@ export default function BlogPage() {
               viewport={{ once: true }}
               className="mb-16"
             >
-              <div className="flex flex-col items-center">
-                <Badge
-                  variant="secondary"
-                  className="mb-4 px-4 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
-                >
-                  À ne pas manquer
-                </Badge>
-                <h2 className="text-4xlxl md:text-4xl font-bold text-center mb-4">
-                  Nos articles vedettes
-                </h2>
-                <div className="w-24 h-1 bg-yellow-500 rounded-full"></div>
-              </div>
+            
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
