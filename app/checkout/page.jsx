@@ -102,7 +102,7 @@ export default function CheckoutPage() {
     }
   }, [cart, router, orderComplete, mounted]);
 
-  // ✅ AJOUT : Scroll to top quand la commande est complétée
+  // ✅ Scroll to top when order is complete
   useEffect(() => {
     if (orderComplete) {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -153,17 +153,30 @@ export default function CheckoutPage() {
     ];
 
     requiredFields.forEach((field) => {
-      if (!formData[field]) {
+      if (!formData[field] || formData[field].trim() === "") {
         newErrors[field] = "Ce champ est requis";
       }
     });
 
-    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Adresse email invalide";
+    // ✅ VALIDATION EMAIL STRICTE
+    if (formData.email && formData.email.trim() !== "") {
+      // Regex stricte pour email (RFC 5322 standard)
+      // Vérifie: caracteres@domaine.extension (2 lettres min pour l'extension)
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      
+      if (!emailRegex.test(formData.email)) {
+        newErrors.email = "Veuillez entrer une adresse email valide (ex: nom@domaine.com)";
+      }
     }
 
-    if (formData.phone && !/^[0-9+\s()-]{8,15}$/.test(formData.phone)) {
-      newErrors.phone = "Numéro de téléphone invalide";
+    // Validation Téléphone Maroc (flexible pour 06/07/05 ou +212)
+    if (formData.phone && !/^(?:(?:\+|00)212|0)[5-7]\d{8}$/.test(formData.phone.replace(/\s/g, ''))) {
+       // Note: Si vous voulez une validation moins stricte, gardez l'ancienne regex
+       // Mais celle-ci est spécifique au format marocain valide
+       // Fallback simple:
+       if(!/^[0-9+\s()-]{8,15}$/.test(formData.phone)) {
+          newErrors.phone = "Numéro de téléphone invalide";
+       }
     }
 
     if (
@@ -240,7 +253,6 @@ export default function CheckoutPage() {
 
       if (response.ok && result.success) {
         setOrderComplete(true);
-        // Le scroll vers le haut est géré par le useEffect [orderComplete]
         clearCart();
       } else {
         throw new Error(result.message || "Failed to submit order");
@@ -483,6 +495,8 @@ export default function CheckoutPage() {
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
+                      // Ajout d'attributs HTML5 pour la validation native aussi
+                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                       className={cn(
                         "h-12 rounded-xl border-gray-200 dark:border-zinc-700 text-base",
                         errors.email && "border-red-500"
@@ -492,6 +506,7 @@ export default function CheckoutPage() {
                     {errors.email && (
                       <p className="text-red-500 text-xs mt-1">{errors.email}</p>
                     )}
+                    <p className="text-[10px] text-gray-400 mt-1">Si renseigné, format strict requis (ex: user@gmail.com)</p>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone" className="text-xs font-black uppercase tracking-widest text-gray-500">
