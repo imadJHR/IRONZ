@@ -1014,8 +1014,8 @@ function Footer({ language }) {
     },
     {
       icon: <Mail className="h-5 w-5" />,
-      content: "muscleironz2019@gmail.com",
-      href: "mailto:muscleironz2019@gmail.com",
+      content: "info@ironz.ma",
+      href: "mailto:info@ironz.ma",
     },
   ];
 

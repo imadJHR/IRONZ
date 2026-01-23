@@ -212,8 +212,8 @@ ${data.message}`;
       icon: <Mail className="h-6 w-6" />,
       title: "Email",
       description: "Envoyez-nous un email, nous vous répondrons dans les plus brefs délais.",
-      value: "muscleironz2019@gmail.com",
-      action: () => (window.location.href = "mailto:muscleironz2019@gmail.com"),
+      value: "info@ironz.ma",
+      action: () => (window.location.href = "mailto:info@ironz.ma"),
       color: "from-blue-500 to-purple-500",
     },
     {
