@@ -968,7 +968,7 @@ function Footer({ language }) {
     {
       name: "YouTube",
       icon: <Youtube className="h-5 w-5" />,
-      href: "https://www.youtube.com/@muscleironz8921",
+      href: "https://www.youtube.com/@ironzofficial",
     },
   ];
 
