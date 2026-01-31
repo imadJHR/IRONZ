@@ -42,7 +42,7 @@ const categories = [
     id: 'equipements',
     label: 'Équipements',
     dbValue: 'Equipements',
-    description: 'Gym equipment and weights',
+    description: 'Gym equipment & weights',
     icon: Dumbbell,
     color: 'from-blue-500 to-cyan-500',
   },
@@ -377,13 +377,28 @@ export default function EditProductPage() {
         
         const method = isEditing ? 'PUT' : 'POST';
 
+        // Prepare safe payload
+        const payload = {
+            ...reviewForm,
+            rating: Number(reviewForm.rating) // Ensure it's a number for Mongoose
+        };
+
         const res = await fetch(url, {
             method,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(reviewForm)
+            body: JSON.stringify(payload)
         });
 
-        const data = await res.json();
+        // Handle potential non-JSON responses (500 errors usually return HTML)
+        const contentType = res.headers.get("content-type");
+        let data;
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            data = await res.json();
+        } else {
+            // If server returns 500 HTML/Text, manual throw
+            const text = await res.text();
+            throw new Error(res.status === 500 ? "Erreur serveur interne (500)" : text);
+        }
         
         if (!res.ok) throw new Error(data.message || 'Erreur lors de la sauvegarde de l\'avis');
 
@@ -391,7 +406,8 @@ export default function EditProductPage() {
         resetReviewForm();
         fetchReviews(); // Refresh list
     } catch (error) {
-        showNotification(error.message, 'error');
+        console.error("Review Submit Error:", error);
+        showNotification(error.message || "Erreur inconnue", 'error');
     } finally {
         setIsReviewLoading(false);
     }
@@ -1105,23 +1121,19 @@ export default function EditProductPage() {
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="space-y-1">
-                        <label className="text-xs text-black">Largeur</label>
-                        <label className="text-xs text-black">Largeur</label>
+                        <label className="text-xs text-black font-bold">Largeur</label>
                         <input name="width" type="number" value={formData.width} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border text-black rounded-xl" />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs text-black">Hauteur</label>
-                        <label className="text-xs text-black">Largeur</label>
+                        <label className="text-xs text-black font-bold">Hauteur</label>
                         <input name="height" type="number" value={formData.height} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border text-black rounded-xl" />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs text-black">Profondeur</label>
-                        <label className="text-xs text-black">Largeur</label>
+                        <label className="text-xs text-black font-bold">Profondeur</label>
                         <input name="depth" type="number" value={formData.depth} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border text-black rounded-xl" />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs text-black">Poids</label>
-                        <label className="text-xs text-black">Largeur</label>
+                        <label className="text-xs text-black font-bold">Poids</label>
                         <input name="weight" type="number" value={formData.weight} onChange={handleInputChange} placeholder="kg" className="w-full p-3 border text-black rounded-xl" />
                     </div>
                   </div>
