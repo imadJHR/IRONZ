@@ -42,7 +42,7 @@ const categories = [
     id: 'equipements',
     label: 'Équipements',
     dbValue: 'Equipements',
-    description: 'Gym equipment & weights',
+    description: 'Gym equipment and weights',
     icon: Dumbbell,
     color: 'from-blue-500 to-cyan-500',
   },
