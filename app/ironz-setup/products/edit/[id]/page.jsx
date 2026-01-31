@@ -27,7 +27,12 @@ import {
   CheckCircle,
   AlertCircle,
   Zap,
-  LayoutList
+  LayoutList,
+  Star,
+  MessageSquare,
+  Trash2,
+  Edit2,
+  User
 } from 'lucide-react';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api';
@@ -90,6 +95,17 @@ export default function EditProductPage() {
   const [newTaille, setNewTaille] = useState('');
   const [newMaterial, setNewMaterial] = useState('');
 
+  // --- REVIEW STATES ---
+  const [reviews, setReviews] = useState([]);
+  const [isReviewLoading, setIsReviewLoading] = useState(false);
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [reviewForm, setReviewForm] = useState({
+    username: '',
+    rating: 5,
+    title: '',
+    body: ''
+  });
+
   // Form data
   const [formData, setFormData] = useState({
     name: '',
@@ -98,7 +114,7 @@ export default function EditProductPage() {
     oldPrice: '',
     discount: '',
     category: 'Equipements',
-    subCategory: '', // Added subCategory
+    subCategory: '', 
     rating: '',
     reviewCount: '',
     isNewProduct: false,
@@ -133,7 +149,6 @@ export default function EditProductPage() {
         const result = await res.json();
 
         if (!result.success && !result.data) {
-             // Fallback handling if your API structure differs (direct object vs {data: object})
              if(result._id) result.data = result; 
              else throw new Error('Produit introuvable');
         }
@@ -148,7 +163,7 @@ export default function EditProductPage() {
           oldPrice: product.oldPrice || '',
           discount: product.discount || '',
           category: product.category || 'Equipements',
-          subCategory: product.subCategory || '', // Map subCategory from JSON
+          subCategory: product.subCategory || '',
           rating: product.rating || 0,
           reviewCount: product.reviewCount || 0,
           isNewProduct: product.isNewProduct || false,
@@ -195,9 +210,22 @@ export default function EditProductPage() {
 
     if (id) {
         fetchProduct();
+        fetchReviews(); // Fetch reviews immediately
     }
   }, [id]);
 
+  // --- 2. FETCH REVIEWS FUNCTION ---
+  const fetchReviews = async () => {
+    try {
+        const res = await fetch(`${API_URL}/products/${id}/reviews`);
+        const result = await res.json();
+        if (result.success) {
+            setReviews(result.data);
+        }
+    } catch (error) {
+        console.error("Error fetching reviews", error);
+    }
+  };
 
   // Toast notification
   const showNotification = (message, type = 'success') => {
@@ -228,12 +256,10 @@ export default function EditProductPage() {
   const handleMainImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     if (file.size > 5 * 1024 * 1024) {
       showNotification('File size exceeds 5MB', 'error');
       return;
     }
-
     setMainImage(file);
     setMainImagePreview(URL.createObjectURL(file));
     showNotification('Nouvelle image principale sélectionnée');
@@ -243,13 +269,10 @@ export default function EditProductPage() {
   const handleGalleryUpload = (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
-
     const validFiles = files.filter((file) => file.size <= 5 * 1024 * 1024);
-
     setGalleryImages(prev => [...prev, ...validFiles]);
     const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
     setGalleryPreviews(prev => [...prev, ...newPreviews]);
-
     showNotification(`${validFiles.length} image(s) ajoutée(s)`);
   };
 
@@ -311,6 +334,87 @@ export default function EditProductPage() {
     return true;
   };
 
+  // --- REVIEW HANDLERS ---
+
+  const handleReviewChange = (e) => {
+    const { name, value } = e.target;
+    setReviewForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleRatingChange = (rating) => {
+    setReviewForm(prev => ({ ...prev, rating }));
+  };
+
+  const resetReviewForm = () => {
+    setReviewForm({ username: '', rating: 5, title: '', body: '' });
+    setEditingReviewId(null);
+  };
+
+  const startEditReview = (review) => {
+    setEditingReviewId(review._id);
+    setReviewForm({
+      username: review.username,
+      rating: review.rating,
+      title: review.title || '',
+      body: review.body || ''
+    });
+    // Scroll to review form could be added here
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!reviewForm.username || !reviewForm.body) {
+        showNotification("Nom et commentaire requis", "error");
+        return;
+    }
+
+    setIsReviewLoading(true);
+    try {
+        const isEditing = !!editingReviewId;
+        const url = isEditing 
+            ? `${API_URL}/products/${id}/reviews/${editingReviewId}`
+            : `${API_URL}/products/${id}/reviews`;
+        
+        const method = isEditing ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reviewForm)
+        });
+
+        const data = await res.json();
+        
+        if (!res.ok) throw new Error(data.message || 'Erreur lors de la sauvegarde de l\'avis');
+
+        showNotification(isEditing ? 'Avis modifié avec succès' : 'Avis ajouté avec succès');
+        resetReviewForm();
+        fetchReviews(); // Refresh list
+    } catch (error) {
+        showNotification(error.message, 'error');
+    } finally {
+        setIsReviewLoading(false);
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    if (!confirm("Voulez-vous vraiment supprimer cet avis ?")) return;
+
+    try {
+        const res = await fetch(`${API_URL}/products/${id}/reviews/${reviewId}`, {
+            method: 'DELETE'
+        });
+        
+        if (!res.ok) throw new Error('Erreur suppression');
+        
+        showNotification('Avis supprimé');
+        fetchReviews();
+    } catch (error) {
+        showNotification("Erreur lors de la suppression", 'error');
+    }
+  };
+
+
   // --- SUBMIT (PUT REQUEST) ---
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -327,7 +431,6 @@ export default function EditProductPage() {
       formDataToSend.append('price', formData.price);
       formDataToSend.append('category', formData.category);
       
-      // SUB-CATEGORY
       if (formData.subCategory) formDataToSend.append('subCategory', formData.subCategory.trim());
 
       // Optional fields
@@ -594,6 +697,17 @@ export default function EditProductPage() {
                     <span className="font-medium text-gray-700">Galerie</span>
                   </div>
                   <span className="font-bold text-gray-900">{galleryPreviews.length}</span>
+                </div>
+
+                {/* Review Stats */}
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500">
+                      <Star className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="font-medium text-gray-700">Avis</span>
+                  </div>
+                  <span className="font-bold text-gray-900">{reviews.length}</span>
                 </div>
 
                 <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
@@ -991,27 +1105,31 @@ export default function EditProductPage() {
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="space-y-1">
-                        <label className="text-xs text-gray-500">Largeur</label>
-                        <input name="width" type="number" value={formData.width} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border rounded-xl" />
+                        <label className="text-xs text-black">Largeur</label>
+                        <label className="text-xs text-black">Largeur</label>
+                        <input name="width" type="number" value={formData.width} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border text-black rounded-xl" />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs text-gray-500">Hauteur</label>
-                        <input name="height" type="number" value={formData.height} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border rounded-xl" />
+                        <label className="text-xs text-black">Hauteur</label>
+                        <label className="text-xs text-black">Largeur</label>
+                        <input name="height" type="number" value={formData.height} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border text-black rounded-xl" />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs text-gray-500">Profondeur</label>
-                        <input name="depth" type="number" value={formData.depth} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border rounded-xl" />
+                        <label className="text-xs text-black">Profondeur</label>
+                        <label className="text-xs text-black">Largeur</label>
+                        <input name="depth" type="number" value={formData.depth} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border text-black rounded-xl" />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs text-gray-500">Poids</label>
-                        <input name="weight" type="number" value={formData.weight} onChange={handleInputChange} placeholder="kg" className="w-full p-3 border rounded-xl" />
+                        <label className="text-xs text-black">Poids</label>
+                        <label className="text-xs text-black">Largeur</label>
+                        <input name="weight" type="number" value={formData.weight} onChange={handleInputChange} placeholder="kg" className="w-full p-3 border text-black rounded-xl" />
                     </div>
                   </div>
 
                   {/* Materials Generic */}
                   <div className="mt-4">
-                    <label className="text-sm font-bold block mb-2">Matériaux</label>
-                    <div className="flex gap-2">
+                    <label className="text-sm text-black font-bold block mb-2">Matériaux</label>
+                    <div className="flex gap-2 text-black">
                         <input value={newMaterial} onChange={e => setNewMaterial(e.target.value)} onKeyPress={e => handleKeyPress(e, materials, setMaterials, newMaterial, setNewMaterial)} placeholder="Ajouter un matériau" className="flex-1 p-3 border rounded-xl"/>
                         <button type="button" onClick={() => handleAddItem(materials, setMaterials, newMaterial, setNewMaterial)} className="bg-purple-100 text-purple-600 px-4 rounded-xl font-bold">+</button>
                     </div>
@@ -1022,13 +1140,13 @@ export default function EditProductPage() {
                   <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-yellow-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-yellow-600">VARIANTES</span></div></div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                        <label className="font-bold text-sm block mb-2">Couleurs</label>
-                        <div className="flex gap-2"><input value={newColor} onChange={e => setNewColor(e.target.value)} onKeyPress={e => handleKeyPress(e, colors, setColors, newColor, setNewColor)} className="flex-1 p-3 border rounded-xl" placeholder="Ajouter couleur"/><button type="button" onClick={() => handleAddItem(colors, setColors, newColor, setNewColor)} className="bg-pink-100 text-pink-600 px-4 rounded-xl">+</button></div>
+                        <label className="font-bold text-black  text-sm block mb-2">Couleurs</label>
+                        <div className="flex gap-2"><input value={newColor} onChange={e => setNewColor(e.target.value)} onKeyPress={e => handleKeyPress(e, colors, setColors, newColor, setNewColor)} className="flex-1 p-3 border text-black rounded-xl" placeholder="Ajouter couleur"/><button type="button" onClick={() => handleAddItem(colors, setColors, newColor, setNewColor)} className="bg-pink-100 text-pink-600 px-4 rounded-xl">+</button></div>
                         <div className="flex flex-wrap gap-2 mt-2">{colors.map((c, i) => <span key={i} className="bg-pink-50 text-pink-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(colors, setColors, i)}>{c} ×</span>)}</div>
                         </div>
                         <div>
-                        <label className="font-bold text-sm block mb-2">Tailles</label>
-                        <div className="flex gap-2"><input value={newTaille} onChange={e => setNewTaille(e.target.value)} onKeyPress={e => handleKeyPress(e, taille, setTaille, newTaille, setNewTaille)} className="flex-1 p-3 border rounded-xl" placeholder="Ajouter taille"/><button type="button" onClick={() => handleAddItem(taille, setTaille, newTaille, setNewTaille)} className="bg-cyan-100 text-cyan-600 px-4 rounded-xl">+</button></div>
+                        <label className="font-bold text-black  text-sm block mb-2">Tailles</label>
+                        <div className="flex gap-2"><input value={newTaille} onChange={e => setNewTaille(e.target.value)} onKeyPress={e => handleKeyPress(e, taille, setTaille, newTaille, setNewTaille)} className="flex-1 p-3 border text-black rounded-xl" placeholder="Ajouter taille"/><button type="button" onClick={() => handleAddItem(taille, setTaille, newTaille, setNewTaille)} className="bg-cyan-100 text-cyan-600 px-4 rounded-xl">+</button></div>
                         <div className="flex flex-wrap gap-2 mt-2">{taille.map((t, i) => <span key={i} className="bg-cyan-50 text-cyan-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(taille, setTaille, i)}>{t} ×</span>)}</div>
                         </div>
                   </div>
@@ -1047,6 +1165,147 @@ export default function EditProductPage() {
                     </div>
                     {tags.length > 0 && <div className="flex flex-wrap gap-2 mt-3">{tags.map((tag, index) => (<span key={index} className="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-bold text-sm cursor-pointer hover:bg-red-100 hover:text-red-600 transition-colors" onClick={() => handleRemoveItem(tags, setTags, index)}>#{tag}</span>))}</div>}
                   </div>
+
+                  {/* --- SECTION AVIS (REVIEWS) --- */}
+                  <div className="relative my-8">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-yellow-200"></div>
+                    </div>
+                    <div className="relative flex justify-center">
+                        <span className="px-4 bg-white text-sm font-medium text-yellow-600">GESTION DES AVIS CLIENTS</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6 bg-yellow-50/50 p-6 rounded-2xl border border-yellow-100">
+                     <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                            <MessageSquare className="w-5 h-5 text-yellow-600"/>
+                            Avis & Commentaires ({reviews.length})
+                        </h3>
+                     </div>
+
+                     {/* Review Form */}
+                     <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <h4 className="text-sm font-bold text-gray-700 mb-3">
+                            {editingReviewId ? 'Modifier l\'avis' : 'Ajouter un avis manuellement'}
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-black">Nom utilisateur</label>
+                                <input 
+                                    name="username" 
+                                    value={reviewForm.username} 
+                                    onChange={handleReviewChange} 
+                                    className="w-full p-2 border text-black border rounded-lg text-sm" 
+                                    placeholder="Ex: John Doe"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-black">Note</label>
+                                <div className="flex gap-1">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <button
+                                            key={star}
+                                            type="button"
+                                            onClick={() => handleRatingChange(star)}
+                                            className="focus:outline-none transition-transform hover:scale-110"
+                                        >
+                                            <Star 
+                                                className={`w-6 h-6 ${star <= reviewForm.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="space-y-2 mb-4">
+                            <label className="text-xs font-bold text-black">Titre (Optionnel)</label>
+                            <input 
+                                name="title" 
+                                value={reviewForm.title} 
+                                onChange={handleReviewChange} 
+                                className="w-full p-2 border text-black rounded-lg text-sm" 
+                                placeholder="Ex: Super produit !"
+                            />
+                        </div>
+                        <div className="space-y-2 mb-4">
+                            <label className="text-xs font-bold text-black">Commentaire</label>
+                            <textarea 
+                                name="body" 
+                                value={reviewForm.body} 
+                                onChange={handleReviewChange} 
+                                rows={3}
+                                className="w-full p-2 border text-black rounded-lg text-sm" 
+                                placeholder="L'avis du client..."
+                            />
+                        </div>
+                        <div className="flex justify-end gap-2">
+                            {editingReviewId && (
+                                <button 
+                                    type="button" 
+                                    onClick={resetReviewForm}
+                                    className="px-4 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                                >
+                                    Annuler
+                                </button>
+                            )}
+                            <button 
+                                type="button" 
+                                onClick={handleReviewSubmit}
+                                disabled={isReviewLoading}
+                                className="px-4 py-2 text-sm text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 font-bold flex items-center gap-2"
+                            >
+                                {isReviewLoading && <Loader2 className="w-4 h-4 animate-spin"/>}
+                                {editingReviewId ? 'Mettre à jour' : 'Ajouter l\'avis'}
+                            </button>
+                        </div>
+                     </div>
+
+                     {/* Reviews List */}
+                     <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                        {reviews.length === 0 ? (
+                            <p className="text-center text-gray-500 text-sm py-4">Aucun avis pour ce produit.</p>
+                        ) : (
+                            reviews.map((review) => (
+                                <div key={review._id} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <div className="bg-gray-100 p-1.5 rounded-full"><User className="w-3 h-3 text-gray-500"/></div>
+                                            <span className="font-bold text-sm text-gray-900">{review.username}</span>
+                                            <span className="text-xs text-gray-400">• {new Date(review.date).toLocaleDateString()}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1 mb-1">
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star key={i} className={`w-3 h-3 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`}/>
+                                            ))}
+                                        </div>
+                                        {review.title && <p className="text-sm font-bold text-gray-800">{review.title}</p>}
+                                        <p className="text-sm text-gray-600 mt-1">{review.body}</p>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button 
+                                            type="button" 
+                                            onClick={() => startEditReview(review)}
+                                            className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                                            title="Modifier"
+                                        >
+                                            <Edit2 className="w-4 h-4"/>
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            onClick={() => handleDeleteReview(review._id)}
+                                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                            title="Supprimer"
+                                        >
+                                            <Trash2 className="w-4 h-4"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                     </div>
+                  </div>
+
 
                   {/* Actions */}
                   <div className="pt-8 border-t border-yellow-200 flex justify-end gap-4">
