@@ -35,10 +35,12 @@ import {
   AlertCircle,
   Trash2,
   Zap,
-  List // AJOUTÉ : Pour le bouton de gestion
+  List,
+  MessageSquare,
+  User
 } from 'lucide-react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 const categories = [
   {
@@ -75,8 +77,6 @@ const initialFormData = {
   discount: '',
   category: 'Equipements',
   subCategory: '',
-  rating: '',
-  reviewCount: '',
   isNewProduct: false,
   isFeatured: false,
   inStock: true,
@@ -97,8 +97,6 @@ export default function AddProductPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('equipements');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Calcul auto du discount
   const [autoDiscount, setAutoDiscount] = useState(false);
 
   // Images
@@ -114,33 +112,35 @@ export default function AddProductPage() {
   const [taille, setTaille] = useState([]);
   const [materials, setMaterials] = useState([]);
 
-  // Array inputs
+  // Inputs for arrays
   const [newFeature, setNewFeature] = useState('');
   const [newTag, setNewTag] = useState('');
   const [newColor, setNewColor] = useState('');
   const [newTaille, setNewTaille] = useState('');
   const [newMaterial, setNewMaterial] = useState('');
 
-  // Form data
   const [formData, setFormData] = useState(initialFormData);
 
-  // Toast
-  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  // Review State
+  const [addReview, setAddReview] = useState(false);
+  const [reviewData, setReviewData] = useState({
+    username: '',
+    rating: 5,
+    title: '',
+    body: ''
+  });
 
-  // Refs
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
   const fileInputRef = useRef(null);
   const galleryInputRef = useRef(null);
 
-  // Toast notification
   const showNotification = (message, type = 'success') => {
     setToast({ show: true, message, type });
     setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
   };
 
-  // Auto-calc discount from price & oldPrice
   useEffect(() => {
     if (!autoDiscount) return;
-
     const price = parseFloat(formData.price);
     const oldPrice = parseFloat(formData.oldPrice);
 
@@ -165,7 +165,6 @@ export default function AddProductPage() {
     }
   }, [autoDiscount, formData.price, formData.oldPrice, formData.discount]);
 
-  // Handle main image upload
   const handleMainImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -180,7 +179,6 @@ export default function AddProductPage() {
     showNotification('Main image uploaded successfully');
   };
 
-  // Handle gallery upload
   const handleGalleryUpload = (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
@@ -196,11 +194,9 @@ export default function AddProductPage() {
 
     const newPreviews = newGallery.map((file) => URL.createObjectURL(file));
     setGalleryPreviews(newPreviews);
-
     showNotification(`${validFiles.length} image(s) added to gallery`);
   };
 
-  // Remove gallery image
   const removeGalleryImage = (index) => {
     const newGallery = galleryImages.filter((_, i) => i !== index);
     const newPreviews = galleryPreviews.filter((_, i) => i !== index);
@@ -208,7 +204,6 @@ export default function AddProductPage() {
     setGalleryPreviews(newPreviews);
   };
 
-  // Handle input change
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -217,7 +212,11 @@ export default function AddProductPage() {
     }));
   };
 
-  // Add array item
+  const handleReviewChange = (e) => {
+    const { name, value } = e.target;
+    setReviewData(prev => ({ ...prev, [name]: value }));
+  };
+
   const handleAddItem = (array, setArray, newItem, setNewItem, typeLabel) => {
     const value = newItem.trim();
     if (!value) return;
@@ -232,14 +231,12 @@ export default function AddProductPage() {
     showNotification(`${value} added to ${typeLabel}`);
   };
 
-  // Remove array item
   const handleRemoveItem = (array, setArray, index) => {
     const newArray = [...array];
     newArray.splice(index, 1);
     setArray(newArray);
   };
 
-  // Handle key press for arrays
   const handleKeyPress = (e, array, setArray, newItem, setNewItem, typeLabel) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -247,7 +244,6 @@ export default function AddProductPage() {
     }
   };
 
-  // Calculate final price
   const calculateFinalPrice = () => {
     const price = parseFloat(formData.price) || 0;
     const discount = parseFloat(formData.discount) || 0;
@@ -259,14 +255,12 @@ export default function AddProductPage() {
     return price;
   };
 
-  // Format currency
   const formatCurrency = (amount) =>
     new Intl.NumberFormat('fr-MA', {
       style: 'currency',
       currency: 'MAD',
     }).format(amount);
 
-  // Validate form
   const validateForm = () => {
     if (!formData.name.trim()) {
       showNotification('Product name is required', 'error');
@@ -284,49 +278,55 @@ export default function AddProductPage() {
       showNotification('Main product image is required', 'error');
       return false;
     }
+
+    // Validate Review if checked
+    if (addReview) {
+      if (!reviewData.username.trim()) {
+        showNotification('Review username is required', 'error');
+        return false;
+      }
+      if (!reviewData.rating) {
+        showNotification('Review rating is required', 'error');
+        return false;
+      }
+      if (!reviewData.title.trim()) {
+        showNotification('Review title is required', 'error');
+        return false;
+      }
+    }
+
     return true;
   };
 
-  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     setIsSubmitting(true);
 
     try {
+      // 1. Prepare Product Data (FormData for image upload)
       const formDataToSend = new FormData();
-
-      // Basic fields
       formDataToSend.append('name', formData.name.trim());
       formDataToSend.append('description', formData.description.trim());
       formDataToSend.append('price', formData.price);
       formDataToSend.append('category', formData.category);
 
-      // Optional fields
       if (formData.oldPrice) formDataToSend.append('oldPrice', formData.oldPrice);
       if (formData.discount) formDataToSend.append('discount', formData.discount);
       if (formData.subCategory) formDataToSend.append('subCategory', formData.subCategory.trim());
-      if (formData.rating) formDataToSend.append('rating', formData.rating);
-      if (formData.reviewCount) formDataToSend.append('reviewCount', formData.reviewCount);
       if (formData.stockQuantity) formDataToSend.append('stockQuantity', formData.stockQuantity);
       if (formData.sku) formDataToSend.append('sku', formData.sku.trim());
       if (formData.warranty) formDataToSend.append('warranty', formData.warranty.trim());
-
-      // Boolean fields
       formDataToSend.append('isNewProduct', formData.isNewProduct.toString());
       formDataToSend.append('isFeatured', formData.isFeatured.toString());
       formDataToSend.append('inStock', formData.inStock.toString());
-
-      // Arrays as JSON
       formDataToSend.append('features', JSON.stringify(features));
       formDataToSend.append('tags', JSON.stringify(tags));
       formDataToSend.append('colors', JSON.stringify(colors));
       formDataToSend.append('taille', JSON.stringify(taille));
       formDataToSend.append('materials', JSON.stringify(materials));
 
-      // Dimensions object
       const dimensions = {
         width: parseFloat(formData.width) || 0,
         height: parseFloat(formData.height) || 0,
@@ -335,7 +335,6 @@ export default function AddProductPage() {
       };
       formDataToSend.append('dimensions', JSON.stringify(dimensions));
 
-      // Shipping object
       const shipping = {
         dimensions: formData.shippingDimensions || '',
         weight: parseFloat(formData.shippingWeight) || 0,
@@ -344,7 +343,6 @@ export default function AddProductPage() {
       };
       formDataToSend.append('shipping', JSON.stringify(shipping));
 
-      // Images
       if (mainImage) {
         formDataToSend.append('image', mainImage);
       }
@@ -353,7 +351,7 @@ export default function AddProductPage() {
         formDataToSend.append('gallery', file);
       });
 
-      // Send to API
+      // 2. Create Product
       const response = await fetch(`${API_URL}/products`, {
         method: 'POST',
         body: formDataToSend,
@@ -365,27 +363,43 @@ export default function AddProductPage() {
         throw new Error(data.message || 'Failed to add product');
       }
 
-      showNotification('Product added successfully! Redirecting...');
+      // 3. Create Review (if selected)
+      // Corrected extraction of ID from response
+      const newProductId = data.data._id;
 
-      // Reset form
-      setFormData(initialFormData);
-      setMainImage(null);
-      setMainImagePreview('');
-      setGalleryImages([]);
-      setGalleryPreviews([]);
-      setFeatures([]);
-      setTags([]);
-      setColors([]);
-      setTaille([]);
-      setMaterials([]);
-      setAutoDiscount(false);
+      if (addReview && newProductId) {
+        const reviewPayload = {
+            username: reviewData.username,
+            rating: parseInt(reviewData.rating),
+            title: reviewData.title,
+            body: reviewData.body
+        };
 
-      // Redirect vers la page de liste des produits
+        const reviewResponse = await fetch(`${API_URL}/products/${newProductId}/reviews`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewPayload)
+        });
+
+        if (!reviewResponse.ok) {
+            console.warn('Product created but review failed');
+            showNotification('Product created, but failed to add review', 'warning');
+        } else {
+             showNotification('Product and review added successfully!');
+        }
+      } else {
+        showNotification('Product added successfully!');
+      }
+
+      // 4. Redirect
       setTimeout(() => {
-        router.push('/ironz-setup/products');
+        router.push('/ironz-setup');
       }, 1500);
+
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error adding product:', error);
       showNotification(error.message || 'Failed to add product', 'error');
     } finally {
       setIsSubmitting(false);
@@ -397,7 +411,6 @@ export default function AddProductPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-amber-50 p-4 md:p-8">
-      {/* Toast Notification */}
       {toast.show && (
         <div className="fixed top-6 right-6 z-50 animate-slideInRight">
           <div
@@ -426,10 +439,7 @@ export default function AddProductPage() {
       )}
 
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
-          
-          {/* Top Navigation Bar with Back and Manage Button */}
           <div className="flex justify-between items-center mb-6">
             <button
               onClick={() => router.back()}
@@ -438,10 +448,8 @@ export default function AddProductPage() {
               <ArrowLeft className="w-4 h-4 text-yellow-600 group-hover:scale-110 transition-transform" />
               <span className="text-sm font-medium text-gray-700">Retour</span>
             </button>
-
-            {/* ---> BOUTON GÉRER LE STOCK AJOUTÉ ICI <--- */}
             <button
-              onClick={() => router.push('/ironz-setup/products')}
+              onClick={() => router.push('/ironz-setup')}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border-2 border-yellow-400 text-yellow-700 font-bold hover:bg-yellow-50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
             >
               <List className="w-5 h-5" />
@@ -501,11 +509,8 @@ export default function AddProductPage() {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Sidebar */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Category Selection */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg p-6">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 rounded-xl bg-gradient-to-br from-yellow-500 to-amber-500">
@@ -521,7 +526,6 @@ export default function AddProductPage() {
                 {categories.map((category) => {
                   const Icon = category.icon;
                   const isActive = activeTab === category.id;
-
                   return (
                     <button
                       key={category.id}
@@ -563,13 +567,11 @@ export default function AddProductPage() {
               </div>
             </div>
 
-            {/* Quick Stats */}
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <Package2 className="w-5 h-5 text-yellow-500" />
                 Quick Overview
               </h3>
-
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
                   <div className="flex items-center gap-3">
@@ -620,7 +622,6 @@ export default function AddProductPage() {
                 </div>
               </div>
 
-              {/* Price Preview */}
               {formData.price && (
                 <div className="mt-6 pt-6 border-t border-yellow-200">
                   <div className="text-sm text-gray-600 mb-2">Price Preview</div>
@@ -645,10 +646,8 @@ export default function AddProductPage() {
             </div>
           </div>
 
-          {/* Main Form */}
           <div className="lg:col-span-2">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg overflow-hidden">
-              {/* Form Header */}
               <div className="p-6 border-b border-yellow-200 bg-gradient-to-r from-yellow-50 to-amber-50">
                 <div className="flex items-center justify-between">
                   <div>
@@ -665,7 +664,6 @@ export default function AddProductPage() {
 
               <div className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-8">
-                  {/* Product Images */}
                   <div className="space-y-6">
                     <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                       <ImageIcon className="w-5 h-5 text-yellow-500" />
@@ -673,7 +671,6 @@ export default function AddProductPage() {
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* Main Image */}
                       <div className="space-y-4">
                         <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
                           <div className="p-2 rounded-lg bg-gradient-to-br from-yellow-500 to-amber-500">
@@ -682,6 +679,7 @@ export default function AddProductPage() {
                           <span>Main Image</span>
                           <span className="text-red-500 ml-0.5">*</span>
                         </label>
+
                         <div
                           onClick={() => fileInputRef.current?.click()}
                           className="relative border-3 border-dashed border-yellow-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-yellow-500 hover:bg-gradient-to-br hover:from-yellow-50 hover:to-amber-50 group"
@@ -741,7 +739,6 @@ export default function AddProductPage() {
                         </div>
                       </div>
 
-                      {/* Gallery Images */}
                       <div className="space-y-4">
                         <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
                           <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500">
@@ -749,6 +746,7 @@ export default function AddProductPage() {
                           </div>
                           Gallery Images
                         </label>
+
                         <div
                           onClick={() => galleryInputRef.current?.click()}
                           className="relative border-3 border-dashed border-blue-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-50 hover:to-cyan-50 group"
@@ -779,7 +777,6 @@ export default function AddProductPage() {
                           </div>
                         </div>
 
-                        {/* Gallery Preview */}
                         {galleryPreviews.length > 0 && (
                           <div className="mt-6">
                             <div className="flex items-center justify-between mb-4">
@@ -814,7 +811,6 @@ export default function AddProductPage() {
                     </div>
                   </div>
 
-                  {/* Separator */}
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-yellow-200"></div>
@@ -826,7 +822,6 @@ export default function AddProductPage() {
                     </div>
                   </div>
 
-                  {/* Basic Information */}
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-3">
@@ -848,7 +843,6 @@ export default function AddProductPage() {
                           required
                         />
                       </div>
-
                       <div className="space-y-3">
                         <label htmlFor="sku" className="flex items-center gap-2 text-sm font-bold text-gray-900">
                           <Hash className="w-4 h-4 text-purple-500" />
@@ -886,7 +880,6 @@ export default function AddProductPage() {
                       />
                     </div>
 
-                    {/* Features */}
                     <div className="space-y-3">
                       <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
                         <Layers className="w-4 h-4 text-blue-500" />
@@ -935,7 +928,6 @@ export default function AddProductPage() {
                     </div>
                   </div>
 
-                  {/* Separator */}
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-yellow-200"></div>
@@ -947,7 +939,6 @@ export default function AddProductPage() {
                     </div>
                   </div>
 
-                  {/* Pricing & Stock */}
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="space-y-3">
@@ -1065,7 +1056,6 @@ export default function AddProductPage() {
                           className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
                         />
                       </div>
-
                       <div className="space-y-3">
                         <label
                           htmlFor="subCategory"
@@ -1085,7 +1075,6 @@ export default function AddProductPage() {
                       </div>
                     </div>
 
-                    {/* Toggles */}
                     <div className="flex flex-wrap gap-6 p-4 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200">
                       <label className="flex items-center gap-3 cursor-pointer group">
                         <div className="relative">
@@ -1164,7 +1153,6 @@ export default function AddProductPage() {
                     </div>
                   </div>
 
-                  {/* Equipment Specifications */}
                   {activeTab === 'equipements' && (
                     <>
                       <div className="relative">
@@ -1196,7 +1184,6 @@ export default function AddProductPage() {
                               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
                             />
                           </div>
-
                           <div className="space-y-3">
                             <label
                               htmlFor="height"
@@ -1216,7 +1203,6 @@ export default function AddProductPage() {
                               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
                             />
                           </div>
-
                           <div className="space-y-3">
                             <label htmlFor="depth" className="flex items-center gap-2 text-sm font-bold text-gray-900">
                               <Ruler className="w-4 h-4 text-blue-500" />
@@ -1233,7 +1219,6 @@ export default function AddProductPage() {
                               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
                             />
                           </div>
-
                           <div className="space-y-3">
                             <label htmlFor="weight" className="flex items-center gap-2 text-sm font-bold text-gray-900">
                               <Scale className="w-4 h-4 text-blue-500" />
@@ -1253,7 +1238,6 @@ export default function AddProductPage() {
                           </div>
                         </div>
 
-                        {/* Materials */}
                         <div className="space-y-3">
                           <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
                             <Layers className="w-4 h-4 text-purple-500" />
@@ -1311,7 +1295,6 @@ export default function AddProductPage() {
                     </>
                   )}
 
-                  {/* Accessory Specifications */}
                   {activeTab === 'accessoires' && (
                     <>
                       <div className="relative">
@@ -1326,7 +1309,6 @@ export default function AddProductPage() {
                       </div>
 
                       <div className="space-y-6">
-                        {/* Colors */}
                         <div className="space-y-3">
                           <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
                             <Palette className="w-4 h-4 text-pink-500" />
@@ -1375,7 +1357,6 @@ export default function AddProductPage() {
                           )}
                         </div>
 
-                        {/* Sizes */}
                         <div className="space-y-3">
                           <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
                             <Ruler className="w-4 h-4 text-cyan-500" />
@@ -1423,7 +1404,6 @@ export default function AddProductPage() {
                     </>
                   )}
 
-                  {/* Separator */}
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-yellow-200"></div>
@@ -1435,7 +1415,6 @@ export default function AddProductPage() {
                     </div>
                   </div>
 
-                  {/* Shipping & Warranty */}
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-3">
@@ -1455,7 +1434,6 @@ export default function AddProductPage() {
                           className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
                         />
                       </div>
-
                       <div className="space-y-3">
                         <label
                           htmlFor="shippingWeight"
@@ -1501,7 +1479,6 @@ export default function AddProductPage() {
                           <option value="Pickup">Store Pickup</option>
                         </select>
                       </div>
-
                       <div className="space-y-3">
                         <label
                           htmlFor="estimatedDelivery"
@@ -1520,7 +1497,6 @@ export default function AddProductPage() {
                         />
                       </div>
                     </div>
-
                     <div className="space-y-3">
                       <label htmlFor="warranty" className="flex items-center gap-2 text-sm font-bold text-gray-900">
                         <Shield className="w-4 h-4 text-green-500" />
@@ -1537,7 +1513,6 @@ export default function AddProductPage() {
                     </div>
                   </div>
 
-                  {/* Separator */}
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-yellow-200"></div>
@@ -1547,7 +1522,6 @@ export default function AddProductPage() {
                     </div>
                   </div>
 
-                  {/* Tags */}
                   <div className="space-y-3">
                     <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
                       <Tag className="w-4 h-4 text-indigo-500" />
@@ -1590,49 +1564,91 @@ export default function AddProductPage() {
                     )}
                   </div>
 
-                  {/* Additional Info */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <label htmlFor="rating" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                        <Star className="w-4 h-4 text-yellow-500" />
-                        Rating
-                      </label>
-                      <input
-                        id="rating"
-                        name="rating"
-                        type="number"
-                        value={formData.rating}
-                        onChange={handleInputChange}
-                        placeholder="0-5"
-                        min="0"
-                        max="5"
-                        step="0.1"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
-                      />
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-yellow-200"></div>
                     </div>
-
-                    <div className="space-y-3">
-                      <label
-                        htmlFor="reviewCount"
-                        className="flex items-center gap-2 text-sm font-bold text-gray-900"
-                      >
-                        <FileText className="w-4 h-4 text-rose-500" />
-                        Review Count
-                      </label>
-                      <input
-                        id="reviewCount"
-                        name="reviewCount"
-                        type="number"
-                        value={formData.reviewCount}
-                        onChange={handleInputChange}
-                        placeholder="0"
-                        min="0"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all duration-300"
-                      />
+                    <div className="relative flex justify-center">
+                      <span className="px-4 bg-white text-sm font-medium text-yellow-600">
+                        INITIAL REVIEW (OPTIONAL)
+                      </span>
                     </div>
                   </div>
 
-                  {/* Form Actions */}
+                  <div className="bg-yellow-50/50 p-6 rounded-2xl border border-yellow-100">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <MessageSquare className="w-5 h-5 text-yellow-600" />
+                        <h3 className="font-bold text-gray-900">Add an Initial Review</h3>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={addReview}
+                          onChange={(e) => setAddReview(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-500"></div>
+                      </label>
+                    </div>
+
+                    {addReview && (
+                      <div className="space-y-4 animate-slideInRight">
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                           <div className="space-y-2">
+                             <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
+                               <User className="w-4 h-4 text-gray-500" />
+                               Username
+                             </label>
+                             <input
+                               name="username"
+                               value={reviewData.username}
+                               onChange={handleReviewChange}
+                               className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:border-yellow-500 outline-none"
+                               placeholder="Reviewer Name"
+                             />
+                           </div>
+                           <div className="space-y-2">
+                             <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
+                               <Star className="w-4 h-4 text-yellow-500" />
+                               Rating (1-5)
+                             </label>
+                             <input
+                               type="number"
+                               name="rating"
+                               min="1"
+                               max="5"
+                               value={reviewData.rating}
+                               onChange={handleReviewChange}
+                               className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:border-yellow-500 outline-none"
+                             />
+                           </div>
+                         </div>
+                         <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-900">Title</label>
+                            <input
+                              name="title"
+                              value={reviewData.title}
+                              onChange={handleReviewChange}
+                              className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:border-yellow-500 outline-none"
+                              placeholder="Great product!"
+                            />
+                         </div>
+                         <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-900">Comment</label>
+                            <textarea
+                              name="body"
+                              rows={3}
+                              value={reviewData.body}
+                              onChange={handleReviewChange}
+                              className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:border-yellow-500 outline-none"
+                              placeholder="Details about the experience..."
+                            />
+                         </div>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="pt-8 border-t border-yellow-200">
                     <div className="flex flex-col sm:flex-row gap-4 justify-end">
                       <button
@@ -1667,7 +1683,6 @@ export default function AddProductPage() {
               </div>
             </div>
 
-            {/* Footer Note */}
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 All fields marked with <span className="text-red-500">*</span> are required. Make sure to review all
@@ -1677,8 +1692,6 @@ export default function AddProductPage() {
           </div>
         </div>
       </div>
-
-      {/* Custom CSS for animations */}
       <style jsx global>{`
         @keyframes slideInRight {
           from {
@@ -1690,17 +1703,14 @@ export default function AddProductPage() {
             opacity: 1;
           }
         }
-
         .animate-slideInRight {
           animation: slideInRight 0.3s ease-out;
         }
-
         input[type='number']::-webkit-inner-spin-button,
         input[type='number']::-webkit-outer-spin-button {
           -webkit-appearance: none;
           margin: 0;
         }
-
         input[type='number'] {
           -moz-appearance: textfield;
         }

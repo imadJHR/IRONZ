@@ -29,13 +29,14 @@ import {
   Eye,
   ArrowRight,
   ChevronLeft,
-  ZoomIn
+  ZoomIn,
+  MessageSquare,
+  Send,
+  User
 } from "lucide-react";
-
 import { useCart } from "../../../context/cart-context";
 import { useFavorites } from "../../../context/favorites-context";
 import { cn } from "../../../lib/utils";
-
 import { Badge } from "../../../components/ui/badge";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
@@ -44,33 +45,13 @@ const PLACEHOLDER = "/placeholder.svg";
 
 // --- COLOR UTILS ---
 const COLOR_MAP = {
-  "Rouge": "#EF4444",
-  "Bleu": "#3B82F6",
-  "Vert": "#22C55E",
-  "Noir": "#000000",
-  "Blanc": "#FFFFFF",
-  "Jaune": "#EAB308",
-  "Orange": "#F97316",
-  "Violet": "#8B5CF6",
-  "Rose": "#EC4899",
-  "Gris": "#6B7280",
-  "Marron": "#A52A2A",
-  "Beige": "#F5F5DC",
-  "Or": "#FFD700",
-  "Argent": "#C0C0C0",
+  "Rouge": "#EF4444", "Bleu": "#3B82F6", "Vert": "#22C55E", "Noir": "#000000", "Blanc": "#FFFFFF",
+  "Jaune": "#EAB308", "Orange": "#F97316", "Violet": "#8B5CF6", "Rose": "#EC4899", "Gris": "#6B7280",
+  "Marron": "#A52A2A", "Beige": "#F5F5DC", "Or": "#FFD700", "Argent": "#C0C0C0",
   "Multicolore": "linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)",
-  "Red": "#EF4444",
-  "Blue": "#3B82F6",
-  "Green": "#22C55E",
-  "Black": "#000000",
-  "White": "#FFFFFF",
-  "Yellow": "#EAB308",
-  "Purple": "#8B5CF6",
-  "Pink": "#EC4899",
-  "Gray": "#6B7280",
-  "Brown": "#A52A2A",
-  "Gold": "#FFD700",
-  "Silver": "#C0C0C0"
+  "Red": "#EF4444", "Blue": "#3B82F6", "Green": "#22C55E", "Black": "#000000", "White": "#FFFFFF",
+  "Yellow": "#EAB308", "Purple": "#8B5CF6", "Pink": "#EC4899", "Gray": "#6B7280", "Brown": "#A52A2A",
+  "Gold": "#FFD700", "Silver": "#C0C0C0"
 };
 
 const getColor = (colorName) => {
@@ -174,7 +155,8 @@ function RatingStars({ rating, showValue = false, className = "", size = "sm" })
     xs: "w-3 h-3",
     sm: "w-3.5 h-3.5",
     md: "w-4 h-4",
-    lg: "w-5 h-5"
+    lg: "w-5 h-5",
+    xl: "w-6 h-6"
   };
 
   const starSize = sizeClasses[size] || sizeClasses.sm;
@@ -195,10 +177,39 @@ function RatingStars({ rating, showValue = false, className = "", size = "sm" })
   );
 }
 
+// Interactive Star Rater for Form
+function StarRater({ rating, setRating }) {
+  const [hover, setHover] = useState(0);
+
+  return (
+    <div className="flex gap-1">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <button
+          key={star}
+          type="button"
+          className="focus:outline-none transition-transform hover:scale-110"
+          onClick={() => setRating(star)}
+          onMouseEnter={() => setHover(star)}
+          onMouseLeave={() => setHover(rating)}
+        >
+          <Star
+            className={cn(
+              "w-8 h-8 transition-colors",
+              star <= (hover || rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+            )}
+          />
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function Alert({ variant = "info", title, children }) {
   const styles =
     variant === "danger"
       ? "border-red-200 bg-red-50 text-red-800 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-200"
+      : variant === "success"
+      ? "border-green-200 bg-green-50 text-green-800 dark:border-green-900/40 dark:bg-green-900/20 dark:text-green-200"
       : "border-gray-200 bg-gray-50 text-gray-800 dark:border-gray-800 dark:bg-gray-900/40 dark:text-gray-200";
 
   return (
@@ -222,7 +233,6 @@ function ColorSelector({ colors, selectedColor, onChange }) {
           <span className="text-gray-400 font-medium normal-case not-italic">Choisir</span>
         )}
       </div>
-
       <div className="flex flex-wrap gap-2 sm:gap-3">
         {colors.map((color) => {
           const isSelected = color === selectedColor;
@@ -273,7 +283,6 @@ function TailleSelector({ tailles, selectedTaille, onChange }) {
           <span className="text-gray-400 font-medium normal-case not-italic">Choisir</span>
         )}
       </div>
-
       <div className="flex flex-wrap gap-1.5 sm:gap-2">
         {tailles.map((t) => {
           const active = t === selectedTaille;
@@ -303,56 +312,57 @@ function TailleSelector({ tailles, selectedTaille, onChange }) {
 function ReviewsList({ reviews = [] }) {
   if (!reviews.length) {
     return (
-      <div className="rounded-xl border border-gray-200 bg-white p-6 sm:p-8 text-center text-xs sm:text-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900/40 dark:text-gray-300">
-        Aucun avis pour le moment. Soyez le premier à laisser un avis !
+      <div className="rounded-xl border border-gray-200 bg-gray-50 p-8 text-center text-gray-600 dark:border-gray-800 dark:bg-gray-900/40 dark:text-gray-300">
+        <MessageSquare className="w-12 h-12 mx-auto text-gray-300 mb-3" />
+        <p className="font-medium">Aucun avis pour le moment.</p>
+        <p className="text-sm">Soyez le premier à donner votre avis !</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-3 sm:space-y-4">
+    <div className="space-y-4">
       {reviews.map((r, idx) => (
         <div
           key={r._id || `${r.username || "u"}-${idx}`}
-          className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900/40"
+          className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900 transition-all hover:border-yellow-200"
         >
-          <div className="flex items-start justify-between gap-3 sm:gap-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-yellow-500 font-black text-black text-sm sm:text-lg">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 font-bold text-black shadow-md">
                 {(r.username?.[0] || "U").toUpperCase()}
               </div>
               <div>
-                <div className="font-bold text-sm sm:text-base text-gray-900 dark:text-white uppercase tracking-wide">
+                <div className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   {r.username || "Client"}
+                  {r.verified && (
+                    <Badge variant="success" className="bg-green-100 text-green-700 border-green-200 text-[10px] px-1.5 py-0.5">
+                      Achat vérifié
+                    </Badge>
+                  )}
                 </div>
-                <RatingStars rating={r.rating} className="mt-0.5 sm:mt-1" size="xs" />
+                <RatingStars rating={r.rating} className="mt-1" size="xs" />
               </div>
             </div>
-
-            {r.verified && (
-              <Badge variant="success" className="shrink-0 bg-green-500 text-white text-[10px] sm:text-xs">
-                ✓ Vérifié
-              </Badge>
+            {r.date && (
+              <div className="text-xs text-gray-400 font-medium">
+                {new Date(r.date).toLocaleDateString("fr-FR", { year: 'numeric', month: 'long', day: 'numeric' })}
+              </div>
             )}
           </div>
-
-          {r.title && (
-            <div className="mt-3 sm:mt-4 text-sm sm:text-base font-bold text-gray-900 dark:text-white">
-              {r.title}
-            </div>
-          )}
-
-          {r.body && (
-            <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-              {r.body}
-            </p>
-          )}
-
-          {r.date && (
-            <div className="mt-3 sm:mt-4 text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 font-medium">
-              {new Date(r.date).toLocaleDateString("fr-FR")}
-            </div>
-          )}
+          
+          <div className="mt-4 pl-[52px]">
+            {r.title && (
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-1">
+                {r.title}
+              </h4>
+            )}
+            {r.body && (
+              <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                {r.body}
+              </p>
+            )}
+          </div>
         </div>
       ))}
     </div>
@@ -362,24 +372,16 @@ function ReviewsList({ reviews = [] }) {
 function ProductSkeleton() {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:py-10">
-      {/* Breadcrumb Skeleton */}
       <div className="h-4 w-48 sm:w-64 animate-pulse rounded bg-gray-200 dark:bg-gray-800 mb-6 sm:mb-8" />
-      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-        {/* Image Skeleton */}
         <div className="space-y-3 sm:space-y-4">
           <div className="h-[300px] sm:h-[400px] lg:h-[500px] animate-pulse rounded-2xl sm:rounded-3xl bg-gray-200 dark:bg-gray-800" />
           <div className="flex gap-2 sm:gap-3 overflow-hidden">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 animate-pulse rounded-lg sm:rounded-xl bg-gray-200 dark:bg-gray-800 shrink-0"
-              />
+              <div key={i} className="h-16 w-16 sm:h-20 sm:w-20 lg:h-24 lg:w-24 animate-pulse rounded-lg sm:rounded-xl bg-gray-200 dark:bg-gray-800 shrink-0" />
             ))}
           </div>
         </div>
-
-        {/* Details Skeleton */}
         <div className="space-y-4 sm:space-y-6">
           <div className="h-8 sm:h-10 w-3/4 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
           <div className="h-5 sm:h-6 w-1/2 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
@@ -440,7 +442,6 @@ function MobileImageGallery({ images, productName, discount, isNewProduct }) {
     if (isRightSwipe && currentIndex > 0) {
       setCurrentIndex(prev => prev - 1);
     }
-
     setTouchStart(0);
     setTouchEnd(0);
   };
@@ -475,7 +476,6 @@ function MobileImageGallery({ images, productName, discount, isNewProduct }) {
             </motion.div>
           </AnimatePresence>
         </div>
-
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2 pointer-events-none">
           {discount > 0 && (
@@ -489,7 +489,6 @@ function MobileImageGallery({ images, productName, discount, isNewProduct }) {
             </Badge>
           )}
         </div>
-
         {/* Navigation Arrows */}
         {images.length > 1 && (
           <>
@@ -516,7 +515,6 @@ function MobileImageGallery({ images, productName, discount, isNewProduct }) {
           </>
         )}
       </div>
-
       {/* Dots Indicator */}
       {images.length > 1 && (
         <div className="flex justify-center gap-1.5 mt-3">
@@ -540,25 +538,29 @@ function MobileImageGallery({ images, productName, discount, isNewProduct }) {
 
 export default function ProductPageClient({ slug }) {
   const router = useRouter();
-
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
   const [product, setProduct] = useState(null);
+  const [reviews, setReviews] = useState([]); // Separate state for reviews
   const [relatedProducts, setRelatedProducts] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  
+  // UI State
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
-
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedTaille, setSelectedTaille] = useState("");
-
-  const [tab, setTab] = useState("details");
+  const [tab, setTab] = useState("details"); // 'details' or 'reviews'
   const [shareOpen, setShareOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
+
+  // Review Form State
+  const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
+  const [reviewForm, setReviewForm] = useState({ rating: 5, username: "", title: "", body: "" });
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewMessage, setReviewMessage] = useState(null); // { type: 'success'|'error', text: '' }
 
   const productId = useMemo(() => product?._id || product?.id, [product]);
 
@@ -634,6 +636,54 @@ export default function ProductPageClient({ slug }) {
     }
   }, [product]);
 
+  // Submit Review Handler
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    setSubmittingReview(true);
+    setReviewMessage(null);
+
+    try {
+      const res = await fetch(`${API_URL}/products/${productId}/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reviewForm)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Erreur lors de l\'envoi de l\'avis');
+      }
+
+      // Success
+      setReviewMessage({ type: 'success', text: 'Merci ! Votre avis a été publié avec succès.' });
+      
+      // Add new review to local state
+      setReviews(prev => [data.data, ...prev]);
+      
+      // Update product rating stats locally (optimistic)
+      // Note: Real recalculation happens on backend, but this updates UI instantly
+      setProduct(prev => ({
+        ...prev,
+        reviewCount: (prev.reviewCount || 0) + 1
+      }));
+
+      // Reset form
+      setReviewForm({ rating: 5, username: "", title: "", body: "" });
+      setTimeout(() => {
+        setIsReviewFormOpen(false);
+        setReviewMessage(null);
+      }, 2000);
+
+    } catch (err) {
+      setReviewMessage({ type: 'error', text: err.message });
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
   useEffect(() => {
     const onMouseDown = (e) => {
       if (!shareOpen) return;
@@ -655,21 +705,20 @@ export default function ProductPageClient({ slug }) {
       setQuantity(1);
       setSelectedColor("");
       setSelectedTaille("");
-
+      
       try {
         const safeSlug = encodeURIComponent(String(slug).toLowerCase());
         const res = await fetch(`${API_URL}/products/slug/${safeSlug}`, { cache: "no-store" });
-
         if (!res.ok) {
           if (res.status === 404) throw new Error("Produit non trouvé");
           throw new Error(`Erreur serveur (${res.status})`);
         }
-
         const json = await res.json();
         const p = json?.data;
-
         if (!p) throw new Error("Réponse invalide du serveur");
+        
         setProduct(p);
+        setReviews(p.reviews || []); // Initialize reviews from product data
 
         if (p.colors?.length > 0) setSelectedColor(p.colors[0]);
         if (p.taille?.length > 0) setSelectedTaille(p.taille[0]);
@@ -747,18 +796,15 @@ export default function ProductPageClient({ slug }) {
 
       <main className="bg-white pb-12 sm:pb-16 pt-4 sm:pt-8 dark:bg-gray-950">
         <div className="mx-auto w-full max-w-7xl px-3 sm:px-4 lg:px-8">
-          {/* Breadcrumb - Hidden on very small screens, simplified on mobile */}
+          
+          {/* Breadcrumb */}
           <nav
             className="mb-4 sm:mb-6 lg:mb-8 hidden xs:flex flex-wrap items-center gap-x-1.5 sm:gap-x-2 gap-y-1 text-[10px] sm:text-xs lg:text-sm text-gray-500 dark:text-gray-400 font-medium overflow-x-auto scrollbar-hide"
             aria-label="Fil d'Ariane"
           >
-            <Link href="/" className="hover:text-yellow-500 transition-colors whitespace-nowrap">
-              ACCUEIL
-            </Link>
+            <Link href="/" className="hover:text-yellow-500 transition-colors whitespace-nowrap">ACCUEIL</Link>
             <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 shrink-0" />
-            <Link href="/produit" className="hover:text-yellow-500 transition-colors whitespace-nowrap">
-              PRODUITS
-            </Link>
+            <Link href="/produit" className="hover:text-yellow-500 transition-colors whitespace-nowrap">PRODUITS</Link>
             {product.category && (
               <>
                 <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 shrink-0 hidden sm:block" />
@@ -817,7 +863,7 @@ export default function ProductPageClient({ slug }) {
                     priority
                     cloudinary
                   />
-
+                  
                   {/* Zoom Icon */}
                   <div className="absolute bottom-4 right-4 w-10 h-10 bg-white/80 dark:bg-gray-800/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <ZoomIn className="w-5 h-5 text-gray-700 dark:text-gray-300" />
@@ -880,7 +926,6 @@ export default function ProductPageClient({ slug }) {
                 </Badge>
                 
                 <div className="flex items-center gap-2 sm:gap-3">
-                  {/* Favorite Button */}
                   <button 
                     onClick={toggleFavorite}
                     className={cn(
@@ -892,7 +937,7 @@ export default function ProductPageClient({ slug }) {
                   >
                     <Heart className={cn("h-5 w-5 sm:h-6 sm:w-6", isInFavorites(productId) && "fill-current")} />
                   </button>
-                 
+                  
                   <div className="relative share-box">
                     <button 
                       onClick={handleShare} 
@@ -926,7 +971,7 @@ export default function ProductPageClient({ slug }) {
               <div className="flex items-center gap-2 sm:gap-4 mb-4 sm:mb-6 lg:mb-8">
                 <RatingStars rating={product.rating} showValue size="sm" />
                 <span className="text-xs sm:text-sm font-medium text-gray-400">|</span>
-                <span className="text-[10px] sm:text-sm font-bold text-gray-500">{product.reviewCount || 0} AVIS</span>
+                <span className="text-[10px] sm:text-sm font-bold text-gray-500">{reviews.length} AVIS</span>
               </div>
 
               <div className="flex items-baseline gap-2 sm:gap-4 mb-4 sm:mb-6 lg:mb-8">
@@ -940,32 +985,182 @@ export default function ProductPageClient({ slug }) {
                 )}
               </div>
 
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed mb-6 sm:mb-8 border-l-4 border-yellow-500 pl-3 sm:pl-4">
-                {product.description}
-              </p>
+              {/* TABS Navigation */}
+              <div className="flex gap-6 border-b border-gray-200 dark:border-gray-800 mb-6">
+                <button
+                  onClick={() => setTab("details")}
+                  className={cn(
+                    "pb-3 text-sm sm:text-base font-bold uppercase tracking-wider border-b-2 transition-colors",
+                    tab === "details" ? "border-yellow-500 text-yellow-500" : "border-transparent text-gray-400 hover:text-gray-600"
+                  )}
+                >
+                  Description
+                </button>
+                <button
+                  onClick={() => setTab("reviews")}
+                  className={cn(
+                    "pb-3 text-sm sm:text-base font-bold uppercase tracking-wider border-b-2 transition-colors",
+                    tab === "reviews" ? "border-yellow-500 text-yellow-500" : "border-transparent text-gray-400 hover:text-gray-600"
+                  )}
+                >
+                  Avis ({reviews.length})
+                </button>
+              </div>
 
-              {/* Selectors */}
-              {(product.taille?.length > 0 || product.colors?.length > 0) && (
-                <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8 p-4 sm:p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl sm:rounded-3xl">
-                  {product.taille?.length > 0 && (
-                    <TailleSelector
-                      tailles={product.taille}
-                      selectedTaille={selectedTaille}
-                      onChange={setSelectedTaille}
-                    />
+              {/* TAB CONTENT: DETAILS */}
+              {tab === "details" && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed mb-6 sm:mb-8 border-l-4 border-yellow-500 pl-3 sm:pl-4">
+                    {product.description}
+                  </p>
+
+                  {/* Selectors */}
+                  {(product.taille?.length > 0 || product.colors?.length > 0) && (
+                    <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8 p-4 sm:p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl sm:rounded-3xl">
+                      {product.taille?.length > 0 && (
+                        <TailleSelector
+                          tailles={product.taille}
+                          selectedTaille={selectedTaille}
+                          onChange={setSelectedTaille}
+                        />
+                      )}
+                      {product.colors?.length > 0 && (
+                        <ColorSelector
+                          colors={product.colors}
+                          selectedColor={selectedColor}
+                          onChange={setSelectedColor}
+                        />
+                      )}
+                    </div>
                   )}
-                  {product.colors?.length > 0 && (
-                    <ColorSelector
-                      colors={product.colors}
-                      selectedColor={selectedColor}
-                      onChange={setSelectedColor}
-                    />
+
+                  {/* Features List */}
+                  {Array.isArray(product.features) && product.features.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                      <h3 className="font-black uppercase italic mb-3 sm:mb-4 text-base sm:text-lg">Points Forts</h3>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                        {product.features.slice(0, 6).map((f, idx) => (
+                          <li key={idx} className="flex items-start gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300">
+                            <Check className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 shrink-0 mt-0.5" />
+                            <span>{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
-                </div>
+                </motion.div>
               )}
 
-              {/* Actions - Stacked on mobile, row on larger screens */}
-              <div className="flex flex-col gap-3 sm:gap-4 mt-auto">
+              {/* TAB CONTENT: REVIEWS */}
+              {tab === "reviews" && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+                  {/* Reviews Summary Header */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-2xl">
+                    <div className="text-center sm:text-left">
+                      <div className="text-3xl font-black text-gray-900 dark:text-white">
+                        {product.rating}<span className="text-lg text-gray-400">/5</span>
+                      </div>
+                      <div className="flex items-center justify-center sm:justify-start gap-1 mb-1">
+                        <RatingStars rating={product.rating} size="md" />
+                      </div>
+                      <div className="text-xs text-gray-500 font-medium">
+                        Basé sur {reviews.length} avis
+                      </div>
+                    </div>
+                    
+                    <button
+                      onClick={() => setIsReviewFormOpen(!isReviewFormOpen)}
+                      className="px-5 py-2.5 bg-black text-white dark:bg-white dark:text-black font-bold rounded-xl text-sm flex items-center gap-2 hover:opacity-90 transition-opacity"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                      {isReviewFormOpen ? "Fermer" : "Écrire un avis"}
+                    </button>
+                  </div>
+
+                  {/* Add Review Form */}
+                  <AnimatePresence>
+                    {isReviewFormOpen && (
+                      <motion.form
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        onSubmit={handleSubmitReview}
+                        className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4 overflow-hidden"
+                      >
+                        <h3 className="font-bold text-lg">Partagez votre expérience</h3>
+                        
+                        {reviewMessage && (
+                          <Alert variant={reviewMessage.type === 'success' ? 'success' : 'danger'}>
+                            {reviewMessage.text}
+                          </Alert>
+                        )}
+
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Note</label>
+                            <StarRater rating={reviewForm.rating} setRating={(r) => setReviewForm({...reviewForm, rating: r})} />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Votre nom</label>
+                            <input
+                              required
+                              type="text"
+                              value={reviewForm.username}
+                              onChange={(e) => setReviewForm({...reviewForm, username: e.target.value})}
+                              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                              placeholder="Votre nom"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Titre</label>
+                            <input
+                              required
+                              type="text"
+                              value={reviewForm.title}
+                              onChange={(e) => setReviewForm({...reviewForm, title: e.target.value})}
+                              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                              placeholder="Résumé de votre avis"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Commentaire</label>
+                            <textarea
+                              required
+                              rows={3}
+                              value={reviewForm.body}
+                              onChange={(e) => setReviewForm({...reviewForm, body: e.target.value})}
+                              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all resize-none"
+                              placeholder="Dites-nous ce que vous avez aimé ou ce qui pourrait être amélioré..."
+                            />
+                          </div>
+                        </div>
+
+                        <button
+                          type="submit"
+                          disabled={submittingReview}
+                          className="w-full py-3 bg-yellow-500 text-black font-bold rounded-xl hover:bg-yellow-400 transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                          {submittingReview ? (
+                            <>Envoi...</>
+                          ) : (
+                            <>
+                              Publier l'avis <Send className="w-4 h-4" />
+                            </>
+                          )}
+                        </button>
+                      </motion.form>
+                    )}
+                  </AnimatePresence>
+
+                  <ReviewsList reviews={reviews} />
+                </motion.div>
+              )}
+
+              {/* Actions - Always visible regardless of tab */}
+              <div className="flex flex-col gap-3 sm:gap-4 mt-8 pt-6 border-t border-gray-100 dark:border-gray-800">
                 <div className="flex gap-3 sm:gap-4">
                   {/* Quantity Selector */}
                   <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl sm:rounded-2xl p-0.5 sm:p-1">
@@ -984,7 +1179,7 @@ export default function ProductPageClient({ slug }) {
                       <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
                   </div>
-
+                  
                   {/* Add to Cart Button */}
                   <button
                     onClick={handleAddToCart}
@@ -1005,8 +1200,8 @@ export default function ProductPageClient({ slug }) {
                     </span>
                   </button>
                 </div>
-
-                {/* Buy Now Button (optional) */}
+                
+                {/* Buy Now Button */}
                 <button
                   onClick={() => {
                     handleAddToCart();
@@ -1030,21 +1225,6 @@ export default function ProductPageClient({ slug }) {
                   <Alert variant="danger" title="Rupture de stock">
                     Ce produit est victime de son succès. Ajoutez-le aux favoris pour être notifié du réassort.
                   </Alert>
-                </div>
-              )}
-
-              {/* Features List */}
-              {Array.isArray(product.features) && product.features.length > 0 && (
-                <div className="mt-6 sm:mt-8 lg:mt-10 pt-6 sm:pt-8 border-t border-gray-100 dark:border-gray-800">
-                  <h3 className="font-black uppercase italic mb-3 sm:mb-4 text-base sm:text-lg">Points Forts</h3>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                    {product.features.slice(0, 6).map((f, idx) => (
-                      <li key={idx} className="flex items-start gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300">
-                        <Check className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 shrink-0 mt-0.5" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               )}
             </section>
