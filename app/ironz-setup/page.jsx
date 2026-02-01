@@ -449,7 +449,7 @@ export default function AddProductPage() {
               <span className="text-sm font-medium text-gray-700">Retour</span>
             </button>
             <button
-              onClick={() => router.push('/ironz-setup')}
+              onClick={() => router.push('/ironz-setup/products')}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border-2 border-yellow-400 text-yellow-700 font-bold hover:bg-yellow-50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
             >
               <List className="w-5 h-5" />
