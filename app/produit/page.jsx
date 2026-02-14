@@ -18,6 +18,7 @@ import {
   ArrowRight,
   Flame,
   Menu,
+  Loader2
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart } from "../../context/cart-context";
@@ -45,13 +46,6 @@ import {
   SheetFooter,
 } from "../../components/ui/sheet";
 import { Separator } from "../../components/ui/separator";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../../components/ui/drawer";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
 const PLACEHOLDER = "/placeholder.svg";
@@ -136,16 +130,6 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
 
   const isFavorite = isInFavorites(productId);
 
-  const handleFavoriteClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (isFavorite) {
-      removeFromFavorites(productId);
-    } else {
-      addToFavorites(product);
-    }
-  };
-
   return (
     <motion.article
       key={productId}
@@ -186,7 +170,6 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
           >
             <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
-         
         </div>
 
         {/* Badges */}
@@ -272,6 +255,7 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
 export default function ProductsPage() {
   // --- STATE ---
   const [products, setProducts] = useState([]);
+  const [totalInventory, setTotalInventory] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -322,22 +306,47 @@ export default function ProductsPage() {
     addToCart(cartItem);
   };
 
-  // --- DATA FETCHING ---
+  // --- FETCHING ALL PRODUCTS (Loop) ---
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchAllProducts = async () => {
       setIsLoading(true);
       setError(null);
-      try {
-        const response = await fetch(`${API_URL}/products?limit=1000`);
-        if (!response.ok) throw new Error(`Erreur ${response.status}`);
-        
-        const data = await response.json();
-        const productsData = data.success && data.data ? data.data : Array.isArray(data) ? data : [];
-        
-        setProducts(productsData);
+      let allFetchedProducts = [];
+      let page = 1;
+      let hasMore = true;
+      const batchLimit = 50; // Fetch in batches to avoid server cut-off
 
-        if (productsData.length > 0) {
-          const prices = productsData.map((p) => parseFloat(p.price)).filter((p) => !isNaN(p));
+      try {
+        while(hasMore) {
+          const response = await fetch(`${API_URL}/products?page=${page}&limit=${batchLimit}&sort=newest`);
+          if (!response.ok) throw new Error(`Erreur ${response.status}`);
+          
+          const data = await response.json();
+          const batch = data.success && data.data ? data.data : Array.isArray(data) ? data : [];
+          
+          if (batch.length === 0) {
+            hasMore = false;
+            break;
+          }
+
+          allFetchedProducts = [...allFetchedProducts, ...batch];
+
+          // If we got fewer items than the limit, we reached the end
+          if (batch.length < batchLimit) {
+            hasMore = false;
+          } else {
+            page++;
+          }
+        }
+
+        // De-duplicate just in case
+        const uniqueProducts = Array.from(new Map(allFetchedProducts.map(item => [item._id, item])).values());
+        
+        setProducts(uniqueProducts);
+        setTotalInventory(uniqueProducts.length);
+
+        if (uniqueProducts.length > 0) {
+          const prices = uniqueProducts.map((p) => parseFloat(p.price)).filter((p) => !isNaN(p));
           if (prices.length > 0) {
             const min = Math.floor(Math.min(...prices));
             const max = Math.ceil(Math.max(...prices));
@@ -353,7 +362,7 @@ export default function ProductsPage() {
         setIsLoading(false);
       }
     };
-    fetchProducts();
+    fetchAllProducts();
   }, []);
 
   // --- FILTERING LOGIC ---
@@ -589,9 +598,23 @@ export default function ProductsPage() {
       <main className="container mx-auto px-3 sm:px-4 py-12 sm:py-16 md:py-20 lg:py-28 bg-white dark:bg-gray-950">
         {/* Header */}
         <header className="mb-8 sm:mb-10 md:mb-12 text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white mb-3 sm:mb-4">
-            Tous nos <span className="text-yellow-500">Produits</span>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white mb-3 sm:mb-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+            <span>Tous nos <span className="text-yellow-500">Produits</span></span>
+            {!isLoading && (
+              <span className="hidden sm:inline-flex items-center justify-center ml-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-lg sm:text-xl md:text-2xl rounded-lg font-bold border border-gray-200 dark:border-gray-700">
+                ({totalInventory})
+              </span>
+            )}
           </h1>
+          {/* Mobile Count */}
+          {!isLoading && (
+            <div className="sm:hidden mb-2">
+               <Badge variant="outline" className="text-sm font-bold border-yellow-500 text-gray-700 px-3 py-1">
+                 {totalInventory} articles disponibles
+               </Badge>
+            </div>
+          )}
+          
           <div className="h-1.5 w-12 sm:w-16 md:w-20 bg-yellow-500 mx-auto rounded-full" />
           <p className="mt-3 sm:mt-4 text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto px-4">
             Découvrez notre gamme complète d'équipements professionnels.
@@ -803,13 +826,9 @@ export default function ProductsPage() {
           {/* Product Grid */}
           <section className="flex-1">
             {isLoading ? (
-              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <div 
-                    key={i} 
-                    className="h-48 sm:h-52 md:h-60 lg:h-64 bg-gray-100 dark:bg-gray-800 rounded-2xl animate-pulse" 
-                  />
-                ))}
+              <div className="flex flex-col items-center justify-center py-20">
+                 <Loader2 className="w-12 h-12 text-yellow-500 animate-spin mb-4" />
+                 <p className="text-gray-500 font-medium">Chargement du catalogue complet...</p>
               </div>
             ) : filteredProducts.length === 0 ? (
               <div className="text-center py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-900 rounded-2xl sm:rounded-3xl border border-dashed border-gray-200 dark:border-gray-800">
@@ -824,6 +843,10 @@ export default function ProductsPage() {
               </div>
             ) : (
               <>
+                <div className="mb-4 text-sm text-gray-500 font-medium px-1">
+                   Affichage de <span className="text-black dark:text-white font-bold">{filteredProducts.length}</span> résultats
+                </div>
+
                 <motion.div 
                   className={cn(
                     "grid gap-3 sm:gap-4 md:gap-6", 
