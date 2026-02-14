@@ -42,6 +42,12 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api';
 
+// AWS Lambda Limit Safeguard (6MB total payload limit, setting 5.5MB as safe zone)
+const MAX_TOTAL_PAYLOAD_SIZE = 5.5 * 1024 * 1024; 
+const MAX_FILE_SIZE_MB = 2; 
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
+// Updated categories to share a consistent Black/Yellow theme
 const categories = [
   {
     id: 'equipements',
@@ -49,7 +55,8 @@ const categories = [
     dbValue: 'Equipements',
     description: 'Gym equipment & weights',
     icon: Dumbbell,
-    color: 'from-blue-500 to-cyan-500',
+    // Using dark theme for active state
+    color: 'from-gray-900 to-black', 
   },
   {
     id: 'supplement',
@@ -57,7 +64,7 @@ const categories = [
     dbValue: 'Supplément',
     description: 'Proteins & supplements',
     icon: Pill,
-    color: 'from-green-500 to-emerald-500',
+    color: 'from-gray-900 to-black',
   },
   {
     id: 'accessoires',
@@ -65,7 +72,7 @@ const categories = [
     dbValue: 'Accessoires',
     description: 'Clothing & accessories',
     icon: Shirt,
-    color: 'from-purple-500 to-pink-500',
+    color: 'from-gray-900 to-black',
   },
 ];
 
@@ -169,8 +176,8 @@ export default function AddProductPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      showNotification('File size exceeds 5MB', 'error');
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      showNotification(`File too large. Max size is ${MAX_FILE_SIZE_MB}MB`, 'error');
       return;
     }
 
@@ -183,10 +190,19 @@ export default function AddProductPage() {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
-    const validFiles = files.filter((file) => file.size <= 5 * 1024 * 1024);
+    const validFiles = [];
+    let oversizedCount = 0;
 
-    if (validFiles.length < files.length) {
-      showNotification('Some files exceed 5MB limit', 'warning');
+    files.forEach((file) => {
+      if (file.size <= MAX_FILE_SIZE_BYTES) {
+        validFiles.push(file);
+      } else {
+        oversizedCount++;
+      }
+    });
+
+    if (oversizedCount > 0) {
+      showNotification(`${oversizedCount} files skipped (limit ${MAX_FILE_SIZE_MB}MB)`, 'warning');
     }
 
     const newGallery = [...galleryImages, ...validFiles].slice(0, 10);
@@ -194,7 +210,10 @@ export default function AddProductPage() {
 
     const newPreviews = newGallery.map((file) => URL.createObjectURL(file));
     setGalleryPreviews(newPreviews);
-    showNotification(`${validFiles.length} image(s) added to gallery`);
+    
+    if (validFiles.length > 0) {
+       showNotification(`${validFiles.length} image(s) added to gallery`);
+    }
   };
 
   const removeGalleryImage = (index) => {
@@ -305,7 +324,7 @@ export default function AddProductPage() {
     setIsSubmitting(true);
 
     try {
-      // 1. Prepare Product Data (FormData for image upload)
+      // 1. Prepare Product Data
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name.trim());
       formDataToSend.append('description', formData.description.trim());
@@ -318,9 +337,11 @@ export default function AddProductPage() {
       if (formData.stockQuantity) formDataToSend.append('stockQuantity', formData.stockQuantity);
       if (formData.sku) formDataToSend.append('sku', formData.sku.trim());
       if (formData.warranty) formDataToSend.append('warranty', formData.warranty.trim());
+      
       formDataToSend.append('isNewProduct', formData.isNewProduct.toString());
       formDataToSend.append('isFeatured', formData.isFeatured.toString());
       formDataToSend.append('inStock', formData.inStock.toString());
+      
       formDataToSend.append('features', JSON.stringify(features));
       formDataToSend.append('tags', JSON.stringify(tags));
       formDataToSend.append('colors', JSON.stringify(colors));
@@ -343,29 +364,38 @@ export default function AddProductPage() {
       };
       formDataToSend.append('shipping', JSON.stringify(shipping));
 
+      // Calculate Total Size for Safety Check
+      let totalSize = 0;
       if (mainImage) {
         formDataToSend.append('image', mainImage);
+        totalSize += mainImage.size;
       }
 
       galleryImages.forEach((file) => {
         formDataToSend.append('gallery', file);
+        totalSize += file.size;
       });
 
-      // 2. Create Product
+      // 2. Safety Check for Lambda Limit (approx 6MB hard limit)
+      if (totalSize > MAX_TOTAL_PAYLOAD_SIZE) {
+        throw new Error(`Total file size too large (${(totalSize / 1024 / 1024).toFixed(2)}MB). Limit is 5.5MB.`);
+      }
+
+      // 3. Create Product
       const response = await fetch(`${API_URL}/products`, {
         method: 'POST',
         body: formDataToSend,
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to add product');
+        throw new Error(responseData.message || 'Failed to add product');
       }
 
-      // 3. Create Review (if selected)
-      // Corrected extraction of ID from response
-      const newProductId = data.data._id;
+      // 4. Create Review (if selected)
+      const createdProduct = responseData.data || responseData.product || responseData;
+      const newProductId = createdProduct._id || createdProduct.id;
 
       if (addReview && newProductId) {
         const reviewPayload = {
@@ -385,7 +415,7 @@ export default function AddProductPage() {
 
         if (!reviewResponse.ok) {
             console.warn('Product created but review failed');
-            showNotification('Product created, but failed to add review', 'warning');
+            showNotification('Product created, but review failed to save', 'warning');
         } else {
              showNotification('Product and review added successfully!');
         }
@@ -393,7 +423,7 @@ export default function AddProductPage() {
         showNotification('Product added successfully!');
       }
 
-      // 4. Redirect
+      // 5. Redirect
       setTimeout(() => {
         router.push('/ironz-setup');
       }, 1500);
@@ -410,20 +440,20 @@ export default function AddProductPage() {
   const completion = formData.name && formData.description && formData.price ? '80%' : '40%';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-amber-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-4 md:p-8 font-sans">
       {toast.show && (
         <div className="fixed top-6 right-6 z-50 animate-slideInRight">
           <div
             className={`flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl backdrop-blur-sm ${
               toast.type === 'success'
-                ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white'
+                ? 'bg-black text-white border border-yellow-500' // Black bg with yellow accent for success
                 : toast.type === 'error'
-                ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white'
-                : 'bg-gradient-to-r from-yellow-500 to-amber-600 text-white'
+                ? 'bg-red-600 text-white'
+                : 'bg-yellow-500 text-black'
             }`}
           >
             {toast.type === 'success' ? (
-              <CheckCircle className="w-5 h-5" />
+              <CheckCircle className="w-5 h-5 text-yellow-400" />
             ) : (
               <AlertCircle className="w-5 h-5" />
             )}
@@ -443,14 +473,14 @@ export default function AddProductPage() {
           <div className="flex justify-between items-center mb-6">
             <button
               onClick={() => router.back()}
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-yellow-200 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300"
+              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300"
             >
-              <ArrowLeft className="w-4 h-4 text-yellow-600 group-hover:scale-110 transition-transform" />
-              <span className="text-sm font-medium text-gray-700">Retour</span>
+              <ArrowLeft className="w-4 h-4 text-gray-900 group-hover:text-yellow-600 group-hover:scale-110 transition-transform" />
+              <span className="text-sm font-medium text-gray-900">Retour</span>
             </button>
             <button
               onClick={() => router.push('/ironz-setup/products')}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border-2 border-yellow-400 text-yellow-700 font-bold hover:bg-yellow-50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-black border border-black text-yellow-400 font-bold hover:bg-gray-900 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
             >
               <List className="w-5 h-5" />
               <span>Gérer le stock</span>
@@ -460,27 +490,27 @@ export default function AddProductPage() {
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-500 to-amber-500 shadow-lg">
-                  <Package className="w-8 h-8 text-white" />
+                <div className="p-3 rounded-2xl bg-yellow-400 shadow-lg">
+                  <Package className="w-8 h-8 text-black" />
                 </div>
                 <div>
-                  <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">
+                  <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
                     Add New Product
                   </h1>
-                  <p className="text-gray-600 mt-2 text-lg">
-                    Create amazing products for your store
+                  <p className="text-gray-500 mt-2 text-lg">
+                    Create amazing products for <span className="text-yellow-600 font-bold">Ironz</span>
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex items-center gap-3 px-4 py-3 bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg">
-                <div className="p-2 rounded-lg bg-yellow-100">
-                  {selectedCategory && <selectedCategory.icon className="w-5 h-5 text-yellow-600" />}
+              <div className="flex items-center gap-3 px-4 py-3 bg-white rounded-2xl border border-gray-200 shadow-sm">
+                <div className="p-2 rounded-lg bg-gray-100">
+                  {selectedCategory && <selectedCategory.icon className="w-5 h-5 text-gray-900" />}
                 </div>
                 <div>
-                  <div className="text-sm text-gray-600">Current Category</div>
+                  <div className="text-sm text-gray-500">Current Category</div>
                   <div className="font-bold text-gray-900">{selectedCategory?.label}</div>
                 </div>
               </div>
@@ -488,7 +518,7 @@ export default function AddProductPage() {
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="group relative px-8 py-4 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="relative flex items-center gap-2">
                   {isSubmitting ? (
@@ -500,7 +530,7 @@ export default function AddProductPage() {
                     <>
                       <Save className="w-5 h-5" />
                       <span>Publish Product</span>
-                      <Zap className="w-4 h-4 ml-1" />
+                      <Zap className="w-4 h-4 ml-1 fill-black" />
                     </>
                   )}
                 </div>
@@ -511,14 +541,14 @@ export default function AddProductPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-yellow-500 to-amber-500">
-                  <Package className="w-6 h-6 text-white" />
+                <div className="p-2 rounded-xl bg-gray-900">
+                  <Package className="w-6 h-6 text-yellow-400" />
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">Product Category</h2>
-                  <p className="text-sm text-gray-600">Choose the right category</p>
+                  <p className="text-sm text-gray-500">Choose the right category</p>
                 </div>
               </div>
 
@@ -535,28 +565,28 @@ export default function AddProductPage() {
                       }}
                       className={`w-full text-left p-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] ${
                         isActive
-                          ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
-                          : 'bg-white border border-gray-200 hover:border-yellow-300 hover:shadow-md'
+                          ? `bg-gray-900 text-white shadow-lg border border-gray-900`
+                          : 'bg-white border border-gray-200 hover:border-yellow-400 hover:shadow-md'
                       }`}
                     >
                       <div className="flex items-center gap-4">
                         <div
                           className={`p-3 rounded-lg ${
-                            isActive ? 'bg-white/20' : 'bg-gradient-to-br ' + category.color
+                            isActive ? 'bg-white/10' : 'bg-gray-100'
                           }`}
                         >
-                          <Icon className="w-6 h-6 text-white" />
+                          <Icon className={`w-6 h-6 ${isActive ? 'text-yellow-400' : 'text-gray-600'}`} />
                         </div>
                         <div className="flex-1">
                           <div className={`font-bold ${isActive ? 'text-white' : 'text-gray-900'}`}>
                             {category.label}
                           </div>
-                          <div className={`text-sm mt-1 ${isActive ? 'text-white/90' : 'text-gray-600'}`}>
+                          <div className={`text-sm mt-1 ${isActive ? 'text-gray-300' : 'text-gray-500'}`}>
                             {category.description}
                           </div>
                         </div>
                         {isActive && (
-                          <div className="p-1 rounded-full bg-white/20">
+                          <div className="p-1 rounded-full bg-yellow-500 text-black">
                             <CheckCircle className="w-5 h-5" />
                           </div>
                         )}
@@ -567,16 +597,16 @@ export default function AddProductPage() {
               </div>
             </div>
 
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <Package2 className="w-5 h-5 text-yellow-500" />
+                <Package2 className="w-5 h-5 text-yellow-600" />
                 Quick Overview
               </h3>
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-yellow-500 to-amber-500">
-                      <ImageIcon className="w-4 h-4 text-white" />
+                    <div className="p-2 rounded-lg bg-white border border-gray-200">
+                      <ImageIcon className="w-4 h-4 text-gray-900" />
                     </div>
                     <span className="font-medium text-gray-700">Main Image</span>
                   </div>
@@ -585,30 +615,30 @@ export default function AddProductPage() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500">
-                      <Grid3x3 className="w-4 h-4 text-white" />
+                    <div className="p-2 rounded-lg bg-white border border-gray-200">
+                      <Grid3x3 className="w-4 h-4 text-gray-900" />
                     </div>
                     <span className="font-medium text-gray-700">Gallery Images</span>
                   </div>
                   <span className="font-bold text-gray-900">{galleryImages.length}/10</span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500">
-                      <Layers className="w-4 h-4 text-white" />
+                    <div className="p-2 rounded-lg bg-white border border-gray-200">
+                      <Layers className="w-4 h-4 text-gray-900" />
                     </div>
                     <span className="font-medium text-gray-700">Features</span>
                   </div>
                   <span className="font-bold text-gray-900">{features.length} added</span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500">
-                      <CheckCircle className="w-4 h-4 text-white" />
+                    <div className="p-2 rounded-lg bg-white border border-gray-200">
+                      <CheckCircle className="w-4 h-4 text-gray-900" />
                     </div>
                     <span className="font-medium text-gray-700">Completion</span>
                   </div>
@@ -623,7 +653,7 @@ export default function AddProductPage() {
               </div>
 
               {formData.price && (
-                <div className="mt-6 pt-6 border-t border-yellow-200">
+                <div className="mt-6 pt-6 border-t border-gray-100">
                   <div className="text-sm text-gray-600 mb-2">Price Preview</div>
                   <div className="flex items-end gap-2">
                     <div className="text-2xl font-bold text-gray-900">
@@ -636,9 +666,9 @@ export default function AddProductPage() {
                     )}
                   </div>
                   {formData.discount && parseFloat(formData.discount) > 0 && (
-                    <div className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-red-100 to-rose-100">
-                      <TrendingUp className="w-3 h-3 text-red-500" />
-                      <span className="text-sm font-bold text-red-600">{formData.discount}% OFF</span>
+                    <div className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-50 text-red-600 border border-red-100">
+                      <TrendingUp className="w-3 h-3" />
+                      <span className="text-sm font-bold">{formData.discount}% OFF</span>
                     </div>
                   )}
                 </div>
@@ -647,17 +677,17 @@ export default function AddProductPage() {
           </div>
 
           <div className="lg:col-span-2">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg overflow-hidden">
-              <div className="p-6 border-b border-yellow-200 bg-gradient-to-r from-yellow-50 to-amber-50">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-gray-100 bg-gray-50">
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900">Product Details</h2>
-                    <p className="text-gray-600 mt-1">
+                    <p className="text-gray-500 mt-1">
                       Fill in the details for your product
                     </p>
                   </div>
-                  <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500 to-amber-500">
-                    <span className="text-sm font-bold text-white">STEP 2</span>
+                  <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-black text-yellow-400">
+                    <span className="text-sm font-bold">STEP 2</span>
                   </div>
                 </div>
               </div>
@@ -666,15 +696,15 @@ export default function AddProductPage() {
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="space-y-6">
                     <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                      <ImageIcon className="w-5 h-5 text-yellow-500" />
+                      <ImageIcon className="w-5 h-5 text-yellow-600" />
                       Product Images
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-4">
                         <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                          <div className="p-2 rounded-lg bg-gradient-to-br from-yellow-500 to-amber-500">
-                            <ImageIcon className="w-4 h-4 text-white" />
+                          <div className="p-2 rounded-lg bg-yellow-100">
+                            <ImageIcon className="w-4 h-4 text-yellow-700" />
                           </div>
                           <span>Main Image</span>
                           <span className="text-red-500 ml-0.5">*</span>
@@ -682,7 +712,7 @@ export default function AddProductPage() {
 
                         <div
                           onClick={() => fileInputRef.current?.click()}
-                          className="relative border-3 border-dashed border-yellow-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-yellow-500 hover:bg-gradient-to-br hover:from-yellow-50 hover:to-amber-50 group"
+                          className="relative border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-yellow-500 hover:bg-yellow-50 group"
                         >
                           <input
                             ref={fileInputRef}
@@ -713,7 +743,7 @@ export default function AddProductPage() {
                                   setMainImage(null);
                                   setMainImagePreview('');
                                 }}
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-rose-500 text-white font-medium hover:shadow-lg transition-all duration-300"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 font-medium transition-all duration-300"
                               >
                                 <Trash2 className="w-4 h-4" />
                                 Remove
@@ -721,16 +751,16 @@ export default function AddProductPage() {
                             </div>
                           ) : (
                             <div className="space-y-4">
-                              <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <Upload className="w-8 h-8 text-white" />
+                              <div className="mx-auto w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center group-hover:bg-yellow-100 transition-colors duration-300">
+                                <Upload className="w-8 h-8 text-gray-400 group-hover:text-yellow-600" />
                               </div>
                               <div>
                                 <p className="font-bold text-gray-900">Click to upload</p>
-                                <p className="text-sm text-gray-500 mt-2">PNG, JPG, WebP up to 5MB</p>
+                                <p className="text-sm text-gray-500 mt-2">PNG, JPG, WebP up to {MAX_FILE_SIZE_MB}MB</p>
                               </div>
                               <button
                                 type="button"
-                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 font-medium hover:shadow-md transition-all duration-300"
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-black text-white font-medium hover:bg-gray-800 transition-all duration-300"
                               >
                                 Browse Files
                               </button>
@@ -741,15 +771,15 @@ export default function AddProductPage() {
 
                       <div className="space-y-4">
                         <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                          <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500">
-                            <Grid3x3 className="w-4 h-4 text-white" />
+                          <div className="p-2 rounded-lg bg-gray-100">
+                            <Grid3x3 className="w-4 h-4 text-gray-700" />
                           </div>
                           Gallery Images
                         </label>
 
                         <div
                           onClick={() => galleryInputRef.current?.click()}
-                          className="relative border-3 border-dashed border-blue-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-50 hover:to-cyan-50 group"
+                          className="relative border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-gray-500 hover:bg-gray-50 group"
                         >
                           <input
                             ref={galleryInputRef}
@@ -760,16 +790,16 @@ export default function AddProductPage() {
                             className="hidden"
                           />
                           <div className="space-y-4">
-                            <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                              <ImageIcon className="w-8 h-8 text-white" />
+                            <div className="mx-auto w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors duration-300">
+                              <ImageIcon className="w-8 h-8 text-gray-400 group-hover:text-gray-600" />
                             </div>
                             <div>
                               <p className="font-bold text-gray-900">Drag & drop images</p>
-                              <p className="text-sm text-gray-500 mt-2">Up to 10 images, 5MB each</p>
+                              <p className="text-sm text-gray-500 mt-2">Up to 10 images, {MAX_FILE_SIZE_MB}MB each</p>
                             </div>
                             <button
                               type="button"
-                              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 font-medium hover:shadow-md transition-all duration-300"
+                              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-all duration-300"
                             >
                               <Upload className="w-4 h-4" />
                               Select Images
@@ -781,14 +811,14 @@ export default function AddProductPage() {
                           <div className="mt-6">
                             <div className="flex items-center justify-between mb-4">
                               <span className="font-medium text-gray-900">Selected Images:</span>
-                              <span className="text-sm font-bold text-blue-600">
+                              <span className="text-sm font-bold text-yellow-600">
                                 {galleryImages.length}/10
                               </span>
                             </div>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                               {galleryPreviews.map((preview, index) => (
                                 <div key={index} className="relative group">
-                                  <div className="aspect-square rounded-xl overflow-hidden shadow-md group-hover:shadow-xl transition-shadow">
+                                  <div className="aspect-square rounded-xl overflow-hidden shadow-md group-hover:shadow-xl transition-shadow border border-gray-200">
                                     <img
                                       src={preview}
                                       alt={`Gallery ${index + 1}`}
@@ -798,7 +828,7 @@ export default function AddProductPage() {
                                   <button
                                     type="button"
                                     onClick={() => removeGalleryImage(index)}
-                                    className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-rose-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200"
+                                    className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-200"
                                   >
                                     <X className="w-4 h-4" />
                                   </button>
@@ -813,10 +843,10 @@ export default function AddProductPage() {
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-yellow-200"></div>
+                      <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-4 bg-white text-sm font-medium text-yellow-600">
+                      <span className="px-4 bg-white text-sm font-medium text-gray-500">
                         BASIC INFORMATION
                       </span>
                     </div>
@@ -845,7 +875,7 @@ export default function AddProductPage() {
                       </div>
                       <div className="space-y-3">
                         <label htmlFor="sku" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                          <Hash className="w-4 h-4 text-purple-500" />
+                          <Hash className="w-4 h-4 text-gray-500" />
                           SKU (Optional)
                         </label>
                         <input
@@ -864,7 +894,7 @@ export default function AddProductPage() {
                         htmlFor="description"
                         className="flex items-center gap-2 text-sm font-bold text-gray-900"
                       >
-                        <FileText className="w-4 h-4 text-green-500" />
+                        <FileText className="w-4 h-4 text-gray-500" />
                         <span>Description</span>
                         <span className="text-red-500 ml-0.5">*</span>
                       </label>
@@ -882,7 +912,7 @@ export default function AddProductPage() {
 
                     <div className="space-y-3">
                       <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                        <Layers className="w-4 h-4 text-blue-500" />
+                        <Layers className="w-4 h-4 text-yellow-500" />
                         Features
                       </label>
                       <div className="flex gap-2">
@@ -900,7 +930,7 @@ export default function AddProductPage() {
                           onClick={() =>
                             handleAddItem(features, setFeatures, newFeature, setNewFeature, 'features')
                           }
-                          className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold hover:shadow-lg transition-all duration-300"
+                          className="px-6 py-3 rounded-xl bg-black text-white font-bold hover:bg-gray-800 transition-all duration-300"
                         >
                           <Plus className="w-5 h-5" />
                         </button>
@@ -910,16 +940,16 @@ export default function AddProductPage() {
                           {features.map((feature, index) => (
                             <div
                               key={index}
-                              className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200"
+                              className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200"
                             >
-                              <Tag className="w-4 h-4 text-blue-500" />
+                              <Tag className="w-4 h-4 text-gray-500" />
                               <span className="text-sm font-medium text-gray-900">{feature}</span>
                               <button
                                 type="button"
                                 onClick={() => handleRemoveItem(features, setFeatures, index)}
-                                className="ml-1 p-1 rounded-full hover:bg-red-100 transition-colors"
+                                className="ml-1 p-1 rounded-full hover:bg-red-200 hover:text-red-600 transition-colors"
                               >
-                                <X className="w-3 h-3 text-red-500" />
+                                <X className="w-3 h-3" />
                               </button>
                             </div>
                           ))}
@@ -930,10 +960,10 @@ export default function AddProductPage() {
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-yellow-200"></div>
+                      <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-4 bg-white text-sm font-medium text-yellow-600">
+                      <span className="px-4 bg-white text-sm font-medium text-gray-500">
                         PRICING & STOCK
                       </span>
                     </div>
@@ -946,7 +976,7 @@ export default function AddProductPage() {
                           htmlFor="price"
                           className="flex items-center gap-2 text-sm font-bold text-gray-900"
                         >
-                          <DollarSign className="w-4 h-4 text-green-500" />
+                          <DollarSign className="w-4 h-4 text-green-600" />
                           <span>Price</span>
                           <span className="text-red-500 ml-0.5">*</span>
                         </label>
@@ -1001,7 +1031,7 @@ export default function AddProductPage() {
                             htmlFor="discount"
                             className="flex items-center gap-2 text-sm font-bold text-gray-900"
                           >
-                            <Percent className="w-4 h-4 text-orange-500" />
+                            <Percent className="w-4 h-4 text-yellow-500" />
                             Discount %
                           </label>
                           <label className="flex items-center gap-1 text-[11px] text-gray-500 cursor-pointer">
@@ -1042,7 +1072,7 @@ export default function AddProductPage() {
                           htmlFor="stockQuantity"
                           className="flex items-center gap-2 text-sm font-bold text-gray-900"
                         >
-                          <Package2 className="w-4 h-4 text-purple-500" />
+                          <Package2 className="w-4 h-4 text-yellow-500" />
                           Stock Quantity
                         </label>
                         <input
@@ -1061,7 +1091,7 @@ export default function AddProductPage() {
                           htmlFor="subCategory"
                           className="flex items-center gap-2 text-sm font-bold text-gray-900"
                         >
-                          <Layers className="w-4 h-4 text-cyan-500" />
+                          <Layers className="w-4 h-4 text-gray-500" />
                           Sub-category
                         </label>
                         <input
@@ -1075,7 +1105,7 @@ export default function AddProductPage() {
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-6 p-4 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200">
+                    <div className="flex flex-wrap gap-6 p-4 rounded-xl bg-gray-50 border border-gray-200">
                       <label className="flex items-center gap-3 cursor-pointer group">
                         <div className="relative">
                           <input
@@ -1088,7 +1118,7 @@ export default function AddProductPage() {
                           <div
                             className={`w-12 h-6 rounded-full transition-all duration-300 ${
                               formData.isNewProduct
-                                ? 'bg-gradient-to-r from-yellow-500 to-amber-500'
+                                ? 'bg-yellow-500'
                                 : 'bg-gray-300'
                             }`}
                           ></div>
@@ -1113,7 +1143,7 @@ export default function AddProductPage() {
                           <div
                             className={`w-12 h-6 rounded-full transition-all duration-300 ${
                               formData.isFeatured
-                                ? 'bg-gradient-to-r from-yellow-500 to-amber-500'
+                                ? 'bg-yellow-500'
                                 : 'bg-gray-300'
                             }`}
                           ></div>
@@ -1138,7 +1168,7 @@ export default function AddProductPage() {
                           <div
                             className={`w-12 h-6 rounded-full transition-all duration-300 ${
                               formData.inStock
-                                ? 'bg-gradient-to-r from-green-500 to-emerald-500'
+                                ? 'bg-green-500'
                                 : 'bg-gray-300'
                             }`}
                           ></div>
@@ -1157,10 +1187,10 @@ export default function AddProductPage() {
                     <>
                       <div className="relative">
                         <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-yellow-200"></div>
+                          <div className="w-full border-t border-gray-200"></div>
                         </div>
                         <div className="relative flex justify-center">
-                          <span className="px-4 bg-white text-sm font-medium text-yellow-600">
+                          <span className="px-4 bg-white text-sm font-medium text-gray-500">
                             EQUIPMENT SPECIFICATIONS
                           </span>
                         </div>
@@ -1170,7 +1200,7 @@ export default function AddProductPage() {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div className="space-y-3">
                             <label htmlFor="width" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                              <Ruler className="w-4 h-4 text-blue-500" />
+                              <Ruler className="w-4 h-4 text-gray-500" />
                               Width (cm)
                             </label>
                             <input
@@ -1189,7 +1219,7 @@ export default function AddProductPage() {
                               htmlFor="height"
                               className="flex items-center gap-2 text-sm font-bold text-gray-900"
                             >
-                              <Ruler className="w-4 h-4 text-blue-500" />
+                              <Ruler className="w-4 h-4 text-gray-500" />
                               Height (cm)
                             </label>
                             <input
@@ -1205,7 +1235,7 @@ export default function AddProductPage() {
                           </div>
                           <div className="space-y-3">
                             <label htmlFor="depth" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                              <Ruler className="w-4 h-4 text-blue-500" />
+                              <Ruler className="w-4 h-4 text-gray-500" />
                               Depth (cm)
                             </label>
                             <input
@@ -1221,7 +1251,7 @@ export default function AddProductPage() {
                           </div>
                           <div className="space-y-3">
                             <label htmlFor="weight" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                              <Scale className="w-4 h-4 text-blue-500" />
+                              <Scale className="w-4 h-4 text-gray-500" />
                               Weight (kg)
                             </label>
                             <input
@@ -1240,7 +1270,7 @@ export default function AddProductPage() {
 
                         <div className="space-y-3">
                           <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                            <Layers className="w-4 h-4 text-purple-500" />
+                            <Layers className="w-4 h-4 text-yellow-500" />
                             Materials
                           </label>
                           <div className="flex gap-2">
@@ -1265,7 +1295,7 @@ export default function AddProductPage() {
                               onClick={() =>
                                 handleAddItem(materials, setMaterials, newMaterial, setNewMaterial, 'materials')
                               }
-                              className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold hover:shadow-lg transition-all duration-300"
+                              className="px-6 py-3 rounded-xl bg-black text-white font-bold hover:bg-gray-800 transition-all duration-300"
                             >
                               <Plus className="w-5 h-5" />
                             </button>
@@ -1275,16 +1305,16 @@ export default function AddProductPage() {
                               {materials.map((material, index) => (
                                 <div
                                   key={index}
-                                  className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200"
+                                  className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200"
                                 >
-                                  <Tag className="w-4 h-4 text-purple-500" />
+                                  <Tag className="w-4 h-4 text-gray-500" />
                                   <span className="text-sm font-medium text-gray-900">{material}</span>
                                   <button
                                     type="button"
                                     onClick={() => handleRemoveItem(materials, setMaterials, index)}
-                                    className="ml-1 p-1 rounded-full hover:bg-red-100 transition-colors"
+                                    className="ml-1 p-1 rounded-full hover:bg-red-200 hover:text-red-600 transition-colors"
                                   >
-                                    <X className="w-3 h-3 text-red-500" />
+                                    <X className="w-3 h-3" />
                                   </button>
                                 </div>
                               ))}
@@ -1299,10 +1329,10 @@ export default function AddProductPage() {
                     <>
                       <div className="relative">
                         <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-yellow-200"></div>
+                          <div className="w-full border-t border-gray-200"></div>
                         </div>
                         <div className="relative flex justify-center">
-                          <span className="px-4 bg-white text-sm font-medium text-yellow-600">
+                          <span className="px-4 bg-white text-sm font-medium text-gray-500">
                             ACCESSORY DETAILS
                           </span>
                         </div>
@@ -1311,7 +1341,7 @@ export default function AddProductPage() {
                       <div className="space-y-6">
                         <div className="space-y-3">
                           <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                            <Palette className="w-4 h-4 text-pink-500" />
+                            <Palette className="w-4 h-4 text-yellow-500" />
                             Colors
                           </label>
                           <div className="flex gap-2">
@@ -1327,7 +1357,7 @@ export default function AddProductPage() {
                             <button
                               type="button"
                               onClick={() => handleAddItem(colors, setColors, newColor, setNewColor, 'colors')}
-                              className="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold hover:shadow-lg transition-all duration-300"
+                              className="px-6 py-3 rounded-xl bg-black text-white font-bold hover:bg-gray-800 transition-all duration-300"
                             >
                               <Plus className="w-5 h-5" />
                             </button>
@@ -1337,7 +1367,7 @@ export default function AddProductPage() {
                               {colors.map((color, index) => (
                                 <div
                                   key={index}
-                                  className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200"
+                                  className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200"
                                 >
                                   <div
                                     className="w-4 h-4 rounded-full border-2 border-white shadow-sm"
@@ -1347,9 +1377,9 @@ export default function AddProductPage() {
                                   <button
                                     type="button"
                                     onClick={() => handleRemoveItem(colors, setColors, index)}
-                                    className="ml-1 p-1 rounded-full hover:bg-red-100 transition-colors"
+                                    className="ml-1 p-1 rounded-full hover:bg-red-200 hover:text-red-600 transition-colors"
                                   >
-                                    <X className="w-3 h-3 text-red-500" />
+                                    <X className="w-3 h-3" />
                                   </button>
                                 </div>
                               ))}
@@ -1359,7 +1389,7 @@ export default function AddProductPage() {
 
                         <div className="space-y-3">
                           <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                            <Ruler className="w-4 h-4 text-cyan-500" />
+                            <Ruler className="w-4 h-4 text-gray-500" />
                             Sizes (Taille)
                           </label>
                           <div className="flex gap-2">
@@ -1375,7 +1405,7 @@ export default function AddProductPage() {
                             <button
                               type="button"
                               onClick={() => handleAddItem(taille, setTaille, newTaille, setNewTaille, 'sizes')}
-                              className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold hover:shadow-lg transition-all duration-300"
+                              className="px-6 py-3 rounded-xl bg-black text-white font-bold hover:bg-gray-800 transition-all duration-300"
                             >
                               <Plus className="w-5 h-5" />
                             </button>
@@ -1385,15 +1415,15 @@ export default function AddProductPage() {
                               {taille.map((size, index) => (
                                 <div
                                   key={index}
-                                  className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200"
+                                  className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200"
                                 >
-                                  <span className="text-sm font-bold text-cyan-700">{size}</span>
+                                  <span className="text-sm font-bold text-gray-900">{size}</span>
                                   <button
                                     type="button"
                                     onClick={() => handleRemoveItem(taille, setTaille, index)}
-                                    className="ml-1 p-1 rounded-full hover:bg-red-100 transition-colors"
+                                    className="ml-1 p-1 rounded-full hover:bg-red-200 hover:text-red-600 transition-colors"
                                   >
-                                    <X className="w-3 h-3 text-red-500" />
+                                    <X className="w-3 h-3" />
                                   </button>
                                 </div>
                               ))}
@@ -1406,10 +1436,10 @@ export default function AddProductPage() {
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-yellow-200"></div>
+                      <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-4 bg-white text-sm font-medium text-yellow-600">
+                      <span className="px-4 bg-white text-sm font-medium text-gray-500">
                         SHIPPING & WARRANTY
                       </span>
                     </div>
@@ -1422,7 +1452,7 @@ export default function AddProductPage() {
                           htmlFor="shippingDimensions"
                           className="flex items-center gap-2 text-sm font-bold text-gray-900"
                         >
-                          <Package className="w-4 h-4 text-teal-500" />
+                          <Package className="w-4 h-4 text-gray-500" />
                           Shipping Dimensions
                         </label>
                         <input
@@ -1462,7 +1492,7 @@ export default function AddProductPage() {
                           htmlFor="shippingMethod"
                           className="flex items-center gap-2 text-sm font-bold text-gray-900"
                         >
-                          <Truck className="w-4 h-4 text-blue-500" />
+                          <Truck className="w-4 h-4 text-gray-500" />
                           Shipping Method
                         </label>
                         <select
@@ -1499,7 +1529,7 @@ export default function AddProductPage() {
                     </div>
                     <div className="space-y-3">
                       <label htmlFor="warranty" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                        <Shield className="w-4 h-4 text-green-500" />
+                        <Shield className="w-4 h-4 text-green-600" />
                         Warranty
                       </label>
                       <input
@@ -1515,16 +1545,16 @@ export default function AddProductPage() {
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-yellow-200"></div>
+                      <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-4 bg-white text-sm font-medium text-yellow-600">TAGS & SEO</span>
+                      <span className="px-4 bg-white text-sm font-medium text-gray-500">TAGS & SEO</span>
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                      <Tag className="w-4 h-4 text-indigo-500" />
+                      <Tag className="w-4 h-4 text-yellow-500" />
                       Tags
                     </label>
                     <div className="flex gap-2">
@@ -1538,7 +1568,7 @@ export default function AddProductPage() {
                       <button
                         type="button"
                         onClick={() => handleAddItem(tags, setTags, newTag, setNewTag, 'tags')}
-                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold hover:shadow-lg transition-all duration-300"
+                        className="px-6 py-3 rounded-xl bg-black text-white font-bold hover:bg-gray-800 transition-all duration-300"
                       >
                         <Plus className="w-5 h-5" />
                       </button>
@@ -1548,15 +1578,15 @@ export default function AddProductPage() {
                         {tags.map((tag, index) => (
                           <div
                             key={index}
-                            className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200"
+                            className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200"
                           >
-                            <span className="text-sm font-bold text-indigo-700">#{tag}</span>
+                            <span className="text-sm font-bold text-gray-900">#{tag}</span>
                             <button
                               type="button"
                               onClick={() => handleRemoveItem(tags, setTags, index)}
-                              className="ml-1 p-1 rounded-full hover:bg-red-100 transition-colors"
+                              className="ml-1 p-1 rounded-full hover:bg-red-200 hover:text-red-600 transition-colors"
                             >
-                              <X className="w-3 h-3 text-red-500" />
+                              <X className="w-3 h-3" />
                             </button>
                           </div>
                         ))}
@@ -1566,19 +1596,19 @@ export default function AddProductPage() {
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-yellow-200"></div>
+                      <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-4 bg-white text-sm font-medium text-yellow-600">
+                      <span className="px-4 bg-white text-sm font-medium text-gray-500">
                         INITIAL REVIEW (OPTIONAL)
                       </span>
                     </div>
                   </div>
 
-                  <div className="bg-yellow-50/50 p-6 rounded-2xl border border-yellow-100">
+                  <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
-                        <MessageSquare className="w-5 h-5 text-yellow-600" />
+                        <MessageSquare className="w-5 h-5 text-yellow-500" />
                         <h3 className="font-bold text-gray-900">Add an Initial Review</h3>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
@@ -1649,7 +1679,7 @@ export default function AddProductPage() {
                     )}
                   </div>
 
-                  <div className="pt-8 border-t border-yellow-200">
+                  <div className="pt-8 border-t border-gray-200">
                     <div className="flex flex-col sm:flex-row gap-4 justify-end">
                       <button
                         type="button"
@@ -1661,7 +1691,7 @@ export default function AddProductPage() {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="group relative px-12 py-4 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="group relative px-12 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <div className="relative flex items-center gap-3">
                           {isSubmitting ? (

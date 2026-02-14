@@ -67,7 +67,7 @@ export default function ClientLayout({ children }) {
   };
 
   // Determine if we are on an admin path safely
-  const isAdminPath = pathname?.startsWith("/admin");
+  const isAdminPath = pathname?.startsWith("/ironz-setup");
 
   return (
     <ClerkProvider>

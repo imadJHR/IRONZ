@@ -44,7 +44,6 @@ const categories = [
     dbValue: 'Equipements',
     description: 'Gym equipment & weights',
     icon: Dumbbell,
-    color: 'from-blue-500 to-cyan-500',
   },
   {
     id: 'supplement',
@@ -52,7 +51,6 @@ const categories = [
     dbValue: 'Supplément',
     description: 'Proteins & supplements',
     icon: Pill,
-    color: 'from-green-500 to-emerald-500',
   },
   {
     id: 'accessoires',
@@ -60,7 +58,6 @@ const categories = [
     dbValue: 'Accessoires',
     description: 'Clothing & accessories',
     icon: Shirt,
-    color: 'from-purple-500 to-pink-500',
   },
 ];
 
@@ -358,7 +355,6 @@ export default function EditProductPage() {
       title: review.title || '',
       body: review.body || ''
     });
-    // Scroll to review form could be added here
   };
 
   const handleReviewSubmit = async (e) => {
@@ -377,10 +373,9 @@ export default function EditProductPage() {
         
         const method = isEditing ? 'PUT' : 'POST';
 
-        // Prepare safe payload
         const payload = {
             ...reviewForm,
-            rating: Number(reviewForm.rating) // Ensure it's a number for Mongoose
+            rating: Number(reviewForm.rating)
         };
 
         const res = await fetch(url, {
@@ -389,13 +384,11 @@ export default function EditProductPage() {
             body: JSON.stringify(payload)
         });
 
-        // Handle potential non-JSON responses (500 errors usually return HTML)
         const contentType = res.headers.get("content-type");
         let data;
         if (contentType && contentType.indexOf("application/json") !== -1) {
             data = await res.json();
         } else {
-            // If server returns 500 HTML/Text, manual throw
             const text = await res.text();
             throw new Error(res.status === 500 ? "Erreur serveur interne (500)" : text);
         }
@@ -404,7 +397,7 @@ export default function EditProductPage() {
 
         showNotification(isEditing ? 'Avis modifié avec succès' : 'Avis ajouté avec succès');
         resetReviewForm();
-        fetchReviews(); // Refresh list
+        fetchReviews(); 
     } catch (error) {
         console.error("Review Submit Error:", error);
         showNotification(error.message || "Erreur inconnue", 'error');
@@ -524,7 +517,7 @@ export default function EditProductPage() {
 
   if (isLoading) {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-yellow-50">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
             <div className="text-center">
                 <Loader2 className="w-12 h-12 text-yellow-500 animate-spin mx-auto mb-4" />
                 <p className="text-gray-600 font-medium">Chargement du produit...</p>
@@ -534,21 +527,19 @@ export default function EditProductPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-amber-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-4 md:p-8 font-sans">
       {/* Toast Notification */}
       {toast.show && (
         <div className="fixed top-6 right-6 z-50 animate-slideInRight">
           <div
             className={`flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl backdrop-blur-sm ${
               toast.type === 'success'
-                ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white'
-                : toast.type === 'error'
-                ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white'
-                : 'bg-gradient-to-r from-yellow-500 to-amber-600 text-white'
+                ? 'bg-black text-white border border-yellow-500'
+                : 'bg-red-600 text-white'
             }`}
           >
             {toast.type === 'success' ? (
-              <CheckCircle className="w-5 h-5" />
+              <CheckCircle className="w-5 h-5 text-yellow-400" />
             ) : (
               <AlertCircle className="w-5 h-5" />
             )}
@@ -568,36 +559,36 @@ export default function EditProductPage() {
         <div className="mb-8">
           <button
             onClick={() => router.back()}
-            className="group inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-yellow-200 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300"
+            className="group inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white border border-gray-200 hover:border-yellow-400 hover:bg-gray-50 transition-all duration-300"
           >
-            <ArrowLeft className="w-4 h-4 text-yellow-600 group-hover:scale-110 transition-transform" />
-            <span className="text-sm font-medium text-gray-700">Retour</span>
+            <ArrowLeft className="w-4 h-4 text-gray-900 group-hover:text-yellow-600 group-hover:scale-110 transition-transform" />
+            <span className="text-sm font-medium text-gray-900">Retour</span>
           </button>
 
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="p-3 rounded-2xl bg-gradient-to-br from-yellow-500 to-amber-500 shadow-lg">
-                  <Package className="w-8 h-8 text-white" />
+                <div className="p-3 rounded-2xl bg-yellow-400 shadow-lg">
+                  <Package className="w-8 h-8 text-black" />
                 </div>
                 <div>
-                  <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">
+                  <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
                     Modifier le Produit
                   </h1>
-                  <p className="text-gray-600 mt-2 text-lg">
-                    Mise à jour des informations de : <span className="font-semibold text-yellow-700">{formData.name}</span>
+                  <p className="text-gray-500 mt-2 text-lg">
+                    Mise à jour : <span className="font-bold text-black">{formData.name}</span>
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex items-center gap-3 px-4 py-3 bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg">
-                <div className="p-2 rounded-lg bg-yellow-100">
-                  {selectedCategory && <selectedCategory.icon className="w-5 h-5 text-yellow-600" />}
+              <div className="flex items-center gap-3 px-4 py-3 bg-white rounded-2xl border border-gray-200 shadow-sm">
+                <div className="p-2 rounded-lg bg-gray-100">
+                  {selectedCategory && <selectedCategory.icon className="w-5 h-5 text-gray-900" />}
                 </div>
                 <div>
-                  <div className="text-sm text-gray-600">Catégorie</div>
+                  <div className="text-sm text-gray-500">Catégorie</div>
                   <div className="font-bold text-gray-900">{selectedCategory?.label || formData.category}</div>
                 </div>
               </div>
@@ -605,7 +596,7 @@ export default function EditProductPage() {
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="group relative px-8 py-4 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="relative flex items-center gap-2">
                   {isSubmitting ? (
@@ -617,7 +608,7 @@ export default function EditProductPage() {
                     <>
                       <Save className="w-5 h-5" />
                       <span>Mettre à jour</span>
-                      <Zap className="w-4 h-4 ml-1" />
+                      <Zap className="w-4 h-4 ml-1 fill-black" />
                     </>
                   )}
                 </div>
@@ -631,14 +622,14 @@ export default function EditProductPage() {
           {/* Left Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             {/* Category Selection */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-yellow-500 to-amber-500">
-                  <Package className="w-6 h-6 text-white" />
+                <div className="p-2 rounded-xl bg-gray-900">
+                  <Package className="w-6 h-6 text-yellow-400" />
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">Catégorie</h2>
-                  <p className="text-sm text-gray-600">Changer la catégorie si nécessaire</p>
+                  <p className="text-sm text-gray-500">Changer la catégorie</p>
                 </div>
               </div>
 
@@ -656,17 +647,17 @@ export default function EditProductPage() {
                       }}
                       className={`w-full text-left p-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] ${
                         isActive
-                          ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
-                          : 'bg-white border border-gray-200 hover:border-yellow-300 hover:shadow-md'
+                          ? `bg-black text-white shadow-lg border border-black`
+                          : 'bg-white border border-gray-200 hover:border-yellow-400 hover:shadow-md'
                       }`}
                     >
                       <div className="flex items-center gap-4">
                         <div
                           className={`p-3 rounded-lg ${
-                            isActive ? 'bg-white/20' : 'bg-gradient-to-br ' + category.color
+                            isActive ? 'bg-white/10' : 'bg-gray-100'
                           }`}
                         >
-                          <Icon className="w-6 h-6 text-white" />
+                          <Icon className={`w-6 h-6 ${isActive ? 'text-yellow-400' : 'text-gray-600'}`} />
                         </div>
                         <div className="flex-1">
                           <div className={`font-bold ${isActive ? 'text-white' : 'text-gray-900'}`}>
@@ -674,7 +665,7 @@ export default function EditProductPage() {
                           </div>
                         </div>
                         {isActive && (
-                          <div className="p-1 rounded-full bg-white/20">
+                          <div className="p-1 rounded-full bg-yellow-500 text-black">
                             <CheckCircle className="w-5 h-5" />
                           </div>
                         )}
@@ -686,17 +677,17 @@ export default function EditProductPage() {
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <Package2 className="w-5 h-5 text-yellow-500" />
                 Aperçu Rapide
               </h3>
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-yellow-500 to-amber-500">
-                      <ImageIcon className="w-4 h-4 text-white" />
+                    <div className="p-2 rounded-lg bg-white border border-gray-200">
+                      <ImageIcon className="w-4 h-4 text-gray-900" />
                     </div>
                     <span className="font-medium text-gray-700">Image</span>
                   </div>
@@ -705,10 +696,10 @@ export default function EditProductPage() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500">
-                      <Grid3x3 className="w-4 h-4 text-white" />
+                    <div className="p-2 rounded-lg bg-white border border-gray-200">
+                      <Grid3x3 className="w-4 h-4 text-gray-900" />
                     </div>
                     <span className="font-medium text-gray-700">Galerie</span>
                   </div>
@@ -716,20 +707,20 @@ export default function EditProductPage() {
                 </div>
 
                 {/* Review Stats */}
-                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500">
-                      <Star className="w-4 h-4 text-white" />
+                    <div className="p-2 rounded-lg bg-white border border-gray-200">
+                      <Star className="w-4 h-4 text-gray-900" />
                     </div>
                     <span className="font-medium text-gray-700">Avis</span>
                   </div>
                   <span className="font-bold text-gray-900">{reviews.length}</span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-100">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500">
-                      <CheckCircle className="w-4 h-4 text-white" />
+                    <div className="p-2 rounded-lg bg-white border border-gray-200">
+                      <CheckCircle className="w-4 h-4 text-gray-900" />
                     </div>
                     <span className="font-medium text-gray-700">Complétion</span>
                   </div>
@@ -739,7 +730,7 @@ export default function EditProductPage() {
 
               {/* Price Preview */}
               {formData.price && (
-                <div className="mt-6 pt-6 border-t border-yellow-200">
+                <div className="mt-6 pt-6 border-t border-gray-100">
                   <div className="text-sm text-gray-600 mb-2">Prix affiché au client</div>
                   <div className="flex items-end gap-2">
                     <div className="text-2xl font-bold text-gray-900">
@@ -752,9 +743,9 @@ export default function EditProductPage() {
                     )}
                   </div>
                   {formData.discount && parseFloat(formData.discount) > 0 && (
-                    <div className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-red-100 to-rose-100">
-                      <TrendingUp className="w-3 h-3 text-red-500" />
-                      <span className="text-sm font-bold text-red-600">{formData.discount}% OFF</span>
+                    <div className="mt-2 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-50 text-red-600 border border-red-100">
+                      <TrendingUp className="w-3 h-3" />
+                      <span className="text-sm font-bold">{formData.discount}% OFF</span>
                     </div>
                   )}
                 </div>
@@ -764,13 +755,13 @@ export default function EditProductPage() {
 
           {/* Main Form */}
           <div className="lg:col-span-2">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-yellow-200 shadow-lg overflow-hidden">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
               {/* Form Header */}
-              <div className="p-6 border-b border-yellow-200 bg-gradient-to-r from-yellow-50 to-amber-50">
+              <div className="p-6 border-b border-gray-100 bg-gray-50">
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900">Détails du Produit</h2>
-                    <p className="text-gray-600 mt-1">
+                    <p className="text-gray-500 mt-1">
                       Modifiez les informations ci-dessous
                     </p>
                   </div>
@@ -782,7 +773,7 @@ export default function EditProductPage() {
                   {/* Product Images */}
                   <div className="space-y-6">
                     <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                      <ImageIcon className="w-5 h-5 text-yellow-500" />
+                      <ImageIcon className="w-5 h-5 text-yellow-600" />
                       Images du produit
                     </h3>
 
@@ -790,14 +781,14 @@ export default function EditProductPage() {
                       {/* Main Image */}
                       <div className="space-y-4">
                         <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                          <div className="p-2 rounded-lg bg-gradient-to-br from-yellow-500 to-amber-500">
-                            <ImageIcon className="w-4 h-4 text-white" />
+                          <div className="p-2 rounded-lg bg-yellow-100">
+                            <ImageIcon className="w-4 h-4 text-yellow-700" />
                           </div>
                           <span>Image Principale</span>
                         </label>
                         <div
                           onClick={() => fileInputRef.current?.click()}
-                          className="relative border-3 border-dashed border-yellow-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-yellow-500 hover:bg-gradient-to-br hover:from-yellow-50 hover:to-amber-50 group"
+                          className="relative border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-yellow-500 hover:bg-yellow-50 group"
                         >
                           <input
                             ref={fileInputRef}
@@ -823,8 +814,8 @@ export default function EditProductPage() {
                             </div>
                           ) : (
                             <div className="space-y-4">
-                              <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-amber-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                <Upload className="w-8 h-8 text-white" />
+                              <div className="mx-auto w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center group-hover:bg-yellow-100 transition-colors duration-300">
+                                <Upload className="w-8 h-8 text-gray-400 group-hover:text-yellow-600" />
                               </div>
                               <div>
                                 <p className="font-bold text-gray-900">Uploader une image</p>
@@ -837,14 +828,14 @@ export default function EditProductPage() {
                       {/* Gallery Images */}
                       <div className="space-y-4">
                         <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                          <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500">
-                            <Grid3x3 className="w-4 h-4 text-white" />
+                          <div className="p-2 rounded-lg bg-gray-100">
+                            <Grid3x3 className="w-4 h-4 text-gray-900" />
                           </div>
                           Galerie
                         </label>
                         <div
                           onClick={() => galleryInputRef.current?.click()}
-                          className="relative border-3 border-dashed border-blue-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-blue-500 hover:bg-gradient-to-br hover:from-blue-50 hover:to-cyan-50 group"
+                          className="relative border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-yellow-500 hover:bg-yellow-50 group"
                         >
                           <input
                             ref={galleryInputRef}
@@ -855,8 +846,8 @@ export default function EditProductPage() {
                             className="hidden"
                           />
                           <div className="space-y-4">
-                            <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                              <Plus className="w-8 h-8 text-white" />
+                            <div className="mx-auto w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center group-hover:bg-yellow-100 transition-colors duration-300">
+                              <Plus className="w-8 h-8 text-gray-400 group-hover:text-yellow-600" />
                             </div>
                             <div>
                               <p className="font-bold text-gray-900">Ajouter des images</p>
@@ -880,7 +871,7 @@ export default function EditProductPage() {
                                   <button
                                     type="button"
                                     onClick={() => removeGalleryImage(index)}
-                                    className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                                    className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
                                     title="Retirer de la vue"
                                   >
                                     <X className="w-3 h-3" />
@@ -897,10 +888,10 @@ export default function EditProductPage() {
                   {/* Separator */}
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-yellow-200"></div>
+                      <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-4 bg-white text-sm font-medium text-yellow-600">
+                      <span className="px-4 bg-white text-sm font-medium text-gray-500">
                         INFORMATIONS DE BASE
                       </span>
                     </div>
@@ -930,7 +921,7 @@ export default function EditProductPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-3">
                         <label htmlFor="sku" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                          <Hash className="w-4 h-4 text-purple-500" />
+                          <Hash className="w-4 h-4 text-gray-500" />
                           SKU (Code Article)
                         </label>
                         <input
@@ -945,7 +936,7 @@ export default function EditProductPage() {
                       {/* ADDED: SubCategory Field */}
                       <div className="space-y-3">
                         <label htmlFor="subCategory" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                          <LayoutList className="w-4 h-4 text-orange-500" />
+                          <LayoutList className="w-4 h-4 text-gray-500" />
                           Sous-catégorie
                         </label>
                         <input
@@ -961,7 +952,7 @@ export default function EditProductPage() {
 
                     <div className="space-y-3">
                       <label htmlFor="description" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                        <FileText className="w-4 h-4 text-green-500" />
+                        <FileText className="w-4 h-4 text-gray-500" />
                         <span>Description</span>
                         <span className="text-red-500 ml-0.5">*</span>
                       </label>
@@ -979,7 +970,7 @@ export default function EditProductPage() {
                     {/* Features */}
                     <div className="space-y-3">
                       <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                        <Layers className="w-4 h-4 text-blue-500" />
+                        <Layers className="w-4 h-4 text-yellow-500" />
                         Caractéristiques (Features)
                       </label>
                       <div className="flex gap-2">
@@ -993,7 +984,7 @@ export default function EditProductPage() {
                         <button
                           type="button"
                           onClick={() => handleAddItem(features, setFeatures, newFeature, setNewFeature)}
-                          className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold hover:shadow-lg transition-all duration-300"
+                          className="px-6 py-3 rounded-xl bg-black text-white font-bold hover:bg-gray-800 transition-all duration-300"
                         >
                           <Plus className="w-5 h-5" />
                         </button>
@@ -1001,9 +992,9 @@ export default function EditProductPage() {
                       {features.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3">
                           {features.map((feature, index) => (
-                            <div key={index} className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200">
+                            <div key={index} className="group flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 border border-gray-200">
                               <span className="text-sm font-medium text-gray-900">{feature}</span>
-                              <button type="button" onClick={() => handleRemoveItem(features, setFeatures, index)} className="ml-1 text-red-500 hover:text-red-700">
+                              <button type="button" onClick={() => handleRemoveItem(features, setFeatures, index)} className="ml-1 text-gray-400 hover:text-red-600">
                                 <X className="w-3 h-3" />
                               </button>
                             </div>
@@ -1016,10 +1007,10 @@ export default function EditProductPage() {
                   {/* Separator */}
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-yellow-200"></div>
+                      <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="px-4 bg-white text-sm font-medium text-yellow-600">
+                      <span className="px-4 bg-white text-sm font-medium text-gray-500">
                         PRIX & STOCK
                       </span>
                     </div>
@@ -1030,7 +1021,7 @@ export default function EditProductPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="space-y-3">
                         <label htmlFor="price" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                          <DollarSign className="w-4 h-4 text-green-500" />
+                          <DollarSign className="w-4 h-4 text-green-600" />
                           Prix (MAD)
                         </label>
                         <input
@@ -1062,7 +1053,7 @@ export default function EditProductPage() {
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
                             <label htmlFor="discount" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                              <Percent className="w-4 h-4 text-orange-500" />
+                              <Percent className="w-4 h-4 text-yellow-500" />
                               Réduction %
                             </label>
                             <label className="flex items-center gap-1 text-[11px] text-gray-500 cursor-pointer">
@@ -1085,7 +1076,7 @@ export default function EditProductPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-3">
                         <label htmlFor="stockQuantity" className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                          <Package2 className="w-4 h-4 text-purple-500" />
+                          <Package2 className="w-4 h-4 text-gray-500" />
                           Quantité en Stock
                         </label>
                         <input
@@ -1099,7 +1090,7 @@ export default function EditProductPage() {
                       </div>
                       
                       {/* Toggles */}
-                      <div className="flex flex-wrap gap-6 p-4 rounded-xl bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 mt-6 items-center">
+                      <div className="flex flex-wrap gap-6 p-4 rounded-xl bg-gray-50 border border-gray-200 mt-6 items-center">
                         <label className="flex items-center gap-3 cursor-pointer">
                             <input type="checkbox" name="inStock" checked={formData.inStock} onChange={handleInputChange} className="w-5 h-5 text-yellow-500 rounded border-gray-300 focus:ring-yellow-500"/>
                             <span className="font-medium text-gray-900">En Stock</span>
@@ -1117,24 +1108,24 @@ export default function EditProductPage() {
                   </div>
 
                   {/* SPÉCIFICATIONS PAR CATÉGORIE */}
-                  <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-yellow-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-yellow-600">DIMENSIONS & MATÉRIAUX</span></div></div>
+                  <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-gray-500">DIMENSIONS & MATÉRIAUX</span></div></div>
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="space-y-1">
                         <label className="text-xs text-black font-bold">Largeur</label>
-                        <input name="width" type="number" value={formData.width} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border text-black rounded-xl" />
+                        <input name="width" type="number" value={formData.width} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border border-gray-300 text-black rounded-xl focus:border-yellow-500 outline-none" />
                     </div>
                     <div className="space-y-1">
                         <label className="text-xs text-black font-bold">Hauteur</label>
-                        <input name="height" type="number" value={formData.height} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border text-black rounded-xl" />
+                        <input name="height" type="number" value={formData.height} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border border-gray-300 text-black rounded-xl focus:border-yellow-500 outline-none" />
                     </div>
                     <div className="space-y-1">
                         <label className="text-xs text-black font-bold">Profondeur</label>
-                        <input name="depth" type="number" value={formData.depth} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border text-black rounded-xl" />
+                        <input name="depth" type="number" value={formData.depth} onChange={handleInputChange} placeholder="cm" className="w-full p-3 border border-gray-300 text-black rounded-xl focus:border-yellow-500 outline-none" />
                     </div>
                     <div className="space-y-1">
                         <label className="text-xs text-black font-bold">Poids</label>
-                        <input name="weight" type="number" value={formData.weight} onChange={handleInputChange} placeholder="kg" className="w-full p-3 border text-black rounded-xl" />
+                        <input name="weight" type="number" value={formData.weight} onChange={handleInputChange} placeholder="kg" className="w-full p-3 border border-gray-300 text-black rounded-xl focus:border-yellow-500 outline-none" />
                     </div>
                   </div>
 
@@ -1142,53 +1133,53 @@ export default function EditProductPage() {
                   <div className="mt-4">
                     <label className="text-sm text-black font-bold block mb-2">Matériaux</label>
                     <div className="flex gap-2 text-black">
-                        <input value={newMaterial} onChange={e => setNewMaterial(e.target.value)} onKeyPress={e => handleKeyPress(e, materials, setMaterials, newMaterial, setNewMaterial)} placeholder="Ajouter un matériau" className="flex-1 p-3 border rounded-xl"/>
-                        <button type="button" onClick={() => handleAddItem(materials, setMaterials, newMaterial, setNewMaterial)} className="bg-purple-100 text-purple-600 px-4 rounded-xl font-bold">+</button>
+                        <input value={newMaterial} onChange={e => setNewMaterial(e.target.value)} onKeyPress={e => handleKeyPress(e, materials, setMaterials, newMaterial, setNewMaterial)} placeholder="Ajouter un matériau" className="flex-1 p-3 border border-gray-300 rounded-xl focus:border-yellow-500 outline-none"/>
+                        <button type="button" onClick={() => handleAddItem(materials, setMaterials, newMaterial, setNewMaterial)} className="bg-black text-white px-4 rounded-xl font-bold hover:bg-gray-800 transition-all">+</button>
                     </div>
-                    <div className="flex flex-wrap gap-2 mt-2">{materials.map((m, i) => <span key={i} className="bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(materials, setMaterials, i)}>{m} ×</span>)}</div>
+                    <div className="flex flex-wrap gap-2 mt-2">{materials.map((m, i) => <span key={i} className="bg-gray-100 text-gray-900 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-red-100 hover:text-red-600 transition-colors" onClick={() => handleRemoveItem(materials, setMaterials, i)}>{m} ×</span>)}</div>
                   </div>
 
                   {/* Options (Variants) */}
-                  <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-yellow-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-yellow-600">VARIANTES</span></div></div>
+                  <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-gray-500">VARIANTES</span></div></div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                        <label className="font-bold text-black  text-sm block mb-2">Couleurs</label>
-                        <div className="flex gap-2"><input value={newColor} onChange={e => setNewColor(e.target.value)} onKeyPress={e => handleKeyPress(e, colors, setColors, newColor, setNewColor)} className="flex-1 p-3 border text-black rounded-xl" placeholder="Ajouter couleur"/><button type="button" onClick={() => handleAddItem(colors, setColors, newColor, setNewColor)} className="bg-pink-100 text-pink-600 px-4 rounded-xl">+</button></div>
-                        <div className="flex flex-wrap gap-2 mt-2">{colors.map((c, i) => <span key={i} className="bg-pink-50 text-pink-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(colors, setColors, i)}>{c} ×</span>)}</div>
+                        <label className="font-bold text-black text-sm block mb-2">Couleurs</label>
+                        <div className="flex gap-2"><input value={newColor} onChange={e => setNewColor(e.target.value)} onKeyPress={e => handleKeyPress(e, colors, setColors, newColor, setNewColor)} className="flex-1 p-3 border border-gray-300 text-black rounded-xl focus:border-yellow-500 outline-none" placeholder="Ajouter couleur"/><button type="button" onClick={() => handleAddItem(colors, setColors, newColor, setNewColor)} className="bg-black text-white px-4 rounded-xl hover:bg-gray-800 transition-all">+</button></div>
+                        <div className="flex flex-wrap gap-2 mt-2">{colors.map((c, i) => <span key={i} className="bg-gray-100 text-gray-900 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-red-100 hover:text-red-600 transition-colors" onClick={() => handleRemoveItem(colors, setColors, i)}>{c} ×</span>)}</div>
                         </div>
                         <div>
-                        <label className="font-bold text-black  text-sm block mb-2">Tailles</label>
-                        <div className="flex gap-2"><input value={newTaille} onChange={e => setNewTaille(e.target.value)} onKeyPress={e => handleKeyPress(e, taille, setTaille, newTaille, setNewTaille)} className="flex-1 p-3 border text-black rounded-xl" placeholder="Ajouter taille"/><button type="button" onClick={() => handleAddItem(taille, setTaille, newTaille, setNewTaille)} className="bg-cyan-100 text-cyan-600 px-4 rounded-xl">+</button></div>
-                        <div className="flex flex-wrap gap-2 mt-2">{taille.map((t, i) => <span key={i} className="bg-cyan-50 text-cyan-700 px-3 py-1 rounded-full text-sm cursor-pointer" onClick={() => handleRemoveItem(taille, setTaille, i)}>{t} ×</span>)}</div>
+                        <label className="font-bold text-black text-sm block mb-2">Tailles</label>
+                        <div className="flex gap-2"><input value={newTaille} onChange={e => setNewTaille(e.target.value)} onKeyPress={e => handleKeyPress(e, taille, setTaille, newTaille, setNewTaille)} className="flex-1 p-3 border border-gray-300 text-black rounded-xl focus:border-yellow-500 outline-none" placeholder="Ajouter taille"/><button type="button" onClick={() => handleAddItem(taille, setTaille, newTaille, setNewTaille)} className="bg-black text-white px-4 rounded-xl hover:bg-gray-800 transition-all">+</button></div>
+                        <div className="flex flex-wrap gap-2 mt-2">{taille.map((t, i) => <span key={i} className="bg-gray-100 text-gray-900 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-red-100 hover:text-red-600 transition-colors" onClick={() => handleRemoveItem(taille, setTaille, i)}>{t} ×</span>)}</div>
                         </div>
                   </div>
                      
 
                   {/* Tags */}
-                  <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-yellow-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-yellow-600">TAGS & SEO</span></div></div>
+                  <div className="relative my-8"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div><div className="relative flex justify-center"><span className="px-4 bg-white text-sm font-medium text-gray-500">TAGS & SEO</span></div></div>
                   <div className="space-y-3">
                     <label className="flex items-center gap-2 text-sm font-bold text-gray-900">
-                      <Tag className="w-4 h-4 text-indigo-500" />
+                      <Tag className="w-4 h-4 text-yellow-500" />
                       Tags
                     </label>
                     <div className="flex gap-2">
                       <input value={newTag} onChange={(e) => setNewTag(e.target.value)} onKeyPress={(e) => handleKeyPress(e, tags, setTags, newTag, setNewTag)} placeholder="Ajouter un tag..." className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 outline-none" />
-                      <button type="button" onClick={() => handleAddItem(tags, setTags, newTag, setNewTag)} className="px-6 py-3 rounded-xl bg-indigo-500 text-white font-bold hover:shadow-lg"><Plus className="w-5 h-5" /></button>
+                      <button type="button" onClick={() => handleAddItem(tags, setTags, newTag, setNewTag)} className="px-6 py-3 rounded-xl bg-black text-white font-bold hover:bg-gray-800 hover:shadow-lg"><Plus className="w-5 h-5" /></button>
                     </div>
-                    {tags.length > 0 && <div className="flex flex-wrap gap-2 mt-3">{tags.map((tag, index) => (<span key={index} className="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-bold text-sm cursor-pointer hover:bg-red-100 hover:text-red-600 transition-colors" onClick={() => handleRemoveItem(tags, setTags, index)}>#{tag}</span>))}</div>}
+                    {tags.length > 0 && <div className="flex flex-wrap gap-2 mt-3">{tags.map((tag, index) => (<span key={index} className="bg-gray-100 text-gray-900 px-3 py-1 rounded-full font-bold text-sm cursor-pointer hover:bg-red-100 hover:text-red-600 transition-colors" onClick={() => handleRemoveItem(tags, setTags, index)}>#{tag}</span>))}</div>}
                   </div>
 
                   {/* --- SECTION AVIS (REVIEWS) --- */}
                   <div className="relative my-8">
                     <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-yellow-200"></div>
+                        <div className="w-full border-t border-gray-200"></div>
                     </div>
                     <div className="relative flex justify-center">
-                        <span className="px-4 bg-white text-sm font-medium text-yellow-600">GESTION DES AVIS CLIENTS</span>
+                        <span className="px-4 bg-white text-sm font-medium text-gray-500">GESTION DES AVIS CLIENTS</span>
                     </div>
                   </div>
 
-                  <div className="space-y-6 bg-yellow-50/50 p-6 rounded-2xl border border-yellow-100">
+                  <div className="space-y-6 bg-gray-50 p-6 rounded-2xl border border-gray-200">
                      <div className="flex items-center justify-between">
                         <h3 className="font-bold text-gray-900 flex items-center gap-2">
                             <MessageSquare className="w-5 h-5 text-yellow-600"/>
@@ -1208,7 +1199,7 @@ export default function EditProductPage() {
                                     name="username" 
                                     value={reviewForm.username} 
                                     onChange={handleReviewChange} 
-                                    className="w-full p-2 border text-black border rounded-lg text-sm" 
+                                    className="w-full p-2 border border-gray-300 text-black rounded-lg text-sm focus:border-yellow-500 outline-none" 
                                     placeholder="Ex: John Doe"
                                 />
                             </div>
@@ -1236,7 +1227,7 @@ export default function EditProductPage() {
                                 name="title" 
                                 value={reviewForm.title} 
                                 onChange={handleReviewChange} 
-                                className="w-full p-2 border text-black rounded-lg text-sm" 
+                                className="w-full p-2 border border-gray-300 text-black rounded-lg text-sm focus:border-yellow-500 outline-none" 
                                 placeholder="Ex: Super produit !"
                             />
                         </div>
@@ -1247,7 +1238,7 @@ export default function EditProductPage() {
                                 value={reviewForm.body} 
                                 onChange={handleReviewChange} 
                                 rows={3}
-                                className="w-full p-2 border text-black rounded-lg text-sm" 
+                                className="w-full p-2 border border-gray-300 text-black rounded-lg text-sm focus:border-yellow-500 outline-none" 
                                 placeholder="L'avis du client..."
                             />
                         </div>
@@ -1265,7 +1256,7 @@ export default function EditProductPage() {
                                 type="button" 
                                 onClick={handleReviewSubmit}
                                 disabled={isReviewLoading}
-                                className="px-4 py-2 text-sm text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 font-bold flex items-center gap-2"
+                                className="px-4 py-2 text-sm text-white bg-black rounded-lg hover:bg-gray-800 font-bold flex items-center gap-2"
                             >
                                 {isReviewLoading && <Loader2 className="w-4 h-4 animate-spin"/>}
                                 {editingReviewId ? 'Mettre à jour' : 'Ajouter l\'avis'}
@@ -1298,7 +1289,7 @@ export default function EditProductPage() {
                                         <button 
                                             type="button" 
                                             onClick={() => startEditReview(review)}
-                                            className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                                            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                                             title="Modifier"
                                         >
                                             <Edit2 className="w-4 h-4"/>
@@ -1320,9 +1311,9 @@ export default function EditProductPage() {
 
 
                   {/* Actions */}
-                  <div className="pt-8 border-t border-yellow-200 flex justify-end gap-4">
+                  <div className="pt-8 border-t border-gray-200 flex justify-end gap-4">
                     <button type="button" onClick={() => router.back()} className="px-8 py-4 rounded-2xl border-2 border-gray-300 text-gray-700 font-bold hover:bg-gray-50">Annuler</button>
-                    <button type="submit" disabled={isSubmitting} className="group relative px-12 py-4 bg-gradient-to-r from-yellow-500 to-amber-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl disabled:opacity-50">
+                    <button type="submit" disabled={isSubmitting} className="group relative px-12 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-2xl shadow-lg hover:shadow-xl disabled:opacity-50">
                        <div className="flex items-center gap-2">
                          {isSubmitting ? <Loader2 className="animate-spin"/> : <Save className="w-5 h-5"/>}
                          <span>Mettre à jour</span>
