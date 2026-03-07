@@ -48,7 +48,7 @@ export const metadata = {
     },
   },
   facebook: {
-    domainVerification: "your-facebook-domain-verification-code", // Replace with actual code
+    domainVerification: "bhglqyk56ty0ilu2xcfi7ok1pew1f2",
   },
   robots: {
     index: true,
@@ -69,6 +69,7 @@ export const metadata = {
   other: {
     "instagram:creator": "@ironz_equipements",
     "instagram:site": "@ironz_official",
+    "facebook-domain-verification": "bhglqyk56ty0ilu2xcfi7ok1pew1f2",
   },
 };
 
@@ -94,7 +95,7 @@ export default function RootLayout({ children }) {
           `,
         }}
       />
-      
+
       {/* 3. NoScript Fallback (for users with JS disabled) */}
       <noscript>
         <img
