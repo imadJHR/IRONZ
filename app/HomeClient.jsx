@@ -1393,7 +1393,7 @@ export default function HomeClient({
                     <CloudImg
                       src={featuredVedette.image}
                       alt={featuredVedette.name}
-                      className="w-full h-full object-contain filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-700 z-10"
+                      className="w-full h-full object-contain rounded-xl filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-700 z-10"
                       sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 800px"
                     />
                   </motion.div>

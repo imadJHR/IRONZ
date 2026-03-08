@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useDeferredValue } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Search,
   Filter,
@@ -54,15 +55,18 @@ const PLACEHOLDER = "/placeholder.svg";
 function CloudImg({ src, alt, fill = false, className = "", priority = false }) {
   const [imgSrc, setImgSrc] = useState(src || PLACEHOLDER);
   useEffect(() => { setImgSrc(src || PLACEHOLDER); }, [src]);
-  
+
   const source = imgSrc && typeof imgSrc === 'object' && imgSrc.src ? imgSrc.src : imgSrc;
 
   return (
-    <img
+    <Image
       src={source}
       alt={alt || ""}
-      loading={priority ? "eager" : "lazy"}
-      decoding="async"
+      priority={priority}
+      fill={fill}
+      sizes={fill ? "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" : undefined}
+      width={fill ? undefined : 800}
+      height={fill ? undefined : 800}
       onError={() => setImgSrc(PLACEHOLDER)}
       className={cn(
         fill ? "absolute inset-0 h-full w-full" : "",
@@ -123,7 +127,7 @@ function ProductSEO() {
 }
 
 // Responsive Product Card Component
-function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
+const ProductCard = React.memo(function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
   const productId = product._id || product.id;
   const imgSrc = product.image || "/placeholder.svg";
   const { isInFavorites, addToFavorites, removeFromFavorites } = useFavorites();
@@ -135,8 +139,8 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
       key={productId}
       className={cn(
         "bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all h-full group",
-        viewMode === "list" 
-          ? "flex flex-col sm:flex-row h-auto sm:h-56 md:h-64 lg:h-72" 
+        viewMode === "list"
+          ? "flex flex-col sm:flex-row h-auto sm:h-56 md:h-64 lg:h-72"
           : "flex flex-col"
       )}
       variants={{
@@ -148,8 +152,8 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
       {/* Image Container */}
       <div className={cn(
         "relative overflow-hidden bg-gray-50 dark:bg-gray-900 shrink-0",
-        viewMode === "list" 
-          ? "w-full sm:w-40 md:w-56 h-48 sm:h-full" 
+        viewMode === "list"
+          ? "w-full sm:w-40 md:w-56 h-48 sm:h-full"
           : "w-full h-48 sm:h-52 md:h-60 lg:h-64"
       )}>
         <Link href={`/produit/${product.slug || productId}`} className="block w-full h-full">
@@ -160,7 +164,7 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
             fill
           />
         </Link>
-        
+
         {/* Quick Actions */}
         <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-1 sm:gap-2 z-10">
           <button
@@ -201,7 +205,7 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
           </span>
           {product.rating != null && renderRating(product.rating)}
         </div>
-        
+
         <Link href={`/produit/${product.slug || productId}`}>
           <h2 className={cn(
             "font-bold text-gray-900 dark:text-white group-hover:text-yellow-600 transition-colors line-clamp-2",
@@ -212,7 +216,7 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
             {product.name}
           </h2>
         </Link>
-        
+
         {product.description && viewMode === "list" && (
           <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 hidden sm:block">
             {product.description}
@@ -239,18 +243,18 @@ function ProductCard({ product, viewMode = "grid", handleAddToCart }) {
               </span>
             )}
           </div>
-          <Link 
+          <Link
             href={`/produit/${product.slug || productId}`}
             className="text-yellow-600 hover:text-yellow-700 font-bold text-xs sm:text-sm flex items-center gap-1 group/link"
           >
-            Détails 
+            Détails
             <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover/link:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>
     </motion.article>
   );
-}
+});
 
 export default function ProductsPage() {
   // --- STATE ---
@@ -261,6 +265,7 @@ export default function ProductsPage() {
   const [isMobile, setIsMobile] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
+  const deferredSearchQuery = useDeferredValue(searchQuery);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 10000]);
@@ -281,10 +286,10 @@ export default function ProductsPage() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -293,18 +298,18 @@ export default function ProductsPage() {
     setPriceRange(value);
   };
 
-  const handleAddToCart = (e, product) => {
+  const handleAddToCart = useCallback((e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const cartItem = {
       ...product,
       id: product._id || product.id,
       quantity: 1
     };
-    
+
     addToCart(cartItem);
-  };
+  }, [addToCart]);
 
   // --- FETCHING ALL PRODUCTS (Loop) ---
   useEffect(() => {
@@ -317,13 +322,13 @@ export default function ProductsPage() {
       const batchLimit = 50; // Fetch in batches to avoid server cut-off
 
       try {
-        while(hasMore) {
+        while (hasMore) {
           const response = await fetch(`${API_URL}/products?page=${page}&limit=${batchLimit}&sort=newest`);
           if (!response.ok) throw new Error(`Erreur ${response.status}`);
-          
+
           const data = await response.json();
           const batch = data.success && data.data ? data.data : Array.isArray(data) ? data : [];
-          
+
           if (batch.length === 0) {
             hasMore = false;
             break;
@@ -341,7 +346,7 @@ export default function ProductsPage() {
 
         // De-duplicate just in case
         const uniqueProducts = Array.from(new Map(allFetchedProducts.map(item => [item._id, item])).values());
-        
+
         setProducts(uniqueProducts);
         setTotalInventory(uniqueProducts.length);
 
@@ -384,8 +389,8 @@ export default function ProductsPage() {
     let result = [...products];
 
     // Search
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim();
+    if (deferredSearchQuery.trim()) {
+      const query = deferredSearchQuery.toLowerCase().trim();
       result = result.filter(
         (product) =>
           product.name?.toLowerCase().includes(query) ||
@@ -413,19 +418,19 @@ export default function ProductsPage() {
       case "price-asc": return result.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
       case "price-desc": return result.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
       case "newest": return result.sort((a, b) => {
-          if (a.isNewProduct && !b.isNewProduct) return -1;
-          if (!a.isNewProduct && b.isNewProduct) return 1;
-          return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-        });
+        if (a.isNewProduct && !b.isNewProduct) return -1;
+        if (!a.isNewProduct && b.isNewProduct) return 1;
+        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+      });
       case "rating": return result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
       case "discount": return result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
       default: return result.sort((a, b) => {
-          if (a.isFeatured && !b.isFeatured) return -1;
-          if (!a.isFeatured && b.isFeatured) return 1;
-          return 0;
-        });
+        if (a.isFeatured && !b.isFeatured) return -1;
+        if (!a.isFeatured && b.isFeatured) return 1;
+        return 0;
+      });
     }
-  }, [searchQuery, selectedCategories, selectedSubCategories, priceRange, sortOption, products]);
+  }, [deferredSearchQuery, selectedCategories, selectedSubCategories, priceRange, sortOption, products]);
 
   // Pagination Logic
   const displayedProducts = useMemo(() => {
@@ -436,7 +441,7 @@ export default function ProductsPage() {
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  useEffect(() => { setCurrentPage(1); }, [searchQuery, selectedCategories, selectedSubCategories, priceRange, sortOption]);
+  useEffect(() => { setCurrentPage(1); }, [deferredSearchQuery, selectedCategories, selectedSubCategories, priceRange, sortOption]);
   useEffect(() => { if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" }); }, [currentPage]);
 
   const handleCategoryToggle = useCallback((category) => {
@@ -497,29 +502,29 @@ export default function ProductsPage() {
           <div>
             <h3 className="font-bold mb-4 text-base">Recherche</h3>
             <div className="relative">
-              <Input 
-                type="text" 
-                placeholder="Rechercher..." 
-                value={searchQuery} 
-                onChange={(e) => setSearchQuery(e.target.value)} 
-                className="pl-10 h-12 rounded-xl text-base" 
+              <Input
+                type="text"
+                placeholder="Rechercher..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 h-12 rounded-xl text-base"
               />
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
           </div>
-          
+
           <div>
             <h3 className="font-bold mb-4 text-base">Catégories</h3>
             <div className="space-y-3 max-h-60 overflow-y-auto">
               {categories.map((cat) => (
                 <div key={cat.id} className="flex items-center space-x-3">
-                  <Checkbox 
-                    id={`mob-cat-${cat.id}`} 
-                    checked={selectedCategories.includes(cat.name)} 
-                    onCheckedChange={() => handleCategoryToggle(cat.name)} 
+                  <Checkbox
+                    id={`mob-cat-${cat.id}`}
+                    checked={selectedCategories.includes(cat.name)}
+                    onCheckedChange={() => handleCategoryToggle(cat.name)}
                   />
-                  <label 
-                    htmlFor={`mob-cat-${cat.id}`} 
+                  <label
+                    htmlFor={`mob-cat-${cat.id}`}
                     className="text-sm font-medium cursor-pointer flex-1"
                   >
                     {cat.name}
@@ -528,20 +533,20 @@ export default function ProductsPage() {
               ))}
             </div>
           </div>
-          
+
           {availableSubCategories.length > 0 && (
             <div>
               <h3 className="font-bold mb-4 text-base">Sous-catégories</h3>
               <div className="space-y-3 max-h-60 overflow-y-auto">
                 {availableSubCategories.map((sub) => (
                   <div key={sub} className="flex items-center space-x-3">
-                    <Checkbox 
-                      id={`mob-sub-${sub}`} 
-                      checked={selectedSubCategories.includes(sub)} 
-                      onCheckedChange={() => handleSubCategoryToggle(sub)} 
+                    <Checkbox
+                      id={`mob-sub-${sub}`}
+                      checked={selectedSubCategories.includes(sub)}
+                      onCheckedChange={() => handleSubCategoryToggle(sub)}
                     />
-                    <label 
-                      htmlFor={`mob-sub-${sub}`} 
+                    <label
+                      htmlFor={`mob-sub-${sub}`}
                       className="text-sm font-medium cursor-pointer flex-1"
                     >
                       {sub}
@@ -551,16 +556,16 @@ export default function ProductsPage() {
               </div>
             </div>
           )}
-          
+
           <div>
             <h3 className="font-bold mb-4 text-base">Prix</h3>
-            <Slider 
-              value={priceRange} 
-              min={minPrice} 
-              max={maxPrice} 
-              step={10} 
-              onValueChange={handlePriceChange} 
-              className="mb-4" 
+            <Slider
+              value={priceRange}
+              min={minPrice}
+              max={maxPrice}
+              step={10}
+              onValueChange={handlePriceChange}
+              className="mb-4"
             />
             <div className="flex justify-between text-sm font-bold">
               <span>{formatPrice(priceRange[0])}</span>
@@ -569,8 +574,8 @@ export default function ProductsPage() {
           </div>
         </div>
         <SheetFooter className="p-6 border-t">
-          <Button 
-            onClick={() => setIsFilterOpen(false)} 
+          <Button
+            onClick={() => setIsFilterOpen(false)}
             className="w-full bg-yellow-500 text-black font-bold h-12 rounded-xl text-base"
           >
             Voir {filteredProducts.length} résultats
@@ -609,12 +614,12 @@ export default function ProductsPage() {
           {/* Mobile Count */}
           {!isLoading && (
             <div className="sm:hidden mb-2">
-               <Badge variant="outline" className="text-sm font-bold border-yellow-500 text-gray-700 px-3 py-1">
-                 {totalInventory} articles disponibles
-               </Badge>
+              <Badge variant="outline" className="text-sm font-bold border-yellow-500 text-gray-700 px-3 py-1">
+                {totalInventory} articles disponibles
+              </Badge>
             </div>
           )}
-          
+
           <div className="h-1.5 w-12 sm:w-16 md:w-20 bg-yellow-500 mx-auto rounded-full" />
           <p className="mt-3 sm:mt-4 text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto px-4">
             Découvrez notre gamme complète d'équipements professionnels.
@@ -624,23 +629,23 @@ export default function ProductsPage() {
         {/* Filters Bar */}
         <div className="flex flex-col gap-4 sm:gap-6 mb-6 sm:mb-8 sticky top-16 sm:top-20 z-30 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            
+
             {/* Mobile Filter Button */}
             <MobileFilterSheet />
 
             {/* Desktop Search */}
             <div className="relative flex-1 min-w-[180px] sm:min-w-[240px]">
-              <Input 
-                type="text" 
-                placeholder="Rechercher un produit..." 
-                value={searchQuery} 
-                onChange={(e) => setSearchQuery(e.target.value)} 
-                className="pl-10 sm:pl-12 h-10 sm:h-12 rounded-xl text-sm sm:text-base border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 font-medium" 
+              <Input
+                type="text"
+                placeholder="Rechercher un produit..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 sm:pl-12 h-10 sm:h-12 rounded-xl text-sm sm:text-base border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 font-medium"
               />
               <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
               {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery("")} 
+                <button
+                  onClick={() => setSearchQuery("")}
                   className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
                   aria-label="Effacer la recherche"
                 >
@@ -653,16 +658,16 @@ export default function ProductsPage() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="h-10 sm:h-12 rounded-xl gap-2 font-bold border-gray-200 dark:border-gray-800 hover:bg-gray-50 text-sm sm:text-base px-3 sm:px-4">
-                  <ArrowUpDown className="h-3 w-3 sm:h-4 sm:w-4" /> 
-                  <span className="hidden xs:inline">Trier</span> 
+                  <ArrowUpDown className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden min-[400px]:inline">Trier</span>
                   <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 sm:w-56 rounded-xl p-2">
                 {SORT_OPTIONS.map((opt) => (
-                  <DropdownMenuItem 
-                    key={opt.value} 
-                    onClick={() => setSortOption(opt.value)} 
+                  <DropdownMenuItem
+                    key={opt.value}
+                    onClick={() => setSortOption(opt.value)}
                     className="rounded-lg cursor-pointer font-medium text-sm sm:text-base"
                   >
                     <span className="flex-1">{opt.label}</span>
@@ -674,24 +679,24 @@ export default function ProductsPage() {
 
             {/* View Mode */}
             <div className="hidden sm:flex border border-gray-200 dark:border-gray-800 rounded-xl p-1 bg-white dark:bg-gray-900">
-              <button 
-                onClick={() => setViewMode("grid")} 
+              <button
+                onClick={() => setViewMode("grid")}
                 className={cn(
                   "p-2 rounded-lg transition-all",
-                  viewMode === "grid" 
-                    ? "bg-yellow-500 text-black shadow-md" 
+                  viewMode === "grid"
+                    ? "bg-yellow-500 text-black shadow-md"
                     : "text-gray-400 hover:text-black"
                 )}
                 aria-label="Vue grille"
               >
                 <Grid className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
-              <button 
-                onClick={() => setViewMode("list")} 
+              <button
+                onClick={() => setViewMode("list")}
                 className={cn(
                   "p-2 rounded-lg transition-all",
-                  viewMode === "list" 
-                    ? "bg-yellow-500 text-black shadow-md" 
+                  viewMode === "list"
+                    ? "bg-yellow-500 text-black shadow-md"
                     : "text-gray-400 hover:text-black"
                 )}
                 aria-label="Vue liste"
@@ -706,44 +711,44 @@ export default function ProductsPage() {
             <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-2 sm:pt-3 border-t border-gray-100 dark:border-gray-800">
               {searchQuery && (
                 <Badge variant="outline" className="h-7 sm:h-8 gap-1.5 sm:gap-2 pl-2.5 sm:pl-3 pr-1.5 sm:pr-2 rounded-full border-yellow-500/30 bg-yellow-50 dark:bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 text-xs">
-                  {searchQuery} 
-                  <X 
-                    className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer" 
-                    onClick={() => setSearchQuery("")} 
+                  {searchQuery}
+                  <X
+                    className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer"
+                    onClick={() => setSearchQuery("")}
                   />
                 </Badge>
               )}
               {selectedCategories.map(cat => (
                 <Badge key={cat} variant="outline" className="h-7 sm:h-8 gap-1.5 sm:gap-2 pl-2.5 sm:pl-3 pr-1.5 sm:pr-2 rounded-full text-xs">
-                  {cat} 
-                  <X 
-                    className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer" 
-                    onClick={() => handleCategoryToggle(cat)} 
+                  {cat}
+                  <X
+                    className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer"
+                    onClick={() => handleCategoryToggle(cat)}
                   />
                 </Badge>
               ))}
               {selectedSubCategories.map(sub => (
                 <Badge key={sub} variant="outline" className="h-7 sm:h-8 gap-1.5 sm:gap-2 pl-2.5 sm:pl-3 pr-1.5 sm:pr-2 rounded-full border-dashed text-xs">
-                  {sub} 
-                  <X 
-                    className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer" 
-                    onClick={() => handleSubCategoryToggle(sub)} 
+                  {sub}
+                  <X
+                    className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer"
+                    onClick={() => handleSubCategoryToggle(sub)}
                   />
                 </Badge>
               ))}
               {(priceRange[0] > minPrice || priceRange[1] < maxPrice) && (
                 <Badge variant="outline" className="h-7 sm:h-8 gap-1.5 sm:gap-2 pl-2.5 sm:pl-3 pr-1.5 sm:pr-2 rounded-full text-xs">
-                  Prix: {priceRange[0]}-{priceRange[1]} 
-                  <X 
-                    className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer" 
-                    onClick={() => setPriceRange([minPrice, maxPrice])} 
+                  Prix: {priceRange[0]}-{priceRange[1]}
+                  <X
+                    className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer"
+                    onClick={() => setPriceRange([minPrice, maxPrice])}
                   />
                 </Badge>
               )}
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={clearFilters} 
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
                 className="text-xs h-7 sm:h-8 text-red-500 font-bold hover:bg-red-50 rounded-full px-2 sm:px-3"
               >
                 Tout Effacer
@@ -762,14 +767,14 @@ export default function ProductsPage() {
                 </div>
                 <div className="space-y-2 sm:space-y-3 max-h-[50vh] overflow-y-auto custom-scrollbar pr-2">
                   {categories.map((cat) => (
-                    <div 
-                      key={cat.id} 
-                      className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer" 
+                    <div
+                      key={cat.id}
+                      className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer"
                       onClick={() => handleCategoryToggle(cat.name)}
                     >
                       <Checkbox id={`cat-${cat.id}`} checked={selectedCategories.includes(cat.name)} />
-                      <label 
-                        htmlFor={`cat-${cat.id}`} 
+                      <label
+                        htmlFor={`cat-${cat.id}`}
                         className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors cursor-pointer flex-1"
                       >
                         {cat.name}
@@ -786,14 +791,14 @@ export default function ProductsPage() {
                   </div>
                   <div className="space-y-2 sm:space-y-3 max-h-[50vh] overflow-y-auto custom-scrollbar pr-2">
                     {availableSubCategories.map((sub) => (
-                      <div 
-                        key={sub} 
-                        className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer" 
+                      <div
+                        key={sub}
+                        className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer"
                         onClick={() => handleSubCategoryToggle(sub)}
                       >
                         <Checkbox id={`sub-${sub}`} checked={selectedSubCategories.includes(sub)} />
-                        <label 
-                          htmlFor={`sub-${sub}`} 
+                        <label
+                          htmlFor={`sub-${sub}`}
                           className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors cursor-pointer flex-1"
                         >
                           {sub}
@@ -807,13 +812,13 @@ export default function ProductsPage() {
               <Separator />
               <div>
                 <h3 className="font-black uppercase italic text-base sm:text-lg mb-3 sm:mb-4">Prix</h3>
-                <Slider 
-                  value={priceRange} 
-                  min={minPrice} 
-                  max={maxPrice} 
-                  step={10} 
-                  onValueChange={handlePriceChange} 
-                  className="mb-4" 
+                <Slider
+                  value={priceRange}
+                  min={minPrice}
+                  max={maxPrice}
+                  step={10}
+                  onValueChange={handlePriceChange}
+                  className="mb-4"
                 />
                 <div className="flex justify-between text-xs sm:text-sm font-bold text-gray-500">
                   <span>{formatPrice(priceRange[0])}</span>
@@ -827,8 +832,8 @@ export default function ProductsPage() {
           <section className="flex-1">
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-20">
-                 <Loader2 className="w-12 h-12 text-yellow-500 animate-spin mb-4" />
-                 <p className="text-gray-500 font-medium">Chargement du catalogue complet...</p>
+                <Loader2 className="w-12 h-12 text-yellow-500 animate-spin mb-4" />
+                <p className="text-gray-500 font-medium">Chargement du catalogue complet...</p>
               </div>
             ) : filteredProducts.length === 0 ? (
               <div className="text-center py-12 sm:py-16 md:py-20 bg-gray-50 dark:bg-gray-900 rounded-2xl sm:rounded-3xl border border-dashed border-gray-200 dark:border-gray-800">
@@ -844,14 +849,14 @@ export default function ProductsPage() {
             ) : (
               <>
                 <div className="mb-4 text-sm text-gray-500 font-medium px-1">
-                   Affichage de <span className="text-black dark:text-white font-bold">{filteredProducts.length}</span> résultats
+                  Affichage de <span className="text-black dark:text-white font-bold">{filteredProducts.length}</span> résultats
                 </div>
 
-                <motion.div 
+                <motion.div
                   className={cn(
-                    "grid gap-3 sm:gap-4 md:gap-6", 
-                    viewMode === "grid" 
-                      ? "grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3" 
+                    "grid gap-3 sm:gap-4 md:gap-6",
+                    viewMode === "grid"
+                      ? "grid-cols-1 min-[450px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                       : "grid-cols-1"
                   )}
                   variants={containerVariants}
@@ -859,7 +864,7 @@ export default function ProductsPage() {
                   animate="visible"
                 >
                   {displayedProducts.map((product) => (
-                    <ProductCard 
+                    <ProductCard
                       key={product._id || product.id}
                       product={product}
                       viewMode={viewMode}
@@ -872,22 +877,22 @@ export default function ProductsPage() {
                 {totalPages > 1 && (
                   <div className="mt-8 sm:mt-12 flex justify-center">
                     <nav className="flex items-center gap-1.5 sm:gap-2">
-                      <button 
-                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))} 
-                        disabled={currentPage === 1} 
+                      <button
+                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
                         className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 transition"
                         aria-label="Page précédente"
                       >
                         <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 rotate-90" />
                       </button>
                       {getPageNumbers().map((p, i) => (
-                        <button 
-                          key={i} 
-                          onClick={() => typeof p === 'number' && setCurrentPage(p)} 
+                        <button
+                          key={i}
+                          onClick={() => typeof p === 'number' && setCurrentPage(p)}
                           className={cn(
                             "w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition",
-                            currentPage === p 
-                              ? "bg-yellow-500 text-black shadow-lg" 
+                            currentPage === p
+                              ? "bg-yellow-500 text-black shadow-lg"
                               : "hover:bg-gray-100 text-gray-600"
                           )}
                           aria-label={typeof p === 'number' ? `Page ${p}` : 'Plus de pages'}
@@ -896,9 +901,9 @@ export default function ProductsPage() {
                           {p}
                         </button>
                       ))}
-                      <button 
-                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} 
-                        disabled={currentPage === totalPages} 
+                      <button
+                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                        disabled={currentPage === totalPages}
                         className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 transition"
                         aria-label="Page suivante"
                       >

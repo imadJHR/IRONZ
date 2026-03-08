@@ -5,7 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import { CartProvider } from "../context/cart-context";
 import { FavoritesProvider } from "../context/favorites-context";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
@@ -62,9 +62,9 @@ export default function ClientLayout({ children }) {
   // Use the hook instead of window.location to prevent hydration errors
   const pathname = usePathname();
 
-  const toggleLanguage = () => {
+  const toggleLanguage = useCallback(() => {
     setLanguage((prevLanguage) => (prevLanguage === "fr" ? "en" : "fr"));
-  };
+  }, []);
 
   // Determine if we are on an admin path safely
   const isAdminPath = pathname?.startsWith("/ironz-setup");
@@ -107,10 +107,17 @@ function ScrollToTop() {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setShowScrollTop(window.scrollY > 300);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -137,7 +144,7 @@ function ScrollToTop() {
 }
 
 // Navbar Component
-function Navbar({ language, toggleLanguage }) {
+const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -170,10 +177,17 @@ function Navbar({ language, toggleLanguage }) {
   }, []);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 10);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -247,7 +261,7 @@ function Navbar({ language, toggleLanguage }) {
     return pathname.startsWith(path);
   };
 
-  const serviceLinks = [
+  const serviceLinks = useMemo(() => [
     {
       name: language === "fr" ? "Aménagement de salle" : "Room Setup",
       path: "/services/amenagement-salle",
@@ -279,7 +293,7 @@ function Navbar({ language, toggleLanguage }) {
         language === "fr" ? "Revêtement sol & mur" : "Floor & Wall Covering",
       path: "/services/revetement-sol-mur",
     },
-  ];
+  ], [language]);
 
   const dropdownVariants = {
     hidden: { opacity: 0, y: -10, scale: 0.98 },
@@ -930,7 +944,7 @@ function Navbar({ language, toggleLanguage }) {
       </AnimatePresence>
     </>
   );
-}
+});
 
 // NavLink Component for Navbar
 function NavLink({ href, children, active }) {
@@ -950,7 +964,7 @@ function NavLink({ href, children, active }) {
 }
 
 // Footer Component
-function Footer({ language }) {
+const Footer = React.memo(function Footer({ language }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -959,7 +973,7 @@ function Footer({ language }) {
 
   const currentYear = new Date().getFullYear();
 
-  const socialLinks = [
+  const socialLinks = useMemo(() => [
     {
       name: "Instagram",
       icon: <Instagram className="h-5 w-5" />,
@@ -970,9 +984,9 @@ function Footer({ language }) {
       icon: <Youtube className="h-5 w-5" />,
       href: "https://www.youtube.com/@ironzofficial",
     },
-  ];
+  ], []);
 
-  const categories = [
+  const categories = useMemo(() => [
     {
       name: language === "fr" ? "Équipements" : "Equipment",
       href: "/categories/equipements",
@@ -985,9 +999,9 @@ function Footer({ language }) {
       name: language === "fr" ? "Accessoires" : "Accessories",
       href: "/categories/accessoires",
     },
-  ];
+  ], [language]);
 
-  const infoLinks = [
+  const infoLinks = useMemo(() => [
     {
       name: language === "fr" ? "À propos" : "About",
       href: "/a-propos",
@@ -1000,9 +1014,9 @@ function Footer({ language }) {
       name: language === "fr" ? "Demande de devis" : "Quote Request",
       href: "/demande-devis",
     },
-  ];
+  ], [language]);
 
-  const contactInfo = [
+  const contactInfo = useMemo(() => [
     {
       icon: <MapPin className="h-5 w-5" />,
       content: "SAHARA MALL 1 ÈRE ÉTAGE C169 & C120",
@@ -1017,47 +1031,133 @@ function Footer({ language }) {
       content: "info@ironz.ma",
       href: "mailto:info@ironz.ma",
     },
-  ];
+  ], []);
+
+  // Framer Motion Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    }
+  };
 
   if (!mounted) return null;
 
   return (
-    <footer className="bg-gray-900 pt-16 pb-12 relative overflow-hidden">
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
-        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-yellow-500 blur-3xl"></div>
-        <div className="absolute top-1/2 right-0 w-96 h-96 rounded-full bg-orange-500 blur-3xl"></div>
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 rounded-full bg-yellow-600 blur-3xl"></div>
+    <footer className="bg-black text-white relative overflow-hidden border-t border-gray-900">
+      {/* Decorative Orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-yellow-500/10 rounded-full blur-[100px] transform -translate-y-1/2"></div>
+        <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-[120px] transform translate-y-1/2"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Brand Section */}
-          <div>
-            <div className="mb-6">
+      {/* Trust Badges Strip (Glassmorphism) */}
+      <div className="relative z-10 border-b border-white/10 bg-white/5 backdrop-blur-xl">
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-col items-center justify-center p-4 rounded-2xl hover:bg-white/5 transition-colors duration-300"
+            >
+              <div className="h-12 w-12 rounded-full bg-yellow-500/20 flex items-center justify-center mb-3">
+                <Truck className="h-6 w-6 text-yellow-500" />
+              </div>
+              <h4 className="text-sm font-black uppercase tracking-wider text-center">{language === "fr" ? "Livraison Express" : "Express Delivery"}</h4>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="flex flex-col items-center justify-center p-4 rounded-2xl hover:bg-white/5 transition-colors duration-300"
+            >
+              <div className="h-12 w-12 rounded-full bg-yellow-500/20 flex items-center justify-center mb-3">
+                <ShieldCheck className="h-6 w-6 text-yellow-500" />
+              </div>
+              <h4 className="text-sm font-black uppercase tracking-wider text-center">{language === "fr" ? "Paiement Sécurisé" : "Secure Payment"}</h4>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-col items-center justify-center p-4 rounded-2xl hover:bg-white/5 transition-colors duration-300"
+            >
+              <div className="h-12 w-12 rounded-full bg-yellow-500/20 flex items-center justify-center mb-3">
+                <Package className="h-6 w-6 text-yellow-500" />
+              </div>
+              <h4 className="text-sm font-black uppercase tracking-wider text-center">{language === "fr" ? "Retour Facile" : "Easy Returns"}</h4>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-col items-center justify-center p-4 rounded-2xl hover:bg-white/5 transition-colors duration-300"
+            >
+              <div className="h-12 w-12 rounded-full bg-yellow-500/20 flex items-center justify-center mb-3">
+                <Clock className="h-6 w-6 text-yellow-500" />
+              </div>
+              <h4 className="text-sm font-black uppercase tracking-wider text-center">{language === "fr" ? "Support 7j/7" : "24/7 Support"}</h4>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Footer Content */}
+      <div className="relative z-10 container mx-auto px-4 pt-16 pb-12">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {/* Brand & Socials */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            <Link href="/">
               <Image
                 src="/logo.png"
                 alt="IRONZ Logo"
                 width={180}
                 height={70}
-                className="h-14 w-auto object-contain"
-                unoptimized={true} 
+                className="h-16 w-auto object-contain invert"
+                unoptimized={true}
               />
-            </div>
-            <p className="text-gray-400 mb-6 leading-relaxed">
+            </Link>
+            <p className="text-gray-400 leading-relaxed text-sm pr-4">
               {language === "fr"
-                ? "Votre partenaire premium pour l'équipement de fitness, les suppléments sportifs et les accessoires de haute performance au Maroc."
-                : "Your premium partner for fitness equipment, sports supplements, and high-performance accessories in Morocco."}
+                ? "L'élite de l'équipement sportif marocain. Forgez votre avenir avec notre matériel de qualité professionnelle et nos suppléments haut de gamme."
+                : "The elite of Moroccan sports equipment. Forge your future with our professional-grade gear and premium supplements."}
             </p>
-            <div className="flex space-x-3">
+            <div className="flex items-center gap-4 pt-2">
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={index}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 hover:bg-gradient-to-r from-yellow-500 to-orange-500 text-gray-400 hover:text-white transition-all duration-300"
-                  whileHover={{ y: -3, scale: 1.1 }}
+                  className="h-10 w-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-black hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300 shadow-lg"
+                  whileHover={{ y: -4, scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   aria-label={social.name}
                 >
@@ -1065,148 +1165,124 @@ function Footer({ language }) {
                 </motion.a>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          {/* Categories */}
-          <div>
-            <h3 className="text-lg font-black uppercase italic mb-6 text-white">
-              <span className="text-yellow-500">—</span>{" "}
-              {language === "fr" ? "Catégories" : "Categories"}
+          {/* Catalog Links */}
+          <motion.div variants={itemVariants}>
+            <h3 className="text-lg font-black uppercase italic tracking-wider mb-6 flex items-center">
+              <span className="w-2 h-2 bg-yellow-500 mr-3 rounded-full animate-pulse"></span>
+              {language === "fr" ? "Catalogue" : "Catalog"}
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {categories.map((category, index) => (
-                <motion.li
-                  key={index}
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
+                <li key={index}>
                   <Link
                     href={category.href}
-                    className="text-gray-400 hover:text-yellow-400 transition-colors flex items-center group"
+                    className="group flex items-center text-gray-400 hover:text-white transition-colors text-sm"
                   >
-                    <ArrowRight className="h-4 w-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    {category.name}
+                    <motion.span
+                      className="mr-2 text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      initial={{ x: -10 }}
+                      whileHover={{ x: 0 }}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </motion.span>
+                    <motion.span whileHover={{ x: 4 }} className="transition-transform">
+                      {category.name}
+                    </motion.span>
                   </Link>
-                </motion.li>
+                </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          {/* Information */}
-          <div>
-            <h3 className="text-lg font-black uppercase italic mb-6 text-white">
-              <span className="text-yellow-500">—</span>{" "}
-              {language === "fr" ? "Information" : "Information"}
+          {/* Quick Info */}
+          <motion.div variants={itemVariants}>
+            <h3 className="text-lg font-black uppercase italic tracking-wider mb-6 flex items-center">
+              <span className="w-2 h-2 bg-orange-500 mr-3 rounded-full animate-pulse"></span>
+              {language === "fr" ? "Support" : "Support"}
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {infoLinks.map((link, index) => (
-                <motion.li
-                  key={index}
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
+                <li key={index}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-yellow-400 transition-colors flex items-center group"
+                    className="group flex items-center text-gray-400 hover:text-white transition-colors text-sm"
                   >
-                    <ArrowRight className="h-4 w-4 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    {link.name}
+                    <motion.span
+                      className="mr-2 text-orange-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      initial={{ x: -10 }}
+                      whileHover={{ x: 0 }}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </motion.span>
+                    <motion.span whileHover={{ x: 4 }} className="transition-transform">
+                      {link.name}
+                    </motion.span>
                   </Link>
-                </motion.li>
+                </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          {/* Contact */}
-          <div>
-            <h3 className="text-lg font-black uppercase italic mb-6 text-white">
-              <span className="text-yellow-500">—</span>{" "}
+          {/* Contact Cards */}
+          <motion.div variants={itemVariants}>
+            <h3 className="text-lg font-black uppercase italic tracking-wider mb-6 flex items-center">
+              <span className="w-2 h-2 bg-yellow-500 mr-3 rounded-full animate-pulse"></span>
               {language === "fr" ? "Contact" : "Contact"}
             </h3>
             <div className="space-y-4">
               {contactInfo.map((item, index) => (
-                <div key={index} className="flex items-start group">
-                  <div className="mr-3 mt-1 p-2 rounded-xl bg-gray-800 group-hover:bg-gradient-to-r from-yellow-500 to-orange-500 transition-colors duration-300">
+                <motion.div
+                  key={index}
+                  className="flex items-start p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group cursor-pointer"
+                  whileHover={{ y: -2 }}
+                >
+                  <div className="mr-4 p-2 rounded-lg bg-black text-gray-400 group-hover:text-yellow-500 group-hover:bg-yellow-500/10 transition-colors">
                     {item.icon}
                   </div>
-                  <div>
+                  <div className="flex-1 pt-1">
                     {item.href ? (
-                      <a
-                        href={item.href}
-                        className="text-gray-400 hover:text-yellow-400 transition-colors"
-                      >
+                      <a href={item.href} className="text-sm text-gray-300 hover:text-white transition-colors block leading-tight">
                         {item.content}
                       </a>
                     ) : (
-                      <span className="text-gray-400">{item.content}</span>
+                      <span className="text-sm text-gray-300 leading-tight block">{item.content}</span>
                     )}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* Trust Badges */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-2xl text-center border border-gray-700/50">
-            <Truck className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-            <h4 className="text-sm font-black uppercase text-white">
-              {language === "fr" ? "Livraison Express" : "Express Delivery"}
-            </h4>
+        {/* Bottom Bar */}
+        <motion.div
+          className="border-t border-white/10 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-yellow-500 font-bold">&copy;</span>
+            <span className="text-gray-500 text-sm font-medium tracking-wide">
+              {currentYear} IRONZ. {language === "fr" ? "Tous droits réservés." : "All rights reserved."}
+            </span>
           </div>
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-2xl text-center border border-gray-700/50">
-            <ShieldCheck className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-            <h4 className="text-sm font-black uppercase text-white">
-              {language === "fr" ? "Paiement Sécurisé" : "Secure Payment"}
-            </h4>
-          </div>
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-2xl text-center border border-gray-700/50">
-            <Package className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-            <h4 className="text-sm font-black uppercase text-white">
-              {language === "fr" ? "Retour Facile" : "Easy Returns"}
-            </h4>
-          </div>
-          <div className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-2xl text-center border border-gray-700/50">
-            <Clock className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-            <h4 className="text-sm font-black uppercase text-white">
-              {language === "fr" ? "Support 7j/7" : "24/7 Support"}
-            </h4>
-          </div>
-        </div>
-
-        {/* Bottom Section */}
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-500 text-sm mb-4 md:mb-0">
-              &copy; {currentYear} IRONZ.{" "}
-              {language === "fr"
-                ? "Tous droits réservés."
-                : "All rights reserved."}
-            </p>
-            <div className="flex items-center space-x-6">
+          <div className="flex items-center gap-6">
+            {["Confidentialité", "Conditions", "FAQ"].map((text, i) => (
               <Link
-                href="/politique-de-confidentialite"
-                className="text-gray-500 hover:text-yellow-400 text-sm transition-colors"
+                key={i}
+                href={`/${text.toLowerCase()}`}
+                className="text-xs font-black uppercase tracking-wider text-gray-600 hover:text-yellow-500 transition-colors"
               >
-                {language === "fr" ? "Confidentialité" : "Privacy"}
+                {text}
               </Link>
-              <Link
-                href="/conditions-generales"
-                className="text-gray-500 hover:text-yellow-400 text-sm transition-colors"
-              >
-                {language === "fr" ? "Conditions" : "Terms"}
-              </Link>
-              <Link
-                href="/faq"
-                className="text-gray-500 hover:text-yellow-400 text-sm transition-colors"
-              >
-                FAQ
-              </Link>
-            </div>
+            ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );
-}
+});
