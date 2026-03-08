@@ -391,7 +391,7 @@ const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
                   alt="IRONZ Logo"
                   width={180}
                   height={60}
-                  className="h-16 w-auto object-contain dark:invert"
+                  className="h-16 w-auto object-contain "
                   priority
                   unoptimized={true} // Fix for Cloudinary crash
                 />
@@ -690,7 +690,7 @@ const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
                       alt="IRONZ Logo"
                       width={140}
                       height={47}
-                      className="h-14 w-auto object-contain dark:invert"
+                      className="h-14 w-auto object-contain "
                       unoptimized={true} // Fix for Cloudinary
                     />
                   </Link>
@@ -1068,60 +1068,7 @@ const Footer = React.memo(function Footer({ language }) {
         <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-[120px] transform translate-y-1/2"></div>
       </div>
 
-      {/* Trust Badges Strip (Glassmorphism) */}
-      <div className="relative z-10 border-b border-white/10 bg-white/5 backdrop-blur-xl">
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="flex flex-col items-center justify-center p-4 rounded-2xl hover:bg-white/5 transition-colors duration-300"
-            >
-              <div className="h-12 w-12 rounded-full bg-yellow-500/20 flex items-center justify-center mb-3">
-                <Truck className="h-6 w-6 text-yellow-500" />
-              </div>
-              <h4 className="text-sm font-black uppercase tracking-wider text-center">{language === "fr" ? "Livraison Express" : "Express Delivery"}</h4>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="flex flex-col items-center justify-center p-4 rounded-2xl hover:bg-white/5 transition-colors duration-300"
-            >
-              <div className="h-12 w-12 rounded-full bg-yellow-500/20 flex items-center justify-center mb-3">
-                <ShieldCheck className="h-6 w-6 text-yellow-500" />
-              </div>
-              <h4 className="text-sm font-black uppercase tracking-wider text-center">{language === "fr" ? "Paiement Sécurisé" : "Secure Payment"}</h4>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="flex flex-col items-center justify-center p-4 rounded-2xl hover:bg-white/5 transition-colors duration-300"
-            >
-              <div className="h-12 w-12 rounded-full bg-yellow-500/20 flex items-center justify-center mb-3">
-                <Package className="h-6 w-6 text-yellow-500" />
-              </div>
-              <h4 className="text-sm font-black uppercase tracking-wider text-center">{language === "fr" ? "Retour Facile" : "Easy Returns"}</h4>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-col items-center justify-center p-4 rounded-2xl hover:bg-white/5 transition-colors duration-300"
-            >
-              <div className="h-12 w-12 rounded-full bg-yellow-500/20 flex items-center justify-center mb-3">
-                <Clock className="h-6 w-6 text-yellow-500" />
-              </div>
-              <h4 className="text-sm font-black uppercase tracking-wider text-center">{language === "fr" ? "Support 7j/7" : "24/7 Support"}</h4>
-            </motion.div>
-          </div>
-        </div>
-      </div>
+     
 
       {/* Main Footer Content */}
       <div className="relative z-10 container mx-auto px-4 pt-16 pb-12">
@@ -1140,7 +1087,7 @@ const Footer = React.memo(function Footer({ language }) {
                 alt="IRONZ Logo"
                 width={180}
                 height={70}
-                className="h-16 w-auto object-contain invert"
+                className="h-16 w-auto object-contain "
                 unoptimized={true}
               />
             </Link>
