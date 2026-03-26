@@ -80,9 +80,7 @@ export default function RootLayout({ children }) {
       <Suspense fallback={null}>
         <FacebookPixel />
       </Suspense>
-
       {children}
-
     </ClientLayout>
   );
 }

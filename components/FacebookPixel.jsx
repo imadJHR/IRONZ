@@ -6,6 +6,7 @@ import Script from "next/script";
 
 const FB_PIXEL_ID = "2235692166803820";
 
+
 export default function FacebookPixel() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
