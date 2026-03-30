@@ -38,6 +38,7 @@ import { useCart } from "../../../context/cart-context";
 import { useFavorites } from "../../../context/favorites-context";
 import { cn } from "../../../lib/utils";
 import { Badge } from "../../../components/ui/badge";
+import { trackFBEvent } from "../../../components/FacebookPixel";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
 const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "your-cloud-name";
@@ -608,6 +609,16 @@ export default function ProductPageClient({ slug }) {
     }
     const id = product._id || product.id;
     addToCart({ ...product, id, quantity, selectedColor, selectedTaille });
+
+    // Facebook Pixel: Track AddToCart event
+    trackFBEvent("AddToCart", {
+      content_name: product.name,
+      content_ids: [id],
+      content_type: "product",
+      value: (product.salePrice || product.price || 0) * quantity,
+      currency: "MAD",
+      num_items: quantity,
+    });
   }, [product, addToCart, quantity, selectedColor, selectedTaille]);
 
   const getShareLinks = useCallback(() => {
@@ -719,6 +730,16 @@ export default function ProductPageClient({ slug }) {
         
         setProduct(p);
         setReviews(p.reviews || []); // Initialize reviews from product data
+
+        // Facebook Pixel: Track ViewContent event
+        trackFBEvent("ViewContent", {
+          content_name: p.name,
+          content_category: p.category || "",
+          content_ids: [p._id || p.id],
+          content_type: "product",
+          value: p.salePrice || p.price || 0,
+          currency: "MAD",
+        });
 
         if (p.colors?.length > 0) setSelectedColor(p.colors[0]);
         if (p.taille?.length > 0) setSelectedTaille(p.taille[0]);

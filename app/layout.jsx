@@ -43,9 +43,6 @@ export const metadata = {
     ],
     locale: "fr_MA",
     type: "website",
-    facebook: {
-      appId: "your-facebook-app-id", // Ensure you replace this if you have one
-    },
   },
   facebook: {
     domainVerification: "bhglqyk56ty0ilu2xcfi7ok1pew1f2",
@@ -63,14 +60,11 @@ export const metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    yandex: "your-yandex-verification-code",
-  },
   other: {
     "instagram:creator": "@ironz_equipements",
     "instagram:site": "@ironz_official",
     "facebook-domain-verification": "bhglqyk56ty0ilu2xcfi7ok1pew1f2",
-     monetag: "4828e1edb553377b34517c12934f4fb1",
+    monetag: "4828e1edb553377b34517c12934f4fb1",
   },
 };
 

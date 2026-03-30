@@ -1,32 +1,32 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
 
 const FB_PIXEL_ID = "2235692166803820";
 
+// Helper to check if fbq is loaded
+const isFbqReady = () => typeof window !== "undefined" && typeof window.fbq === "function";
 
 export default function FacebookPixel() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const isFirstRender = useRef(true);
 
+  // Track PageView on route changes (SPA navigation)
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-
-    if (typeof window !== "undefined" && window.fbq) {
+    // The initial PageView is fired by the inline script below.
+    // This effect handles subsequent client-side navigations.
+    if (isFbqReady()) {
       window.fbq("track", "PageView");
     }
   }, [pathname, searchParams]);
 
   return (
     <>
+      {/* Facebook Pixel Base Code */}
       <Script
-        id="fb-pixel"
+        id="fb-pixel-init"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
@@ -43,15 +43,29 @@ export default function FacebookPixel() {
           `,
         }}
       />
+      {/* Fallback for users without JavaScript */}
       <noscript>
         <img
           height="1"
           width="1"
           style={{ display: "none" }}
           src={`https://www.facebook.com/tr?id=${FB_PIXEL_ID}&ev=PageView&noscript=1`}
-          alt="Meta Pixel"
+          alt=""
         />
       </noscript>
     </>
   );
+}
+
+// Export helper for tracking custom events from other components
+export function trackFBEvent(eventName, params = {}) {
+  if (isFbqReady()) {
+    window.fbq("track", eventName, params);
+  }
+}
+
+export function trackFBCustomEvent(eventName, params = {}) {
+  if (isFbqReady()) {
+    window.fbq("trackCustom", eventName, params);
+  }
 }

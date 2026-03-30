@@ -33,6 +33,7 @@ import { Label } from "../../components/ui/label";
 import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
 import { Checkbox } from "../../components/ui/checkbox";
 import { cn } from "../../lib/utils";
+import { trackFBEvent } from "../../components/FacebookPixel";
 
 const PLACEHOLDER = "/placeholder.svg";
 
@@ -94,6 +95,14 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     setMounted(true);
+    // Facebook Pixel: Track InitiateCheckout
+    trackFBEvent("InitiateCheckout", {
+      content_ids: cart.map((item) => item.id),
+      content_type: "product",
+      num_items: cart.length,
+      value: cartTotal,
+      currency: "MAD",
+    });
   }, []);
 
   useEffect(() => {
@@ -252,6 +261,15 @@ export default function CheckoutPage() {
       const result = await response.json();
 
       if (response.ok && result.success) {
+        // Facebook Pixel: Track Purchase event
+        trackFBEvent("Purchase", {
+          content_ids: cart.map((item) => item.id),
+          content_type: "product",
+          num_items: cart.reduce((sum, item) => sum + item.quantity, 0),
+          value: total,
+          currency: "MAD",
+        });
+
         setOrderComplete(true);
         clearCart();
       } else {
