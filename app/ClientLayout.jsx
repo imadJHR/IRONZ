@@ -55,6 +55,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function ClientLayout({ children }) {
