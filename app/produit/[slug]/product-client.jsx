@@ -613,11 +613,15 @@ export default function ProductPageClient({ slug }) {
     // Facebook Pixel: Track AddToCart event
     trackFBEvent("AddToCart", {
       content_name: product.name,
-      content_ids: [id],
+      content_ids: [String(id)],
       content_type: "product",
-      value: (product.salePrice || product.price || 0) * quantity,
+      contents: [{
+        id: String(id),
+        quantity: Number(quantity) || 1,
+        item_price: Number(product.salePrice || product.price || 0)
+      }],
+      value: Number(product.salePrice || product.price || 0) * quantity,
       currency: "MAD",
-      num_items: quantity,
     });
   }, [product, addToCart, quantity, selectedColor, selectedTaille]);
 

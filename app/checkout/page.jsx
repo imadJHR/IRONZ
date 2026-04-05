@@ -97,10 +97,14 @@ export default function CheckoutPage() {
     setMounted(true);
     // Facebook Pixel: Track InitiateCheckout
     trackFBEvent("InitiateCheckout", {
-      content_ids: cart.map((item) => item.id),
+      content_ids: cart.map((item) => String(item.id || item._id)),
       content_type: "product",
-      num_items: cart.length,
-      value: cartTotal,
+      contents: cart.map((item) => ({
+        id: String(item.id || item._id),
+        quantity: Number(item.quantity) || 1,
+        item_price: Number(item.price) || 0
+      })),
+      value: Number(cartTotal),
       currency: "MAD",
     });
   }, []);
@@ -261,18 +265,40 @@ export default function CheckoutPage() {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        // Facebook Pixel: Track Purchase event
-        trackFBEvent("Purchase", {
-          content_ids: cart.map((item) => item.id),
-          content_type: "product",
-          num_items: cart.reduce((sum, item) => sum + item.quantity, 0),
-          value: total,
-          currency: "MAD",
-        });
+        // Facebook Pixel: Track Purchase event with Advanced Matching
+        if (typeof window !== "undefined" && window.fbq) {
+          try {
+            // Advanced Matching Data (Calculé dynamiquement)
+            const pii = {};
+            if (formData.email) pii.em = formData.email.trim().toLowerCase();
+            if (formData.phone) pii.ph = formData.phone.replace(/\D/g, ""); // Garde seulement les chiffres
+            
+            // Re-init avec les données de matching si disponibles pour une attribution précise
+            if (Object.keys(pii).length > 0) {
+              window.fbq('init', "2235692166803820", pii);
+            }
+
+            // Track Purchase avec tous les paramètres e-commerce optimisés
+            trackFBEvent("Purchase", {
+              content_ids: cart.map((item) => String(item.id || item._id)),
+              content_type: "product",
+              contents: cart.map((item) => ({
+                id: String(item.id || item._id),
+                quantity: Number(item.quantity) || 1,
+                item_price: Number(item.price) || 0
+              })),
+              value: Number(total), // Doit être un nombre
+              currency: "MAD",
+            });
+          } catch (fbError) {
+            console.error("Facebook Pixel Tracking Error:", fbError);
+          }
+        }
 
         setOrderComplete(true);
         clearCart();
-      } else {
+      }
+ else {
         throw new Error(result.message || "Failed to submit order");
       }
     } catch (error) {

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
 
-const FB_PIXEL_ID = "2235692166803820";
+export const FB_PIXEL_ID = "2235692166803820";
 
 // Helper to check if fbq is loaded
 const isFbqReady = () => typeof window !== "undefined" && typeof window.fbq === "function";
@@ -59,13 +59,22 @@ export default function FacebookPixel() {
 
 // Export helper for tracking custom events from other components
 export function trackFBEvent(eventName, params = {}) {
-  if (isFbqReady()) {
-    window.fbq("track", eventName, params);
+  if (typeof window !== "undefined") {
+    // fbq already handles queuing if correctly initialized via the base code
+    if (typeof window.fbq === "function") {
+      // Small verification for Purchase events
+      if (eventName === "Purchase" && (!params.value || !params.currency)) {
+        console.warn("Facebook Pixel: 'Purchase' event requires 'value' and 'currency' parameters.");
+      }
+      window.fbq("track", eventName, params);
+    } else {
+      console.warn(`Facebook Pixel: fbq not yet available for event: ${eventName}`);
+    }
   }
 }
 
 export function trackFBCustomEvent(eventName, params = {}) {
-  if (isFbqReady()) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
     window.fbq("trackCustom", eventName, params);
   }
 }
