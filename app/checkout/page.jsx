@@ -265,20 +265,21 @@ export default function CheckoutPage() {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        // Facebook Pixel: Track Purchase event with Advanced Matching
+        // Facebook Pixel: Track Purchase event with full customer data
         if (typeof window !== "undefined" && window.fbq) {
           try {
-            // Advanced Matching Data (Calculé dynamiquement)
+            // 1. Données de correspondance avancée (PII)
             const pii = {};
             if (formData.email) pii.em = formData.email.trim().toLowerCase();
-            if (formData.phone) pii.ph = formData.phone.replace(/\D/g, ""); // Garde seulement les chiffres
+            if (formData.phone) pii.ph = formData.phone.replace(/\D/g, "");
+            if (formData.firstName) pii.fn = formData.firstName.trim().toLowerCase();
+            if (formData.lastName) pii.ln = formData.lastName.trim().toLowerCase();
+            if (formData.city) pii.ct = formData.city.trim().toLowerCase();
             
-            // Re-init avec les données de matching si disponibles pour une attribution précise
-            if (Object.keys(pii).length > 0) {
-              window.fbq('init', "2235692166803820", pii);
-            }
+            // Re-initialisation avec les données clients (plus précis)
+            window.fbq('init', "2235692166803820", pii);
 
-            // Track Purchase avec tous les paramètres e-commerce optimisés
+            // 2. Envoi de l'événement Purchase avec métadonnées complètes
             trackFBEvent("Purchase", {
               content_ids: cart.map((item) => String(item.id || item._id)),
               content_type: "product",
@@ -287,8 +288,14 @@ export default function CheckoutPage() {
                 quantity: Number(item.quantity) || 1,
                 item_price: Number(item.price) || 0
               })),
-              value: Number(total), // Doit être un nombre
+              value: Number(total),
               currency: "MAD",
+              order_id: orderData.orderNumber, // Important pour éviter les doublons
+              
+              // Infos client additionnelles pour le dashboard
+              client_name: `${formData.firstName} ${formData.lastName}`,
+              client_city: formData.city,
+              payment_method: formData.paymentMethod
             });
           } catch (fbError) {
             console.error("Facebook Pixel Tracking Error:", fbError);
