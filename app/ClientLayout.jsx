@@ -55,8 +55,37 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 
-
 const inter = Inter({ subsets: ["latin"] });
+
+// Check if Clerk keys are available at build time
+const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+const hasClerkKeys = CLERK_PUBLISHABLE_KEY && CLERK_PUBLISHABLE_KEY !== 'pk_test_placeholder';
+
+// Conditional Clerk components wrappers
+const ConditionalSignedOut = ({ children }) => {
+  if (!hasClerkKeys) return null;
+  return <SignedOut>{children}</SignedOut>;
+};
+
+const ConditionalSignedIn = ({ children }) => {
+  if (!hasClerkKeys) return null;
+  return <SignedIn>{children}</SignedIn>;
+};
+
+const ConditionalUserButton = (props) => {
+  if (!hasClerkKeys) return null;
+  return <UserButton {...props} />;
+};
+
+const ConditionalSignInButton = ({ children, ...props }) => {
+  if (!hasClerkKeys) return null;
+  return <SignInButton {...props}>{children}</SignInButton>;
+};
+
+const ConditionalSignUpButton = ({ children, ...props }) => {
+  if (!hasClerkKeys) return null;
+  return <SignUpButton {...props}>{children}</SignUpButton>;
+};
 
 export default function ClientLayout({ children }) {
   const [language, setLanguage] = useState("fr");
@@ -70,37 +99,48 @@ export default function ClientLayout({ children }) {
   // Determine if we are on an admin path safely
   const isAdminPath = pathname?.startsWith("/ironz-setup");
 
-  return (
-    <ClerkProvider>
-      <html lang={language} suppressHydrationWarning>
-        <body className={cn(inter.className, "bg-white dark:bg-gray-950")}>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-            <CartProvider>
-              <FavoritesProvider>
-                <div className="flex flex-col min-h-screen">
-                  {!isAdminPath && (
-                    <Navbar
-                      language={language}
-                      toggleLanguage={toggleLanguage}
-                    />
-                  )}
+  // Wrapper component to conditionally use ClerkProvider
+  const LayoutContent = (
+    <html lang={language} suppressHydrationWarning>
+      <body className={cn(inter.className, "bg-white dark:bg-gray-950")}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <CartProvider>
+            <FavoritesProvider>
+              <div className="flex flex-col min-h-screen">
+                {!isAdminPath && (
+                  <Navbar
+                    language={language}
+                    toggleLanguage={toggleLanguage}
+                  />
+                )}
 
-                  <main className={isAdminPath ? "" : "flex-grow"}>
-                    {children}
-                  </main>
+                <main className={isAdminPath ? "" : "flex-grow"}>
+                  {children}
+                </main>
 
-                  {!isAdminPath && <Footer language={language} />}
+                {!isAdminPath && <Footer language={language} />}
 
-                  {/* Scroll to Top Button */}
-                  <ScrollToTop />
-                </div>
-              </FavoritesProvider>
-            </CartProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+                {/* Scroll to Top Button */}
+                <ScrollToTop />
+              </div>
+            </FavoritesProvider>
+          </CartProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
+
+  // Only use ClerkProvider if keys are available
+  if (hasClerkKeys) {
+    return (
+      <ClerkProvider>
+        {LayoutContent}
+      </ClerkProvider>
+    );
+  }
+
+  // Return without ClerkProvider if keys are not available
+  return LayoutContent;
 }
 
 // Scroll to Top Component
@@ -533,7 +573,7 @@ const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
 
               {/* Auth buttons - Desktop */}
               <div className="hidden lg:flex items-center space-x-2">
-                <SignedOut>
+                <ConditionalSignedOut>
                   <div className="relative" ref={authRef}>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
@@ -557,33 +597,33 @@ const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
                           className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 overflow-hidden z-50"
                         >
                           <div className="p-2">
-                            <SignInButton mode="modal">
+                            <ConditionalSignInButton mode="modal">
                               <button className="w-full flex items-center px-4 py-3 text-sm text-left rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                                 <LogIn className="h-4 w-4 mr-3" />
                                 {language === "fr"
                                   ? "Se connecter"
                                   : "Sign In"}
                               </button>
-                            </SignInButton>
-                            <SignUpButton mode="modal">
+                            </ConditionalSignInButton>
+                            <ConditionalSignUpButton mode="modal">
                               <button className="w-full flex items-center px-4 py-3 text-sm text-left rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                                 <User className="h-4 w-4 mr-3" />
                                 {language === "fr" ? "S'inscrire" : "Sign Up"}
                               </button>
-                            </SignUpButton>
+                            </ConditionalSignUpButton>
                           </div>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
-                </SignedOut>
-                <SignedIn>
+                </ConditionalSignedOut>
+                <ConditionalSignedIn>
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center"
                   >
-                    <UserButton
+                    <ConditionalUserButton
                       afterSignOutUrl="/"
                       appearance={{
                         elements: {
@@ -594,7 +634,7 @@ const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
                       }}
                     />
                   </motion.div>
-                </SignedIn>
+                </ConditionalSignedIn>
               </div>
 
               {/* Mobile menu button */}
@@ -706,9 +746,9 @@ const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto py-6 px-5">
                   {/* Mobile Auth */}
-                  <SignedOut>
+                  <ConditionalSignedOut>
                     <div className="mb-8 grid grid-cols-2 gap-3">
-                      <SignInButton mode="modal">
+                      <ConditionalSignInButton mode="modal">
                         <button
                           onClick={() => setMobileMenuOpen(false)}
                           className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-yellow-500 hover:text-yellow-500 transition-colors font-medium"
@@ -716,8 +756,8 @@ const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
                           <LogIn className="h-4 w-4 mr-2" />
                           {language === "fr" ? "Connexion" : "Sign In"}
                         </button>
-                      </SignInButton>
-                      <SignUpButton mode="modal">
+                      </ConditionalSignInButton>
+                      <ConditionalSignUpButton mode="modal">
                         <button
                           onClick={() => setMobileMenuOpen(false)}
                           className="w-full flex items-center justify-center px-4 py-3.5 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-black uppercase italic tracking-widest"
@@ -725,13 +765,13 @@ const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
                           <User className="h-4 w-4 mr-2" />
                           {language === "fr" ? "Inscription" : "Sign Up"}
                         </button>
-                      </SignUpButton>
+                      </ConditionalSignUpButton>
                     </div>
-                  </SignedOut>
+                  </ConditionalSignedOut>
 
-                  <SignedIn>
+                  <ConditionalSignedIn>
                     <div className="mb-8 flex justify-center">
-                      <UserButton
+                      <ConditionalUserButton
                         afterSignOutUrl="/"
                         appearance={{
                           elements: {
@@ -742,7 +782,7 @@ const Navbar = React.memo(function Navbar({ language, toggleLanguage }) {
                         }}
                       />
                     </div>
-                  </SignedIn>
+                  </ConditionalSignedIn>
 
                   {/* Navigation Links */}
                   <div className="space-y-1 mb-8">

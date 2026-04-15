@@ -537,15 +537,15 @@ function MobileImageGallery({ images, productName, discount, isNewProduct }) {
   );
 }
 
-export default function ProductPageClient({ slug }) {
+export default function ProductPageClient({ slug, initialProduct = null, initialReviews = [], initialRelated = [] }) {
   const router = useRouter();
   const { addToCart } = useCart();
   const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
-  const [product, setProduct] = useState(null);
-  const [reviews, setReviews] = useState([]); // Separate state for reviews
-  const [relatedProducts, setRelatedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState(initialProduct);
+  const [reviews, setReviews] = useState(initialReviews); // Separate state for reviews
+  const [relatedProducts, setRelatedProducts] = useState(initialRelated);
+  const [loading, setLoading] = useState(!initialProduct);
   const [error, setError] = useState("");
   
   // UI State
@@ -710,6 +710,24 @@ export default function ProductPageClient({ slug }) {
 
   // Fetch product by slug + related
   useEffect(() => {
+    // Skip fetching if we already have initial product from SSR
+    if (initialProduct) {
+      // Initialize selections from initial product
+      if (initialProduct.colors?.length > 0) setSelectedColor(initialProduct.colors[0]);
+      if (initialProduct.taille?.length > 0) setSelectedTaille(initialProduct.taille[0]);
+      
+      // Track view event
+      trackFBEvent("ViewContent", {
+        content_name: initialProduct.name,
+        content_category: initialProduct.category || "",
+        content_ids: [initialProduct._id || initialProduct.id],
+        content_type: "product",
+        value: initialProduct.salePrice || initialProduct.price || 0,
+        currency: "MAD",
+      });
+      return;
+    }
+
     const run = async () => {
       if (!slug) return;
       setLoading(true);
@@ -763,7 +781,7 @@ export default function ProductPageClient({ slug }) {
       }
     };
     run();
-  }, [slug]);
+  }, [slug, initialProduct]);
 
   if (loading) return <ProductSkeleton />;
 

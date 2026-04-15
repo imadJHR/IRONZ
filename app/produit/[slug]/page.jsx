@@ -5,24 +5,45 @@ import ProductPageClient from "./product-client";
 // API URL (Ensure this matches your .env)
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
 
+// Use ISR with revalidation
+export const revalidate = 3600; // Revalidate every hour
+
 /**
  * Helper function to fetch product data on the server
  */
 async function getProductBySlug(slug) {
   try {
-    // We use no-store to ensure we always get fresh data (or use 'force-cache' for SSG)
     const res = await fetch(`${API_URL}/products/slug/${slug}`, { 
-      cache: 'no-store' 
+      next: { revalidate: 3600 } // ISR: Revalidate every hour
     });
 
     if (!res.ok) return null;
 
     const data = await res.json();
-    // Assuming your API returns { success: true, data: { ... } }
     return data.data || data; 
   } catch (error) {
     console.error("Error fetching product metadata:", error);
     return null;
+  }
+}
+
+/**
+ * Helper function to fetch related products
+ */
+async function getRelatedProducts(category, excludeId) {
+  try {
+    const res = await fetch(`${API_URL}/products?category=${encodeURIComponent(category)}&limit=8&sort=featured`, {
+      next: { revalidate: 3600 } // ISR: Revalidate every hour
+    });
+    
+    if (!res.ok) return [];
+    
+    const data = await res.json();
+    const list = Array.isArray(data?.data) ? data.data : [];
+    return list.filter((x) => x._id !== excludeId).slice(0, 4);
+  } catch (error) {
+    console.error("Error fetching related products:", error);
+    return [];
   }
 }
 
@@ -69,19 +90,27 @@ export default async function ProductPage({ params }) {
 
   if (!slug) notFound();
 
-  // 2. Optional: Pre-fetch on server to check 404 status immediately
-  // This ensures Google sees a 404 status code if the product is missing
+  // 2. Pre-fetch on server to check 404 status immediately and get full data for SSR
   const product = await getProductBySlug(slug);
   
   if (!product) {
     notFound();
   }
 
-  // 3. Pass slug to Client Component to handle interactivity (Cart, Gallery, etc.)
+  // 3. Fetch related products on server
+  const relatedProducts = product.category 
+    ? await getRelatedProducts(product.category, product._id)
+    : [];
+
+  // 4. Pass all data to Client Component for interactivity (Cart, Gallery, etc.)
   return (
     <Suspense fallback={<ProductLoading />}>
-    
-      <ProductPageClient slug={slug} />
+      <ProductPageClient 
+        slug={slug} 
+        initialProduct={product}
+        initialReviews={product.reviews || []}
+        initialRelated={relatedProducts}
+      />
     </Suspense>
   );
 }

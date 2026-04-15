@@ -12,7 +12,7 @@ async function getProducts() {
   try {
     const res = await fetch(
       "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api/products",
-      { cache: "no-store" }
+      { next: { revalidate: 3600 } } // ISR: Revalidate every hour
     );
 
     if (!res.ok) {
