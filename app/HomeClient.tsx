@@ -6,12 +6,12 @@ import Image, { ImageProps } from "next/image";
 
 // Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation, EffectFade, Swiper as SwiperType } from "swiper/modules";
+import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules"; // Remove Swiper as SwiperType from here
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/effect-fade";
-import type { SwiperOptions } from "swiper/types";
+import type { SwiperOptions, Swiper as SwiperType } from "swiper/types";
 
 // Icons
 import {
