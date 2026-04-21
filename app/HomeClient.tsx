@@ -6,7 +6,7 @@ import Image, { ImageProps } from "next/image";
 
 // Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules"; // Remove Swiper as SwiperType from here
+import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -161,6 +161,14 @@ const formatPrice = (price: number | string | undefined | null): string => {
     currency: "MAD",
     minimumFractionDigits: 0,
   }).format(numPrice);
+};
+
+// Helper function to normalize image to string
+const normalizeImage = (image: string | { src: string } | null | undefined): string => {
+  if (!image) return PLACEHOLDER;
+  if (typeof image === "string") return image;
+  if (typeof image === "object" && "src" in image) return image.src;
+  return PLACEHOLDER;
 };
 
 /* -----------------------------
@@ -1138,7 +1146,13 @@ export default function HomeClient({
     if (isInFavorites(id)) {
       removeFromFavorites(id);
     } else {
-      addToFavorites({ ...product, id });
+      // Normalize the image to string before adding to favorites
+      const normalizedProduct = {
+        ...product,
+        id,
+        image: normalizeImage(product.image)
+      };
+      addToFavorites(normalizedProduct);
     }
   };
 
