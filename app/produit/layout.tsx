@@ -1,0 +1,32 @@
+import { Metadata } from "next";
+import { ReactNode } from "react";
+
+export const metadata: Metadata = {
+  title: "Tous nos produits - Votre Boutique de Sport",
+  description:
+    "Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de loisirs. Livraison rapide et service de qualité.",
+  keywords: "produits sportifs, équipement sportif, aménagement sportif, loisirs, fitness, musculation",
+  openGraph: {
+    title: "Tous nos produits - Votre Boutique de Sport",
+    description:
+      "Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de loisirs.",
+    type: "website",
+    url: "https://ironz.ma/produits",
+    images: [
+      {
+        url: "https://ironz.ma/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Produits sportifs",
+      },
+    ],
+  },
+};
+
+interface ProductsLayoutProps {
+  children: ReactNode;
+}
+
+export default function ProductsLayout({ children }: ProductsLayoutProps): JSX.Element {
+  return <>{children}</>;
+}
