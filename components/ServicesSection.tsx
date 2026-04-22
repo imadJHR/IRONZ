@@ -26,6 +26,7 @@ export interface ServiceItem {
   icon: LucideIcon;
   features: string[];
   delay?: number;
+  isWide?: boolean;
 }
 
 export interface ServicesSectionProps {
@@ -47,6 +48,7 @@ const defaultServices: ServiceItem[] = [
     icon: Home,
     features: ["Étude sur mesure", "Équipements adaptés", "Installation pro"],
     delay: 0,
+    isWide: false,
   },
   {
     id: "personnalisation",
@@ -58,6 +60,7 @@ const defaultServices: ServiceItem[] = [
     icon: Palette,
     features: ["Design unique", "Impression HD", "Matériaux premium"],
     delay: 0.1,
+    isWide: false,
   },
   {
     id: "espace-enfance",
@@ -69,6 +72,7 @@ const defaultServices: ServiceItem[] = [
     icon: ToyBrick,
     features: ["Sécurité certifiée", "Design ludique", "Pour écoles & centres"],
     delay: 0.2,
+    isWide: false,
   },
   {
     id: "revetement",
@@ -82,7 +86,7 @@ const defaultServices: ServiceItem[] = [
     delay: 0.3,
     isWide: true,
   },
-] as const;
+];
 
 // Animation variants with proper typing
 const itemVariants: Variants = {
@@ -99,7 +103,7 @@ const ServicesSection = ({
   services = defaultServices, 
   ctaHref = "/services",
   ctaText = "Explorer tous nos services"
-}: ServicesSectionProps)=> {
+}: ServicesSectionProps) => {
   return (
     <section className={`py-24 bg-white dark:bg-gray-900 ${className}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -132,7 +136,7 @@ const ServicesSection = ({
           
           {services.map((service, index) => {
             const Icon = service.icon;
-            const isWide = "isWide" in service && service.isWide;
+            const isWide = service.isWide ?? false;
             const variant = itemVariants;
             
             return (
@@ -146,7 +150,7 @@ const ServicesSection = ({
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.5, delay: service.delay }}
+                    transition={{ duration: 0.5, delay: service.delay ?? 0 }}
                     className="group relative h-full bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-yellow-500/30 dark:hover:border-yellow-500/30 flex flex-col"
                   >
                     <div className={`relative ${isWide ? "h-64 md:h-auto md:w-2/5" : "h-60 w-full"} overflow-hidden ${isWide ? "md:flex-shrink-0" : ""}`}>
