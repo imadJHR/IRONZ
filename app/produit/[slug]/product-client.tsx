@@ -831,7 +831,6 @@ export default function ProductPageClient({
 }: ProductPageClientProps) {
   const router = useRouter();
   const { addToCart } = useCart();
-  const { addToFavorites, isInFavorites, removeFromFavorites } = useFavorites();
 
   const [product, setProduct] = useState<Product | null>(initialProduct);
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
@@ -888,48 +887,48 @@ export default function ProductPageClient({
     setQuantity(Math.max(1, Math.min(99, Number(next) || 1)));
   };
 
-const handleAddToCart = useCallback(() => {
-  if (!product) return;
-  if (product.taille?.length && !selectedTaille) {
-    alert("Veuillez sélectionner une taille avant d'ajouter au panier");
-    return;
-  }
-  if (product.colors?.length && !selectedColor) {
-    alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
-    return;
-  }
-  const id = product._id ?? product.id;
-  const price = Number(product.salePrice ?? product.price ?? 0);
-  
-  addToCart({
-    id: id || "",
-    name: product.name,
-    price: product.price,
-    image: product.image || PLACEHOLDER,
-    slug: product.slug || "",
-    category: product.category,
-    quantity: quantity,
-    selectedColor: selectedColor || null,
-    selectedTaille: selectedTaille || null,
-    salePrice: product.salePrice,
-    oldPrice: product.oldPrice,
-  });
+  const handleAddToCart = useCallback(() => {
+    if (!product) return;
+    if (product.taille?.length && !selectedTaille) {
+      alert("Veuillez sélectionner une taille avant d'ajouter au panier");
+      return;
+    }
+    if (product.colors?.length && !selectedColor) {
+      alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
+      return;
+    }
+    const id = product._id ?? product.id;
+    const price = Number(product.salePrice ?? product.price ?? 0);
 
-  // ✅ FIXED: Different contents structure
-  trackFBEvent("AddToCart", {
-    content_name: product.name,
-    content_ids: [String(id)],
-    content_type: "product",
-    contents: [
-      {
-        id: String(id),
-        quantity: Number(quantity) || 1,
-      },
-    ],
-    value: price * quantity,
-    currency: "MAD",
-  });
-}, [product, addToCart, quantity, selectedColor, selectedTaille]);
+    addToCart({
+      id: id || "",
+      name: product.name,
+      price: product.price,
+      image: product.image || PLACEHOLDER,
+      slug: product.slug || "",
+      category: product.category,
+      quantity: quantity,
+      selectedColor: selectedColor || null,
+      selectedTaille: selectedTaille || null,
+      salePrice: product.salePrice,
+      oldPrice: product.oldPrice,
+    });
+
+    // ✅ FIXED: Different contents structure
+    trackFBEvent("AddToCart", {
+      content_name: product.name,
+      content_ids: [String(id)],
+      content_type: "product",
+      contents: [
+        {
+          id: String(id),
+          quantity: Number(quantity) || 1,
+        },
+      ],
+      value: price * quantity,
+      currency: "MAD",
+    });
+  }, [product, addToCart, quantity, selectedColor, selectedTaille]);
 
   const getShareLinks = useCallback((): ShareLink[] => {
     if (!product) return [];
@@ -1312,33 +1311,6 @@ const handleAddToCart = useCallback(() => {
                 <div className="border border-yellow-500/50 text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 text-[10px] sm:text-xs px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full font-medium">
                   {product.category ?? "EQUIPEMENT"}
                 </div>
-
-                <button
-                  onClick={() => {
-                    if (isInFavorites(productId)) {
-                      removeFromFavorites(productId);
-                    } else {
-                      addToFavorites({
-                        id: productId || "",
-                        name: product.name,
-                        price: product.price,
-                        image: product.image || PLACEHOLDER,
-                        category: product.category,
-                      });
-                    }
-                  }}
-                  className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                  title={isInFavorites(productId) ? "Retirer des favoris" : "Ajouter aux favoris"}
-                >
-                  <Heart
-                    className={cn(
-                      "w-5 h-5 sm:w-6 sm:h-6 transition-all",
-                      isInFavorites(productId)
-                        ? "fill-red-500 text-red-500"
-                        : "text-gray-400 hover:text-red-500"
-                    )}
-                  />
-                </button>
               </div>
 
               <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black uppercase italic text-gray-900 dark:text-white leading-[0.95] tracking-tighter mb-3 sm:mb-4">
