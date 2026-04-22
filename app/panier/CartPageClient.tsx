@@ -24,15 +24,13 @@ import { cn } from "../../lib/utils";
 
 interface CartItem {
   id: string | number;
-  _id?: string | number;
   name: string;
   price: number;
-  quantity: number;
-  image?: string;
+  image: string;
+  slug: string;
   category?: string;
-  slug?: string;
-  selectedColor?: string;
-  selectedTaille?: string;
+  selectedColor?: string | null;
+  quantity: number;
 }
 
 interface CloudImgProps {
@@ -64,9 +62,9 @@ const COLOR_MAP: Record<string, string> = {
 ------------------------------ */
 function CloudImg({ src, alt, fill = false, className = "", priority = false }: CloudImgProps) {
   const [imgSrc, setImgSrc] = useState<string>(src || PLACEHOLDER);
-  
-  useEffect(() => { 
-    setImgSrc(src || PLACEHOLDER); 
+
+  useEffect(() => {
+    setImgSrc(src || PLACEHOLDER);
   }, [src]);
 
   const handleError = () => setImgSrc(PLACEHOLDER);
@@ -98,18 +96,19 @@ function CloudImg({ src, alt, fill = false, className = "", priority = false }: 
 
 export default function CartPageClient() {
   const router = useRouter();
-  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { 
+    cart, 
+    removeFromCart, 
+    updateQuantity, 
+    clearCart,
+    mounted
+  } = useCart();
   
-  const [mounted, setMounted] = useState<boolean>(false);
   const [couponCode, setCouponCode] = useState<string>("");
   const [couponError, setCouponError] = useState<string | null>(null);
   const [couponSuccess, setCouponSuccess] = useState<string | null>(null);
   const [discount, setDiscount] = useState<number>(0);
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Calculs financiers
   const cartTotal = cart.reduce(
@@ -131,28 +130,25 @@ export default function CartPageClient() {
   const shippingCost = cartTotal > 500 ? 0 : 30;
   const totalWithShipping = cartTotal + shippingCost - discount;
 
-  // Handler for quantity change - Fixed to use 3 arguments
+  // Handler for quantity change - FIXED to match context signature
   const handleQuantityChange = (
     id: string | number, 
     newQty: number,
-    color?: string,
-    taille?: string
+    selectedColor: string | null = null
   ) => {
     if (newQty >= 1 && newQty <= 99) {
-      // Assuming updateQuantity signature is: (id, quantity, color) or (id, quantity)
-      // Adjust based on your actual cart-context implementation
-      updateQuantity(id, newQty, color || null);
+      // updateQuantity(productId, selectedColor, quantity)
+      updateQuantity(id, selectedColor, newQty);
     }
   };
 
-  // Handler for remove item - Fixed to use correct arguments
+  // Handler for remove item - FIXED to match context signature
   const handleRemoveItem = (
     id: string | number,
-    color?: string,
-    taille?: string
+    selectedColor: string | null = null
   ) => {
-    // Adjust based on your actual removeFromCart signature
-    removeFromCart(id, color || null, taille || null);
+    // removeFromCart(productId, selectedColor)
+    removeFromCart(id, selectedColor);
   };
 
   const handleCouponSubmit = (e: FormEvent) => {
@@ -286,8 +282,7 @@ export default function CartPageClient() {
 
               <div className="divide-y divide-gray-100 dark:divide-zinc-800">
                 {cart.map((item: CartItem, idx: number) => {
-                  const id = item._id || item.id;
-                  const itemKey = `${id}-${item.selectedColor || 'none'}-${item.selectedTaille || 'none'}-${idx}`;
+                  const itemKey = `${item.id}-${item.selectedColor || 'none'}-${idx}`;
                   
                   return (
                     <div
@@ -304,18 +299,13 @@ export default function CartPageClient() {
                           {item.category}
                         </span>
                         <Link
-                          href={`/produit/${item.slug || id}`}
+                          href={`/produit/${item.slug}`}
                           className="text-xl md:text-2xl font-black uppercase italic text-gray-900 dark:text-white hover:text-yellow-500 transition-colors line-clamp-1 leading-none mb-3"
                         >
                           {item.name}
                         </Link>
                         
                         <div className="flex flex-wrap justify-center sm:justify-start gap-3 mb-4 md:mb-6">
-                          {item.selectedTaille && (
-                            <div className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-black uppercase tracking-widest text-gray-500">
-                              Taille: {item.selectedTaille}
-                            </div>
-                          )}
                           {item.selectedColor && (
                             <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-black uppercase tracking-widest text-gray-500">
                               Couleur:{" "}
@@ -330,7 +320,7 @@ export default function CartPageClient() {
                         <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
                           <div className="flex items-center bg-gray-50 dark:bg-gray-800 rounded-2xl p-1 border border-gray-100 dark:border-zinc-700">
                             <button
-                              onClick={() => handleQuantityChange(id, item.quantity - 1, item.selectedColor, item.selectedTaille)}
+                              onClick={() => handleQuantityChange(item.id, item.quantity - 1, item.selectedColor || null)}
                               className="p-2 hover:text-yellow-600 disabled:opacity-20"
                               disabled={item.quantity <= 1}
                             >
@@ -340,14 +330,14 @@ export default function CartPageClient() {
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() => handleQuantityChange(id, item.quantity + 1, item.selectedColor, item.selectedTaille)}
+                              onClick={() => handleQuantityChange(item.id, item.quantity + 1, item.selectedColor || null)}
                               className="p-2 hover:text-yellow-600"
                             >
                               <Plus size={16} />
                             </button>
                           </div>
                           <button
-                            onClick={() => handleRemoveItem(id, item.selectedColor, item.selectedTaille)}
+                            onClick={() => handleRemoveItem(item.id, item.selectedColor || null)}
                             className="text-gray-300 hover:text-red-500 transition-colors px-4 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
                           >
                             <Trash2 size={20} />
