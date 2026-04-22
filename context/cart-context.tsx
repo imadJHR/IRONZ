@@ -11,6 +11,9 @@ export interface CartItem {
   slug: string
   category?: string
   selectedColor?: string | null
+  selectedTaille?: string | null  // ✅ ADD THIS
+  salePrice?: number              // ✅ ADD THIS
+  oldPrice?: number               // ✅ ADD THIS
   quantity: number
 }
 
@@ -18,13 +21,30 @@ export interface CartItem {
 interface CartContextType {
   cart: CartItem[]
   addToCart: (productToAdd: CartItem) => void
-  updateQuantity: (productId: string | number, selectedColor: string | null, quantity: number) => void
-  removeFromCart: (productId: string | number, selectedColor: string | null) => void
+  updateQuantity: (
+    productId: string | number,
+    selectedColor: string | null,
+    selectedTaille: string | null,  // ✅ ADD THIS
+    quantity: number
+  ) => void
+  removeFromCart: (
+    productId: string | number,
+    selectedColor: string | null,
+    selectedTaille: string | null  // ✅ ADD THIS
+  ) => void
   clearCart: () => void
   itemCount: number
   cartTotal: number
-  isInCart: (productId: string | number, selectedColor?: string | null) => boolean
-  getCartItem: (productId: string | number, selectedColor?: string | null) => CartItem | undefined
+  isInCart: (
+    productId: string | number,
+    selectedColor?: string | null,
+    selectedTaille?: string | null  // ✅ ADD THIS
+  ) => boolean
+  getCartItem: (
+    productId: string | number,
+    selectedColor?: string | null,
+    selectedTaille?: string | null  // ✅ ADD THIS
+  ) => CartItem | undefined
   mounted: boolean
 }
 
@@ -72,7 +92,8 @@ export function CartProvider({ children }: CartProviderProps) {
       const existingItemIndex = prevCart.findIndex(
         (item) => 
           item.id === productToAdd.id && 
-          item.selectedColor === productToAdd.selectedColor
+          item.selectedColor === productToAdd.selectedColor &&
+          item.selectedTaille === productToAdd.selectedTaille  // ✅ ADD THIS
       )
 
       if (existingItemIndex !== -1) {
@@ -88,6 +109,7 @@ export function CartProvider({ children }: CartProviderProps) {
           ...productToAdd,
           quantity: productToAdd.quantity || 1,
           selectedColor: productToAdd.selectedColor || null,
+          selectedTaille: productToAdd.selectedTaille || null,  // ✅ ADD THIS
         }
         return [...prevCart, newItem]
       }
@@ -95,29 +117,41 @@ export function CartProvider({ children }: CartProviderProps) {
   }
   
   const updateQuantity = (
-    productId: string | number, 
-    selectedColor: string | null, 
+    productId: string | number,
+    selectedColor: string | null,
+    selectedTaille: string | null,  // ✅ ADD THIS
     quantity: number
   ) => {
     if (quantity < 1) {
-      removeFromCart(productId, selectedColor)
+      removeFromCart(productId, selectedColor, selectedTaille)  // ✅ ADD PARAMETER
       return
     }
 
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === productId && item.selectedColor === selectedColor
-          ? { ...item, quantity } 
+        item.id === productId &&
+        item.selectedColor === selectedColor &&
+        item.selectedTaille === selectedTaille  // ✅ ADD THIS
+          ? { ...item, quantity }
           : item
       )
     )
   }
   
-  const removeFromCart = (productId: string | number, selectedColor: string | null) => {
+  const removeFromCart = (
+    productId: string | number,
+    selectedColor: string | null,
+    selectedTaille: string | null  // ✅ ADD THIS
+  ) => {
     setCart((prevCart) => {
-        return prevCart.filter((item) => 
-            !(item.id === productId && item.selectedColor === selectedColor)
-        )
+      return prevCart.filter(
+        (item) => 
+          !(
+            item.id === productId &&
+            item.selectedColor === selectedColor &&
+            item.selectedTaille === selectedTaille  // ✅ ADD THIS
+          )
+      )
     })
   }
 
@@ -130,18 +164,36 @@ export function CartProvider({ children }: CartProviderProps) {
   }
 
   const getCartTotal = (): number => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0)
+    return cart.reduce(
+      (total, item) =>
+        total + (item.salePrice || item.price) * item.quantity,  // ✅ USE salePrice if available
+      0
+    )
   }
   
-  const isInCart = (productId: string | number, selectedColor: string | null = null): boolean => {
+  const isInCart = (
+    productId: string | number,
+    selectedColor: string | null = null,
+    selectedTaille: string | null = null  // ✅ ADD THIS
+  ): boolean => {
     return cart.some(
-        (item) => item.id === productId && item.selectedColor === selectedColor
+      (item) =>
+        item.id === productId &&
+        item.selectedColor === selectedColor &&
+        item.selectedTaille === selectedTaille  // ✅ ADD THIS
     )
   }
 
-  const getCartItem = (productId: string | number, selectedColor: string | null = null): CartItem | undefined => {
+  const getCartItem = (
+    productId: string | number,
+    selectedColor: string | null = null,
+    selectedTaille: string | null = null  // ✅ ADD THIS
+  ): CartItem | undefined => {
     return cart.find(
-        (item) => item.id === productId && item.selectedColor === selectedColor
+      (item) =>
+        item.id === productId &&
+        item.selectedColor === selectedColor &&
+        item.selectedTaille === selectedTaille  // ✅ ADD THIS
     )
   }
 

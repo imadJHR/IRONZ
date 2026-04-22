@@ -377,8 +377,8 @@ function Alert({ variant = "info", title, children }: AlertProps) {
     variant === "danger"
       ? "border-red-200 bg-red-50 text-red-800 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-200"
       : variant === "success"
-      ? "border-green-200 bg-green-50 text-green-800 dark:border-green-900/40 dark:bg-green-900/20 dark:text-green-200"
-      : "border-gray-200 bg-gray-50 text-gray-800 dark:border-gray-800 dark:bg-gray-900/40 dark:text-gray-200";
+        ? "border-green-200 bg-green-50 text-green-800 dark:border-green-900/40 dark:bg-green-900/20 dark:text-green-200"
+        : "border-gray-200 bg-gray-50 text-gray-800 dark:border-gray-800 dark:bg-gray-900/40 dark:text-gray-200";
 
   return (
     <div className={cn("rounded-xl border p-3 sm:p-4", styles)}>
@@ -437,7 +437,7 @@ function ColorSelector({ colors, selectedColor, onChange }: ColorSelectorProps) 
                 "border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/60",
                 "hover:scale-110 active:scale-95",
                 isSelected &&
-                  "ring-2 ring-yellow-500 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-gray-900 scale-110"
+                "ring-2 ring-yellow-500 ring-offset-1 sm:ring-offset-2 ring-offset-white dark:ring-offset-gray-900 scale-110"
               )}
               aria-label={`Couleur ${color}`}
               title={color}
@@ -904,10 +904,11 @@ export default function ProductPageClient({
       name: product.name,
       price: product.price,
       image: product.image || PLACEHOLDER,
+      slug: product.slug || "",
       category: product.category,
       quantity: quantity,
-      selectedColor: selectedColor || undefined,
-      selectedTaille: selectedTaille || undefined,
+      selectedColor: selectedColor || null,
+      selectedTaille: selectedTaille || null,  // ✅ Now supported!
       salePrice: product.salePrice,
       oldPrice: product.oldPrice,
     });
@@ -983,7 +984,7 @@ export default function ProductPageClient({
           text: product.description,
           url: window.location.href,
         })
-        .catch(() => {});
+        .catch(() => { });
     } else {
       setShareOpen((v) => !v);
     }
@@ -1309,7 +1310,7 @@ export default function ProductPageClient({
                 <div className="border border-yellow-500/50 text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 text-[10px] sm:text-xs px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full font-medium">
                   {product.category ?? "EQUIPEMENT"}
                 </div>
-                
+
                 <button
                   onClick={() => {
                     if (isInFavorites(productId)) {
