@@ -156,7 +156,7 @@ export default function CategoryPage() {
   // --- STATE ---
   const [categoryName, setCategoryName] = useState<string>("");
   const [categoryIcon, setCategoryIcon] = useState<ReactNode>(<Package className="h-5 w-5" />);
-  
+
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [availableSubCategories, setAvailableSubCategories] = useState<string[]>([]);
@@ -166,7 +166,7 @@ export default function CategoryPage() {
   const [priceRange, setPriceRange] = useState<number[]>([0, 20000]);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState<string>("featured");
-  
+
   // UI
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -179,46 +179,46 @@ export default function CategoryPage() {
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       if (!slug) return;
-      
+
       setIsLoading(true);
       try {
         const res = await fetch(`${API_URL}/products?limit=1000`);
         if (!res.ok) throw new Error("Failed to fetch");
-        
+
         const json = await res.json();
-        
+
         let allProducts: Product[] = [];
         if (Array.isArray(json)) allProducts = json;
         else if (json.data && Array.isArray(json.data)) allProducts = json.data;
         else if (json.products && Array.isArray(json.products)) allProducts = json.products;
 
         const targetSlug = slug.toLowerCase();
-        
+
         const catProducts = allProducts.filter(p => {
-            if (!p.category) return false;
-            return createSlug(p.category) === targetSlug;
+          if (!p.category) return false;
+          return createSlug(p.category) === targetSlug;
         });
 
         setProducts(catProducts);
         setFilteredProducts(catProducts);
 
         if (catProducts.length > 0) {
-            setCategoryName(catProducts[0].category);
+          setCategoryName(catProducts[0].category);
         } else {
-            setCategoryName(slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, " "));
+          setCategoryName(slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, " "));
         }
 
         const matchedIconKey = Object.keys(CATEGORY_ICONS).find(key => targetSlug.includes(key));
         if (matchedIconKey) {
-            setCategoryIcon(CATEGORY_ICONS[matchedIconKey]);
+          setCategoryIcon(CATEGORY_ICONS[matchedIconKey]);
         }
 
         const subCats = [...new Set(catProducts.map(p => p.subCategory).filter((s): s is string => !!s))];
         setAvailableSubCategories(subCats.sort());
 
         if (catProducts.length > 0) {
-            const maxP = Math.max(...catProducts.map(p => p.price || 0));
-            setPriceRange([0, Math.ceil(maxP * 1.1)]);
+          const maxP = Math.max(...catProducts.map(p => p.price || 0));
+          setPriceRange([0, Math.ceil(maxP * 1.1)]);
         }
 
       } catch (err) {
@@ -250,7 +250,7 @@ export default function CategoryPage() {
     );
 
     if (selectedSubCategories.length > 0) {
-      result = result.filter(p => 
+      result = result.filter(p =>
         p.subCategory && selectedSubCategories.includes(p.subCategory)
       );
     }
@@ -281,10 +281,10 @@ export default function CategoryPage() {
 
   // --- HANDLERS ---
   const handlePriceChange = (value: number[]) => setPriceRange(value);
-  
+
   const handleSubCategoryToggle = (subCat: string) => {
-    setSelectedSubCategories(prev => 
-      prev.includes(subCat) 
+    setSelectedSubCategories(prev =>
+      prev.includes(subCat)
         ? prev.filter(sc => sc !== subCat)
         : [...prev, subCat]
     );
@@ -294,10 +294,10 @@ export default function CategoryPage() {
     setSearchQuery("");
     setSelectedSubCategories([]);
     if (products.length > 0) {
-        const maxP = Math.max(...products.map(p => p.price || 0));
-        setPriceRange([0, Math.ceil(maxP * 1.1)]);
+      const maxP = Math.max(...products.map(p => p.price || 0));
+      setPriceRange([0, Math.ceil(maxP * 1.1)]);
     } else {
-        setPriceRange([0, 20000]);
+      setPriceRange([0, 20000]);
     }
     setSortOption("featured");
   };
@@ -307,8 +307,8 @@ export default function CategoryPage() {
     if (isInFavorites(id)) {
       removeFromFavorites(id);
     } else {
-      addToFavorites({ 
-        id, 
+      addToFavorites({
+        id,
         name: product.name,
         price: product.price,
         image: product.image,
@@ -318,10 +318,10 @@ export default function CategoryPage() {
   };
 
   const onAddToCart = (product: Product) => {
-    addToCart({ 
-      ...product, 
-      id: (product._id || product.id) as string, 
-      quantity: 1 
+    addToCart({
+      ...product,
+      id: (product._id || product.id) as string,
+      quantity: 1
     });
   };
 
@@ -337,7 +337,7 @@ export default function CategoryPage() {
     const r = Number(rating) || 0;
     const full = Math.floor(r);
     const half = r - full >= 0.5;
-    
+
     return (
       <div className="flex items-center gap-0.5">
         {[...Array(full)].map((_, i) => (
@@ -384,7 +384,7 @@ export default function CategoryPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-28 md:pt-32 pb-16">
       <div className="container mx-auto px-4">
-        
+
         {/* Header Section */}
         <div className="mb-12">
           <nav className="mb-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium" aria-label="Fil d'Ariane">
@@ -415,7 +415,7 @@ export default function CategoryPage() {
           </div>
           <div className="max-w-3xl">
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-base md:text-lg border-l-4 border-yellow-500 pl-6 py-2">
-              Découvrez notre sélection premium pour {categoryName}. 
+              Découvrez notre sélection premium pour {categoryName}.
               Des produits de qualité professionnelle pour vos entraînements.
             </p>
           </div>
@@ -439,7 +439,7 @@ export default function CategoryPage() {
           </div>
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 md:p-5 border border-gray-100 dark:border-gray-800 text-center">
             <div className="text-lg md:text-3xl font-black text-yellow-500 mb-1 md:mb-2 truncate">
-               {products.length > 0 ? formatPrice(Math.max(...products.map(p => p.price || 0))) : "-"}
+              {products.length > 0 ? formatPrice(Math.max(...products.map(p => p.price || 0))) : "-"}
             </div>
             <div className="text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400">Prix max</div>
           </div>
@@ -448,7 +448,7 @@ export default function CategoryPage() {
         {/* Controls Bar */}
         <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-4 md:p-6 mb-8 shadow-sm">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-            
+
             <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-3">
               <Sheet open={isFilterOpen} onOpenChange={setIsFilterOpen}>
                 <SheetTrigger asChild>
@@ -467,8 +467,8 @@ export default function CategoryPage() {
                         <div className="space-y-3">
                           {availableSubCategories.map((sub) => (
                             <div key={sub} className="flex items-center space-x-3">
-                              <Checkbox 
-                                id={`mobile-sub-${sub}`} 
+                              <Checkbox
+                                id={`mobile-sub-${sub}`}
                                 checked={selectedSubCategories.includes(sub)}
                                 onCheckedChange={() => handleSubCategoryToggle(sub)}
                               />
@@ -482,14 +482,13 @@ export default function CategoryPage() {
                     <div>
                       <h3 className="font-black uppercase italic text-sm mb-4 text-gray-900 dark:text-white">Prix</h3>
                       <div className="px-2">
-                        <Slider 
-                          defaultValue={[0, 20000]} 
-                          min={0} 
-                          max={20000} 
-                          step={100} 
-                          value={priceRange} 
-                          onValueChange={handlePriceChange} 
-                          className="mb-6" 
+                        <Slider
+                          min={0}
+                          max={20000}
+                          step={100}
+                          value={priceRange}
+                          onValueChange={handlePriceChange}
+                          className="mb-6"
                         />
                         <div className="flex items-center justify-between text-sm font-black text-gray-900 dark:text-white">
                           <span>{formatPrice(priceRange[0])}</span>
@@ -516,9 +515,9 @@ export default function CategoryPage() {
                   className="pl-12 pr-10 h-12 rounded-xl border-2 border-gray-200 dark:border-gray-700 focus:border-yellow-500 w-full"
                 />
                 {searchQuery && (
-                  <X 
-                    className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 cursor-pointer" 
-                    onClick={() => setSearchQuery("")} 
+                  <X
+                    className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 cursor-pointer"
+                    onClick={() => setSearchQuery("")}
                   />
                 )}
               </div>
@@ -548,24 +547,24 @@ export default function CategoryPage() {
               </DropdownMenu>
 
               <div className="hidden sm:flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
-                <button 
-                  onClick={() => setViewMode("grid")} 
+                <button
+                  onClick={() => setViewMode("grid")}
                   className={cn(
-                    "p-2 rounded-lg transition-colors", 
-                    viewMode === "grid" 
-                      ? "bg-white dark:bg-gray-700 text-yellow-500 shadow-sm" 
+                    "p-2 rounded-lg transition-colors",
+                    viewMode === "grid"
+                      ? "bg-white dark:bg-gray-700 text-yellow-500 shadow-sm"
                       : "text-gray-500"
                   )}
                   aria-label="Vue grille"
                 >
                   <Package className="w-5 h-5" />
                 </button>
-                <button 
-                  onClick={() => setViewMode("list")} 
+                <button
+                  onClick={() => setViewMode("list")}
                   className={cn(
-                    "p-2 rounded-lg transition-colors", 
-                    viewMode === "list" 
-                      ? "bg-white dark:bg-gray-700 text-yellow-500 shadow-sm" 
+                    "p-2 rounded-lg transition-colors",
+                    viewMode === "list"
+                      ? "bg-white dark:bg-gray-700 text-yellow-500 shadow-sm"
                       : "text-gray-500"
                   )}
                   aria-label="Vue liste"
@@ -580,10 +579,10 @@ export default function CategoryPage() {
         {/* Filters Badges */}
         <AnimatePresence>
           {(priceRange[0] > 0 || priceRange[1] < 20000 || searchQuery || selectedSubCategories.length > 0) && (
-            <motion.div 
-              initial={{ opacity: 0, y: -10 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              exit={{ opacity: 0, y: -10 }} 
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
               className="flex flex-wrap items-center gap-2 mb-8 p-4 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800"
             >
               <span className="text-sm font-black uppercase text-gray-500">Filtres:</span>
@@ -626,13 +625,13 @@ export default function CategoryPage() {
                     <div className="space-y-3 max-h-72 overflow-y-auto pr-2">
                       {availableSubCategories.map((sub) => (
                         <div key={sub} className="flex items-center space-x-3">
-                          <Checkbox 
-                            id={`desktop-sub-${sub}`} 
-                            checked={selectedSubCategories.includes(sub)} 
-                            onCheckedChange={() => handleSubCategoryToggle(sub)} 
+                          <Checkbox
+                            id={`desktop-sub-${sub}`}
+                            checked={selectedSubCategories.includes(sub)}
+                            onCheckedChange={() => handleSubCategoryToggle(sub)}
                           />
-                          <Label 
-                            htmlFor={`desktop-sub-${sub}`} 
+                          <Label
+                            htmlFor={`desktop-sub-${sub}`}
                             className="text-sm font-medium cursor-pointer hover:text-yellow-500 transition-colors"
                           >
                             {sub}
@@ -645,14 +644,13 @@ export default function CategoryPage() {
                 )}
                 <div>
                   <h4 className="font-black uppercase text-sm mb-4">Prix</h4>
-                  <Slider 
-                    defaultValue={[0, 20000]} 
-                    min={0} 
-                    max={20000} 
-                    step={100} 
-                    value={priceRange} 
-                    onValueChange={handlePriceChange} 
-                    className="mb-8" 
+                  <Slider
+                    min={0}
+                    max={20000}
+                    step={100}
+                    value={priceRange}
+                    onValueChange={handlePriceChange}
+                    className="mb-8"
                   />
                   <div className="flex items-center justify-between text-sm font-black">
                     <span>{formatPrice(priceRange[0])}</span>
@@ -696,15 +694,15 @@ export default function CategoryPage() {
                       )}
                     >
                       <div className={cn(
-                        "relative overflow-hidden bg-gray-50", 
+                        "relative overflow-hidden bg-gray-50",
                         viewMode === "grid" ? "h-64 sm:h-72" : "w-full sm:w-64 h-64 sm:h-auto flex-shrink-0"
                       )}>
                         <Link href={`/produit/${product.slug || id}`}>
-                          <CloudImg 
-                            fill 
-                            src={product.image} 
-                            alt={product.name} 
-                            className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                          <CloudImg
+                            fill
+                            src={product.image}
+                            alt={product.name}
+                            className="object-cover transition-transform duration-700 group-hover:scale-110"
                           />
                         </Link>
                         <div className="absolute top-4 left-4 flex flex-col gap-2">
@@ -719,10 +717,10 @@ export default function CategoryPage() {
                             </span>
                           )}
                         </div>
-                        <button 
-                          onClick={() => toggleFavorite(product)} 
+                        <button
+                          onClick={() => toggleFavorite(product)}
                           className={cn(
-                            "absolute top-4 right-4 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-all", 
+                            "absolute top-4 right-4 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm transition-all",
                             isInFavorites(id) ? "text-red-500" : "text-gray-400"
                           )}
                           aria-label={isInFavorites(id) ? "Retirer des favoris" : "Ajouter aux favoris"}
@@ -752,9 +750,9 @@ export default function CategoryPage() {
                               </div>
                             )}
                           </div>
-                          <Button 
-                            size="icon" 
-                            className="rounded-full bg-yellow-500 text-black shadow-lg hover:bg-yellow-600" 
+                          <Button
+                            size="icon"
+                            className="rounded-full bg-yellow-500 text-black shadow-lg hover:bg-yellow-600"
                             onClick={() => onAddToCart(product)}
                             aria-label={`Ajouter ${product.name} au panier`}
                           >
