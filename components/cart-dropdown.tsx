@@ -3,7 +3,7 @@
 import { useState, useEffect, MouseEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, X, Plus, Minus, ArrowRight, LucideProps } from "lucide-react";
+import { ShoppingCart, X, Plus, Minus, ArrowRight, type LucideProps } from "lucide-react";
 import { useCart, type CartItem } from "../context/cart-context";
 import { Button } from "../components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../components/ui/sheet";
@@ -27,7 +27,7 @@ interface QuantityButtonProps {
   variant: "decrement" | "increment";
 }
 
-function QuantityButton({ onClick, disabled = false, ariaLabel, icon: Icon, variant }: QuantityButtonProps){
+function QuantityButton({ onClick, disabled = false, ariaLabel, icon: Icon, variant }: QuantityButtonProps) {
   const baseClasses = "p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors";
   const disabledClasses = disabled ? " opacity-50 cursor-not-allowed" : "";
   
@@ -65,16 +65,15 @@ export default function CartDropdown({ className = "", onCartOpen, onCartClose }
 
   const cartItemCount = mounted ? cart.reduce((total: number, item: CartItem) => total + item.quantity, 0) : 0;
 
-  const handleQuantityChange = (item: CartItem, newQuantity: number): void => {
-    if (newQuantity < 1) return;
-    updateQuantity(item.id, item.selectedColor, newQuantity);
-  };
+const handleQuantityChange = (item: CartItem, newQuantity: number): void => {
+  if (newQuantity < 1) return;
+  updateQuantity(item.id, item.selectedColor || "", item.selectedTaille || "", newQuantity);
+};
 
-  const handleRemoveItem = (item: CartItem, e: MouseEvent<HTMLButtonElement>): void => {
-    e.preventDefault();
-    removeFromCart(item.id, item.selectedColor);
-  };
-
+const handleRemoveItem = (item: CartItem, e: MouseEvent<HTMLButtonElement>): void => {
+  e.preventDefault();
+  removeFromCart(item.id, item.selectedColor || "", item.selectedTaille || "");
+};
   const handleSheetOpenChange = (open: boolean): void => {
     setIsOpen(open);
   };
@@ -158,7 +157,7 @@ export default function CartDropdown({ className = "", onCartOpen, onCartClose }
                               fill
                               className="object-cover"
                               sizes="64px"
-                              unoptimized={item.image?.startsWith("http")}
+                              unoptimized={typeof item.image === "string" && item.image.startsWith("http")}
                             />
                           </div>
                           <div className="flex-1 min-w-0">
