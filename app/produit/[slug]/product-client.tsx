@@ -1304,10 +1304,38 @@ export default function ProductPageClient({
 
             {/* Right: Details */}
             <section className="flex flex-col">
+              {/* Category Badge + Favorites Button */}
               <div className="mb-2 sm:mb-3 flex items-center justify-between">
                 <div className="border border-yellow-500/50 text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 text-[10px] sm:text-xs px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full font-medium">
                   {product.category ?? "EQUIPEMENT"}
                 </div>
+                
+                <button
+                  onClick={() => {
+                    if (isInFavorites(productId)) {
+                      removeFromFavorites(productId);
+                    } else {
+                      addToFavorites({
+                        id: productId || "",
+                        name: product.name,
+                        price: product.price,
+                        image: product.image || PLACEHOLDER,
+                        category: product.category,
+                      });
+                    }
+                  }}
+                  className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                  title={isInFavorites(productId) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                >
+                  <Heart
+                    className={cn(
+                      "w-5 h-5 sm:w-6 sm:h-6 transition-all",
+                      isInFavorites(productId)
+                        ? "fill-red-500 text-red-500"
+                        : "text-gray-400 hover:text-red-500"
+                    )}
+                  />
+                </button>
               </div>
 
               <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black uppercase italic text-gray-900 dark:text-white leading-[0.95] tracking-tighter mb-3 sm:mb-4">
