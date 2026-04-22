@@ -551,12 +551,9 @@ function ReviewsList({ reviews = [] }: ReviewsListProps) {
                 <div className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   {r.username ?? "Client"}
                   {r.verified && (
-                    <Badge
-                      variant="success"
-                      className="bg-green-100 text-green-700 border-green-200 text-[10px] px-1.5 py-0.5"
-                    >
-                      Achat vérifié
-                    </Badge>
+                    <span className="bg-green-100 text-green-700 border border-green-200 text-[10px] px-1.5 py-0.5 rounded-full font-medium">
+                      ✓ Achat vérifié
+                    </span>
                   )}
                 </div>
                 <RatingStars rating={r.rating} className="mt-1" size="xs" />
@@ -738,14 +735,14 @@ function MobileImageGallery({
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2 pointer-events-none">
           {discount != null && discount > 0 && (
-            <Badge variant="danger" className="shadow-lg text-xs">
+            <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg shadow-lg">
               -{discount}%
-            </Badge>
+            </div>
           )}
           {isNewProduct && (
-            <Badge variant="success" className="shadow-lg text-xs">
+            <div className="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-lg shadow-lg">
               Nouveau
-            </Badge>
+            </div>
           )}
         </div>
 
@@ -1007,7 +1004,10 @@ export default function ProductPageClient({
         throw new Error(data.message || "Erreur lors de l'envoi de l'avis");
       }
 
-      setReviewMessage({ type: "success", text: "Merci ! Votre avis a été publié avec succès." });
+      setReviewMessage({ 
+        type: "success", 
+        text: "Merci ! Votre avis a été publié avec succès." 
+      });
       setReviews((prev) => [data.data, ...prev]);
       setProduct((prev) =>
         prev ? { ...prev, reviewCount: (prev.reviewCount ?? 0) + 1 } : prev
@@ -1258,14 +1258,14 @@ export default function ProductPageClient({
                   </div>
                   <div className="absolute top-4 xl:top-6 left-4 xl:left-6 flex flex-col gap-2 xl:gap-3 pointer-events-none">
                     {(product.discount ?? 0) > 0 && (
-                      <Badge variant="danger" className="shadow-lg animate-pulse text-xs xl:text-sm">
+                      <div className="bg-red-600 text-white text-xs xl:text-sm font-bold px-2.5 xl:px-3 py-1 xl:py-1.5 rounded-lg xl:rounded-xl shadow-lg animate-pulse">
                         -{product.discount}%
-                      </Badge>
+                      </div>
                     )}
                     {product.isNewProduct && (
-                      <Badge variant="success" className="shadow-lg text-xs xl:text-sm">
+                      <div className="bg-green-600 text-white text-xs xl:text-sm font-bold px-2.5 xl:px-3 py-1 xl:py-1.5 rounded-lg xl:rounded-xl shadow-lg">
                         Nouveau
-                      </Badge>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -1304,12 +1304,11 @@ export default function ProductPageClient({
             {/* Right: Details */}
             <section className="flex flex-col">
               <div className="mb-2 sm:mb-3 flex items-center justify-between">
-                <Badge
-                  variant="outline"
-                  className="border-yellow-500/50 text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 text-[10px] sm:text-xs"
+                <div
+                  className="border border-yellow-500/50 text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 text-[10px] sm:text-xs px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full font-medium"
                 >
                   {product.category ?? "EQUIPEMENT"}
-                </Badge>
+                </div>
 
                 <div className="flex items-center gap-2 sm:gap-3">
                   <button
@@ -1485,7 +1484,7 @@ export default function ProductPageClient({
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         onSubmit={handleSubmitReview}
-                        className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4 overflow-hidden"
+                        className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4 overflow-hidden dark:bg-gray-900 dark:border-gray-800"
                       >
                         <h3 className="font-bold text-lg">Partagez votre expérience</h3>
 
@@ -1523,7 +1522,7 @@ export default function ProductPageClient({
                               onChange={(e) =>
                                 setReviewForm({ ...reviewForm, username: e.target.value })
                               }
-                              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                               placeholder="Votre nom"
                             />
                           </div>
@@ -1539,7 +1538,7 @@ export default function ProductPageClient({
                               onChange={(e) =>
                                 setReviewForm({ ...reviewForm, title: e.target.value })
                               }
-                              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                               placeholder="Résumé de votre avis"
                             />
                           </div>
@@ -1555,7 +1554,7 @@ export default function ProductPageClient({
                               onChange={(e) =>
                                 setReviewForm({ ...reviewForm, body: e.target.value })
                               }
-                              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all resize-none"
+                              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all resize-none dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                               placeholder="Dites-nous ce que vous avez aimé ou ce qui pourrait être amélioré..."
                             />
                           </div>
