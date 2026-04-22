@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
+import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { Lock, User, Key, ArrowRight, Loader2, ShieldCheck, AlertCircle } from 'lucide-react';
-
-const LOGO_PATH = '/images/logo-ironz.png';
 
 const ADMIN_CREDENTIALS = {
   username: 'ironz_admin',
@@ -18,7 +16,7 @@ interface LoginPageProps {
   onLogin: () => void;
 }
 
-export default function SetupLayout({ children }: SetupLayoutProps): JSX.Element {
+export default function SetupLayout({ children }: SetupLayoutProps) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -74,7 +72,7 @@ export default function SetupLayout({ children }: SetupLayoutProps): JSX.Element
   );
 }
 
-function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
+function LoginPage({ onLogin }: LoginPageProps) {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -102,7 +100,6 @@ function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
 
   return (
     <div className="min-h-screen w-full flex bg-white">
-
       {/* LEFT SIDE - BRANDING */}
       <div className="hidden lg:flex w-1/2 bg-black relative overflow-hidden items-center justify-center">
         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
@@ -112,7 +109,8 @@ function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
 
         <div className="relative z-10 text-center p-12">
           <div className="w-32 h-32 mx-auto bg-black rounded-2xl flex items-center justify-center mb-8 shadow-[0_0_40px_rgba(234,179,8,0.3)] transform rotate-3 hover:rotate-0 transition-all duration-500">
-            <img src="/logo.png" alt="Ironz Logo" />
+             {/* Note: Ensure /logo.png exists in your public folder */}
+            <img src="/logo.png" alt="Ironz Logo" className="w-20 h-20 object-contain" />
           </div>
 
           <h1 className="text-6xl font-black text-white tracking-tighter mb-4">
@@ -127,7 +125,6 @@ function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
       {/* RIGHT SIDE - LOGIN FORM */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 bg-gray-50/50">
         <div className="w-full max-w-md animate-fadeIn">
-
           {/* Mobile Header */}
           <div className="lg:hidden text-center mb-8">
             <h1 className="text-4xl font-black text-black tracking-tighter">
@@ -146,7 +143,6 @@ function LoginPage({ onLogin }: LoginPageProps): JSX.Element {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-
               {error && (
                 <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 text-red-600 text-sm font-medium border border-red-100 animate-shake">
                   <AlertCircle className="w-5 h-5 flex-shrink-0" />

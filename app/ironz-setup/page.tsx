@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, ChangeEvent, FormEvent, KeyboardEvent } from 'react';
+import React, { useState, useRef, useEffect, ChangeEvent, FormEvent, KeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   ArrowLeft,
@@ -38,7 +38,7 @@ import {
   List,
   MessageSquare,
   User,
-  LucideIcon,
+  type LucideIcon,
 } from 'lucide-react';
 
 const API_URL: string =
@@ -146,7 +146,7 @@ const initialFormData: FormData = {
   estimatedDelivery: '',
 };
 
-export default function AddProductPage(): JSX.Element {
+export default function AddProductPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>('equipements');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -268,11 +268,13 @@ export default function AddProductPage(): JSX.Element {
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ): void => {
-    const { name, value } = e.target;
-    const target = e.target as HTMLInputElement;
+    const { name, value, type } = e.target;
+    const isCheckbox = type === 'checkbox';
+    const nextValue = isCheckbox ? (e.target as HTMLInputElement).checked : value;
+    
     setFormData((prev) => ({
       ...prev,
-      [name]: target.type === 'checkbox' ? target.checked : value,
+      [name]: nextValue,
     }));
   };
 
@@ -387,7 +389,7 @@ export default function AddProductPage(): JSX.Element {
     setIsSubmitting(true);
 
     try {
-      const formDataToSend = new FormData();
+      const formDataToSend = new window.FormData();
       formDataToSend.append('name', formData.name.trim());
       formDataToSend.append('description', formData.description.trim());
       formDataToSend.append('price', formData.price);
