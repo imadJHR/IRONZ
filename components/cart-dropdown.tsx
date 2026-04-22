@@ -4,11 +4,11 @@ import { useState, useEffect, MouseEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingCart, X, Plus, Minus, ArrowRight, LucideProps } from "lucide-react";
-import { useCart, type CartItem } from "@/context/cart-context";
-import { Button } from "@/components/ui/button";
+import { useCart, type CartItem } from "../context/cart-context";
+import { Button } from "../components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Separator } from "@/components/ui/separator";
-import { colorMap } from "@/data/product";
+import { Separator } from "../components/ui/separator";
+import { colorMap } from "../data/product";
 
 // Types
 type ColorKey = keyof typeof colorMap;
@@ -44,7 +44,7 @@ function QuantityButton({ onClick, disabled = false, ariaLabel, icon: Icon, vari
   );
 }
 
-export default function CartDropdown({ className = "", onCartOpen, onCartClose }: CartDropdownProps): JSX.Element {
+export default function CartDropdown({ className = "", onCartOpen, onCartClose }: CartDropdownProps) {
   const { cart, updateQuantity, removeFromCart, cartTotal } = useCart();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
