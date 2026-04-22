@@ -1,23 +1,37 @@
 "use client"
 
 import React, { useEffect, useRef } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
-export const Marquee = ({ children, direction = "left", speed = 50, pauseOnHover = true, className }) => {
-  const containerRef = useRef(null)
-  const scrollerRef = useRef(null)
+interface MarqueeProps {
+  children: React.ReactNode
+  direction?: "left" | "right"
+  speed?: number
+  pauseOnHover?: boolean
+  className?: string
+}
+
+export const Marquee = ({
+  children,
+  direction = "left",
+  speed = 50,
+  pauseOnHover = true,
+  className,
+}: MarqueeProps) => {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const scrollerRef = useRef<HTMLDivElement>(null)
   const [start, setStart] = React.useState(false)
 
   useEffect(() => {
     if (!scrollerRef.current || !containerRef.current) return
 
-    const scrollerContent = Array.from(scrollerRef.current.children)
+    const scrollerContent = Array.from(scrollerRef.current.children) as Element[]
 
     // If not enough content to scroll, duplicate items
     if (scrollerContent.length <= 1) {
       const duplicate = scrollerContent.map((item) => item.cloneNode(true))
       duplicate.forEach((item) => {
-        scrollerRef.current.appendChild(item)
+        scrollerRef.current!.appendChild(item)
       })
     }
 
@@ -25,6 +39,14 @@ export const Marquee = ({ children, direction = "left", speed = 50, pauseOnHover
 
     return () => setStart(false)
   }, [])
+
+  const scrollClasses = (reverse: boolean) =>
+    cn(
+      "flex min-w-full shrink-0 gap-4 py-4",
+      start && (reverse ? "animate-scroll-reverse" : "animate-scroll"),
+      start && pauseOnHover && "hover:[animation-play-state:paused]",
+      direction === "right" && "flex-row-reverse",
+    )
 
   return (
     <div
@@ -36,30 +58,14 @@ export const Marquee = ({ children, direction = "left", speed = 50, pauseOnHover
     >
       <div
         ref={scrollerRef}
-        className={cn(
-          "flex min-w-full shrink-0 gap-4 py-4",
-          start && "animate-scroll",
-          start && pauseOnHover && "hover:[animation-play-state:paused]",
-          direction === "right" && "flex-row-reverse",
-          direction === "right" && start && "animate-scroll-reverse",
-        )}
-        style={{
-          animationDuration: `${speed}s`,
-        }}
+        className={scrollClasses(direction === "right")}
+        style={{ animationDuration: `${speed}s` }}
       >
         {children}
       </div>
       <div
-        className={cn(
-          "flex min-w-full shrink-0 gap-4 py-4",
-          start && "animate-scroll",
-          start && pauseOnHover && "hover:[animation-play-state:paused]",
-          direction === "right" && "flex-row-reverse",
-          direction === "right" && start && "animate-scroll-reverse",
-        )}
-        style={{
-          animationDuration: `${speed}s`,
-        }}
+        className={scrollClasses(direction === "right")}
+        style={{ animationDuration: `${speed}s` }}
         aria-hidden="true"
       >
         {children}
@@ -68,7 +74,11 @@ export const Marquee = ({ children, direction = "left", speed = 50, pauseOnHover
   )
 }
 
-export const MarqueeItem = ({ className, children }) => {
-  return <div className={cn("flex-shrink-0", className)}>{children}</div>
+interface MarqueeItemProps {
+  children: React.ReactNode
+  className?: string
 }
 
+export const MarqueeItem = ({ className, children }: MarqueeItemProps) => {
+  return <div className={cn("flex-shrink-0", className)}>{children}</div>
+}
