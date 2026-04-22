@@ -139,9 +139,11 @@ export default function CheckoutPage() {
     setMounted(true);
     if (cart.length > 0) {
       trackFBEvent("InitiateCheckout", {
-        content_ids: cart.map((item) => String(item.id || item._id)),
+        // FIXED: Added explicit type to item
+        content_ids: cart.map((item: CartItem) => String(item.id || item._id)),
         content_type: "product",
-        contents: cart.map((item) => ({
+        // FIXED: Added explicit type to item
+        contents: cart.map((item: CartItem) => ({
           id: String(item.id || item._id),
           quantity: item.quantity,
           item_price: item.price
@@ -239,7 +241,7 @@ export default function CheckoutPage() {
     const orderData = {
       orderNumber: generatedOrderNumber,
       ...formData,
-      items: cart.map(item => ({
+      items: cart.map((item: CartItem) => ({
         name: item.name,
         price: item.price,
         quantity: item.quantity,
@@ -265,7 +267,8 @@ export default function CheckoutPage() {
             trackFBEvent("Purchase", {
                 value: total,
                 currency: "MAD",
-                content_ids: cart.map(i => String(i.id || i._id)),
+                // FIXED: Added explicit type to i
+                content_ids: cart.map((i: CartItem) => String(i.id || i._id)),
                 content_type: "product",
                 order_id: generatedOrderNumber
             });
@@ -283,7 +286,7 @@ export default function CheckoutPage() {
     }
   };
 
-  // --- RENDU : SUCCÈS ---
+  // ... (Rest of the component remains the same)
   if (orderComplete) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-28 pb-16">
@@ -398,7 +401,7 @@ export default function CheckoutPage() {
             <div className="bg-black text-white rounded-[2.5rem] p-8 sticky top-28 border-t-8 border-yellow-500 shadow-2xl">
               <h2 className="text-2xl font-black uppercase italic mb-8">Votre Panier.</h2>
               <div className="space-y-6 max-h-[350px] overflow-y-auto mb-8 pr-2 custom-scrollbar">
-                {cart.map((item) => (
+                {cart.map((item: CartItem) => (
                   <div key={`${item.id}-${item.selectedColor || 'default'}`} className="flex gap-4 items-center">
                     <div className="w-16 h-16 bg-zinc-800 rounded-xl flex-shrink-0 overflow-hidden">
                       <CloudImg src={item.image} alt={item.name} className="object-cover w-full h-full" />
