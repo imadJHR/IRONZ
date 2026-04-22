@@ -6,7 +6,7 @@ import { LogOut, User } from "lucide-react";
 // Type for the logout handler event
 type LogoutHandler = (e: React.MouseEvent<HTMLButtonElement>) => void;
 
-export default function AdminHeader(): JSX.Element {
+export default function AdminHeader() {
   const router = useRouter();
 
   const logout: LogoutHandler = (e) => {

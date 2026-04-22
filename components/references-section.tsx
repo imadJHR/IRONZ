@@ -49,7 +49,7 @@ export default function ReferencesSection({
   className = "", 
   items, 
   onViewAll 
-}: ReferencesSectionProps): JSX.Element {
+}: ReferencesSectionProps) {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const videoRefs = useRef<VideoRefs>({});
 

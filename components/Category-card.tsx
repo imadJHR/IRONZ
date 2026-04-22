@@ -24,7 +24,7 @@ export default function CategoryCard({
   category, 
   className = "", 
   priority 
-}: CategoryCardProps): JSX.Element {
+}: CategoryCardProps) {
   // Create a clean slug for the URL with fallback handling
   const getSlug = (href: string): string => {
     const parts = href.split("/").filter(Boolean);

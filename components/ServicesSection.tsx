@@ -99,7 +99,7 @@ const ServicesSection = ({
   services = defaultServices, 
   ctaHref = "/services",
   ctaText = "Explorer tous nos services"
-}: ServicesSectionProps): JSX.Element => {
+}: ServicesSectionProps)=> {
   return (
     <section className={`py-24 bg-white dark:bg-gray-900 ${className}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

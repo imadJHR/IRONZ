@@ -29,7 +29,7 @@ interface BrandLogoProps {
   className?: string;
 }
 
-function BrandLogo({ src, alt = "Brand Logo", className = "" }: BrandLogoProps): JSX.Element {
+function BrandLogo({ src, alt = "Brand Logo", className = "" }: BrandLogoProps){
   const [imgSrc, setImgSrc] = useState<string>(PLACEHOLDER);
   
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function BrandsMarquee({
   speed = 40, 
   pauseOnHover = true, 
   gradient = false 
-}: BrandsMarqueeProps): JSX.Element {
+}: BrandsMarqueeProps) {
   return (
     <section className={cn("py-16 md:py-24 bg-gray-50 dark:bg-gray-950 overflow-hidden w-full max-w-[100vw]", className)}>
       <div className="container mx-auto px-4 mb-12 text-center">

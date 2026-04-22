@@ -27,7 +27,7 @@ interface QuantityButtonProps {
   variant: "decrement" | "increment";
 }
 
-function QuantityButton({ onClick, disabled = false, ariaLabel, icon: Icon, variant }: QuantityButtonProps): JSX.Element {
+function QuantityButton({ onClick, disabled = false, ariaLabel, icon: Icon, variant }: QuantityButtonProps){
   const baseClasses = "p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors";
   const disabledClasses = disabled ? " opacity-50 cursor-not-allowed" : "";
   

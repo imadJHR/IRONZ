@@ -55,7 +55,7 @@ export function ThemeProvider({
   defaultTheme = "light",
   onThemeChange,
   ...props 
-}: ThemeProviderProps): JSX.Element {
+}: ThemeProviderProps){
   const [mounted, setMounted] = useState<boolean>(false);
   const [themeState, setThemeState] = useState<ThemeContextValue>({
     theme: defaultTheme,
@@ -80,7 +80,7 @@ export function ThemeProvider({
   }, [themeState.theme, mounted, onThemeChange]);
 
   // Wrapper component to bridge next-themes context to our custom context
-  const ThemeBridge = ({ children: bridgeChildren }: { children: ReactNode }): JSX.Element => {
+  const ThemeBridge = ({ children: bridgeChildren }: { children: ReactNode })=> {
     // Use next-themes hook internally if available, otherwise fallback
     const nextThemes = useContext(ThemeContext) as ThemeContextValue | undefined;
     

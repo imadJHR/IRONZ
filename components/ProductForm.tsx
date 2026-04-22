@@ -53,7 +53,7 @@ export default function ProductForm({
   submitText = "Submit",
   className = "",
   disabled = false
-}: ProductFormProps): JSX.Element {
+}: ProductFormProps) {
   const [formData, setFormData] = useState<FormState>({
     name: initialData.name?.toString() || "",
     slug: initialData.slug?.toString() || "",

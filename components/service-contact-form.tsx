@@ -28,7 +28,7 @@ export default function ServiceContactForm({
   onSuccess, 
   endpoint,
   className = "" 
-}: ServiceContactFormProps): JSX.Element {
+}: ServiceContactFormProps){
   const [formData, setFormData] = useState<ContactFormData>({
     firstName: "",
     lastName: "",

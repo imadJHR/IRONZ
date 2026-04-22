@@ -29,7 +29,7 @@ export const Marquee = ({
   className = "",
   contentProps = {},
   ...props
-}: MarqueeProps): JSX.Element => {
+}: MarqueeProps) => {
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [contentWidth, setContentWidth] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);

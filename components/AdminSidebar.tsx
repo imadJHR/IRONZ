@@ -13,7 +13,7 @@ type AdminRoute =
 // Type for the goTo handler
 type GoToHandler = (path: AdminRoute) => void;
 
-export default function AdminSidebar(): JSX.Element {
+export default function AdminSidebar() {
   const router = useRouter();
   const pathname = usePathname();
 

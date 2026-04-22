@@ -27,7 +27,7 @@ export default function ThemeToggle({
   ariaLabel = "Toggle theme",
   onThemeChange,
   showTooltip = false
-}: ThemeToggleProps): JSX.Element {
+}: ThemeToggleProps){
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState<boolean>(false);
 
@@ -134,7 +134,7 @@ export function ThemeAwareContent<T>({
   light: T; 
   dark: T; 
   children?: (value: T) => React.ReactNode;
-}): JSX.Element | null {
+}) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   

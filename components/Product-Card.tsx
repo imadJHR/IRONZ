@@ -51,7 +51,7 @@ export default function ProductCard({
   className = "",
   onAddToCart,
   onToggleFavorite 
-}: ProductCardProps): JSX.Element {
+}: ProductCardProps) {
   const { addToCart } = useCart();
   const { addToFavorites, removeFromFavorites, isInFavorites } = useFavorites();
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -82,7 +82,7 @@ export default function ProductCard({
     onToggleFavorite?.(product);
   };
 
-  const renderStars = (rating: number): JSX.Element[] => {
+  const renderStars = (rating: number) => {
     return [...Array(5)].map((_, i) => (
       <Star
         key={i}

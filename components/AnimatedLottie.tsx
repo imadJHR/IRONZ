@@ -37,7 +37,7 @@ const AnimatedLottie = memo(function AnimatedLottie({
   playerProps = {},
   style = {},
   alt = 'Animation',
-}: AnimatedLottieProps): JSX.Element {
+}: AnimatedLottieProps) {
   // Normalize dimension values to CSS-compatible strings
   const normalizeDimension = (value: string | number): string => {
     if (typeof value === 'number') return `${value}px`;

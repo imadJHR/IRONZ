@@ -47,7 +47,7 @@ export default function FavoritesDropdown({
   className = "", 
   onOpen, 
   onClose 
-}: FavoritesDropdownProps): JSX.Element {
+}: FavoritesDropdownProps) {
   const { favorites, favoritesOpen, toggleFavorites, removeFromFavorites } = useFavorites();
   const { addToCart } = useCart();
 
