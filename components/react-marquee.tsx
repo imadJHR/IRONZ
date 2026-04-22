@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, ReactNode, HTMLAttributes } from "react";
-import { motion, MotionProps, AnimationControls, TargetAndTransition } from "framer-motion";
+import { motion, MotionProps, TargetAndTransition } from "framer-motion";
 
 // Types
 export type MarqueeDirection = "left" | "right";
