@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Package, PlusCircle, LucideProps } from "lucide-react";
+import { LayoutDashboard, Package, PlusCircle, type LucideProps } from "lucide-react";
 
 // Type for admin navigation routes - ensures type-safe navigation
 type AdminRoute = 
@@ -41,7 +41,7 @@ export default function AdminSidebar() {
   const isActive = (route: AdminRoute): boolean => pathname === route;
 
   // Icon props for consistent typing
-  const iconProps: Partial<LucideProps> = { size: 18, ariaHidden: true };
+  const iconProps = { size: 18, "aria-hidden": true } as const;
 
   return (
     <aside className="w-64 bg-white border-r border-yellow-500/30 p-6 min-h-screen shadow-md">
