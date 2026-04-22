@@ -8,13 +8,19 @@ import { cn } from "../../lib/utils"
 function TooltipProvider({
   delayDuration = 0,
   ...props
-}) {
-  return (<TooltipPrimitive.Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />);
+}: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Provider>) {
+  return (
+    <TooltipPrimitive.Provider
+      data-slot="tooltip-provider"
+      delayDuration={delayDuration}
+      {...props}
+    />
+  );
 }
 
 function Tooltip({
   ...props
-}) {
+}: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>) {
   return (
     <TooltipProvider>
       <TooltipPrimitive.Root data-slot="tooltip" {...props} />
@@ -24,7 +30,7 @@ function Tooltip({
 
 function TooltipTrigger({
   ...props
-}) {
+}: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>) {
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
@@ -33,7 +39,7 @@ function TooltipContent({
   sideOffset = 0,
   children,
   ...props
-}) {
+}: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>) {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
@@ -46,7 +52,8 @@ function TooltipContent({
         {...props}>
         {children}
         <TooltipPrimitive.Arrow
-          className="bg-primary fill-primary z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
+          className="bg-primary fill-primary z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" 
+        />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );
