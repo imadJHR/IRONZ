@@ -177,7 +177,7 @@ const categories: Category[] = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function EditProductPage(): JSX.Element {
+export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
