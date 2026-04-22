@@ -54,7 +54,7 @@ import ServicesSection from "../components/ServicesSection";
 
 // Context & Data
 import { useCart } from "../context/cart-context";
-import { useFavorites } from "../context/favorites-context";
+import { FavoriteItem, useFavorites } from "../context/favorites-context";
 import { categories as categoryData } from "../data/product";
 
 // Static Assets
@@ -151,7 +151,7 @@ export interface HomeClientProps {
 }
 
 // --- UTILS ---
-const cn = (...classes: (string | boolean | undefined | null)[]): string => 
+const cn = (...classes: (string | boolean | undefined | null)[]): string =>
   classes.filter(Boolean).join(" ");
 
 const formatPrice = (price: number | string | undefined | null): string => {
@@ -186,7 +186,7 @@ function CloudImg({
   ...props
 }: CloudImgProps) {
   const [error, setError] = useState<boolean>(false);
-  
+
   let source: string = PLACEHOLDER;
   if (src) {
     if (typeof src === "object" && "src" in src) {
@@ -689,14 +689,14 @@ function HeroBannerSlide({ product, index, totalSlides }: HeroBannerSlideProps) 
 /* -----------------------------
    LATEST PRODUCTS SECTION
 ------------------------------ */
-function LatestProductsSection({ 
-  products, 
-  addToCart, 
-  toggleFavorite, 
-  isInFavorites, 
-  loadMore, 
-  hasMore, 
-  loadingMore 
+function LatestProductsSection({
+  products,
+  addToCart,
+  toggleFavorite,
+  isInFavorites,
+  loadMore,
+  hasMore,
+  loadingMore
 }: LatestProductsSectionProps) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'newest' | 'price-low' | 'price-high' | 'rating'>('newest');
@@ -1126,18 +1126,18 @@ export default function HomeClient({
   };
 
   // Memoized product lists
-  const featuredVedette = useMemo(() => 
-    products.find(p => p.isFeatured && Number(p.discount) > 0) || products[0], 
+  const featuredVedette = useMemo(() =>
+    products.find(p => p.isFeatured && Number(p.discount) > 0) || products[0],
     [products]
   );
-  
-  const newArrivals = useMemo(() => 
-    products.filter(p => p.isNewProduct).slice(0, 12), 
+
+  const newArrivals = useMemo(() =>
+    products.filter(p => p.isNewProduct).slice(0, 12),
     [products]
   );
-  
-  const discountedProducts = useMemo(() => 
-    products.filter(p => Number(p.discount) > 0).slice(0, 12), 
+
+  const discountedProducts = useMemo(() =>
+    products.filter(p => Number(p.discount) > 0).slice(0, 12),
     [products]
   );
 
@@ -1146,19 +1146,23 @@ export default function HomeClient({
     if (isInFavorites(id)) {
       removeFromFavorites(id);
     } else {
-      // Normalize the image to string before adding to favorites
-      const normalizedProduct = {
-        ...product,
+      const favoriteItem: FavoriteItem = {
         id,
-        image: normalizeImage(product.image)
+        name: product.name,
+        price: product.price,
+        image: normalizeImage(product.image),
+        slug: product.slug ?? "",
       };
-      addToFavorites(normalizedProduct);
+      addToFavorites(favoriteItem);
     }
   };
 
   const handleAddToCart = (product: Product) => {
     const id = product._id || product.id || "";
-    addToCart({ ...product, id });
+    addToCart({
+      ...product, id,
+      quantity: 0
+    });
   };
 
   if (loading) {
