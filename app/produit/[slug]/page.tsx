@@ -11,9 +11,9 @@ interface Product {
   description?: string;
   image?: string;
   category?: string;
-  price?: number;
+  price: number; // ✅ REQUIRED (not optional)
   slug?: string;
-  reviews?: any[]; // Vous pouvez créer une interface Review si nécessaire
+  reviews?: any[];
   [key: string]: any;
 }
 
@@ -48,8 +48,16 @@ async function getProductBySlug(slug: string): Promise<Product | null> {
     if (!res.ok) return null;
 
     const data: ApiResponse<Product> | Product = await res.json();
+    
     // Gère le cas où l'API renvoie { data: {...} } ou juste {...}
-    return (data as ApiResponse<Product>).data || (data as Product); 
+    const product = (data as ApiResponse<Product>).data || (data as Product);
+    
+    // ✅ Ensure price is always a number
+    if (product && typeof product.price !== 'number') {
+      product.price = Number(product.price) || 0;
+    }
+    
+    return product; 
   } catch (error) {
     console.error("Error fetching product metadata:", error);
     return null;
@@ -68,7 +76,14 @@ async function getRelatedProducts(category: string, excludeId: string): Promise<
     if (!res.ok) return [];
     
     const data: ApiResponse<Product[]> = await res.json();
-    const list = Array.isArray(data?.data) ? data.data : [];
+    let list = Array.isArray(data?.data) ? data.data : [];
+    
+    // ✅ Ensure all products have price as number
+    list = list.map(product => ({
+      ...product,
+      price: typeof product.price === 'number' ? product.price : Number(product.price) || 0
+    }));
+    
     return list.filter((x) => x._id !== excludeId).slice(0, 4);
   } catch (error) {
     console.error("Error fetching related products:", error);
@@ -123,6 +138,12 @@ export default async function ProductPage({ params }: PageProps) {
     notFound();
   }
 
+  // ✅ Ensure product has all required fields
+  const validProduct: Product = {
+    ...product,
+    price: typeof product.price === 'number' ? product.price : Number(product.price) || 0,
+  };
+
   const relatedProducts = product.category 
     ? await getRelatedProducts(product.category, product._id)
     : [];
@@ -131,7 +152,7 @@ export default async function ProductPage({ params }: PageProps) {
     <Suspense fallback={<ProductLoading />}>
       <ProductPageClient 
         slug={slug} 
-        initialProduct={product}
+        initialProduct={validProduct}
         initialReviews={product.reviews || []}
         initialRelated={relatedProducts}
       />
@@ -142,7 +163,7 @@ export default async function ProductPage({ params }: PageProps) {
 /* ================================
    LOADING STATE
 ================================ */
-function ProductLoading(): JSX.Element {
+function ProductLoading() {
   return (
     <div className="container mx-auto px-4 py-20 animate-pulse">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm overflow-hidden">
@@ -163,14 +184,14 @@ function ProductLoading(): JSX.Element {
             <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4" />
             <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
             <div className="flex gap-4">
-               <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-20" />
-               <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-20" />
+              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-20" />
+              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-20" />
             </div>
             <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mt-4" />
             <div className="space-y-2 mt-8">
-               <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
-               <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
-               <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
             </div>
           </div>
           
