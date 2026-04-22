@@ -30,6 +30,9 @@ interface CartItem {
   slug: string;
   category?: string;
   selectedColor?: string | null;
+  selectedTaille?: string | null; // ✅ ADD THIS
+  salePrice?: number; // ✅ ADD THIS
+  oldPrice?: number; // ✅ ADD THIS
   quantity: number;
 }
 
@@ -96,23 +99,26 @@ function CloudImg({ src, alt, fill = false, className = "", priority = false }: 
 
 export default function CartPageClient() {
   const router = useRouter();
-  const { 
-    cart, 
-    removeFromCart, 
-    updateQuantity, 
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
     clearCart,
-    mounted
+    mounted,
   } = useCart();
-  
+
   const [couponCode, setCouponCode] = useState<string>("");
   const [couponError, setCouponError] = useState<string | null>(null);
   const [couponSuccess, setCouponSuccess] = useState<string | null>(null);
   const [discount, setDiscount] = useState<number>(0);
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
 
-  // Calculs financiers
+  // Calculs financiers - Use salePrice if available
   const cartTotal = cart.reduce(
-    (total: number, item: CartItem) => total + (Number(item.price) || 0) * (Number(item.quantity) || 0),
+    (total: number, item: CartItem) =>
+      total +
+      (Number(item.salePrice || item.price) || 0) *
+        (Number(item.quantity) || 0),
     0
   );
 
@@ -122,7 +128,10 @@ export default function CartPageClient() {
   );
 
   useEffect(() => {
-    if (!appliedCoupon) { setDiscount(0); return; }
+    if (!appliedCoupon) {
+      setDiscount(0);
+      return;
+    }
     if (appliedCoupon === "promo10") setDiscount(cartTotal * 0.1);
     else if (appliedCoupon === "welcome") setDiscount(50);
   }, [cartTotal, appliedCoupon]);
@@ -130,25 +139,27 @@ export default function CartPageClient() {
   const shippingCost = cartTotal > 500 ? 0 : 30;
   const totalWithShipping = cartTotal + shippingCost - discount;
 
-  // Handler for quantity change - FIXED to match context signature
+  // ✅ FIXED: Handler for quantity change - match new signature
   const handleQuantityChange = (
-    id: string | number, 
+    id: string | number,
     newQty: number,
-    selectedColor: string | null = null
+    selectedColor: string | null = null,
+    selectedTaille: string | null = null // ✅ ADD THIS
   ) => {
     if (newQty >= 1 && newQty <= 99) {
-      // updateQuantity(productId, selectedColor, quantity)
-      updateQuantity(id, selectedColor, newQty);
+      // updateQuantity(productId, selectedColor, selectedTaille, quantity)
+      updateQuantity(id, selectedColor, selectedTaille, newQty); // ✅ ADD selectedTaille
     }
   };
 
-  // Handler for remove item - FIXED to match context signature
+  // ✅ FIXED: Handler for remove item - match new signature
   const handleRemoveItem = (
     id: string | number,
-    selectedColor: string | null = null
+    selectedColor: string | null = null,
+    selectedTaille: string | null = null // ✅ ADD THIS
   ) => {
-    // removeFromCart(productId, selectedColor)
-    removeFromCart(id, selectedColor);
+    // removeFromCart(productId, selectedColor, selectedTaille)
+    removeFromCart(id, selectedColor, selectedTaille); // ✅ ADD selectedTaille
   };
 
   const handleCouponSubmit = (e: FormEvent) => {
@@ -206,7 +217,6 @@ export default function CartPageClient() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-28 pb-16">
       <div className="container mx-auto px-4">
-        
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
@@ -273,7 +283,9 @@ export default function CartPageClient() {
                   Récapitulatif ({totalItems})
                 </h2>
                 <button
-                  onClick={() => window.confirm("Vider le panier ?") && clearCart()}
+                  onClick={() =>
+                    window.confirm("Vider le panier ?") && clearCart()
+                  }
                   className="text-red-500 text-[10px] font-black uppercase tracking-widest hover:underline flex items-center gap-1"
                 >
                   <Trash2 size={14} /> Vider
@@ -282,8 +294,11 @@ export default function CartPageClient() {
 
               <div className="divide-y divide-gray-100 dark:divide-zinc-800">
                 {cart.map((item: CartItem, idx: number) => {
-                  const itemKey = `${item.id}-${item.selectedColor || 'none'}-${idx}`;
-                  
+                  // ✅ FIXED: Create unique key with selectedTaille
+                  const itemKey = `${item.id}-${item.selectedColor || "none"}-${
+                    item.selectedTaille || "none"
+                  }-${idx}`;
+
                   return (
                     <div
                       key={itemKey}
@@ -291,7 +306,12 @@ export default function CartPageClient() {
                     >
                       {/* Product Image */}
                       <div className="relative h-28 w-28 md:h-32 md:w-32 shrink-0 bg-gray-50 dark:bg-gray-800 rounded-2xl md:rounded-3xl overflow-hidden border border-gray-100 dark:border-zinc-800 transition-transform group-hover:scale-105">
-                        <CloudImg fill src={item.image} alt={item.name} className="p-4" />
+                        <CloudImg
+                          fill
+                          src={item.image}
+                          alt={item.name}
+                          className="p-4"
+                        />
                       </div>
 
                       <div className="flex-1 text-center sm:text-left min-w-0">
@@ -304,15 +324,25 @@ export default function CartPageClient() {
                         >
                           {item.name}
                         </Link>
-                        
+
                         <div className="flex flex-wrap justify-center sm:justify-start gap-3 mb-4 md:mb-6">
                           {item.selectedColor && (
                             <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-black uppercase tracking-widest text-gray-500">
                               Couleur:{" "}
                               <div
                                 className="w-3 h-3 rounded-full border border-white"
-                                style={{ background: COLOR_MAP[item.selectedColor] || item.selectedColor }}
+                                style={{
+                                  background:
+                                    COLOR_MAP[item.selectedColor] ||
+                                    item.selectedColor,
+                                }}
                               />
+                            </div>
+                          )}
+                          {/* ✅ ADD THIS: Display selected size */}
+                          {item.selectedTaille && (
+                            <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-black uppercase tracking-widest text-gray-500">
+                              Taille: <span className="text-yellow-600">{item.selectedTaille}</span>
                             </div>
                           )}
                         </div>
@@ -320,7 +350,14 @@ export default function CartPageClient() {
                         <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
                           <div className="flex items-center bg-gray-50 dark:bg-gray-800 rounded-2xl p-1 border border-gray-100 dark:border-zinc-700">
                             <button
-                              onClick={() => handleQuantityChange(item.id, item.quantity - 1, item.selectedColor || null)}
+                              onClick={() =>
+                                handleQuantityChange(
+                                  item.id,
+                                  item.quantity - 1,
+                                  item.selectedColor || null,
+                                  item.selectedTaille || null // ✅ ADD THIS
+                                )
+                              }
                               className="p-2 hover:text-yellow-600 disabled:opacity-20"
                               disabled={item.quantity <= 1}
                             >
@@ -330,14 +367,27 @@ export default function CartPageClient() {
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() => handleQuantityChange(item.id, item.quantity + 1, item.selectedColor || null)}
+                              onClick={() =>
+                                handleQuantityChange(
+                                  item.id,
+                                  item.quantity + 1,
+                                  item.selectedColor || null,
+                                  item.selectedTaille || null // ✅ ADD THIS
+                                )
+                              }
                               className="p-2 hover:text-yellow-600"
                             >
                               <Plus size={16} />
                             </button>
                           </div>
                           <button
-                            onClick={() => handleRemoveItem(item.id, item.selectedColor || null)}
+                            onClick={() =>
+                              handleRemoveItem(
+                                item.id,
+                                item.selectedColor || null,
+                                item.selectedTaille || null // ✅ ADD THIS
+                              )
+                            }
                             className="text-gray-300 hover:text-red-500 transition-colors px-4 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
                           >
                             <Trash2 size={20} />
@@ -347,10 +397,12 @@ export default function CartPageClient() {
 
                       <div className="text-center sm:text-right sm:ml-auto w-full sm:w-auto mt-4 sm:mt-0">
                         <p className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white italic tracking-tighter">
-                          {formatPrice(item.price * item.quantity)}
+                          {formatPrice(
+                            (item.salePrice || item.price) * item.quantity
+                          )}
                         </p>
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                          P.U: {formatPrice(item.price)}
+                          P.U: {formatPrice(item.salePrice || item.price)}
                         </p>
                       </div>
                     </div>
@@ -443,10 +495,12 @@ export default function CartPageClient() {
               {/* Trust badges */}
               <div className="space-y-3 md:space-y-4 pt-4 border-t border-white/5">
                 <div className="flex items-center gap-3 md:gap-4 text-[10px] font-black uppercase tracking-widest text-gray-500">
-                  <Truck size={14} className="text-yellow-500" /> Livraison Express
+                  <Truck size={14} className="text-yellow-500" /> Livraison
+                  Express
                 </div>
                 <div className="flex items-center gap-3 md:gap-4 text-[10px] font-black uppercase tracking-widest text-gray-500">
-                  <ShieldCheck size={14} className="text-yellow-500" /> Paiement sécurisé
+                  <ShieldCheck size={14} className="text-yellow-500" /> Paiement
+                  sécurisé
                 </div>
               </div>
             </div>
