@@ -19,7 +19,7 @@ type FetchResult<T> =
   | { status: 'fulfilled'; value: Response; data: T }
   | { status: 'rejected'; reason: unknown };
 
-export default async function Page(): Promise<JSX.Element> {
+export default async function Page() {
   // Try to fetch all data in parallel to maximize performance
   const fetchPromises = [
     fetch(`${API_URL}/products?limit=40`, { next: { revalidate: 60 } }),
