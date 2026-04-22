@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, ReactNode } from "react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import { motion, useInView, useAnimation, AnimationControls } from "framer-motion";
+import { motion, useInView, useAnimation } from "framer-motion";
 import {
   ArrowLeft,
   CheckCircle,
@@ -177,7 +177,7 @@ export default function EspaceEnfanceClientPage() {
     mur: {
       title: "Mur d'escalade",
       description: "Murs d'escalade adaptés aux enfants pour développer force et agilité en toute sécurité.",
-      image: img1, // Reusing img1 as placeholder
+      image: img1,
       features: [
         "Prise ergonomiques pour petites mains",
         "Hauteurs adaptées par âge",
@@ -356,18 +356,18 @@ export default function EspaceEnfanceClientPage() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                onClick={() => window.location.href = "/demande-devis"}
+                onClick={() => (window.location.href = "/demande-devis")}
                 className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
               >
                 Demander un devis
                 <ArrowRight className="w-5 h-5" />
               </motion.button>
-              
+
               <motion.button
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}
-                onClick={() => window.open('https://wa.me/212674114446', '_blank')}
+                onClick={() => window.open("https://wa.me/212674114446", "_blank")}
                 className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all border border-white/10"
               >
                 <IoLogoWhatsapp className="w-5 h-5" />
@@ -382,7 +382,7 @@ export default function EspaceEnfanceClientPage() {
       {/* Services Overview */}
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
-        
+
         <div className="relative container mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center mb-16">
@@ -410,7 +410,7 @@ export default function EspaceEnfanceClientPage() {
                   <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                     <Shield className="h-8 w-8 text-white" />
                   </div>
-                  
+
                   <h3 className="text-2xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
                     Sécurité & Confort
                   </h3>
@@ -463,12 +463,12 @@ export default function EspaceEnfanceClientPage() {
               <FadeInWhenVisible key={index} delay={index * 0.1}>
                 <div className="group h-full">
                   <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${item.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                      <div className="text-white">
-                        {item.icon}
-                      </div>
+                    <div
+                      className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${item.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    >
+                      <div className="text-white">{item.icon}</div>
                     </div>
-                    
+
                     <h3 className="text-xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
                       {item.title}
                     </h3>
@@ -505,17 +505,23 @@ export default function EspaceEnfanceClientPage() {
                       </div>
                     </div>
                   )}
-                  
-                  <div className={`bg-gradient-to-br ${pkg.color} rounded-3xl p-0.5 h-full ${pkg.popular ? 'scale-[1.02]' : ''}`}>
+
+                  <div
+                    className={`bg-gradient-to-br ${pkg.color} rounded-3xl p-0.5 h-full ${
+                      pkg.popular ? "scale-[1.02]" : ""
+                    }`}
+                  >
                     <div className="bg-white dark:bg-gray-800 rounded-[1.25rem] p-8 h-full">
                       <div className="text-center mb-8">
                         <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mx-auto mb-4">
-                          <div className="text-white">
-                            {pkg.icon}
-                          </div>
+                          <div className="text-white">{pkg.icon}</div>
                         </div>
-                        <h3 className="text-2xl font-black uppercase italic mb-2 text-gray-900 dark:text-white">{pkg.name}</h3>
-                        <p className="text-gray-600 dark:text-gray-400">{pkg.description}</p>
+                        <h3 className="text-2xl font-black uppercase italic mb-2 text-gray-900 dark:text-white">
+                          {pkg.name}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {pkg.description}
+                        </p>
                       </div>
 
                       <div className="space-y-4 mb-8">
@@ -524,13 +530,17 @@ export default function EspaceEnfanceClientPage() {
                             <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                               <CheckCircle className="w-3 h-3 text-white" />
                             </div>
-                            <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                            <span className="text-gray-700 dark:text-gray-300">
+                              {feature}
+                            </span>
                           </div>
                         ))}
                       </div>
 
                       <div className="text-center pt-8 border-t border-gray-100 dark:border-gray-700">
-                        <div className="text-3xl font-black text-gray-900 dark:text-white mb-6">{pkg.price}</div>
+                        <div className="text-3xl font-black text-gray-900 dark:text-white mb-6">
+                          {pkg.price}
+                        </div>
                         <Link href="/demande-devis" className="block">
                           <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
                             Demander un devis
@@ -605,22 +615,24 @@ export default function EspaceEnfanceClientPage() {
                       {solutions[activeTab].title}
                     </h3>
                   </div>
-                  
+
                   <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
                     {solutions[activeTab].description}
                   </p>
-                  
+
                   <ul className="space-y-4 mb-8">
                     {solutions[activeTab].features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-3">
                         <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <CheckCircle className="w-3 h-3 text-white" />
                         </div>
-                        <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                        <span className="text-gray-700 dark:text-gray-300">
+                          {feature}
+                        </span>
                       </li>
                     ))}
                   </ul>
-                  
+
                   <Link href="/demande-devis" className="w-full">
                     <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
                       Demander un devis
@@ -656,17 +668,24 @@ export default function EspaceEnfanceClientPage() {
                       </span>
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 dark:text-white">{testimonial.name}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{testimonial.role}</p>
+                      <h4 className="font-bold text-gray-900 dark:text-white">
+                        {testimonial.name}
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {testimonial.role}
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex mb-4">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-500 fill-current" />
+                      <Star
+                        key={i}
+                        className="w-5 h-5 text-yellow-500 fill-current"
+                      />
                     ))}
                   </div>
-                  
+
                   <p className="text-gray-600 dark:text-gray-400 italic leading-relaxed">
                     &quot;{testimonial.quote}&quot;
                   </p>
@@ -686,7 +705,7 @@ export default function EspaceEnfanceClientPage() {
                 Créez un espace magique pour les enfants
               </h2>
               <p className="text-xl text-black/90 mb-10 max-w-2xl mx-auto">
-                Transformez votre établissement en un lieu d&apos;apprentissage, 
+                Transformez votre établissement en un lieu d&apos;apprentissage,
                 de plaisir et de développement pour les enfants
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -697,7 +716,9 @@ export default function EspaceEnfanceClientPage() {
                   </button>
                 </Link>
                 <button
-                  onClick={() => window.open('https://wa.me/212674114446', '_blank')}
+                  onClick={() =>
+                    window.open("https://wa.me/212674114446", "_blank")
+                  }
                   className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
                 >
                   <IoLogoWhatsapp className="w-6 h-6" />
@@ -718,8 +739,9 @@ export default function EspaceEnfanceClientPage() {
         className="fixed bottom-6 right-6 z-50"
       >
         <button
-          onClick={() => window.open(`https://wa.me/212674114446`, '_blank')}
+          onClick={() => window.open("https://wa.me/212674114446", "_blank")}
           className="w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-2xl transition-all flex items-center justify-center"
+          aria-label="Contact via WhatsApp"
         >
           <IoLogoWhatsapp className="w-7 h-7" />
         </button>
