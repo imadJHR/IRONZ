@@ -1156,12 +1156,14 @@ export default function HomeClient({
       addToFavorites(favoriteItem);
     }
   };
-
   const handleAddToCart = (product: Product) => {
     const id = product._id || product.id || "";
     addToCart({
-      ...product, id,
-      quantity: 0
+      ...product,
+      id,
+      slug: product.slug ?? "",
+      image: normalizeImage(product.image), // ✅ Convert image to string
+      quantity: 1,
     });
   };
 
