@@ -6,15 +6,15 @@ import { ChevronDownIcon } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
-interface AccordionProps
-  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> {}
+type AccordionProps =
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>
 
 function Accordion({ ...props }: AccordionProps) {
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />
 }
 
-interface AccordionItemProps
-  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> {}
+type AccordionItemProps =
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
 
 function AccordionItem({ className, ...props }: AccordionItemProps) {
   return (
@@ -26,10 +26,8 @@ function AccordionItem({ className, ...props }: AccordionItemProps) {
   )
 }
 
-interface AccordionTriggerProps
-  extends React.ComponentPropsWithoutRef<
-    typeof AccordionPrimitive.Trigger
-  > {}
+type AccordionTriggerProps =
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
 
 function AccordionTrigger({
   className,
@@ -53,8 +51,8 @@ function AccordionTrigger({
   )
 }
 
-interface AccordionContentProps
-  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> {}
+type AccordionContentProps =
+  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
 
 function AccordionContent({
   className,
