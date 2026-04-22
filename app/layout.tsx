@@ -83,9 +83,10 @@ export const metadata: Metadata = {
     creator: "@ironz_official",
   },
   verification: {
-    facebook: "bhglqyk56ty0ilu2xcfi7ok1pew1f2",
+    // 'facebook' is moved inside 'other' to satisfy TypeScript types
     other: {
       monetag: "4828e1edb553377b34517c12934f4fb1",
+      "facebook-domain-verification": "bhglqyk56ty0ilu2xcfi7ok1pew1f2",
     },
   },
   robots: {
