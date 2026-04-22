@@ -309,7 +309,7 @@ const packages: Package[] = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function AmenagementSallePage(): JSX.Element {
+export default function AmenagementSallePage() {
   const [activeStep, setActiveStep] = useState<string | null>(null);
 
   const openWhatsApp = (): void => {

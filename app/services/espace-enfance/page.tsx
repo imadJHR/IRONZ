@@ -7,6 +7,6 @@ export const metadata: Metadata = {
     "Services professionnels d'aménagement d'espaces fitness pour enfants par IRONZ PRO",
 };
 
-export default function EspaceEnfancePage(): JSX.Element {
+export default function EspaceEnfancePage() {
   return <EspaceEnfanceClientPage />;
 }

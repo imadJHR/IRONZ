@@ -302,7 +302,7 @@ function FeatureList({
 }: {
   features: string[];
   small?: boolean;
-}): JSX.Element {
+}) {
   return (
     <ul className={`space-y-${small ? "2" : "3"}`}>
       {features.map((feature, idx) => (
@@ -331,7 +331,7 @@ function SectionBadge({
 }: {
   icon: React.ReactNode;
   label: string;
-}): JSX.Element {
+}){
   return (
     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
       <span className="text-yellow-500">{icon}</span>
@@ -344,7 +344,7 @@ function SectionBadge({
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function SalleProfessionnellePage(): JSX.Element {
+export default function SalleProfessionnellePage(){
   const [activePackage, setActivePackage] = useState<string | null>(null);
 
   const openWhatsApp = (): void => {

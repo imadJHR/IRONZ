@@ -257,7 +257,7 @@ function SectionBadge({
 }: {
   icon: React.ReactNode;
   label: string;
-}): JSX.Element {
+}) {
   return (
     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
       <span className="text-yellow-500">{icon}</span>
@@ -280,7 +280,7 @@ function ContactCard({
   title: string;
   value: string;
   valueClass?: string;
-}): JSX.Element {
+}) {
   return (
     <div className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors">
       <div
@@ -300,7 +300,7 @@ function ContactCard({
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function HomeGymPage(): JSX.Element {
+export default function HomeGymPage() {
   const [hoveredPackage, setHoveredPackage] = useState<string | null>(null);
 
   const openWhatsApp = (): void => {
