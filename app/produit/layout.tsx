@@ -27,6 +27,6 @@ interface ProductsLayoutProps {
   children: ReactNode;
 }
 
-export default function ProductsLayout({ children }: ProductsLayoutProps): JSX.Element {
+export default function ProductsLayout({ children }: ProductsLayoutProps) {
   return <>{children}</>;
 }

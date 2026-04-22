@@ -111,7 +111,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 /* ================================
    PAGE (SERVER COMPONENT)
 ================================ */
-export default async function ProductPage({ params }: PageProps): Promise<JSX.Element> {
+export default async function ProductPage({ params }: PageProps) {
   const resolvedParams = await params;
   const slug = resolvedParams?.slug;
 

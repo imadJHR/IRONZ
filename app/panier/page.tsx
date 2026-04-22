@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "Gérez votre panier d'achat IRONZ PRO",
 };
 
-export default function CartPage(): JSX.Element {
+export default function CartPage() {
   return <CartPageClient />;
 }

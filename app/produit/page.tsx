@@ -98,7 +98,7 @@ export async function generateMetadata(): Promise<Metadata> {
 /**
  * Server Component - Products Page
  */
-export default async function ProductsPage(): Promise<JSX.Element> {
+export default async function ProductsPage(){
   // Fetch products on the server
   const initialProducts = await getAllProducts();
 
@@ -112,7 +112,7 @@ export default async function ProductsPage(): Promise<JSX.Element> {
 /**
  * Loading State
  */
-function ProductsLoading(): JSX.Element {
+function ProductsLoading() {
   return (
     <main className="container mx-auto px-3 sm:px-4 py-12 sm:py-16 md:py-20 lg:py-28 bg-white dark:bg-gray-950">
       <div className="flex flex-col items-center justify-center py-20">

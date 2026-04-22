@@ -49,7 +49,7 @@ interface ToastState {
 
 type PageNumber = number | '...';
 
-export default function ProductListPage(): JSX.Element {
+export default function ProductListPage() {
   const router = useRouter();
 
   // Data State
