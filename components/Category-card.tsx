@@ -1,13 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, LucideProps } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import type { StaticImageData } from "next/image";
 
 // Types
 export interface Category {
   id: string;
   name: string;
   href: string;
-  image: string | { src: string } | null;
+  image: string | StaticImageData | null;
   description?: string;
   featured?: boolean;
   productCount?: number;
@@ -32,10 +33,16 @@ export default function CategoryCard({
   };
 
   const slug = getSlug(category.href);
-  const imageUrl = typeof category.image === "object" && category.image !== null && "src" in category.image
-    ? category.image.src
-    : category.image || "/placeholder.svg";
+  
+  // Handle image URL with proper type checking
+  const getImageUrl = (image: string | StaticImageData | null): string | StaticImageData => {
+    if (image === null) return "/placeholder.svg";
+    if (typeof image === "string") return image;
+    // StaticImageData object
+    return image;
+  };
 
+  const imageSource = getImageUrl(category.image);
   const isPriority = priority ?? category.featured ?? false;
 
   return (
@@ -46,13 +53,13 @@ export default function CategoryCard({
     >
       <div className="relative h-64 w-full">
         <Image
-          src={imageUrl}
+          src={imageSource}
           alt={category.description ? `${category.name} - ${category.description}` : category.name}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-110"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={isPriority}
-          unoptimized={imageUrl.startsWith("http")}
+          unoptimized={typeof imageSource === "string" && imageSource.startsWith("http")}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" aria-hidden="true" />
       </div>
