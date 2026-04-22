@@ -1,6 +1,11 @@
 import { categories } from "../data/product"
 
-export default function sitemap() {
+export default function sitemap(): Array<{
+  url: string
+  lastModified: Date
+  changeFrequency: "daily" | "weekly" | "monthly"
+  priority: number
+}> {
   const baseUrl = "https://ironz.ma"
 
   // Base routes
@@ -8,55 +13,55 @@ export default function sitemap() {
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: "daily" as const,
       priority: 1,
     },
     {
       url: `${baseUrl}/produits`,
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: "daily" as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/promotions`,
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: "daily" as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: "weekly" as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.7,
     },
     {
       url: `${baseUrl}/a-propos`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.7,
     },
     {
       url: `${baseUrl}/services`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/panier`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.6,
     },
     {
       url: `${baseUrl}/favoris`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.6,
     },
   ]
@@ -65,7 +70,7 @@ export default function sitemap() {
   const categoryRoutes = categories.map((category) => ({
     url: `${baseUrl}/categories/${category.slug}`,
     lastModified: new Date(),
-    changeFrequency: "weekly",
+    changeFrequency: "weekly" as const,
     priority: 0.8,
   }))
 
@@ -74,31 +79,31 @@ export default function sitemap() {
     {
       url: `${baseUrl}/services/personnalisation-accessoires`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/services/amenagement-salle`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/services/revetement-sol-mur`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/services/conception-produits`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/services/espace-enfance`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.8,
     },
   ]

@@ -11,9 +11,8 @@ import img66 from "../public/panatta.png";
 import topgym from "../public/topgym.png";
 import teslaa from "../public/teslaa.png";
 import sup from "../public/14.png";
-// Added missing imports based on your brands array
-import adidas from "../public/logo.png"; // Placeholder
-import red from "../public/logo.png";    // Placeholder
+import adidas from "../public/logo.png";
+import red from "../public/logo.png";
 
 // --- TYPES ---
 
@@ -27,6 +26,7 @@ export interface Category {
   id: string;
   image: StaticImageData | string;
   name: string;
+  slug: string; 
   href: string;
   icon: string;
   description: string;
@@ -41,7 +41,6 @@ export interface Brand {
   description: string;
 }
 
-// Assuming a product structure based on your utility functions
 export interface Product {
   id: string;
   name: string;
@@ -58,11 +57,22 @@ export interface Product {
 
 // --- DATA ---
 
+// Helper function to generate slug
+const generateSlug = (name: string): string => {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+};
+
 export const categories: Category[] = [
   {
     id: "2",
     image: img2,
     name: "Equipements",
+    slug: "equipements",
     href: "/categories/equipements",
     icon: "Settings",
     description: "Matériel professionnel pour le sport et la remise en forme",
@@ -71,6 +81,7 @@ export const categories: Category[] = [
     id: "3",
     image: img3,
     name: "Supplément",
+    slug: "supplement",
     href: "/categories/supplement",
     icon: "Pill",
     description: "Compléments alimentaires pour optimiser la nutrition et la performance",
@@ -79,6 +90,7 @@ export const categories: Category[] = [
     id: "4",
     image: img4,
     name: "Accessoires",
+    slug: "accessoires",
     href: "/categories/accessoires",
     icon: "Package",
     description: "Accessoires indispensables pour le sport et le bien-être",
@@ -133,31 +145,33 @@ export const filters = {
     { value: "rating", label: "Meilleures notes" },
     { value: "discount", label: "Promotions" },
   ],
-};
+} as const;
 
 // --- UTILS ---
 
-// Note: In a real app, 'products' would likely be imported from a data file 
-// or fetched. Here I am assuming it is available or passed in.
 export const productUtils = {
   getDiscountedProducts: (products: Product[]): Product[] =>
     products.filter((product) => product.discount > 0),
 
-  getNewProducts: (products: Product[]): Product[] => 
+  getNewProducts: (products: Product[]): Product[] =>
     products.filter((product) => product.isNew),
 
-  getFeaturedProducts: (products: Product[]): Product[] => 
+  getFeaturedProducts: (products: Product[]): Product[] =>
     products.filter((product) => product.isFeatured),
 
   getProductsByCategory: (products: Product[], categoryId: string): Product[] =>
     products.filter((product) => product.categoryId === categoryId),
 
-  getProductsBySubCategory: (products: Product[], subCategoryId: string): Product[] =>
+  getProductsBySubCategory: (
+    products: Product[],
+    subCategoryId: string
+  ): Product[] =>
     products.filter((product) => product.subCategoryId === subCategoryId),
 
   getRelatedProducts: (products: Product[], productId: string): Product[] => {
     const product = products.find((p) => p.id === productId);
     if (!product) return [];
+
     return products
       .filter(
         (p) =>
@@ -195,5 +209,9 @@ export const productUtils = {
   getSubCategoriesByCategoryId: (categoryId: string): SubCategory[] => {
     const category = categories.find((cat) => cat.id === categoryId);
     return category?.subCategories || [];
+  },
+
+  getCategoryBySlug: (slug: string): Category | undefined => {
+    return categories.find((cat) => cat.slug === slug);
   },
 };
