@@ -59,7 +59,7 @@ declare global {
 const isFbqReady = (): boolean =>
   typeof window !== "undefined" && typeof window.fbq === "function";
 
-export default function FacebookPixel(): JSX.Element {
+export default function FacebookPixel(){
   const pathname = usePathname();
   const searchParams = useSearchParams();
 

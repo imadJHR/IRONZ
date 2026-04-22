@@ -888,46 +888,48 @@ export default function ProductPageClient({
     setQuantity(Math.max(1, Math.min(99, Number(next) || 1)));
   };
 
-  const handleAddToCart = useCallback(() => {
-    if (!product) return;
-    if (product.taille?.length && !selectedTaille) {
-      alert("Veuillez sélectionner une taille avant d'ajouter au panier");
-      return;
-    }
-    if (product.colors?.length && !selectedColor) {
-      alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
-      return;
-    }
-    const id = product._id ?? product.id;
-    addToCart({
-      id: id || "",
-      name: product.name,
-      price: product.price,
-      image: product.image || PLACEHOLDER,
-      slug: product.slug || "",
-      category: product.category,
-      quantity: quantity,
-      selectedColor: selectedColor || null,
-      selectedTaille: selectedTaille || null,  // ✅ Now supported!
-      salePrice: product.salePrice,
-      oldPrice: product.oldPrice,
-    });
+const handleAddToCart = useCallback(() => {
+  if (!product) return;
+  if (product.taille?.length && !selectedTaille) {
+    alert("Veuillez sélectionner une taille avant d'ajouter au panier");
+    return;
+  }
+  if (product.colors?.length && !selectedColor) {
+    alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
+    return;
+  }
+  const id = product._id ?? product.id;
+  const price = Number(product.salePrice ?? product.price ?? 0);
+  
+  addToCart({
+    id: id || "",
+    name: product.name,
+    price: product.price,
+    image: product.image || PLACEHOLDER,
+    slug: product.slug || "",
+    category: product.category,
+    quantity: quantity,
+    selectedColor: selectedColor || null,
+    selectedTaille: selectedTaille || null,
+    salePrice: product.salePrice,
+    oldPrice: product.oldPrice,
+  });
 
-    trackFBEvent("AddToCart", {
-      content_name: product.name,
-      content_ids: [String(id)],
-      content_type: "product",
-      contents: [
-        {
-          id: String(id),
-          quantity: Number(quantity) || 1,
-          item_price: Number(product.salePrice ?? product.price ?? 0),
-        },
-      ],
-      value: Number(product.salePrice ?? product.price ?? 0) * quantity,
-      currency: "MAD",
-    });
-  }, [product, addToCart, quantity, selectedColor, selectedTaille]);
+  // ✅ FIXED: Different contents structure
+  trackFBEvent("AddToCart", {
+    content_name: product.name,
+    content_ids: [String(id)],
+    content_type: "product",
+    contents: [
+      {
+        id: String(id),
+        quantity: Number(quantity) || 1,
+      },
+    ],
+    value: price * quantity,
+    currency: "MAD",
+  });
+}, [product, addToCart, quantity, selectedColor, selectedTaille]);
 
   const getShareLinks = useCallback((): ShareLink[] => {
     if (!product) return [];
