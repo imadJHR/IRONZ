@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, ReactNode } from "react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useAnimation, useInView, AnimationControls } from "framer-motion";
+import { motion, useScroll, useTransform, useAnimation, useInView } from "framer-motion";
 import {
   ArrowRight,
   ArrowLeft,
@@ -76,7 +76,7 @@ interface PricingPackage {
 // --- Helper Component ---
 
 const FadeInWhenVisible = ({ children, delay = 0 }: FadeInWhenVisibleProps) => {
-  const controls: AnimationControls = useAnimation();
+  const controls = useAnimation();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
