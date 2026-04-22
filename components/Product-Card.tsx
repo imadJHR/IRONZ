@@ -4,9 +4,8 @@ import { useState, MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
+import { Star, ShoppingCart, Eye } from "lucide-react";
 import { useCart } from "../context/cart-context";
-import { useFavorites } from "../context/favorites-context";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import type { StaticImageData } from "next/image";
@@ -39,7 +38,6 @@ export interface ProductCardProps {
   variant?: ProductVariant;
   className?: string;
   onAddToCart?: (product: Product) => void;
-  onToggleFavorite?: (product: Product) => void;
 }
 
 export default function ProductCard({ 
@@ -47,41 +45,26 @@ export default function ProductCard({
   variant = "default", 
   className = "",
   onAddToCart,
-  onToggleFavorite 
 }: ProductCardProps) {
   const { addToCart } = useCart();
-  const { addToFavorites, removeFromFavorites, isInFavorites } = useFavorites();
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  
-  const isFavorite = isInFavorites(product.id);
 
   const handleAddToCart = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Create a cart item with only the necessary properties
+    // Create a cart item with all required properties
     const cartItem = {
       id: product.id,
       name: product.name,
       price: product.price,
       image: typeof product.image === "string" ? product.image : "/placeholder.svg",
+      slug: product.slug || product.id,
       quantity: 1,
     };
     
     addToCart(cartItem);
     onAddToCart?.(product);
-  };
-
-  const toggleFavorite = (e: MouseEvent<HTMLButtonElement>): void => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (isFavorite) {
-      removeFromFavorites(product.id);
-    } else {
-      addToFavorites(product);
-    }
-    onToggleFavorite?.(product);
   };
 
   const renderStars = (rating: number) => {
@@ -144,30 +127,17 @@ export default function ProductCard({
             <span className="font-bold text-sm text-gray-900 dark:text-white">
               {formatPrice(product.price)}
             </span>
-            <div className="flex items-center gap-1 ml-auto">
-              <Button
-                onClick={toggleFavorite}
-                size="sm"
-                variant="ghost"
-                className="h-7 w-7 p-0 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400"
-                aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
-                type="button"
-              >
-                <Heart className={`h-3.5 w-3.5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} aria-hidden="true" />
-                <span className="sr-only">Favoris</span>
-              </Button>
-              <Button
-                onClick={handleAddToCart}
-                size="sm"
-                variant="ghost"
-                className="h-7 w-7 p-0 text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50 dark:text-yellow-400 dark:hover:bg-yellow-500/20"
-                aria-label="Ajouter au panier"
-                type="button"
-              >
-                <ShoppingCart className="h-3.5 w-3.5" aria-hidden="true" />
-                <span className="sr-only">Panier</span>
-              </Button>
-            </div>
+            <Button
+              onClick={handleAddToCart}
+              size="sm"
+              variant="ghost"
+              className="h-7 w-7 p-0 text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50 dark:text-yellow-400 dark:hover:bg-yellow-500/20"
+              aria-label="Ajouter au panier"
+              type="button"
+            >
+              <ShoppingCart className="h-3.5 w-3.5" aria-hidden="true" />
+              <span className="sr-only">Panier</span>
+            </Button>
           </div>
         </div>
       </div>
@@ -198,18 +168,6 @@ export default function ProductCard({
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               unoptimized={getImageUrl().startsWith("http")}
             />
-
-            <button
-              onClick={toggleFavorite}
-              className="absolute top-2 right-2 p-2 rounded-full bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800 transition-colors z-10 shadow-sm"
-              aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
-              type="button"
-            >
-              <Heart
-                className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : "text-gray-600 dark:text-gray-400"}`}
-                aria-hidden="true"
-              />
-            </button>
           </div>
 
           <div className="p-4">
@@ -295,18 +253,6 @@ export default function ProductCard({
               Nouveau
             </Badge>
           )}
-
-          <button
-            onClick={toggleFavorite}
-            className="absolute top-2 right-2 p-2 rounded-full bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800 transition-colors z-10 shadow-sm"
-            aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
-            type="button"
-          >
-            <Heart
-              className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : "text-gray-600 dark:text-gray-400"}`}
-              aria-hidden="true"
-            />
-          </button>
 
           {isHovered && (
             <motion.div 
