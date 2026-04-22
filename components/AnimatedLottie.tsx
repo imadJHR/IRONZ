@@ -2,7 +2,7 @@
 "use client";
 
 import { Player } from '@lottiefiles/react-lottie-player';
-import type { PlayerProps } from '@lottiefiles/react-lottie-player';
+import type { IPlayerProps } from '@lottiefiles/react-lottie-player';
 import { CSSProperties, memo } from 'react';
 
 // Type for component props with sensible defaults
@@ -20,7 +20,7 @@ export interface AnimatedLottieProps {
   /** Whether the animation should loop continuously */
   loop?: boolean;
   /** Additional props to pass through to the Player component */
-  playerProps?: Omit<PlayerProps, 'src' | 'autoplay' | 'loop' | 'style'>;
+  playerProps?: Omit<IPlayerProps, 'src' | 'autoplay' | 'loop' | 'style'>;
   /** Inline styles for the container (merged with dimensions) */
   style?: CSSProperties;
   /** Alt text for accessibility */
