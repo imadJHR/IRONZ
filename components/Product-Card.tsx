@@ -3,12 +3,13 @@
 import { useState, MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, HTMLMotionProps } from "framer-motion";
-import { Star, ShoppingCart, Heart, Eye, LucideProps } from "lucide-react";
-import { useCart, type CartItem } from "../context/cart-context";
-import { useFavorites, type FavoriteItem } from "../context/favorites-context";
+import { motion } from "framer-motion";
+import { Star, ShoppingCart, Heart, Eye } from "lucide-react";
+import { useCart } from "../context/cart-context";
+import { useFavorites } from "../context/favorites-context";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
+import type { StaticImageData } from "next/image";
 
 // Types
 export type ProductVariant = "default" | "compact" | "offer";
@@ -17,7 +18,7 @@ export interface Product {
   id: string;
   name: string;
   slug?: string;
-  image: string | { src: string } | null;
+  image: string | StaticImageData | null;
   price: number;
   oldPrice?: number;
   specialPrice?: number;
@@ -41,10 +42,6 @@ export interface ProductCardProps {
   onToggleFavorite?: (product: Product) => void;
 }
 
-interface ProductCartItem extends Product, Partial<CartItem> {
-  quantity?: number;
-}
-
 export default function ProductCard({ 
   product, 
   variant = "default", 
@@ -62,10 +59,15 @@ export default function ProductCard({
     e.preventDefault();
     e.stopPropagation();
     
-    const cartItem: ProductCartItem = {
-      ...product,
+    // Create a cart item with only the necessary properties
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: typeof product.image === "string" ? product.image : "/placeholder.svg",
       quantity: 1,
     };
+    
     addToCart(cartItem);
     onAddToCart?.(product);
   };
@@ -106,8 +108,8 @@ export default function ProductCard({
 
   const getImageUrl = (): string => {
     if (!product.image) return "/placeholder.svg";
-    if (typeof product.image === "object" && "src" in product.image) {
-      return product.image.src;
+    if (typeof product.image === "object") {
+      return "src" in product.image ? product.image.src : "/placeholder.svg";
     }
     return product.image;
   };
