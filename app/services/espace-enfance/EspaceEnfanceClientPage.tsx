@@ -77,7 +77,7 @@ interface Stat {
 // --- Helper Component ---
 
 const FadeInWhenVisible = ({ children, delay = 0 }: FadeInWhenVisibleProps) => {
-  const controls: AnimationControls = useAnimation();
+  const controls = useAnimation();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
@@ -118,25 +118,29 @@ export default function EspaceEnfanceClientPage() {
   const benefitItems: BenefitItem[] = [
     {
       title: "Développement physique",
-      description: "Renforcement musculaire, amélioration de l'équilibre, de la coordination et de l'endurance.",
+      description:
+        "Renforcement musculaire, amélioration de l'équilibre, de la coordination et de l'endurance.",
       icon: <Dumbbell className="w-8 h-8" />,
       color: "from-yellow-500 to-orange-500",
     },
     {
       title: "Développement cognitif",
-      description: "Stimulation de la concentration, de la résolution de problèmes et de la créativité.",
+      description:
+        "Stimulation de la concentration, de la résolution de problèmes et de la créativité.",
       icon: <Brain className="w-8 h-8" />,
       color: "from-blue-500 to-purple-500",
     },
     {
       title: "Développement social",
-      description: "Apprentissage du partage, de la coopération et du respect des règles à travers des activités de groupe.",
+      description:
+        "Apprentissage du partage, de la coopération et du respect des règles à travers des activités de groupe.",
       icon: <Users className="w-8 h-8" />,
       color: "from-green-500 to-emerald-500",
     },
     {
       title: "Développement émotionnel",
-      description: "Renforcement de la confiance en soi, gestion du stress et développement de la résilience.",
+      description:
+        "Renforcement de la confiance en soi, gestion du stress et développement de la résilience.",
       icon: <Heart className="w-8 h-8" />,
       color: "from-red-500 to-pink-500",
     },
@@ -146,24 +150,28 @@ export default function EspaceEnfanceClientPage() {
     {
       name: "Marie Dupont",
       role: "Directrice, Centre de loisirs Les Petits Champions",
-      quote: "L'espace fitness pour enfants conçu par IRONZ PRO a transformé notre centre. Les enfants adorent les parcours moteurs et les murs d'escalade.",
+      quote:
+        "L'espace fitness pour enfants conçu par IRONZ PRO a transformé notre centre. Les enfants adorent les parcours moteurs et les murs d'escalade.",
     },
     {
       name: "Thomas Martin",
       role: "Propriétaire, Salle de sport FamilyFit",
-      quote: "Grâce à IRONZ PRO, nous avons pu créer un espace enfants dans notre salle qui attire de nombreuses familles.",
+      quote:
+        "Grâce à IRONZ PRO, nous avons pu créer un espace enfants dans notre salle qui attire de nombreuses familles.",
     },
     {
       name: "Sophie Leroy",
       role: "Directrice, École primaire Les Tournesols",
-      quote: "Notre salle de motricité aménagée par IRONZ PRO est un véritable succès auprès des élèves.",
+      quote:
+        "Notre salle de motricité aménagée par IRONZ PRO est un véritable succès auprès des élèves.",
     },
   ];
 
   const solutions: Record<string, SolutionDetail> = {
     parcours: {
       title: "Parcours moteur",
-      description: "Des parcours ludiques qui développent l'équilibre, la coordination et la motricité des enfants.",
+      description:
+        "Des parcours ludiques qui développent l'équilibre, la coordination et la motricité des enfants.",
       image: img1,
       features: [
         "Modules modulables et évolutifs",
@@ -176,7 +184,8 @@ export default function EspaceEnfanceClientPage() {
     },
     mur: {
       title: "Mur d'escalade",
-      description: "Murs d'escalade adaptés aux enfants pour développer force et agilité en toute sécurité.",
+      description:
+        "Murs d'escalade adaptés aux enfants pour développer force et agilité en toute sécurité.",
       image: img1,
       features: [
         "Prise ergonomiques pour petites mains",
@@ -188,7 +197,8 @@ export default function EspaceEnfanceClientPage() {
     },
     motricite: {
       title: "Salle de motricité",
-      description: "Espaces complets pour le développement psychomoteur des jeunes enfants.",
+      description:
+        "Espaces complets pour le développement psychomoteur des jeunes enfants.",
       image: img1,
       features: [
         "Équipements multi-activités",
@@ -200,7 +210,8 @@ export default function EspaceEnfanceClientPage() {
     },
     sensoriel: {
       title: "Espace sensoriel",
-      description: "Zones dédiées à l'éveil des sens et au développement perceptif.",
+      description:
+        "Zones dédiées à l'éveil des sens et au développement perceptif.",
       image: img1,
       features: [
         "Panels sensoriels variés",
@@ -261,10 +272,26 @@ export default function EspaceEnfanceClientPage() {
   ];
 
   const stats: Stat[] = [
-    { value: "100%", label: "Sécurité garantie", icon: <Shield className="w-5 h-5" /> },
-    { value: "500+", label: "Enfants équipés", icon: <Baby className="w-5 h-5" /> },
-    { value: "25", label: "Écoles partenaires", icon: <Building className="w-5 h-5" /> },
-    { value: "5", label: "Ans d'expertise", icon: <Calendar className="w-5 h-5" /> },
+    {
+      value: "100%",
+      label: "Sécurité garantie",
+      icon: <Shield className="w-5 h-5" />,
+    },
+    {
+      value: "500+",
+      label: "Enfants équipés",
+      icon: <Baby className="w-5 h-5" />,
+    },
+    {
+      value: "25",
+      label: "Écoles partenaires",
+      icon: <Building className="w-5 h-5" />,
+    },
+    {
+      value: "5",
+      label: "Ans d'expertise",
+      icon: <Calendar className="w-5 h-5" />,
+    },
   ];
 
   return (
@@ -304,8 +331,8 @@ export default function EspaceEnfanceClientPage() {
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl leading-relaxed">
-              Créez des espaces fitness ludiques et sécurisés qui favorisent 
-              le développement physique, cognitif et émotionnel des enfants.
+              Créez des espaces fitness ludiques et sécurisés qui favorisent le
+              développement physique, cognitif et émotionnel des enfants.
             </p>
 
             <motion.div
@@ -397,8 +424,9 @@ export default function EspaceEnfanceClientPage() {
                 Des espaces <span className="text-yellow-500">adaptés</span>
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Nous concevons et aménageons des espaces fitness spécialement 
-                pensés pour les enfants, alliant sécurité, plaisir et développement.
+                Nous concevons et aménageons des espaces fitness spécialement
+                pensés pour les enfants, alliant sécurité, plaisir et
+                développement.
               </p>
             </div>
           </FadeInWhenVisible>
@@ -415,12 +443,16 @@ export default function EspaceEnfanceClientPage() {
                     Sécurité & Confort
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                    Des espaces conçus avec des matériaux sécurisés et adaptés 
+                    Des espaces conçus avec des matériaux sécurisés et adaptés
                     aux enfants, pour un environnement sans risque.
                   </p>
 
                   <ul className="space-y-3">
-                    {["Revêtements de sol amortissants", "Équipements aux normes de sécurité", "Matériaux non toxiques"].map((item, idx) => (
+                    {[
+                      "Revêtements de sol amortissants",
+                      "Équipements aux normes de sécurité",
+                      "Matériaux non toxiques",
+                    ].map((item, idx) => (
                       <li key={idx} className="flex items-start gap-3">
                         <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <CheckCircle className="w-3 h-3 text-white" />
