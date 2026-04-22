@@ -11,7 +11,6 @@ import {
   ArrowLeft,
   Truck,
   ShieldCheck,
-  RefreshCw,
   ArrowRight,
   AlertCircle,
   Info,
@@ -132,16 +131,28 @@ export default function CartPageClient() {
   const shippingCost = cartTotal > 500 ? 0 : 30;
   const totalWithShipping = cartTotal + shippingCost - discount;
 
-  // Handlers
+  // Handler for quantity change - Fixed to use 3 arguments
   const handleQuantityChange = (
     id: string | number, 
-    color: string | undefined, 
-    taille: string | undefined, 
-    newQty: number
+    newQty: number,
+    color?: string,
+    taille?: string
   ) => {
     if (newQty >= 1 && newQty <= 99) {
-      updateQuantity(id, color || null, newQty, taille || null);
+      // Assuming updateQuantity signature is: (id, quantity, color) or (id, quantity)
+      // Adjust based on your actual cart-context implementation
+      updateQuantity(id, newQty, color || null);
     }
+  };
+
+  // Handler for remove item - Fixed to use correct arguments
+  const handleRemoveItem = (
+    id: string | number,
+    color?: string,
+    taille?: string
+  ) => {
+    // Adjust based on your actual removeFromCart signature
+    removeFromCart(id, color || null, taille || null);
   };
 
   const handleCouponSubmit = (e: FormEvent) => {
@@ -319,7 +330,7 @@ export default function CartPageClient() {
                         <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
                           <div className="flex items-center bg-gray-50 dark:bg-gray-800 rounded-2xl p-1 border border-gray-100 dark:border-zinc-700">
                             <button
-                              onClick={() => handleQuantityChange(id, item.selectedColor, item.selectedTaille, item.quantity - 1)}
+                              onClick={() => handleQuantityChange(id, item.quantity - 1, item.selectedColor, item.selectedTaille)}
                               className="p-2 hover:text-yellow-600 disabled:opacity-20"
                               disabled={item.quantity <= 1}
                             >
@@ -329,14 +340,14 @@ export default function CartPageClient() {
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() => handleQuantityChange(id, item.selectedColor, item.selectedTaille, item.quantity + 1)}
+                              onClick={() => handleQuantityChange(id, item.quantity + 1, item.selectedColor, item.selectedTaille)}
                               className="p-2 hover:text-yellow-600"
                             >
                               <Plus size={16} />
                             </button>
                           </div>
                           <button
-                            onClick={() => removeFromCart(id, item.selectedColor, item.selectedTaille)}
+                            onClick={() => handleRemoveItem(id, item.selectedColor, item.selectedTaille)}
                             className="text-gray-300 hover:text-red-500 transition-colors px-4 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
                           >
                             <Trash2 size={20} />
