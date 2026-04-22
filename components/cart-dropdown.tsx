@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ShoppingCart, X, Plus, Minus, ArrowRight, LucideProps } from "lucide-react";
 import { useCart, type CartItem } from "../context/cart-context";
 import { Button } from "../components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../components/ui/sheet";
 import { Separator } from "../components/ui/separator";
 import { colorMap } from "../data/product";
 
