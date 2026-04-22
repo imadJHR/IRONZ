@@ -888,7 +888,7 @@ export default function ProductPageClient({
     setQuantity(Math.max(1, Math.min(99, Number(next) || 1)));
   };
 
-  
+
 
   const handleAddToCart = useCallback(() => {
     if (!product) return;
@@ -901,7 +901,20 @@ export default function ProductPageClient({
       return;
     }
     const id = product._id ?? product.id;
-    addToCart({ ...product, id, quantity, selectedColor, selectedTaille });
+    addToCart({
+      _id: product._id,
+      id: id || "",
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      image: product.image || PLACEHOLDER,
+      category: product.category,
+      quantity: quantity,
+      selectedColor: selectedColor || undefined,
+      selectedTaille: selectedTaille || undefined,
+      salePrice: product.salePrice,
+      oldPrice: product.oldPrice,
+    });
 
     trackFBEvent("AddToCart", {
       content_name: product.name,
@@ -998,9 +1011,9 @@ export default function ProductPageClient({
         throw new Error(data.message || "Erreur lors de l'envoi de l'avis");
       }
 
-      setReviewMessage({ 
-        type: "success", 
-        text: "Merci ! Votre avis a été publié avec succès." 
+      setReviewMessage({
+        type: "success",
+        text: "Merci ! Votre avis a été publié avec succès.",
       });
       setReviews((prev) => [data.data, ...prev]);
       setProduct((prev) =>
@@ -1176,7 +1189,6 @@ export default function ProductPageClient({
 
       <main className="bg-white pb-12 sm:pb-16 pt-4 sm:pt-8 dark:bg-gray-950">
         <div className="mx-auto w-full max-w-7xl px-3 sm:px-4 lg:px-8">
-
           {/* Breadcrumb */}
           <nav
             className="mb-4 sm:mb-6 lg:mb-8 hidden xs:flex flex-wrap items-center gap-x-1.5 sm:gap-x-2 gap-y-1 text-[10px] sm:text-xs lg:text-sm text-gray-500 dark:text-gray-400 font-medium overflow-x-auto scrollbar-hide"
@@ -1219,7 +1231,6 @@ export default function ProductPageClient({
 
           {/* Product Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 xl:gap-16">
-
             {/* Left: Images */}
             <section className="space-y-4 sm:space-y-6">
               {/* Mobile Gallery */}
@@ -1298,9 +1309,7 @@ export default function ProductPageClient({
             {/* Right: Details */}
             <section className="flex flex-col">
               <div className="mb-2 sm:mb-3 flex items-center justify-between">
-                <div
-                  className="border border-yellow-500/50 text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 text-[10px] sm:text-xs px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full font-medium"
-                >
+                <div className="border border-yellow-500/50 text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 text-[10px] sm:text-xs px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full font-medium">
                   {product.category ?? "EQUIPEMENT"}
                 </div>
 
