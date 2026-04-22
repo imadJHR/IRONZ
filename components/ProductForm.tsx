@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent, MouseEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 
 // Types
 export interface ProductFormData {
@@ -38,13 +38,31 @@ export interface ProductFormProps {
   disabled?: boolean;
 }
 
-interface FormState extends ProductFormData {
+// Separate interface that uses string types for form inputs
+interface FormState {
+  name: string;
+  slug: string;
+  description: string;
+  features: string[];
+  virtualReviews: Array<{
+    id?: string;
+    author: string;
+    rating: number;
+    comment: string;
+    date?: string;
+    verified?: boolean;
+  }>;
   price: string;
   oldPrice: string;
   discount: string;
-  stockQuantity: string;
+  category: string;
   rating: string;
   reviewCount: string;
+  isNew: boolean;
+  isFeatured: boolean;
+  inStock: boolean;
+  stockQuantity: string;
+  tags: string[];
 }
 
 export default function ProductForm({ 
@@ -87,35 +105,35 @@ export default function ProductForm({
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const updateArrayField = <K extends keyof FormState>(
-    key: K, 
+  const updateArrayField = (
+    key: "features" | "tags", 
     index: number, 
     value: string
   ): void => {
     setFormData((prev) => {
-      const arr = [...(prev[key] as string[])];
+      const arr = [...prev[key]];
       arr[index] = value;
       return { ...prev, [key]: arr };
     });
   };
 
-  const addToArrayField = <K extends keyof FormState>(
-    key: K, 
+  const addToArrayField = (
+    key: "features" | "tags", 
     emptyValue: string = ""
   ): void => {
     setFormData((prev) => ({
       ...prev,
-      [key]: [...(prev[key] as string[]), emptyValue],
+      [key]: [...prev[key], emptyValue],
     }));
   };
 
-  const removeFromArrayField = <K extends keyof FormState>(
-    key: K, 
+  const removeFromArrayField = (
+    key: "features" | "tags", 
     index: number
   ): void => {
     setFormData((prev) => ({
       ...prev,
-      [key]: (prev[key] as string[]).filter((_, i) => i !== index),
+      [key]: prev[key].filter((_, i) => i !== index),
     }));
   };
 
@@ -141,6 +159,7 @@ export default function ProductForm({
     try {
       const body = new FormData();
 
+      // Convert FormState back to proper types for submission
       Object.entries(formData).forEach(([key, value]) => {
         if (Array.isArray(value)) {
           body.append(key, JSON.stringify(value));
@@ -165,7 +184,7 @@ export default function ProductForm({
 
   const handleNumberChange = (
     e: ChangeEvent<HTMLInputElement>, 
-    field: keyof Pick<FormState, "price" | "oldPrice" | "discount" | "stockQuantity" | "rating" | "reviewCount">
+    field: "price" | "oldPrice" | "discount" | "stockQuantity" | "rating" | "reviewCount"
   ): void => {
     const value = e.target.value;
     // Allow empty string or valid number
