@@ -888,13 +888,7 @@ export default function ProductPageClient({
     setQuantity(Math.max(1, Math.min(99, Number(next) || 1)));
   };
 
-  const toggleFavorite = useCallback(() => {
-    if (!product) return;
-    const id = product._id ?? product.id;
-    if (!id) return;
-    if (isInFavorites(id)) removeFromFavorites(id);
-    else addToFavorites({ ...product, id });
-  }, [product, isInFavorites, removeFromFavorites, addToFavorites]);
+  
 
   const handleAddToCart = useCallback(() => {
     if (!product) return;
