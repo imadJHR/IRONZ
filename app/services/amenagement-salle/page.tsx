@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   ArrowLeft,
   CheckCircle,
@@ -73,7 +73,7 @@ interface Package {
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -83,7 +83,7 @@ const containerVariants = {
   },
 };
 
-const scaleIn = {
+const scaleIn: Variants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
@@ -375,7 +375,7 @@ export default function AmenagementSallePage() {
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 md:p-6 text-center"
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    {stat.icon}
+                    <span className="text-white">{stat.icon}</span>
                     <span className="text-3xl md:text-4xl font-black text-yellow-500">
                       {stat.value}
                     </span>
@@ -826,7 +826,7 @@ export default function AmenagementSallePage() {
                       ["Lundi - Vendredi", "9h - 18h"],
                       ["Samedi", "10h - 16h"],
                       ["Dimanche", "Fermé"],
-                    ] as [string, string][]
+                    ] as const
                   ).map(([day, hours]) => (
                     <div
                       key={day}
