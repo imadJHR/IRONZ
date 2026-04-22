@@ -297,25 +297,7 @@ const ProductCard = memo(function ProductCard({
           >
             <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
-          <button
-            onClick={handleFavoriteToggle}
-            className={cn(
-              "h-8 w-8 sm:h-10 sm:w-10 rounded-full flex items-center justify-center shadow-md transition-all",
-              isFavorite
-                ? "bg-red-500 text-white hover:bg-red-600"
-                : "bg-white text-gray-400 hover:bg-gray-100"
-            )}
-            aria-label={
-              isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"
-            }
-          >
-            <Star
-              className={cn(
-                "h-4 w-4 sm:h-5 sm:w-5",
-                isFavorite && "fill-current"
-              )}
-            />
-          </button>
+         
         </div>
 
         {/* Badges */}
