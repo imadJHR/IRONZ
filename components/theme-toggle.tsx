@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState, MouseEvent } from "react";
 import { Sun, Moon, LucideProps } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 
 // Types
 export type ThemeToggleVariant = "icon" | "text" | "switch";

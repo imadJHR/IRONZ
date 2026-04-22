@@ -5,10 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, HTMLMotionProps } from "framer-motion";
 import { Star, ShoppingCart, Heart, Eye, LucideProps } from "lucide-react";
-import { useCart, type CartItem } from "@/context/cart-context";
-import { useFavorites, type FavoriteItem } from "@/context/favorites-context";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useCart, type CartItem } from "../context/cart-context";
+import { useFavorites, type FavoriteItem } from "../context/favorites-context";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
 
 // Types
 export type ProductVariant = "default" | "compact" | "offer";

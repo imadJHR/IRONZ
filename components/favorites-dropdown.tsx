@@ -4,9 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { X, Trash2, ShoppingCart, LucideProps } from "lucide-react";
-import { useFavorites, type FavoriteItem } from "@/context/favorites-context";
-import { useCart, type CartItem } from "@/context/cart-context";
-import { Button } from "@/components/ui/button";
+import { useFavorites, type FavoriteItem } from "../context/favorites-context";
+import { useCart, type CartItem } from "../context/cart-context";
+import { Button } from "../components/ui/button";
 import { MouseEvent } from "react";
 
 // Types
