@@ -890,47 +890,47 @@ export default function ProductPageClient({
 
 
 
-  const handleAddToCart = useCallback(() => {
-    if (!product) return;
-    if (product.taille?.length && !selectedTaille) {
-      alert("Veuillez sélectionner une taille avant d'ajouter au panier");
-      return;
-    }
-    if (product.colors?.length && !selectedColor) {
-      alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
-      return;
-    }
-    const id = product._id ?? product.id;
-    addToCart({
-      _id: product._id,
-      id: id || "",
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      image: product.image || PLACEHOLDER,
-      category: product.category,
-      quantity: quantity,
-      selectedColor: selectedColor || undefined,
-      selectedTaille: selectedTaille || undefined,
-      salePrice: product.salePrice,
-      oldPrice: product.oldPrice,
-    });
+const handleAddToCart = useCallback(() => {
+  if (!product) return;
+  if (product.taille?.length && !selectedTaille) {
+    alert("Veuillez sélectionner une taille avant d'ajouter au panier");
+    return;
+  }
+  if (product.colors?.length && !selectedColor) {
+    alert("Veuillez sélectionner une couleur avant d'ajouter au panier");
+    return;
+  }
+  const id = product._id ?? product.id;
+  addToCart({
+    // Remove _id from here - keep only id
+    id: id || "",
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    image: product.image || PLACEHOLDER,
+    category: product.category,
+    quantity: quantity,
+    selectedColor: selectedColor || undefined,
+    selectedTaille: selectedTaille || undefined,
+    salePrice: product.salePrice,
+    oldPrice: product.oldPrice,
+  });
 
-    trackFBEvent("AddToCart", {
-      content_name: product.name,
-      content_ids: [String(id)],
-      content_type: "product",
-      contents: [
-        {
-          id: String(id),
-          quantity: Number(quantity) || 1,
-          item_price: Number(product.salePrice ?? product.price ?? 0),
-        },
-      ],
-      value: Number(product.salePrice ?? product.price ?? 0) * quantity,
-      currency: "MAD",
-    });
-  }, [product, addToCart, quantity, selectedColor, selectedTaille]);
+  trackFBEvent("AddToCart", {
+    content_name: product.name,
+    content_ids: [String(id)],
+    content_type: "product",
+    contents: [
+      {
+        id: String(id),
+        quantity: Number(quantity) || 1,
+        item_price: Number(product.salePrice ?? product.price ?? 0),
+      },
+    ],
+    value: Number(product.salePrice ?? product.price ?? 0) * quantity,
+    currency: "MAD",
+  });
+}, [product, addToCart, quantity, selectedColor, selectedTaille]);
 
   const getShareLinks = useCallback((): ShareLink[] => {
     if (!product) return [];
@@ -1313,49 +1313,7 @@ export default function ProductPageClient({
                   {product.category ?? "EQUIPEMENT"}
                 </div>
 
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <button
-                    onClick={toggleFavorite}
-                    className={cn(
-                      "p-2 rounded-full transition-colors",
-                      isInFavorites(productId ?? "")
-                        ? "text-red-500 bg-red-50 dark:bg-red-900/20"
-                        : "text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-red-500"
-                    )}
-                  >
-                    <Heart
-                      className={cn(
-                        "h-5 w-5 sm:h-6 sm:w-6",
-                        isInFavorites(productId ?? "") && "fill-current"
-                      )}
-                    />
-                  </button>
-
-                  <div className="relative share-box">
-                    <button
-                      onClick={handleShare}
-                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors text-gray-400 hover:text-black dark:hover:text-white"
-                    >
-                      <Share2 className="h-5 w-5 sm:h-6 sm:w-6" />
-                    </button>
-                    {shareOpen && (
-                      <div className="absolute right-0 top-10 sm:top-12 z-50 w-44 sm:w-48 bg-white dark:bg-gray-900 shadow-xl rounded-xl border border-gray-100 dark:border-gray-800 p-1.5 sm:p-2">
-                        {getShareLinks().map((link) => (
-                          <a
-                            key={link.name}
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 sm:gap-3 px-2.5 sm:px-3 py-1.5 sm:py-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg text-xs sm:text-sm font-medium"
-                          >
-                            <link.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                            {link.name}
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
+               
               </div>
 
               <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black uppercase italic text-gray-900 dark:text-white leading-[0.95] tracking-tighter mb-3 sm:mb-4">
