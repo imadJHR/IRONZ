@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   ArrowLeft,
   CheckCircle,
@@ -65,7 +65,7 @@ interface Stat {
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -75,7 +75,7 @@ const containerVariants = {
   },
 };
 
-const scaleIn = {
+const scaleIn: Variants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
@@ -311,8 +311,8 @@ function FeatureList({
             <CheckCircle className="w-3 h-3 text-white" />
           </div>
           <span
-            className={`text-gray-700 dark:text-gray-300${
-              small ? " text-sm" : ""
+            className={`text-gray-700 dark:text-gray-300 ${
+              small ? "text-sm" : ""
             }`}
           >
             {feature}
