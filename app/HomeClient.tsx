@@ -1239,13 +1239,7 @@ export default function HomeClient({
             <div
               className="h-full w-full"
               style={{
-                backgroundImage: `repeating-linear-gradient(
-                  -45deg,
-                  transparent,
-                  transparent 20px,
-                  rgba(255,255,255,0.1) 20px,
-                  rgba(255,255,255,0.1) 21px
-                )` as CSSProperties
+                backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255,255,255,0.1) 20px, rgba(255,255,255,0.1) 21px)`
               }}
             />
           </div>
