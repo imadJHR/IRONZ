@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, type ChangeEvent, type FormEvent, type ReactNode } from "react";
+import React, { useState, useRef, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
@@ -77,7 +77,7 @@ interface HeroStat {
 
 const WHATSAPP_NUMBER = "212674114446";
 
-export default function DemandeDevisPage(): JSX.Element {
+export default function DemandeDevisPage() {
   const [formData, setFormData] = useState<QuoteFormData>({
     firstName: "",
     lastName: "",
@@ -291,15 +291,16 @@ export default function DemandeDevisPage(): JSX.Element {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type, checked } = e.currentTarget;
-    const fieldName = name as keyof QuoteFormData;
+    const { name, value, type } = e.currentTarget;
+    const isCheckbox = type === "checkbox";
+    const nextValue = isCheckbox ? (e.currentTarget as HTMLInputElement).checked : value;
 
-    const nextValue = type === "checkbox" ? checked : value;
+    const fieldName = name as keyof QuoteFormData;
 
     setFormData((prev) => ({
       ...prev,
       [fieldName]: nextValue,
-    }) as QuoteFormData);
+    }));
 
     if (errors[fieldName]) {
       setErrors((prev) => ({
