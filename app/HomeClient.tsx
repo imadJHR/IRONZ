@@ -508,10 +508,6 @@ function ProductCard({
           </h2>
         </Link>
 
-        {product.rating != null && (
-          <div className="mb-2">{renderRating(product.rating)}</div>
-        )}
-
         <div
           className="mt-auto pt-2 flex items-center justify-between gap-2"
           itemProp="offers"
@@ -624,7 +620,7 @@ function ProductCardLarge({
           <span className="text-xs sm:text-sm text-yellow-600 dark:text-yellow-400 font-medium uppercase tracking-wider truncate">
             {product.brand || product.category}
           </span>
-          {product.rating != null && renderRating(product.rating)}
+
         </div>
 
         <Link href={`/produit/${product.slug || id}`}>
@@ -683,7 +679,7 @@ function ProductCardModern({
 
   return (
     <motion.article
-      className="group relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-800 hover:border-yellow-500/50 h-full flex flex-col"
+      className="group relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-800 hover:border-yellow-500/50 h-full grid grid-rows-[auto_1fr_auto]"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
@@ -787,9 +783,7 @@ function ProductCardModern({
           </p>
         )}
 
-        {product.rating != null && (
-          <div className="mb-4">{renderRating(product.rating)}</div>
-        )}
+
 
         <div
           className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800"
@@ -980,7 +974,7 @@ function LatestProductsSection({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <header className="text-center mb-12 sm:mb-16">
-          
+
           <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black uppercase italic tracking-tight text-gray-900 dark:text-white mb-4">
             Découvrez Nos{" "}
             <span className="text-yellow-500">Nouveautés</span>
@@ -1101,16 +1095,14 @@ function LatestProductsSection({
                   className="h-full bg-yellow-500"
                   style={
                     {
-                      width: `${
-                        ((priceRange[1] - priceRange[0]) /
+                      width: `${((priceRange[1] - priceRange[0]) /
                           (priceLimits.max - priceLimits.min)) *
                         100
-                      }%`,
-                      marginLeft: `${
-                        ((priceRange[0] - priceLimits.min) /
+                        }%`,
+                      marginLeft: `${((priceRange[0] - priceLimits.min) /
                           (priceLimits.max - priceLimits.min)) *
                         100
-                      }%`,
+                        }%`,
                     } as CSSProperties
                   }
                 />
@@ -1192,8 +1184,6 @@ function LatestProductsSection({
                               <span className="text-xs font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">
                                 {product.category}
                               </span>
-                              {product.rating != null &&
-                                renderRating(product.rating)}
                             </div>
                             <Link
                               href={`/produit/${product.slug || product._id}`}
@@ -1253,33 +1243,7 @@ function LatestProductsSection({
                                 <ShoppingCart className="w-4 h-4" />
                                 Ajouter
                               </button>
-                              <button
-                                onClick={() => toggleFavorite(product)}
-                                className={cn(
-                                  "w-11 h-11 rounded-lg flex items-center justify-center transition-colors",
-                                  isInFavorites(
-                                    product._id || product.id || ""
-                                  )
-                                    ? "bg-red-500 hover:bg-red-600 text-white"
-                                    : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300"
-                                )}
-                                aria-label={
-                                  isInFavorites(
-                                    product._id || product.id || ""
-                                  )
-                                    ? `Retirer ${product.name} des favoris`
-                                    : `Ajouter ${product.name} aux favoris`
-                                }
-                              >
-                                <Heart
-                                  className={cn(
-                                    "w-5 h-5",
-                                    isInFavorites(
-                                      product._id || product.id || ""
-                                    ) && "fill-current"
-                                  )}
-                                />
-                              </button>
+
                             </div>
                           </div>
                         </div>
