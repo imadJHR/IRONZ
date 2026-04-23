@@ -1428,7 +1428,6 @@ export default function ProductPageClient({
                               >
                                 <Icon
                                   className="w-4 h-4"
-                                  style={{ color } as React.CSSProperties}
                                 />
                               </div>
                               <span className="text-[9px] font-medium text-gray-500 dark:text-gray-400">
