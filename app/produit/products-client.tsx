@@ -326,7 +326,7 @@ const ProductCard = memo(function ProductCard({
           <span className="text-[10px] sm:text-xs text-yellow-600 dark:text-yellow-400 font-medium uppercase tracking-wider line-clamp-1">
             {product.brand || product.category}
           </span>
-          {product.rating != null && renderRating(product.rating)}
+          
         </div>
 
         <Link href={`/produit/${product.slug || productId}`}>
@@ -348,30 +348,31 @@ const ProductCard = memo(function ProductCard({
           </p>
         )}
 
-        <div className="mt-auto flex items-center justify-between pt-2 sm:pt-3 border-t border-gray-50 dark:border-gray-800">
-          <div>
-            <span
-              className={cn(
-                "font-black text-gray-900 dark:text-white",
-                viewMode === "list" ? "text-lg sm:text-xl md:text-2xl" : "text-lg sm:text-xl"
-              )}
-            >
-              {formatPrice(product.price)}
-            </span>
-            {product.oldPrice && (
-              <span className="ml-1 sm:ml-2 text-xs sm:text-sm line-through text-gray-500">
-                {formatPrice(product.oldPrice)}
-              </span>
-            )}
-          </div>
-          <Link
-            href={`/produit/${product.slug || productId}`}
-            className="text-yellow-600 hover:text-yellow-700 font-bold text-xs sm:text-sm flex items-center gap-1 group/link"
-          >
-            Détails
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover/link:translate-x-1 transition-transform" />
-          </Link>
-        </div>
+        <div className="mt-auto flex flex-col gap-2 pt-2 sm:pt-3 border-t border-gray-50 dark:border-gray-800">
+  <div>
+    <span
+      className={cn(
+        "font-black text-gray-900 dark:text-white",
+        viewMode === "list" ? "text-lg sm:text-xl md:text-2xl" : "text-lg sm:text-xl"
+      )}
+    >
+      {formatPrice(product.price)}
+    </span>
+    {product.oldPrice && (
+      <span className="ml-1 sm:ml-2 text-xs sm:text-sm line-through text-gray-500">
+        {formatPrice(product.oldPrice)}
+      </span>
+    )}
+  </div>
+
+  <Link
+    href={`/produit/${product.slug || productId}`}
+    className="text-yellow-600 hover:text-yellow-700 font-bold text-xs sm:text-sm flex items-center gap-1 group/link w-fit"
+  >
+    Détails
+    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover/link:translate-x-1 transition-transform" />
+  </Link>
+</div>
       </div>
     </motion.article>
   );
@@ -1181,7 +1182,7 @@ export default function ProductsPage({
                   className={cn(
                     "grid gap-3 sm:gap-4 md:gap-6",
                     viewMode === "grid"
-                      ? "grid-cols-1 min-[450px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                      ? "grid-cols-2 min-[450px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                       : "grid-cols-1"
                   )}
                   variants={containerVariants}
