@@ -35,6 +35,7 @@ import {
   LogIn,
   Package,
   Menu as MenuIcon,
+  Search,
 } from "lucide-react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useCart } from "../context/cart-context";
@@ -171,7 +172,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   const LayoutContent = (
     <html lang={language} suppressHydrationWarning>
       <head>
-        {/* ── Primary SEO Meta ── */}
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
@@ -191,7 +191,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         <meta name="theme-color" content="#F59E0B" />
         <link rel="canonical" href="https://www.ironz.ma" />
 
-        {/* ── Open Graph ── */}
         <meta
           property="og:title"
           content="IRONZ – Équipement Sportif Premium au Maroc"
@@ -209,7 +208,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         <meta property="og:site_name" content="IRONZ" />
         <meta property="og:locale" content="fr_MA" />
 
-        {/* ── Twitter Card ── */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
@@ -225,7 +223,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         />
         <meta name="twitter:site" content="@ironz_official" />
 
-        {/* ── Structured Data (JSON-LD) ── */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -269,7 +266,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           }}
         />
 
-        {/* ── Favicon ── */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -280,7 +276,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <CartProvider>
             <FavoritesProvider>
-              {/* Skip-to-content for accessibility / SEO */}
               <a
                 href="#main-content"
                 className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-yellow-500 focus:text-black focus:rounded-lg focus:font-bold"
@@ -370,6 +365,8 @@ const Navbar = React.memo(function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [authDropdownOpen, setAuthDropdownOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [mobileSearchQuery, setMobileSearchQuery] = useState("");
 
   const router = useRouter();
   const pathname = usePathname();
@@ -377,15 +374,15 @@ const Navbar = React.memo(function Navbar({
   const { itemCount: favoritesCount } = useFavorites();
 
   const searchRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const authRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLDivElement>(null);
 
-  // ── Mount ──
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // ── Scroll ──
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -401,7 +398,6 @@ const Navbar = React.memo(function Navbar({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ── Click Outside ──
   useEffect(() => {
     const handler = (e: globalThis.MouseEvent) => {
       const t = e.target as Node;
@@ -415,12 +411,17 @@ const Navbar = React.memo(function Navbar({
         setMobileMenuOpen(false);
       if (authDropdownOpen && authRef.current && !authRef.current.contains(t))
         setAuthDropdownOpen(false);
+      if (
+        mobileSearchOpen &&
+        mobileSearchRef.current &&
+        !mobileSearchRef.current.contains(t)
+      )
+        setMobileSearchOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, [searchOpen, mobileMenuOpen, authDropdownOpen]);
+  }, [searchOpen, mobileMenuOpen, authDropdownOpen, mobileSearchOpen]);
 
-  // ── Body scroll lock ──
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
     return () => {
@@ -428,18 +429,37 @@ const Navbar = React.memo(function Navbar({
     };
   }, [mobileMenuOpen]);
 
-  // ── Close menu on route change ──
   useEffect(() => {
     setMobileMenuOpen(false);
     setSearchOpen(false);
+    setMobileSearchOpen(false);
   }, [pathname]);
+
+  // Focus search input when opened
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) {
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    }
+  }, [searchOpen]);
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/recherche?q=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/produit?search=${encodeURIComponent(searchQuery.trim())}`);
       setSearchOpen(false);
       setSearchQuery("");
+    }
+  };
+
+  const handleMobileSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (mobileSearchQuery.trim()) {
+      router.push(
+        `/produit?search=${encodeURIComponent(mobileSearchQuery.trim())}`
+      );
+      setMobileSearchOpen(false);
+      setMobileSearchQuery("");
+      setMobileMenuOpen(false);
     }
   };
 
@@ -449,8 +469,7 @@ const Navbar = React.memo(function Navbar({
   const serviceLinks = useMemo<ServiceLink[]>(
     () => [
       {
-        name:
-          language === "fr" ? "Aménagement de salle" : "Room Setup",
+        name: language === "fr" ? "Aménagement de salle" : "Room Setup",
         path: "/services/amenagement-salle",
         subLinks: [
           {
@@ -488,7 +507,6 @@ const Navbar = React.memo(function Navbar({
     [language]
   );
 
-  // ── Animation Variants ──
   const dropdownVariants: Variants = {
     hidden: { opacity: 0, y: -8, scale: 0.97 },
     visible: {
@@ -522,6 +540,22 @@ const Navbar = React.memo(function Navbar({
     },
   };
 
+  const searchDropdownVariants: Variants = {
+    hidden: { opacity: 0, y: -10, scaleY: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scaleY: 1,
+      transition: { type: "spring", stiffness: 400, damping: 28 },
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      scaleY: 0.95,
+      transition: { duration: 0.15 },
+    },
+  };
+
   return (
     <>
       {/* ── Announcement Bar ── */}
@@ -550,7 +584,6 @@ const Navbar = React.memo(function Navbar({
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16 sm:h-18 lg:h-20">
-
               {/* Logo */}
               <motion.div
                 onHoverStart={() => setIsHoveringLogo(true)}
@@ -583,7 +616,11 @@ const Navbar = React.memo(function Navbar({
                 </NavLink>
 
                 {/* Products Mega Dropdown */}
-                <div className="relative group" role="navigation" aria-label="Produits">
+                <div
+                  className="relative group"
+                  role="navigation"
+                  aria-label="Produits"
+                >
                   <button
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -626,7 +663,11 @@ const Navbar = React.memo(function Navbar({
                 </div>
 
                 {/* Services Dropdown */}
-                <div className="relative group" role="navigation" aria-label="Services">
+                <div
+                  className="relative group"
+                  role="navigation"
+                  aria-label="Services"
+                >
                   <button
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -702,13 +743,153 @@ const Navbar = React.memo(function Navbar({
 
               {/* ── Right Icons ── */}
               <div className="flex items-center gap-1.5 sm:gap-2">
+                {/* Desktop Search */}
+                <div className="hidden lg:block relative" ref={searchRef}>
+                  <AnimatePresence>
+                    {searchOpen ? (
+                      <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={searchDropdownVariants}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 origin-top-right"
+                      >
+                        <form
+                          onSubmit={handleSearch}
+                          className="flex items-center gap-2 bg-white dark:bg-gray-800 border-2 border-yellow-500 rounded-xl shadow-xl px-3 py-1.5 min-w-[280px] xl:min-w-[340px]"
+                        >
+                          <Search className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                          <input
+                            ref={searchInputRef}
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                              setSearchQuery(e.target.value)
+                            }
+                            placeholder={
+                              language === "fr"
+                                ? "Rechercher un produit..."
+                                : "Search a product..."
+                            }
+                            className="flex-1 bg-transparent outline-none text-sm font-medium text-gray-900 dark:text-white placeholder:text-gray-400"
+                            autoComplete="off"
+                          />
+                          {searchQuery && (
+                            <button
+                              type="button"
+                              onClick={() => setSearchQuery("")}
+                              className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                              aria-label="Effacer"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSearchOpen(false);
+                              setSearchQuery("");
+                            }}
+                            className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors ml-1 pl-2 border-l border-gray-200 dark:border-gray-600"
+                            aria-label="Fermer la recherche"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </form>
+                      </motion.div>
+                    ) : (
+                      <motion.button
+                        key="search-btn"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => setSearchOpen(true)}
+                        aria-label={
+                          language === "fr"
+                            ? "Ouvrir la recherche"
+                            : "Open search"
+                        }
+                        className="p-2 sm:p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-yellow-50 dark:hover:bg-yellow-900/20 hover:text-yellow-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
+                      >
+                        <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+                      </motion.button>
+                    )}
+                  </AnimatePresence>
+                </div>
 
-               
+                {/* Mobile Search Button */}
+                <div className="lg:hidden relative" ref={mobileSearchRef}>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setMobileSearchOpen((p) => !p)}
+                    aria-label={
+                      language === "fr"
+                        ? "Ouvrir la recherche"
+                        : "Open search"
+                    }
+                    aria-expanded={mobileSearchOpen}
+                    className="p-2 sm:p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
+                  >
+                    <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </motion.button>
 
-                
+                  {/* Mobile Search Dropdown */}
+                  <AnimatePresence>
+                    {mobileSearchOpen && (
+                      <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={searchDropdownVariants}
+                        className="absolute right-0 top-full mt-2 w-[85vw] max-w-sm origin-top-right z-50"
+                      >
+                        <form
+                          onSubmit={handleMobileSearch}
+                          className="flex items-center gap-2 bg-white dark:bg-gray-900 border-2 border-yellow-500 rounded-2xl shadow-2xl px-3 py-2"
+                        >
+                          <Search className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                          <input
+                            type="text"
+                            value={mobileSearchQuery}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                              setMobileSearchQuery(e.target.value)
+                            }
+                            placeholder={
+                              language === "fr"
+                                ? "Rechercher un produit..."
+                                : "Search a product..."
+                            }
+                            className="flex-1 bg-transparent outline-none text-sm font-medium text-gray-900 dark:text-white placeholder:text-gray-400"
+                            autoFocus
+                            autoComplete="off"
+                          />
+                          {mobileSearchQuery && (
+                            <button
+                              type="button"
+                              onClick={() => setMobileSearchQuery("")}
+                              className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                              aria-label="Effacer"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          )}
+                          <button
+                            type="submit"
+                            className="ml-1 px-3 py-1.5 rounded-lg bg-yellow-500 text-black text-xs font-black uppercase italic hover:bg-yellow-600 transition-colors flex-shrink-0"
+                          >
+                            {language === "fr" ? "OK" : "Go"}
+                          </button>
+                        </form>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 {/* Cart */}
-                <Link href="/panier" aria-label={`Panier (${itemCount} articles)`}>
+                <Link
+                  href="/panier"
+                  aria-label={`Panier (${itemCount} articles)`}
+                >
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
@@ -797,6 +978,7 @@ const Navbar = React.memo(function Navbar({
                     />
                   </ConditionalSignedIn>
                 </div>
+
                 {/* Mobile Hamburger */}
                 <motion.button
                   whileHover={{ scale: 1.1 }}
@@ -814,12 +996,15 @@ const Navbar = React.memo(function Navbar({
         </nav>
       </header>
 
-    
-
       {/* ── Mobile Menu ── */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <div className="fixed inset-0 z-[150] lg:hidden" role="dialog" aria-modal="true" aria-label="Menu de navigation">
+          <div
+            className="fixed inset-0 z-[150] lg:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu de navigation"
+          >
             {/* Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -865,6 +1050,41 @@ const Navbar = React.memo(function Navbar({
 
               {/* Scrollable Body */}
               <div className="flex-1 overflow-y-auto overscroll-contain py-4 sm:py-6 px-4 sm:px-5">
+                {/* Mobile Menu Search */}
+                <div className="mb-6">
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const input = e.currentTarget.querySelector("input");
+                      const query = input?.value?.trim();
+                      if (query) {
+                        router.push(
+                          `/produit?search=${encodeURIComponent(query)}`
+                        );
+                        setMobileMenuOpen(false);
+                      }
+                    }}
+                    className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 focus-within:border-yellow-500 rounded-xl px-3 py-2 transition-colors"
+                  >
+                    <Search className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                    <input
+                      type="text"
+                      placeholder={
+                        language === "fr"
+                          ? "Rechercher un produit..."
+                          : "Search a product..."
+                      }
+                      className="flex-1 bg-transparent outline-none text-sm font-medium text-gray-900 dark:text-white placeholder:text-gray-400"
+                      autoComplete="off"
+                    />
+                    <button
+                      type="submit"
+                      className="px-3 py-1.5 rounded-lg bg-yellow-500 text-black text-xs font-black uppercase italic hover:bg-yellow-600 transition-colors flex-shrink-0"
+                    >
+                      {language === "fr" ? "Chercher" : "Search"}
+                    </button>
+                  </form>
+                </div>
 
                 {/* Auth */}
                 <ConditionalSignedOut>
@@ -895,8 +1115,6 @@ const Navbar = React.memo(function Navbar({
                     <ConditionalUserButton afterSignOutUrl="/" />
                   </div>
                 </ConditionalSignedIn>
-
-             
 
                 {/* Nav Links */}
                 <nav aria-label="Navigation mobile">
@@ -1074,9 +1292,6 @@ const Navbar = React.memo(function Navbar({
                     ))}
                   </ul>
                 </nav>
-
-               
-                
               </div>
 
               {/* Footer CTA */}
@@ -1231,8 +1446,10 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
       className="bg-black text-white relative overflow-hidden border-t border-gray-900"
       aria-label="Pied de page IRONZ"
     >
-      {/* Decorative background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <div
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        aria-hidden="true"
+      >
         <div className="absolute top-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-yellow-500/8 rounded-full blur-[80px] sm:blur-[100px] -translate-y-1/2" />
         <div className="absolute bottom-0 left-1/4 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-orange-500/8 rounded-full blur-[100px] sm:blur-[120px] translate-y-1/2" />
       </div>
@@ -1246,7 +1463,10 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
           viewport={{ once: true, margin: "-80px" }}
         >
           {/* Brand */}
-          <motion.div variants={itemVariants} className="sm:col-span-2 lg:col-span-1 space-y-5">
+          <motion.div
+            variants={itemVariants}
+            className="sm:col-span-2 lg:col-span-1 space-y-5"
+          >
             <Link href="/" aria-label="IRONZ – Accueil">
               <Image
                 src="/logo.png"
@@ -1262,7 +1482,6 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 ? "L'élite de l'équipement sportif marocain. Forgez votre avenir avec notre matériel de qualité professionnelle."
                 : "Morocco's elite sports equipment. Forge your future with our professional-grade gear."}
             </p>
-            {/* Social Links */}
             <div className="flex items-center gap-3 pt-1">
               {socialLinks.map((social, i) => (
                 <motion.a
@@ -1279,11 +1498,12 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 </motion.a>
               ))}
             </div>
-            {/* Trust Badges */}
             <div className="flex flex-wrap gap-2 pt-1">
               {[
                 language === "fr" ? "🚀 Livraison rapide" : "🚀 Fast delivery",
-                language === "fr" ? "✅ Qualité garantie" : "✅ Quality guaranteed",
+                language === "fr"
+                  ? "✅ Qualité garantie"
+                  : "✅ Quality guaranteed",
               ].map((badge, i) => (
                 <span
                   key={i}
@@ -1298,7 +1518,10 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
           {/* Catalog */}
           <motion.div variants={itemVariants}>
             <h2 className="text-base font-black uppercase italic tracking-wider mb-5 flex items-center gap-2">
-              <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" aria-hidden="true" />
+              <span
+                className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"
+                aria-hidden="true"
+              />
               {language === "fr" ? "Catalogue" : "Catalog"}
             </h2>
             <ul className="space-y-3" role="list">
@@ -1319,7 +1542,10 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
           {/* Support */}
           <motion.div variants={itemVariants}>
             <h2 className="text-base font-black uppercase italic tracking-wider mb-5 flex items-center gap-2">
-              <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" aria-hidden="true" />
+              <span
+                className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"
+                aria-hidden="true"
+              />
               {language === "fr" ? "Support" : "Support"}
             </h2>
             <ul className="space-y-3" role="list">
@@ -1340,7 +1566,10 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
           {/* Contact */}
           <motion.div variants={itemVariants}>
             <h2 className="text-base font-black uppercase italic tracking-wider mb-5 flex items-center gap-2">
-              <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" aria-hidden="true" />
+              <span
+                className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"
+                aria-hidden="true"
+              />
               Contact
             </h2>
             <address className="not-italic space-y-3">

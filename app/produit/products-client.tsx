@@ -12,6 +12,7 @@ import React, {
 } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import {
   Search,
   Filter,
@@ -97,7 +98,13 @@ interface ProductCardProps {
 }
 
 interface SortOption {
-  value: "featured" | "newest" | "price-asc" | "price-desc" | "rating" | "discount";
+  value:
+    | "featured"
+    | "newest"
+    | "price-asc"
+    | "price-desc"
+    | "rating"
+    | "discount";
   label: string;
 }
 
@@ -194,7 +201,10 @@ const renderRating = (rating: number | undefined): ReactNode => {
         />
       ))}
       {hasHalfStar && (
-        <StarHalf className="w-3 h-3 fill-yellow-400 text-yellow-400" aria-hidden="true" />
+        <StarHalf
+          className="w-3 h-3 fill-yellow-400 text-yellow-400"
+          aria-hidden="true"
+        />
       )}
       {[...Array(5 - fullStars - (hasHalfStar ? 1 : 0))].map((_, i) => (
         <Star
@@ -326,7 +336,6 @@ const ProductCard = memo(function ProductCard({
           <span className="text-[10px] sm:text-xs text-yellow-600 dark:text-yellow-400 font-medium uppercase tracking-wider line-clamp-1">
             {product.brand || product.category}
           </span>
-          
         </div>
 
         <Link href={`/produit/${product.slug || productId}`}>
@@ -342,37 +351,40 @@ const ProductCard = memo(function ProductCard({
           </h2>
         </Link>
 
-        {product.description && (viewMode === "list" || viewMode === "grid") && (
-          <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
-            {product.description}
-          </p>
-        )}
+        {product.description &&
+          (viewMode === "list" || viewMode === "grid") && (
+            <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
+              {product.description}
+            </p>
+          )}
 
         <div className="mt-auto flex flex-col gap-2 pt-2 sm:pt-3 border-t border-gray-50 dark:border-gray-800">
-  <div>
-    <span
-      className={cn(
-        "font-black text-gray-900 dark:text-white",
-        viewMode === "list" ? "text-lg sm:text-xl md:text-2xl" : "text-lg sm:text-xl"
-      )}
-    >
-      {formatPrice(product.price)}
-    </span>
-    {product.oldPrice && (
-      <span className="ml-1 sm:ml-2 text-xs sm:text-sm line-through text-gray-500">
-        {formatPrice(product.oldPrice)}
-      </span>
-    )}
-  </div>
+          <div>
+            <span
+              className={cn(
+                "font-black text-gray-900 dark:text-white",
+                viewMode === "list"
+                  ? "text-lg sm:text-xl md:text-2xl"
+                  : "text-lg sm:text-xl"
+              )}
+            >
+              {formatPrice(product.price)}
+            </span>
+            {product.oldPrice && (
+              <span className="ml-1 sm:ml-2 text-xs sm:text-sm line-through text-gray-500">
+                {formatPrice(product.oldPrice)}
+              </span>
+            )}
+          </div>
 
-  <Link
-    href={`/produit/${product.slug || productId}`}
-    className="text-yellow-600 hover:text-yellow-700 font-bold text-xs sm:text-sm flex items-center gap-1 group/link w-fit"
-  >
-    Détails
-    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover/link:translate-x-1 transition-transform" />
-  </Link>
-</div>
+          <Link
+            href={`/produit/${product.slug || productId}`}
+            className="text-yellow-600 hover:text-yellow-700 font-bold text-xs sm:text-sm flex items-center gap-1 group/link w-fit"
+          >
+            Détails
+            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover/link:translate-x-1 transition-transform" />
+          </Link>
+        </div>
       </div>
     </motion.article>
   );
@@ -387,6 +399,9 @@ interface ProductsPageProps {
 export default function ProductsPage({
   initialProducts = [],
 }: ProductsPageProps) {
+  // --- SEARCH PARAMS ---
+  const searchParams = useSearchParams();
+
   // --- STATE ---
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [totalInventory, setTotalInventory] = useState<number>(
@@ -399,7 +414,10 @@ export default function ProductsPage({
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [loadingProgress, setLoadingProgress] = useState<string>("");
 
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  // Initialize searchQuery from URL param
+  const [searchQuery, setSearchQuery] = useState<string>(
+    searchParams?.get("search") || ""
+  );
   const deferredSearchQuery = useDeferredValue(searchQuery);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
@@ -407,7 +425,7 @@ export default function ProductsPage({
   );
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [sortOption, setSortOption] =
-    useState<typeof SORT_OPTIONS[number]["value"]>("featured");
+    useState<(typeof SORT_OPTIONS)[number]["value"]>("featured");
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -419,19 +437,26 @@ export default function ProductsPage({
   // --- CONTEXT ---
   const { addToCart } = useCart();
 
+  // --- SYNC SEARCH PARAM FROM URL ---
+  // Runs whenever the ?search= param changes (e.g. navbar search navigates here)
+  useEffect(() => {
+    const urlSearch = searchParams?.get("search") ?? "";
+    setSearchQuery(urlSearch);
+    // Reset to page 1 whenever search param changes
+    setCurrentPage(1);
+  }, [searchParams]);
+
   // --- RESPONSIVE CHECK ---
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-
     checkMobile();
     window.addEventListener("resize", checkMobile);
-
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // --- FETCHING ALL PRODUCTS - CORRIGÉ ---
+  // --- FETCHING ALL PRODUCTS ---
   useEffect(() => {
     if (initialProducts.length > 0) {
       if (products.length > 0) {
@@ -455,28 +480,32 @@ export default function ProductsPage({
       let allFetchedProducts: Product[] = [];
       let page = 1;
       let hasMore = true;
-      const batchLimit = 100; // Augmenté pour charger plus rapidement
+      const batchLimit = 100;
 
       try {
         while (hasMore) {
           setLoadingProgress(`Chargement des produits... Page ${page}`);
-          
+
           const response = await fetch(
             `${API_URL}/products?page=${page}&limit=${batchLimit}`
           );
-          
+
           if (!response.ok) {
-            throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+            throw new Error(
+              `Erreur ${response.status}: ${response.statusText}`
+            );
           }
 
           const data: ApiResponse | Product[] = await response.json();
-          
-          // Gestion de différents formats de réponse API
+
           let batch: Product[] = [];
-          
+
           if (Array.isArray(data)) {
             batch = data;
-          } else if ((data as ApiResponse).success && (data as ApiResponse).data) {
+          } else if (
+            (data as ApiResponse).success &&
+            (data as ApiResponse).data
+          ) {
             batch = (data as ApiResponse).data!;
           } else if ((data as ApiResponse).products) {
             batch = (data as ApiResponse).products!;
@@ -491,7 +520,6 @@ export default function ProductsPage({
 
           allFetchedProducts = [...allFetchedProducts, ...batch];
 
-          // Vérifier s'il y a plus de pages
           const apiResponse = data as ApiResponse;
           if (apiResponse.totalPages && page >= apiResponse.totalPages) {
             hasMore = false;
@@ -501,23 +529,22 @@ export default function ProductsPage({
             page++;
           }
 
-          // Délai court pour éviter de surcharger l'API
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
 
-        console.log(`Total de produits chargés: ${allFetchedProducts.length}`);
+        console.log(
+          `Total de produits chargés: ${allFetchedProducts.length}`
+        );
 
-        // Supprimer les doublons basés sur _id ou id
         const uniqueProducts = Array.from(
           new Map(
-            allFetchedProducts.map((item) => [
-              item._id || item.id, 
-              item
-            ])
+            allFetchedProducts.map((item) => [item._id || item.id, item])
           ).values()
         );
 
-        console.log(`Produits uniques après dédoublonnage: ${uniqueProducts.length}`);
+        console.log(
+          `Produits uniques après dédoublonnage: ${uniqueProducts.length}`
+        );
 
         setProducts(uniqueProducts);
         setTotalInventory(uniqueProducts.length);
@@ -539,7 +566,9 @@ export default function ProductsPage({
       } catch (err) {
         console.error("Erreur de chargement:", err);
         setError(
-          err instanceof Error ? err.message : "Impossible de charger les produits"
+          err instanceof Error
+            ? err.message
+            : "Impossible de charger les produits"
         );
         setLoadingProgress("");
       } finally {
@@ -555,7 +584,9 @@ export default function ProductsPage({
     const uniqueCategories = [
       ...new Set(products.map((p) => p.category).filter(Boolean)),
     ];
-    return uniqueCategories.sort().map((name, index) => ({ id: index + 1, name: name as string }));
+    return uniqueCategories
+      .sort()
+      .map((name, index) => ({ id: index + 1, name: name as string }));
   }, [products]);
 
   const availableSubCategories: string[] = useMemo(() => {
@@ -596,9 +627,10 @@ export default function ProductsPage({
 
     // SubCategories
     if (selectedSubCategories.length > 0) {
-      result = result.filter((product) =>
-        product.subCategory &&
-        selectedSubCategories.includes(product.subCategory)
+      result = result.filter(
+        (product) =>
+          product.subCategory &&
+          selectedSubCategories.includes(product.subCategory)
       );
     }
 
@@ -662,7 +694,13 @@ export default function ProductsPage({
   // --- EFFECTS ---
   useEffect(() => {
     setCurrentPage(1);
-  }, [deferredSearchQuery, selectedCategories, selectedSubCategories, priceRange, sortOption]);
+  }, [
+    deferredSearchQuery,
+    selectedCategories,
+    selectedSubCategories,
+    priceRange,
+    sortOption,
+  ]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -781,6 +819,16 @@ export default function ProductsPage({
                 className="pl-10 h-12 rounded-xl text-base"
               />
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+                  aria-label="Effacer la recherche"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
             </div>
           </div>
 
@@ -863,7 +911,9 @@ export default function ProductsPage({
         <div className="mb-4 text-red-500">
           <AlertCircle className="h-12 w-12 mx-auto" />
         </div>
-        <h3 className="text-lg sm:text-xl font-bold mb-2">Erreur de chargement</h3>
+        <h3 className="text-lg sm:text-xl font-bold mb-2">
+          Erreur de chargement
+        </h3>
         <p className="text-gray-500 mb-4 text-sm sm:text-base">{error}</p>
         <Button onClick={() => window.location.reload()}>Réessayer</Button>
       </main>
@@ -886,8 +936,32 @@ export default function ProductsPage({
               </span>
             )}
           </h1>
+
+          {/* Search param banner — shown when navigated from navbar search */}
+          {searchQuery && !isLoading && (
+            <div className="mt-3 mb-1 flex items-center justify-center gap-2 flex-wrap">
+              <span className="text-sm text-gray-500">
+                Résultats pour :
+              </span>
+              <Badge className="bg-yellow-500 text-black font-bold text-sm px-3 py-1 rounded-full gap-2 flex items-center">
+                &ldquo;{searchQuery}&rdquo;
+                <button
+                  onClick={() => setSearchQuery("")}
+                  aria-label="Effacer la recherche"
+                  className="ml-1 hover:text-white transition-colors"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </Badge>
+              <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
+                ({filteredProducts.length} résultat
+                {filteredProducts.length !== 1 ? "s" : ""})
+              </span>
+            </div>
+          )}
+
           {/* Mobile Count */}
-          {!isLoading && (
+          {!isLoading && !searchQuery && (
             <div className="sm:hidden mb-2">
               <Badge
                 variant="outline"
@@ -898,7 +972,7 @@ export default function ProductsPage({
             </div>
           )}
 
-          <div className="h-1.5 w-12 sm:w-16 md:w-20 bg-yellow-500 mx-auto rounded-full" />
+          <div className="h-1.5 w-12 sm:w-16 md:w-20 bg-yellow-500 mx-auto rounded-full mt-3" />
           <p className="mt-3 sm:mt-4 text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto px-4">
             Découvrez notre gamme complète d&apos;équipements professionnels.
           </p>
@@ -910,7 +984,7 @@ export default function ProductsPage({
             {/* Mobile Filter Button */}
             <MobileFilterSheet />
 
-            {/* Desktop Search */}
+            {/* Search Input */}
             <div className="relative flex-1 min-w-[180px] sm:min-w-[240px]">
               <Input
                 type="text"
@@ -924,8 +998,9 @@ export default function ProductsPage({
               <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
               {searchQuery && (
                 <button
+                  type="button"
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+                  className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black dark:hover:text-white transition-colors"
                   aria-label="Effacer la recherche"
                 >
                   <X className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -945,7 +1020,10 @@ export default function ProductsPage({
                   <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 sm:w-56 rounded-xl p-2">
+              <DropdownMenuContent
+                align="end"
+                className="w-48 sm:w-56 rounded-xl p-2"
+              >
                 {SORT_OPTIONS.map((opt) => (
                   <DropdownMenuItem
                     key={opt.value}
@@ -953,7 +1031,9 @@ export default function ProductsPage({
                     className="rounded-lg cursor-pointer font-medium text-sm sm:text-base"
                   >
                     <span className="flex-1">{opt.label}</span>
-                    {sortOption === opt.value && <Check className="h-4 w-4 ml-2" />}
+                    {sortOption === opt.value && (
+                      <Check className="h-4 w-4 ml-2" />
+                    )}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -996,7 +1076,7 @@ export default function ProductsPage({
                   variant="outline"
                   className="h-7 sm:h-8 gap-1.5 sm:gap-2 pl-2.5 sm:pl-3 pr-1.5 sm:pr-2 rounded-full border-yellow-500/30 bg-yellow-50 dark:bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 text-xs"
                 >
-                  {searchQuery}
+                  🔍 {searchQuery}
                   <X
                     className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer"
                     onClick={() => setSearchQuery("")}
@@ -1145,7 +1225,8 @@ export default function ProductsPage({
                   {loadingProgress || "Chargement du catalogue complet..."}
                 </p>
                 <p className="text-gray-400 text-sm mt-2">
-                  {products.length > 0 && `${products.length} produits chargés...`}
+                  {products.length > 0 &&
+                    `${products.length} produits chargés...`}
                 </p>
               </div>
             ) : filteredProducts.length === 0 ? (
@@ -1154,19 +1235,33 @@ export default function ProductsPage({
                 <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">
                   Aucun produit trouvé
                 </h3>
+                {searchQuery && (
+                  <p className="text-gray-400 text-sm mb-2">
+                    Aucun résultat pour &ldquo;
+                    <span className="font-bold text-yellow-600">
+                      {searchQuery}
+                    </span>
+                    &rdquo;
+                  </p>
+                )}
                 <p className="text-gray-500 text-sm sm:text-base mb-4 sm:mb-6 px-4">
-                  Essayez de modifier vos filtres.
+                  Essayez de modifier vos filtres ou votre recherche.
                 </p>
                 <Button
                   onClick={clearFilters}
                   className="bg-black text-white rounded-xl px-6"
                 >
-                  Réinitialiser
+                  Réinitialiser les filtres
                 </Button>
               </div>
             ) : (
               <>
-                <div className="mb-4 text-sm text-gray-500 font-medium px-1">
+                <div className="mb-4 text-sm text-gray-500 font-medium px-1 flex items-center gap-2 flex-wrap">
+                  {searchQuery && (
+                    <span className="text-yellow-600 font-bold">
+                      &ldquo;{searchQuery}&rdquo; :
+                    </span>
+                  )}
                   Affichage de{" "}
                   <span className="text-black dark:text-white font-bold">
                     {displayedProducts.length}
@@ -1226,7 +1321,9 @@ export default function ProductsPage({
                               : "hover:bg-gray-100 text-gray-600"
                           )}
                           aria-label={
-                            typeof p === "number" ? `Page ${p}` : "Plus de pages"
+                            typeof p === "number"
+                              ? `Page ${p}`
+                              : "Plus de pages"
                           }
                           aria-current={
                             currentPage === p ? ("page" as const) : undefined
@@ -1243,7 +1340,7 @@ export default function ProductsPage({
                         className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 transition"
                         aria-label="Page suivante"
                       >
-                        <ChevronDown className="w-4 h-4 sm:w-5 sm:w-5 -rotate-90" />
+                        <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 -rotate-90" />
                       </button>
                     </nav>
                   </div>
