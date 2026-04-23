@@ -104,10 +104,10 @@ interface SortOption {
 interface ApiResponse {
   success?: boolean;
   data?: Product[];
-}
-
-interface PageNumber {
-  page: number | string;
+  products?: Product[];
+  total?: number;
+  page?: number;
+  totalPages?: number;
 }
 
 // --- CONSTANTS ---
@@ -297,7 +297,6 @@ const ProductCard = memo(function ProductCard({
           >
             <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
-         
         </div>
 
         {/* Badges */}
@@ -397,6 +396,7 @@ export default function ProductsPage({
   );
   const [error, setError] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [loadingProgress, setLoadingProgress] = useState<string>("");
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const deferredSearchQuery = useDeferredValue(searchQuery);
@@ -430,7 +430,7 @@ export default function ProductsPage({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // --- FETCHING ALL PRODUCTS ---
+  // --- FETCHING ALL PRODUCTS - CORRIGÉ ---
   useEffect(() => {
     if (initialProducts.length > 0) {
       if (products.length > 0) {
@@ -454,22 +454,34 @@ export default function ProductsPage({
       let allFetchedProducts: Product[] = [];
       let page = 1;
       let hasMore = true;
-      const batchLimit = 50;
+      const batchLimit = 100; // Augmenté pour charger plus rapidement
 
       try {
         while (hasMore) {
+          setLoadingProgress(`Chargement des produits... Page ${page}`);
+          
           const response = await fetch(
-            `${API_URL}/products?page=${page}&limit=${batchLimit}&sort=newest`
+            `${API_URL}/products?page=${page}&limit=${batchLimit}`
           );
-          if (!response.ok)
-            throw new Error(`Erreur ${response.status}`);
+          
+          if (!response.ok) {
+            throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+          }
 
           const data: ApiResponse | Product[] = await response.json();
-          const batch = (data as ApiResponse).success && (data as ApiResponse).data
-            ? (data as ApiResponse).data!
-            : Array.isArray(data)
-            ? data
-            : [];
+          
+          // Gestion de différents formats de réponse API
+          let batch: Product[] = [];
+          
+          if (Array.isArray(data)) {
+            batch = data;
+          } else if ((data as ApiResponse).success && (data as ApiResponse).data) {
+            batch = (data as ApiResponse).data!;
+          } else if ((data as ApiResponse).products) {
+            batch = (data as ApiResponse).products!;
+          }
+
+          console.log(`Page ${page}: ${batch.length} produits chargés`);
 
           if (batch.length === 0) {
             hasMore = false;
@@ -478,18 +490,33 @@ export default function ProductsPage({
 
           allFetchedProducts = [...allFetchedProducts, ...batch];
 
-          if (batch.length < batchLimit) {
+          // Vérifier s'il y a plus de pages
+          const apiResponse = data as ApiResponse;
+          if (apiResponse.totalPages && page >= apiResponse.totalPages) {
+            hasMore = false;
+          } else if (batch.length < batchLimit) {
             hasMore = false;
           } else {
             page++;
           }
+
+          // Délai court pour éviter de surcharger l'API
+          await new Promise(resolve => setTimeout(resolve, 100));
         }
 
+        console.log(`Total de produits chargés: ${allFetchedProducts.length}`);
+
+        // Supprimer les doublons basés sur _id ou id
         const uniqueProducts = Array.from(
           new Map(
-            allFetchedProducts.map((item) => [item._id, item])
+            allFetchedProducts.map((item) => [
+              item._id || item.id, 
+              item
+            ])
           ).values()
         );
+
+        console.log(`Produits uniques après dédoublonnage: ${uniqueProducts.length}`);
 
         setProducts(uniqueProducts);
         setTotalInventory(uniqueProducts.length);
@@ -506,18 +533,21 @@ export default function ProductsPage({
             setPriceRange([min, max]);
           }
         }
+
+        setLoadingProgress("");
       } catch (err) {
-        console.error("Erreur:", err);
+        console.error("Erreur de chargement:", err);
         setError(
           err instanceof Error ? err.message : "Impossible de charger les produits"
         );
+        setLoadingProgress("");
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchAllProducts();
-  }, [initialProducts, products]);
+  }, [initialProducts]);
 
   // --- FILTERING LOGIC ---
   const categories: Category[] = useMemo(() => {
@@ -551,7 +581,8 @@ export default function ProductsPage({
           product.name?.toLowerCase().includes(query) ||
           product.description?.toLowerCase().includes(query) ||
           product.category?.toLowerCase().includes(query) ||
-          product.subCategory?.toLowerCase().includes(query)
+          product.subCategory?.toLowerCase().includes(query) ||
+          product.brand?.toLowerCase().includes(query)
       );
     }
 
@@ -1109,8 +1140,11 @@ export default function ProductsPage({
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-20">
                 <Loader2 className="w-12 h-12 text-yellow-500 animate-spin mb-4" />
-                <p className="text-gray-500 font-medium">
-                  Chargement du catalogue complet...
+                <p className="text-gray-500 font-medium text-center px-4">
+                  {loadingProgress || "Chargement du catalogue complet..."}
+                </p>
+                <p className="text-gray-400 text-sm mt-2">
+                  {products.length > 0 && `${products.length} produits chargés...`}
                 </p>
               </div>
             ) : filteredProducts.length === 0 ? (
@@ -1133,6 +1167,10 @@ export default function ProductsPage({
               <>
                 <div className="mb-4 text-sm text-gray-500 font-medium px-1">
                   Affichage de{" "}
+                  <span className="text-black dark:text-white font-bold">
+                    {displayedProducts.length}
+                  </span>{" "}
+                  sur{" "}
                   <span className="text-black dark:text-white font-bold">
                     {filteredProducts.length}
                   </span>{" "}
@@ -1204,7 +1242,7 @@ export default function ProductsPage({
                         className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 transition"
                         aria-label="Page suivante"
                       >
-                        <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 -rotate-90" />
+                        <ChevronDown className="w-4 h-4 sm:w-5 sm:w-5 -rotate-90" />
                       </button>
                     </nav>
                   </div>
@@ -1214,6 +1252,23 @@ export default function ProductsPage({
           </section>
         </div>
       </main>
+
+      {/* Custom Scrollbar Styles */}
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+      `}</style>
     </>
   );
 }
