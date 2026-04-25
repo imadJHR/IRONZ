@@ -118,8 +118,9 @@ const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
 const PLACEHOLDER = "/placeholder.svg";
-// Poll every 30 seconds for real-time sync
-const POLL_INTERVAL_MS = 30_000;
+
+// OPTIMISATION: Polling augmenté à 60s pour éviter de surcharger le client/serveur
+const POLL_INTERVAL_MS = 60_000;
 
 const SORT_OPTIONS: SortOption[] = [
   { value: "featured", label: "Mis en avant" },
@@ -183,17 +184,21 @@ const renderRating = (rating: number | undefined): ReactNode => {
   );
 };
 
-// --- FETCH ALL PRODUCTS (handles paginated or flat APIs) ---
+// --- FETCH ALL PRODUCTS (OPTIMIZED) ---
 
 async function fetchAllProductsFromAPI(): Promise<Product[]> {
   let allProducts: Product[] = [];
   let page = 1;
-  const limit = 100;
+  // OPTIMISATION: Limite augmentée pour réduire le nombre de requêtes HTTP
+  const limit = 500; 
 
   while (true) {
+    // OPTIMISATION: Utilisation du cache Next.js (revalidate) au lieu de no-store
+    // Cela met en cache la réponse pendant 60 secondes côté serveur/navigateur
     const res = await fetch(`${API_URL}/products?page=${page}&limit=${limit}`, {
-      cache: "no-store",
+      next: { revalidate: 60 }, 
     });
+    
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
 
     const data: ApiResponse | Product[] = await res.json();
@@ -216,11 +221,11 @@ async function fetchAllProductsFromAPI(): Promise<Product[]> {
     if ((meta.totalPages && page >= meta.totalPages) || batch.length < limit) break;
 
     page++;
-    // Small delay to avoid hammering the API
-    await new Promise((r) => setTimeout(r, 80));
+    
+    // OPTIMISATION: Suppression du setTimeout artificiel qui ralentissait inutilement
   }
 
-  // Deduplicate by id
+  // Deduplicate by id just in case
   return Array.from(
     new Map(allProducts.map((p) => [getProductId(p), p])).values()
   );
