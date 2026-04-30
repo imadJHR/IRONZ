@@ -667,18 +667,47 @@ const FilterChip = memo(
 FilterChip.displayName = "FilterChip";
 
 // ─── FETCH ────────────────────────────────────────────────
+// ─── FETCH ────────────────────────────────────────────────
 export async function getProducts(query?: string): Promise<Product[]> {
   try {
-    const url = query
-      ? `${API_URL}/products?${query}&limit=1000`
-      : `${API_URL}/products?limit=1000`;
-    const res = await fetch(url, {
-      cache: "no-store",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (!res.ok) throw new Error("Failed to fetch products");
-    const data = await res.json();
-    return data.data || data.products || data || [];
+    const allProducts: Product[] = [];
+    let page = 1;
+    const limit = 100;
+    let hasMore = true;
+
+    while (hasMore) {
+      const base = query
+        ? `${API_URL}/products?${query}`
+        : `${API_URL}/products?`;
+      const url = `${base}&limit=${limit}&page=${page}`;
+
+      const res = await fetch(url, {
+        cache: "no-store",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!res.ok) throw new Error("Failed to fetch products");
+      const data = await res.json();
+
+      const batch: Product[] =
+        data.data || data.products || (Array.isArray(data) ? data : []);
+      allProducts.push(...batch);
+
+      // Arrêter si : batch vide, plus petit que limit, ou total connu atteint
+      if (batch.length < limit) {
+        hasMore = false;
+      } else if (data.total && allProducts.length >= data.total) {
+        hasMore = false;
+      } else if (
+        data.pagination?.totalPages &&
+        page >= data.pagination.totalPages
+      ) {
+        hasMore = false;
+      } else {
+        page++;
+      }
+    }
+
+    return allProducts;
   } catch (error) {
     console.error("❌ Error fetching products:", error);
     return [];
