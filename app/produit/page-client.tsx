@@ -117,6 +117,17 @@ const isProductOutOfStock = (product: Product): boolean =>
 const cn = (...classes: (string | boolean | undefined)[]) =>
   classes.filter(Boolean).join(" ");
 
+// ─── GENERATE SLUG ─────────────────────────────────────
+const generateSlug = (name: string, id?: string): string => {
+  const base = name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return id ? `${base}-${id.slice(-6)}` : base;
+};
+
 // ─── CLOUD IMAGE ─────────────────────────────────────────
 const CloudImg = memo(
   ({
@@ -239,8 +250,8 @@ const ProductCard = memo(function ProductCard({
         viewport={{ once: true, amount: 0.1 }}
         className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-lg hover:border-yellow-200 dark:hover:border-yellow-900/50 transition-all duration-300 flex"
       >
-        {/* Image */}
-        <div className="relative w-28 xs:w-36 sm:w-48 md:w-56 lg:w-64 shrink-0 overflow-hidden bg-gray-50 dark:bg-gray-800">
+        {/* Image – largeur adaptative */}
+        <div className="relative w-full max-w-[180px] sm:max-w-[220px] md:max-w-[280px] shrink-0 overflow-hidden bg-gray-50 dark:bg-gray-800">
           <Link
             href={`/produit/${product.slug || productId}`}
             className="block w-full h-full min-h-[140px] sm:min-h-[180px]"
@@ -538,12 +549,12 @@ interface CategoryPillsProps {
 
 const CategoryPills = memo(
   ({ categories, selectedCategory, onSelect }: CategoryPillsProps) => (
-    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+    <div className="flex flex-nowrap gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">
       <motion.button
         whileTap={{ scale: 0.95 }}
         onClick={() => onSelect("")}
         className={cn(
-          "px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider border transition-all",
+          "px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider border transition-all whitespace-nowrap",
           selectedCategory === ""
             ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white shadow-md"
             : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
@@ -557,7 +568,7 @@ const CategoryPills = memo(
           whileTap={{ scale: 0.95 }}
           onClick={() => onSelect(cat)}
           className={cn(
-            "px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider border transition-all",
+            "px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider border transition-all whitespace-nowrap",
             selectedCategory === cat
               ? "bg-yellow-500 text-black border-yellow-600 shadow-md"
               : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-yellow-400 hover:text-yellow-600"
@@ -587,12 +598,12 @@ const SubCategoryPills = memo(
         animate={{ opacity: 1, height: "auto" }}
         exit={{ opacity: 0, height: 0 }}
         transition={{ duration: 0.2 }}
-        className="flex flex-wrap gap-1.5 sm:gap-2"
+        className="flex flex-nowrap gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar"
       >
         <button
           onClick={() => onSelect("")}
           className={cn(
-            "px-2.5 sm:px-3 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider border transition-all flex items-center gap-1 sm:gap-1.5",
+            "px-2.5 sm:px-3 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider border transition-all flex items-center gap-1 sm:gap-1.5 whitespace-nowrap",
             selectedSubCategory === ""
               ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700"
               : "bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-yellow-300 hover:text-yellow-600"
@@ -606,7 +617,7 @@ const SubCategoryPills = memo(
             key={sub}
             onClick={() => onSelect(sub)}
             className={cn(
-              "px-2.5 sm:px-3 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider border transition-all flex items-center gap-1 sm:gap-1.5",
+              "px-2.5 sm:px-3 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold uppercase tracking-wider border transition-all flex items-center gap-1 sm:gap-1.5 whitespace-nowrap",
               selectedSubCategory === sub
                 ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700"
                 : "bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-yellow-300 hover:text-yellow-600"
@@ -667,7 +678,6 @@ const FilterChip = memo(
 FilterChip.displayName = "FilterChip";
 
 // ─── FETCH ────────────────────────────────────────────────
-// ─── FETCH ────────────────────────────────────────────────
 export async function getProducts(query?: string): Promise<Product[]> {
   try {
     const allProducts: Product[] = [];
@@ -688,11 +698,17 @@ export async function getProducts(query?: string): Promise<Product[]> {
       if (!res.ok) throw new Error("Failed to fetch products");
       const data = await res.json();
 
-      const batch: Product[] =
+      let batch: Product[] =
         data.data || data.products || (Array.isArray(data) ? data : []);
+
+      // Ensure every product has a slug (generate if missing)
+      batch = batch.map((p: Product) => ({
+        ...p,
+        slug: p.slug || generateSlug(p.name, p._id || p.id),
+      }));
+
       allProducts.push(...batch);
 
-      // Arrêter si : batch vide, plus petit que limit, ou total connu atteint
       if (batch.length < limit) {
         hasMore = false;
       } else if (data.total && allProducts.length >= data.total) {
@@ -711,6 +727,23 @@ export async function getProducts(query?: string): Promise<Product[]> {
   } catch (error) {
     console.error("❌ Error fetching products:", error);
     return [];
+  }
+}
+
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  try {
+    const res = await fetch(`${API_URL}/products?slug=${slug}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const product = data.data?.[0] || data.products?.[0] || null;
+    if (product && !product.slug) {
+      product.slug = slug;
+    }
+    return product;
+  } catch {
+    return null;
   }
 }
 
@@ -924,6 +957,14 @@ export default function ProductsPage() {
             transform: translateX(100%);
           }
         }
+        /* Hide scrollbar for pills */
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
       `}</style>
 
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -935,7 +976,7 @@ export default function ProductsPage() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -16, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-4 right-4 z-50 max-w-[calc(100vw-2rem)]"
+              className="fixed top-4 right-4 z-50 max-w-[calc(100vw-2rem)] break-words"
             >
               <div
                 className={cn(
@@ -1346,10 +1387,10 @@ export default function ProductsPage() {
 
                   <button
                     onClick={() => setShowMobileFilters(true)}
-                    className="lg:hidden flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300 shadow-sm hover:border-yellow-400 transition-colors"
+                    className="lg:hidden flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-[10px] sm:text-xs font-semibold text-gray-700 dark:text-gray-300 shadow-sm hover:border-yellow-400 transition-colors whitespace-nowrap"
                   >
                     <SlidersHorizontal className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <span className="hidden xs:inline">Filtres</span>
+                    <span className="hidden sm:inline">Filtres</span>
                     {activeFilterCount > 0 && (
                       <span className="bg-yellow-500 text-black text-[9px] sm:text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">
                         {activeFilterCount}

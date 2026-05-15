@@ -109,6 +109,17 @@ const formatDate = (date?: { $date: string } | string): string => {
   });
 };
 
+// ─── SLUG GENERATION (identique à la page listing) ────────
+const generateSlug = (name: string, id?: string): string => {
+  const base = name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return id ? `${base}-${id.slice(-6)}` : base;
+};
+
 // ─── CLOUD IMAGE ─────────────────────────────────────────
 const CloudImg = memo(
   ({
@@ -231,24 +242,55 @@ Badge.displayName = "Badge";
 
 // ─── FETCH ────────────────────────────────────────────────
 async function fetchProductBySlug(slug: string): Promise<Product | null> {
+  // 1) Essayer directement ?slug=
   try {
-    const res = await fetch(`${API_URL}/products?slug=${slug}`, {
+    const direct = await fetch(`${API_URL}/products?slug=${encodeURIComponent(slug)}`, {
       cache: "no-store",
     });
-    if (!res.ok) return null;
-    const data = await res.json();
-    const products = data.data || data.products || data || [];
-    return (
-      products.find((p: Product) => p.slug === slug) || products[0] || null
-    );
-  } catch {
-    return null;
-  }
+    if (direct.ok) {
+      const data = await direct.json();
+      const products = data.data || data.products || data || [];
+      const found = products.find(
+        (p: Product) => p.slug === slug || generateSlug(p.name, p._id || p.id) === slug
+      );
+      if (found) {
+        if (!found.slug) found.slug = slug;
+        return found;
+      }
+    }
+  } catch {}
+
+  // 2) Fallback : paginer tous les produits et chercher celui qui correspond au slug
+  try {
+    let page = 1;
+    const limit = 100;
+    while (true) {
+      const res = await fetch(`${API_URL}/products?limit=${limit}&page=${page}`, {
+        cache: "no-store",
+      });
+      if (!res.ok) break;
+      const data = await res.json();
+      const batch = data.data || data.products || (Array.isArray(data) ? data : []);
+      for (const p of batch) {
+        const pSlug = p.slug || generateSlug(p.name, p._id || p.id);
+        if (pSlug === slug) {
+          if (!p.slug) p.slug = slug;
+          return p;
+        }
+      }
+      if (batch.length < limit) break;
+      const total = data.total || (data.pagination?.totalItems ?? Infinity);
+      if (page * limit >= total) break;
+      page++;
+    }
+  } catch {}
+
+  return null;
 }
 
 async function fetchRelatedProducts(
   category?: string,
-  currentId?: string
+  currentSlug?: string
 ): Promise<Product[]> {
   if (!category) return [];
   try {
@@ -260,7 +302,10 @@ async function fetchRelatedProducts(
     const data = await res.json();
     const products = data.data || data.products || data || [];
     return products
-      .filter((p: Product) => getProductId(p) !== currentId)
+      .filter((p: Product) => {
+        const pSlug = p.slug || generateSlug(p.name, p._id || p.id);
+        return pSlug !== currentSlug;
+      })
       .slice(0, 4);
   } catch {
     return [];
@@ -297,11 +342,8 @@ export default function ProductDetailClient() {
     fetchProductBySlug(slug)
       .then(async (prod) => {
         setProduct(prod);
-        if (prod?.category) {
-          const rel = await fetchRelatedProducts(
-            prod.category,
-            getProductId(prod)
-          );
+        if (prod) {
+          const rel = await fetchRelatedProducts(prod.category, slug);
           setRelated(rel);
         }
       })
@@ -941,7 +983,7 @@ export default function ProductDetailClient() {
                     key={i}
                     className="flex flex-col items-center gap-1.5 p-3 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-center"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center">
+                    <div className="w-8 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center">
                       <item.icon className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
                     </div>
                     <p className="text-[10px] font-bold text-gray-900 dark:text-white">

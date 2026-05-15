@@ -1,7 +1,7 @@
 // app/produit/page.tsx
 import { Suspense } from "react";
 import { Metadata } from "next";
-import ProductsPage from "./page-client";
+import ProductsPage from "../../app/produit/page-client";
 
 // ─── SEO METADATA (Server Component) ─────────────────────
 export const metadata: Metadata = {
