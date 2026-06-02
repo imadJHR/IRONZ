@@ -2088,11 +2088,7 @@ export default function HomeClient({
                   title: "Service Après-Vente Réactif",
                   text: "SAV basé au Maroc disponible 7j/7 pour vous apporter une solution immédiate.",
                 },
-                {
-                  icon: Heart,
-                  title: "Satisfait ou Remboursé",
-                  text: "14 jours pour retourner vos produits si vous n'êtes pas convaincu.",
-                },
+               
               ].map((item, i) => (
                 <motion.div
                   key={i}
