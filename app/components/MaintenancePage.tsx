@@ -35,7 +35,7 @@ const maintenanceFeatures = [
 ];
 
 const contactLinks = [
-  { icon: Phone, label: "+212 6XX-XXXXXX", href: "tel:+212600000000" },
+  { icon: Phone, label: "+212 669 51 00 42", href: "tel:+212669510042" },
   { icon: Mail, label: "contact@ironz.ma", href: "mailto:contact@ironz.ma" },
 ];
 
