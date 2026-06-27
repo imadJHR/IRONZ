@@ -578,8 +578,8 @@ const Navbar = React.memo(function Navbar({
           className={cn(
             "sticky top-0 w-full z-[100] transition-all duration-300 border-b",
             scrolled
-              ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg shadow-lg py-1 border-gray-200 dark:border-gray-800"
-              : "bg-white dark:bg-gray-900 py-2 border-transparent"
+              ? "bg-white/95 backdrop-blur-lg shadow-lg py-1 border-gray-100"
+              : "bg-white py-2 border-transparent"
           )}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -627,8 +627,8 @@ const Navbar = React.memo(function Navbar({
                     className={cn(
                       "flex items-center gap-1 px-3 xl:px-4 py-2.5 rounded-xl text-sm font-black uppercase italic transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
                       isActive("/categories") || isActive("/produit")
-                        ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-                        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
+                        ? "text-gray-900 bg-gray-100"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                     )}
                   >
                     {language === "fr" ? "Produits" : "Products"}
@@ -674,8 +674,8 @@ const Navbar = React.memo(function Navbar({
                     className={cn(
                       "flex items-center gap-1 px-3 xl:px-4 py-2.5 rounded-xl text-sm font-black uppercase italic transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
                       isActive("/services")
-                        ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-                        : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
+                        ? "text-gray-900 bg-gray-100"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                     )}
                   >
                     {language === "fr" ? "Services" : "Services"}
@@ -1443,15 +1443,15 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
 
   return (
     <footer
-      className="bg-black text-white relative overflow-hidden border-t border-gray-900"
+      className="bg-white text-gray-900 relative overflow-hidden border-t border-gray-100"
       aria-label="Pied de page IRONZ"
     >
       <div
         className="absolute inset-0 overflow-hidden pointer-events-none"
         aria-hidden="true"
       >
-        <div className="absolute top-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-yellow-500/8 rounded-full blur-[80px] sm:blur-[100px] -translate-y-1/2" />
-        <div className="absolute bottom-0 left-1/4 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-orange-500/8 rounded-full blur-[100px] sm:blur-[120px] translate-y-1/2" />
+        <div className="absolute top-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-yellow-500/10 rounded-full blur-[80px] sm:blur-[100px] -translate-y-1/2" />
+        <div className="absolute bottom-0 left-1/4 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-orange-500/10 rounded-full blur-[100px] sm:blur-[120px] translate-y-1/2" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8 sm:pb-12">
@@ -1477,7 +1477,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 unoptimized
               />
             </Link>
-            <p className="text-gray-400 leading-relaxed text-sm max-w-xs">
+            <p className="text-gray-600 leading-relaxed text-sm max-w-xs">
               {language === "fr"
                 ? "L'élite de l'équipement sportif marocain. Forgez votre avenir avec notre matériel de qualité professionnelle."
                 : "Morocco's elite sports equipment. Forge your future with our professional-grade gear."}
@@ -1490,7 +1490,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`IRONZ sur ${social.name}`}
-                  className="h-10 w-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-black hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300"
+                  className="h-10 w-10 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 hover:text-black hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300"
                   whileHover={{ y: -3, scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -1507,7 +1507,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
               ].map((badge, i) => (
                 <span
                   key={i}
-                  className="text-xs text-gray-500 bg-white/5 border border-white/10 px-2.5 py-1 rounded-full"
+                  className="text-xs text-gray-600 bg-gray-100 border border-gray-200 px-2.5 py-1 rounded-full"
                 >
                   {badge}
                 </span>
@@ -1529,7 +1529,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 <li key={i}>
                   <Link
                     href={cat.href}
-                    className="group flex items-center text-gray-400 hover:text-white transition-colors text-sm"
+                    className="group flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm"
                   >
                     <ChevronRight className="h-4 w-4 mr-2 text-yellow-500 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" />
                     {cat.name}
@@ -1553,7 +1553,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 <li key={i}>
                   <Link
                     href={link.href}
-                    className="group flex items-center text-gray-400 hover:text-white transition-colors text-sm"
+                    className="group flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm"
                   >
                     <ChevronRight className="h-4 w-4 mr-2 text-orange-500 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" />
                     {link.name}
@@ -1576,22 +1576,22 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
               {contactInfo.map((item, i) => (
                 <motion.div
                   key={i}
-                  className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group cursor-pointer"
+                  className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100 hover:bg-gray-100 transition-colors group cursor-pointer"
                   whileHover={{ y: -2 }}
                 >
-                  <div className="mt-0.5 p-1.5 rounded-lg bg-black text-gray-500 group-hover:text-yellow-500 group-hover:bg-yellow-500/10 transition-colors flex-shrink-0">
+                  <div className="mt-0.5 p-1.5 rounded-lg bg-white text-gray-500 group-hover:text-yellow-500 group-hover:bg-yellow-500/10 transition-colors flex-shrink-0 border border-gray-200">
                     {item.icon}
                   </div>
                   <div className="flex-1 min-w-0">
                     {item.href ? (
                       <a
                         href={item.href}
-                        className="text-sm text-gray-300 hover:text-white transition-colors leading-snug block truncate"
+                        className="text-sm text-gray-600 hover:text-gray-900 transition-colors leading-snug block truncate"
                       >
                         {item.content}
                       </a>
                     ) : (
-                      <span className="text-sm text-gray-300 leading-snug block">
+                      <span className="text-sm text-gray-600 leading-snug block">
                         {item.content}
                       </span>
                     )}
@@ -1604,14 +1604,14 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
 
         {/* Bottom Bar */}
         <motion.div
-          className="border-t border-white/10 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
+          className="border-t border-gray-100 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          <p className="text-gray-500 text-xs sm:text-sm font-medium tracking-wide text-center sm:text-left">
-            <span className="text-yellow-500 font-bold">&copy;</span>{" "}
+          <p className="text-gray-600 text-xs sm:text-sm font-medium tracking-wide text-center sm:text-left">
+            <span className="text-yellow-600 font-bold">&copy;</span>{" "}
             {currentYear} IRONZ.{" "}
             {language === "fr"
               ? "Tous droits réservés."
@@ -1634,7 +1634,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 <li key={i}>
                   <Link
                     href={item.href}
-                    className="text-xs font-black uppercase tracking-wider text-gray-600 hover:text-yellow-500 transition-colors"
+                    className="text-xs font-black uppercase tracking-wider text-gray-600 hover:text-yellow-600 transition-colors"
                   >
                     {item.label}
                   </Link>
