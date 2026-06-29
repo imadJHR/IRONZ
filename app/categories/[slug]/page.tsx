@@ -122,7 +122,7 @@ interface ToastState {
 // --- CONSTANTS ---
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
+  "https://cts4hw2cbnwl4ur7zp6acy6cyy0jnxeo.lambda-url.eu-north-1.on.aws/api";
 const PLACEHOLDER = "/placeholder.svg";
 const BATCH_LIMIT = 50;
 const AUTO_REFRESH_INTERVAL = 90_000; // 90 secondes

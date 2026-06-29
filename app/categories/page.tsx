@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 async function getProducts(): Promise<any> {
   try {
     const res = await fetch(
-      "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api/products",
+      "https://cts4hw2cbnwl4ur7zp6acy6cyy0jnxeo.lambda-url.eu-north-1.on.aws/api/products",
       { next: { revalidate: 3600 } } // ISR: Revalidation toutes les heures
     );
 
