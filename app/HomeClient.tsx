@@ -64,12 +64,12 @@ import logo from "../public/logo.png";
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://m3cznnxb6ipf6oqi2kmfqsqqma0rsiaz.lambda-url.eu-north-1.on.aws/api";
+  "https://cts4hw2cbnwl4ur7zp6acy6cyy0jnxeo.lambda-url.eu-north-1.on.aws/api";
 const PLACEHOLDER = "/placeholder.svg";
 
 // Site-level SEO constants – update to match your brand
 const SITE_NAME = "IRONZ PRO";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://ironzpro.ma";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://ironz.ma";
 const SITE_DESCRIPTION =
   "IRONZ PRO – Équipements de fitness et musculation professionnels au Maroc. Livraison rapide, qualité garantie, meilleur prix.";
 const SITE_OG_IMAGE = `${SITE_URL}/og-image.jpg`; // 1200×630 recommended
