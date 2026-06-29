@@ -10,6 +10,7 @@ import {
   AlertCircle, Zap, Truck, ShieldCheck, RotateCcw,
   ChevronRight, Package, Tag, Minus, Plus, ArrowRight,
   Sparkles, BadgeCheck, Info, MessageSquare, List, Award,
+  RefreshCw,
 } from "lucide-react";
 import { useCart } from "../../../context/cart-context";
 import { useFavorites } from "../../../context/favorites-context";
@@ -332,6 +333,7 @@ export default function ProductDetailClient() {
     "desc" | "features" | "specs" | "reviews"
   >("desc");
   const [imgZoom, setImgZoom] = useState(false);
+  const [retryCounter, setRetryCounter] = useState(0);
 
   const { addToCart } = useCart();
   const { isInFavorites, addToFavorites, removeFromFavorites } = useFavorites();
@@ -349,7 +351,7 @@ export default function ProductDetailClient() {
       })
       .catch(() => showToast("Erreur de chargement", "error"))
       .finally(() => setLoading(false));
-  }, [slug]);
+  }, [slug, retryCounter]);
 
   const showToast = useCallback(
     (message: string, type: ToastState["type"]) => {
@@ -454,19 +456,19 @@ export default function ProductDetailClient() {
     );
   }
 
-  // ── Not found ─────────────────────────────────────────
+  // ── Not found / Retry ─────────────────────────────────
   if (!product) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center p-4">
         <div className="text-center max-w-md">
-          <div className="w-20 h-20 rounded-2xl bg-red-100 dark:bg-red-900/20 flex items-center justify-center mx-auto mb-5">
-            <AlertCircle className="w-10 h-10 text-red-500" />
+          <div className="w-20 h-20 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mx-auto mb-5">
+            <RefreshCw className="w-10 h-10 text-yellow-500" />
           </div>
           <h1 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
-            Produit introuvable
+            Impossible de charger
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">
-            Ce produit n&apos;existe plus ou a été déplacé.
+            Le serveur met du temps à répondre. Essayez de rafraîchir.
           </p>
           <div className="flex items-center justify-center gap-3">
             <button
@@ -476,13 +478,13 @@ export default function ProductDetailClient() {
               <ArrowLeft className="w-4 h-4" />
               Retour
             </button>
-            <Link
-              href="/produit"
+            <button
+              onClick={() => setRetryCounter((c) => c + 1)}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-sm rounded-xl transition-colors"
             >
-              Voir les produits
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+              <RefreshCw className="w-4 h-4" />
+              Rafraîchir
+            </button>
           </div>
         </div>
       </div>

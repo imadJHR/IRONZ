@@ -757,6 +757,7 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
+  const [retryCounter, setRetryCounter] = useState(0);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [toast, setToast] = useState<ToastState>({
     show: false,
@@ -800,7 +801,7 @@ export default function ProductsPage() {
       }
     };
     load();
-  }, []);
+  }, [retryCounter]);
 
   // ── Filter & Sort ──────────────────────────────────────
   useEffect(() => {
@@ -1478,10 +1479,32 @@ export default function ProductsPage() {
                 </div>
               ) : filtered.length === 0 ? (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center py-16 sm:py-20 md:py-28 text-center px-4"
-                >
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center justify-center py-16 sm:py-20 md:py-28 text-center px-4"
+              >
+                {products.length === 0 ? (
+                  <>
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mb-4 sm:mb-5">
+                      <RefreshCw className="w-7 h-7 sm:w-9 sm:h-9 text-yellow-500" />
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-2">
+                      Impossible de charger
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-5 sm:mb-6 max-w-xs sm:max-w-sm">
+                      Le serveur met du temps à répondre. Essayez de
+                      rafraîchir la page.
+                    </p>
+                    <button
+                      onClick={() => setRetryCounter((c) => c + 1)}
+                      className="px-4 sm:px-5 py-2 sm:py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs sm:text-sm rounded-xl transition-colors inline-flex items-center gap-2"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      Rafraîchir
+                    </button>
+                </>
+              ) : (
+                <>
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4 sm:mb-5">
                     <Search className="w-7 h-7 sm:w-9 sm:h-9 text-gray-400" />
                   </div>
@@ -1499,6 +1522,8 @@ export default function ProductsPage() {
                     <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     Réinitialiser les filtres
                   </button>
+                </>
+              )}
                 </motion.div>
               ) : (
                 <>
