@@ -768,7 +768,7 @@ export default function ProductsPage() {
   const [maxProductPrice, setMaxProductPrice] = useState(100000);
 
   const [filters, setFilters] = useState<FilterState>({
-    search: searchParams?.get("q") || "",
+    search: searchParams?.get("q") || searchParams?.get("search") || "",
     category: searchParams?.get("category") || "",
     subCategory: searchParams?.get("subCategory") || "",
     minPrice: 0,
