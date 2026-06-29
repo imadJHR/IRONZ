@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, ChangeEvent, KeyboardEvent, FormEvent } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+
 import {
   ArrowLeft,
   Package,
@@ -28,6 +29,7 @@ import {
   AlertCircle,
   Zap,
   LayoutList,
+  RefreshCw,
   Star,
   MessageSquare,
   Trash2,
@@ -185,6 +187,8 @@ export default function EditProductPage() {
   // Loading states
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+  const [retryCounter, setRetryCounter] = useState(0);
   const [activeTab, setActiveTab] = useState<string>('equipements');
   const [autoDiscount, setAutoDiscount] = useState<boolean>(false);
 
@@ -315,25 +319,24 @@ export default function EditProductPage() {
           (c) =>
             c.dbValue.toLowerCase() === (product.category || '').toLowerCase()
         );
-        setActiveTab(catObj ? catObj.id : 'equipements');
       } catch (error) {
-        console.error('Error fetching product:', error);
-        showNotification('Erreur lors du chargement du produit', 'error');
-      } finally {
-        setIsLoading(false);
+          console.error("Error fetching product:", error);
+          setFetchError("Produit introuvable");
+          showNotification("Erreur lors du chargement du produit", "error");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      if (id) {
+        setFetchError(null);
+        setIsLoading(true);
+        fetchProduct();
+        fetchReviews();
       }
-    };
-
-    if (id) {
-      fetchProduct();
-      fetchReviews();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  // ─── Fetch reviews ────────────────────────────────────────────────────────────
-
-  const fetchReviews = async (): Promise<void> => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, retryCounter]);
+        const fetchReviews = async (): Promise<void> => {
     try {
       const res = await fetch(`${API_URL}/products/${id}/reviews`);
       const result: ReviewApiResponse = await res.json();
@@ -708,6 +711,38 @@ export default function EditProductPage() {
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-yellow-500 animate-spin mx-auto mb-4" />
           <p className="text-gray-600 font-medium">Chargement du produit...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (fetchError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center max-w-md px-4">
+          <div className="w-16 h-16 rounded-2xl bg-yellow-50 flex items-center justify-center mx-auto mb-4">
+            <RefreshCw className="w-8 h-8 text-yellow-500" />
+          </div>
+          <h1 className="text-2xl font-black text-gray-900 mb-2">Impossible de charger</h1>
+          <p className="text-gray-500 text-sm mb-6">
+            Le serveur met du temps à répondre. Essayez de rafraîchir.
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <button
+              onClick={() => router.back()}
+              className="px-5 py-2.5 border border-gray-200 bg-white text-gray-700 font-bold text-sm rounded-xl hover:border-yellow-400 transition-colors inline-flex items-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Retour
+            </button>
+            <button
+              onClick={() => setRetryCounter((c) => c + 1)}
+              className="px-5 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-sm rounded-xl transition-colors inline-flex items-center gap-2"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Rafraîchir
+            </button>
+          </div>
         </div>
       </div>
     );

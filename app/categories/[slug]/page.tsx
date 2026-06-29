@@ -399,6 +399,7 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
   const [isLoading, setIsLoading] = useState<boolean>(initialProducts.length === 0);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [retryCounter, setRetryCounter] = useState(0);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
 
@@ -466,12 +467,12 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
 
   // Initial load & auto-select category from slug
   useEffect(() => {
-    if (initialProducts.length > 0) {
+    if (initialProducts.length > 0 && retryCounter === 0) {
       updatePriceRange(initialProducts);
     } else {
       loadProducts(false);
     }
-  }, []);
+  }, [retryCounter]);
 
   // Auto-select category based on URL slug once products are loaded
   useEffect(() => {
@@ -898,17 +899,36 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
               </div>
             ) : filteredProducts.length === 0 ? (
               <div className="text-center py-20 bg-gray-50 dark:bg-gray-900 rounded-3xl border border-dashed border-gray-200 dark:border-gray-800">
-                <Search className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-                <h3 className="text-xl font-bold mb-2">Aucun produit trouvé</h3>
-                {searchQuery && (
-                  <p className="text-gray-400 text-sm mb-2">
-                    Aucun résultat pour &ldquo;<span className="font-bold text-yellow-600">{searchQuery}</span>&rdquo;
-                  </p>
+                {products.length === 0 ? (
+                  <>
+                    <RefreshCw className="h-16 w-16 mx-auto text-yellow-500 mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Impossible de charger</h3>
+                    <p className="text-gray-500 text-sm sm:text-base mb-6 px-4">
+                      Le serveur met du temps à répondre. Essayez de rafraîchir.
+                    </p>
+                    <Button
+                      onClick={() => setRetryCounter((c) => c + 1)}
+                      className="bg-yellow-500 hover:bg-yellow-400 text-black rounded-xl px-6 font-bold"
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Rafraîchir
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Search className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+                    <h3 className="text-xl font-bold mb-2">Aucun produit trouvé</h3>
+                    {searchQuery && (
+                      <p className="text-gray-400 text-sm mb-2">
+                        Aucun résultat pour &ldquo;<span className="font-bold text-yellow-600">{searchQuery}</span>&rdquo;
+                      </p>
+                    )}
+                    <p className="text-gray-500 text-sm sm:text-base mb-6 px-4">Essayez de modifier vos filtres ou votre recherche.</p>
+                    <Button onClick={clearFilters} className="bg-black text-white rounded-xl px-6">
+                      Réinitialiser les filtres
+                    </Button>
+                  </>
                 )}
-                <p className="text-gray-500 text-sm sm:text-base mb-6 px-4">Essayez de modifier vos filtres ou votre recherche.</p>
-                <Button onClick={clearFilters} className="bg-black text-white rounded-xl px-6">
-                  Réinitialiser les filtres
-                </Button>
               </div>
             ) : (
               <>
