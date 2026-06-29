@@ -12,7 +12,7 @@ import React, {
   useRef,
 } from "react";
 import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, useParams } from "next/navigation";
 import {
   Search,
   Filter,
@@ -382,6 +382,18 @@ interface ProductsPageProps {
 export default function ProductsPage({ initialProducts = [] }: ProductsPageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const params = useParams();
+  const slug = typeof params?.slug === "string" ? params.slug : "";
+
+  // Map URL slug to expected category names (case-insensitive matching)
+  const slugToCategory = useMemo(() => {
+    const map: Record<string, string[]> = {
+      equipements: ["Equipements", "Équipements", "equipements", "équipements"],
+      supplement: ["Supplément", "Supplement", "supplément", "supplement"],
+      accessoires: ["Accessoires", "accessoires"],
+    };
+    return map[slug.toLowerCase()] || [];
+  }, [slug]);
 
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [isLoading, setIsLoading] = useState<boolean>(initialProducts.length === 0);
@@ -452,7 +464,7 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
     }
   }, [updatePriceRange, showNotification]);
 
-  // Initial load
+  // Initial load & auto-select category from slug
   useEffect(() => {
     if (initialProducts.length > 0) {
       updatePriceRange(initialProducts);
@@ -460,6 +472,21 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
       loadProducts(false);
     }
   }, []);
+
+  // Auto-select category based on URL slug once products are loaded
+  useEffect(() => {
+    if (!slug || slugToCategory.length === 0 || products.length === 0) return;
+
+    // Find which of the expected category names actually exists in the API data
+    const apiCategories = [...new Set(products.map((p) => p.category).filter(Boolean))] as string[];
+    const matchedCategory = slugToCategory.find((cat) =>
+      apiCategories.some((apiCat) => apiCat.toLowerCase() === cat.toLowerCase())
+    );
+
+    if (matchedCategory) {
+      setSelectedCategories([matchedCategory]);
+    }
+  }, [slug, slugToCategory, products]);
 
   // AUTO-REFRESH every 30 seconds (like CategoryPage pattern)
   useEffect(() => {
