@@ -1183,56 +1183,65 @@ export default function ProductDetailClient() {
 
                 {activeTab === "reviews" && (
                   <div className="space-y-6">
-                    {product.rating && (
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-5 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800">
-                        <div className="text-center shrink-0">
-                          <p className="text-6xl font-black text-gray-900 dark:text-white leading-none">
-                            {product.rating.toFixed(1)}
-                          </p>
-                          <StarRating rating={product.rating} size="md" />
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
-                            {product.reviewCount ||
-                              product.reviews?.length ||
-                              0}{" "}
-                            avis
-                          </p>
-                        </div>
-                        <div className="flex-1 w-full space-y-1.5">
-                          {[5, 4, 3, 2, 1].map((star) => {
-                            const count =
-                              product.reviews?.filter(
-                                (r) => Math.round(r.rating) === star
-                              ).length || 0;
-                            const total = product.reviews?.length || 1;
-                            const pct = Math.round((count / total) * 100);
-                            return (
-                              <div
-                                key={star}
-                                className="flex items-center gap-2"
-                              >
-                                <span className="text-xs font-bold text-gray-500 w-4">
-                                  {star}
-                                </span>
-                                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400 shrink-0" />
-                                <div className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    {/* Nombre réel d'avis détaillés disponibles */}
+                    {(() => {
+                      const detailedReviews = product.reviews || [];
+                      const detailedCount = detailedReviews.length;
+                      const declaredCount = product.reviewCount || 0;
+                      const hasRating = !!product.rating;
+
+                      // Récap notes + répartition : seulement si on a de vraies notes
+                      if (hasRating) {
+                        return (
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-5 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800">
+                            <div className="text-center shrink-0">
+                              <p className="text-6xl font-black text-gray-900 dark:text-white leading-none">
+                                {product.rating!.toFixed(1)}
+                              </p>
+                              <StarRating rating={product.rating!} size="md" />
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
+                                {declaredCount || detailedCount} avis
+                              </p>
+                            </div>
+                            <div className="flex-1 w-full space-y-1.5">
+                              {[5, 4, 3, 2, 1].map((star) => {
+                                const count =
+                                  detailedReviews.filter(
+                                    (r) => Math.round(r.rating) === star
+                                  ).length || 0;
+                                const total = detailedCount || 1;
+                                const pct = Math.round((count / total) * 100);
+                                return (
                                   <div
-                                    className="h-full bg-yellow-400 rounded-full transition-all"
-                                    style={{ width: `${pct}%` }}
-                                  />
-                                </div>
-                                <span className="text-xs text-gray-400 w-8 text-right">
-                                  {pct}%
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
+                                    key={star}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <span className="text-xs font-bold text-gray-500 w-4">
+                                      {star}
+                                    </span>
+                                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400 shrink-0" />
+                                    <div className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                      <div
+                                        className="h-full bg-yellow-400 rounded-full transition-all"
+                                        style={{ width: `${pct}%` }}
+                                      />
+                                    </div>
+                                    <span className="text-xs text-gray-400 w-8 text-right">
+                                      {pct}%
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
 
                     {product.reviews && product.reviews.length > 0 ? (
                       <div className="space-y-4">
-                        {product.reviews.map((review, i) => (
+                        {product.reviews!.map((review, i) => (
                           <div
                             key={i}
                             className="p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800"
@@ -1275,6 +1284,20 @@ export default function ProductDetailClient() {
                             </p>
                           </div>
                         ))}
+                      </div>
+                    ) : product.reviewCount && product.reviewCount > 0 ? (
+                      // L'API déclare des avis mais le détail n'est pas fourni sur cette route
+                      <div className="text-center py-10">
+                        <div className="w-14 h-14 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mx-auto mb-3">
+                          <MessageSquare className="w-7 h-7 text-yellow-500" />
+                        </div>
+                        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                          {product.reviewCount} avis clients
+                        </p>
+                        <p className="text-xs text-gray-400 dark:text-gray-600 mt-1">
+                          Les témoignages détaillés ne sont pas encore chargés sur
+                          cette page.
+                        </p>
                       </div>
                     ) : (
                       <div className="text-center py-10">
