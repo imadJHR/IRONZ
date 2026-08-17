@@ -23,6 +23,7 @@ const PLACEHOLDER = "/placeholder.svg";
 
 // ─── TYPES ───────────────────────────────────────────────
 interface Review {
+  _id?: string;
   username: string;
   title: string;
   body: string;
@@ -320,6 +321,8 @@ export default function ProductDetailClient() {
   const slug = params?.slug as string;
 
   const [product, setProduct] = useState<Product | null>(null);
+  const [reviews, setReviews] = useState<Product["reviews"]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
   const [related, setRelated] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -335,6 +338,14 @@ export default function ProductDetailClient() {
   const [imgZoom, setImgZoom] = useState(false);
   const [retryCounter, setRetryCounter] = useState(0);
 
+  const [reviewForm, setReviewForm] = useState({
+    username: "",
+    title: "",
+    body: "",
+    rating: 5,
+    verified: false,
+  });
+
   const { addToCart } = useCart();
   const { isInFavorites, addToFavorites, removeFromFavorites } = useFavorites();
 
@@ -345,6 +356,7 @@ export default function ProductDetailClient() {
       .then(async (prod) => {
         setProduct(prod);
         if (prod) {
+          await loadReviews(prod._id || prod.id || "");
           const rel = await fetchRelatedProducts(prod.category, slug);
           setRelated(rel);
         }
@@ -408,6 +420,54 @@ export default function ProductDetailClient() {
       showToast("Ajouté aux favoris ♥", "success");
     }
   }, [product, isInFavorites, addToFavorites, removeFromFavorites, showToast]);
+
+  const loadReviews = useCallback(async (productId: string) => {
+    if (!productId) return;
+    setReviewsLoading(true);
+    try {
+      // Le Lambda n'expose pas d'endpoint /reviews séparé :
+      // on récupère le produit complet qui contient déjà le tableau `reviews`.
+      const res = await fetch(
+        `${API_URL}/products/${encodeURIComponent(productId)}`,
+        { cache: "no-store" }
+      );
+      if (res.ok) {
+        const json = await res.json();
+        const productData = json.data || json;
+        setReviews((productData.reviews as Product["reviews"]) || []);
+      } else {
+        setReviews([]);
+      }
+    } catch {
+      setReviews([]);
+    } finally {
+      setReviewsLoading(false);
+    }
+  }, []);
+
+  const handleAddReview = useCallback(async () => {
+    if (!product) return;
+    if (!reviewForm.username.trim() || !reviewForm.body.trim()) {
+      showToast("Nom et message sont requis", "error");
+      return;
+    }
+    try {
+      const res = await fetch(
+        `${API_URL}/products/${encodeURIComponent(product._id || product.id || "")}/reviews`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(reviewForm),
+        }
+      );
+      if (!res.ok) throw new Error("Erreur");
+      await loadReviews(product._id || product.id || "");
+      setReviewForm({ username: "", title: "", body: "", rating: 5, verified: false });
+      showToast("Avis ajouté", "success");
+    } catch {
+      showToast("Impossible d'ajouter l'avis", "error");
+    }
+  }, [product, reviewForm, loadReviews, showToast]);
 
   // ── Loading ───────────────────────────────────────────
   if (loading) {
@@ -1183,32 +1243,37 @@ export default function ProductDetailClient() {
 
                 {activeTab === "reviews" && (
                   <div className="space-y-6">
-                    {/* Nombre réel d'avis détaillés disponibles */}
                     {(() => {
-                      const detailedReviews = product.reviews || [];
+                      const detailedReviews = reviews || [];
                       const detailedCount = detailedReviews.length;
                       const declaredCount = product.reviewCount || 0;
-                      const hasRating = !!product.rating;
+                      const displayCount = Math.max(declaredCount, detailedCount);
+                      const average =
+                        detailedCount > 0
+                          ? detailedReviews.reduce(
+                              (s, r) => s + (Number(r.rating) || 0),
+                              0
+                            ) / detailedCount
+                          : product.rating || 0;
+                      const roundedAverage = Number(average.toFixed(1));
 
-                      // Récap notes + répartition : seulement si on a de vraies notes
-                      if (hasRating) {
+                      if (roundedAverage > 0 || displayCount > 0) {
                         return (
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-5 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800">
                             <div className="text-center shrink-0">
                               <p className="text-6xl font-black text-gray-900 dark:text-white leading-none">
-                                {product.rating!.toFixed(1)}
+                                {roundedAverage.toFixed(1)}
                               </p>
-                              <StarRating rating={product.rating!} size="md" />
+                              <StarRating rating={roundedAverage} size="md" />
                               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
-                                {declaredCount || detailedCount} avis
+                                {displayCount || 0} avis
                               </p>
                             </div>
                             <div className="flex-1 w-full space-y-1.5">
                               {[5, 4, 3, 2, 1].map((star) => {
-                                const count =
-                                  detailedReviews.filter(
-                                    (r) => Math.round(r.rating) === star
-                                  ).length || 0;
+                                const count = detailedReviews.filter(
+                                  (r) => Math.round(r.rating) === star
+                                ).length;
                                 const total = detailedCount || 1;
                                 const pct = Math.round((count / total) * 100);
                                 return (
@@ -1239,79 +1304,134 @@ export default function ProductDetailClient() {
                       return null;
                     })()}
 
-                    {product.reviews && product.reviews.length > 0 ? (
-                      <div className="space-y-4">
-                        {product.reviews!.map((review, i) => (
-                          <div
-                            key={i}
-                            className="p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800"
-                          >
-                            <div className="flex items-start justify-between gap-3 mb-3">
-                              <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center shrink-0">
-                                  <span className="text-yellow-700 dark:text-yellow-400 font-black text-sm">
-                                    {review.username
-                                      ?.charAt(0)
-                                      .toUpperCase() || "?"}
-                                  </span>
-                                </div>
-                                <div>
-                                  <div className="flex items-center gap-2">
-                                    <p className="text-sm font-bold text-gray-900 dark:text-white">
-                                      {review.username}
-                                    </p>
-                                    {review.verified && (
-                                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                                        <BadgeCheck className="w-3 h-3" />
-                                        Vérifié
-                                      </span>
-                                    )}
+                    <div className="space-y-4">
+                      {reviewsLoading ? (
+                        <div className="text-center py-8 text-sm text-gray-500">
+                          Chargement des avis...
+                        </div>
+                      ) : (() => {
+                        const detailedReviews = reviews || [];
+                        const declaredCount = product.reviewCount || 0;
+                        const displayCount = Math.max(declaredCount, detailedReviews.length);
+                        if (detailedReviews.length > 0) {
+                          return detailedReviews.map((review) => (
+                            <div
+                              key={String(review._id)}
+                              className="p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800"
+                            >
+                              <div className="flex items-start justify-between gap-3 mb-3">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-9 h-9 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center shrink-0">
+                                    <span className="text-yellow-700 dark:text-yellow-400 font-black text-sm">
+                                      {review.username
+                                        ?.charAt(0)
+                                        .toUpperCase() || "?"}
+                                    </span>
                                   </div>
-                                  <StarRating rating={review.rating} size="xs" />
+                                  <div>
+                                    <div className="flex items-center gap-2">
+                                      <p className="text-sm font-bold text-gray-900 dark:text-white">
+                                        {review.username}
+                                      </p>
+                                      {review.verified && (
+                                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                                          <BadgeCheck className="w-3 h-3" />
+                                          Vérifié
+                                        </span>
+                                      )}
+                                    </div>
+                                    <StarRating rating={review.rating} size="xs" />
+                                  </div>
                                 </div>
+                                <span className="text-[11px] text-gray-400 dark:text-gray-500 shrink-0">
+                                  {formatDate(review.createdAt || review.date)}
+                                </span>
                               </div>
-                              <span className="text-[11px] text-gray-400 dark:text-gray-500 shrink-0">
-                                {formatDate(review.createdAt || review.date)}
-                              </span>
-                            </div>
-                            {review.title && (
-                              <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">
-                                {review.title}
+
+                              {review.title && (
+                                <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">
+                                  {review.title}
+                                </p>
+                              )}
+                              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                {review.body}
                               </p>
-                            )}
-                            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                              {review.body}
+                            </div>
+                          ));
+                        }
+
+                        if (displayCount > 0) {
+                          return (
+                            <div className="text-center py-10">
+                              <div className="w-14 h-14 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mx-auto mb-3">
+                                <MessageSquare className="w-7 h-7 text-yellow-500" />
+                              </div>
+                              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                {displayCount} avis clients
+                              </p>
+                              <p className="text-xs text-gray-400 dark:text-gray-600 mt-1">
+                                Les témoignages détaillés ne sont pas encore chargés.
+                              </p>
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <div className="text-center py-10">
+                            <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-3">
+                              <MessageSquare className="w-7 h-7 text-gray-400" />
+                            </div>
+                            <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                              Aucun avis pour le moment
+                            </p>
+                            <p className="text-xs text-gray-400 dark:text-gray-600 mt-1">
+                              Soyez le premier à donner votre avis !
                             </p>
                           </div>
-                        ))}
+                        );
+                      })()}
+                    </div>
+
+                    <div className="mt-2 rounded-xl border border-gray-100 dark:border-gray-800 p-4 sm:p-5 space-y-3">
+                      <p className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+                        Ajouter un avis
+                      </p>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        <input
+                          value={reviewForm.username}
+                          onChange={(e) => setReviewForm((f) => ({ ...f, username: e.target.value }))}
+                          placeholder="Votre nom"
+                          className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm outline-none focus:border-yellow-500"
+                        />
+                        <input
+                          value={reviewForm.title}
+                          onChange={(e) => setReviewForm((f) => ({ ...f, title: e.target.value }))}
+                          placeholder="Titre"
+                          className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm outline-none focus:border-yellow-500"
+                        />
                       </div>
-                    ) : product.reviewCount && product.reviewCount > 0 ? (
-                      // L'API déclare des avis mais le détail n'est pas fourni sur cette route
-                      <div className="text-center py-10">
-                        <div className="w-14 h-14 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mx-auto mb-3">
-                          <MessageSquare className="w-7 h-7 text-yellow-500" />
-                        </div>
-                        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                          {product.reviewCount} avis clients
-                        </p>
-                        <p className="text-xs text-gray-400 dark:text-gray-600 mt-1">
-                          Les témoignages détaillés ne sont pas encore chargés sur
-                          cette page.
-                        </p>
+                      <textarea
+                        value={reviewForm.body}
+                        onChange={(e) => setReviewForm((f) => ({ ...f, body: e.target.value }))}
+                        placeholder="Votre avis..."
+                        className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm outline-none focus:border-yellow-500"
+                        rows={3}
+                      />
+                      <div className="flex flex-wrap items-center gap-4">
+                        <StarRating
+                          rating={reviewForm.rating}
+                          size="sm"
+                          interactive
+                          onChange={(r) => setReviewForm((f) => ({ ...f, rating: r }))}
+                        />
+                        <button
+                          onClick={handleAddReview}
+                          className="ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-500 text-black text-sm font-bold hover:bg-yellow-400"
+                        >
+                          Publier
+                        </button>
                       </div>
-                    ) : (
-                      <div className="text-center py-10">
-                        <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-3">
-                          <MessageSquare className="w-7 h-7 text-gray-400" />
-                        </div>
-                        <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-                          Aucun avis pour le moment
-                        </p>
-                        <p className="text-xs text-gray-400 dark:text-gray-600 mt-1">
-                          Soyez le premier à donner votre avis !
-                        </p>
-                      </div>
-                    )}
+                    </div>
                   </div>
                 )}
               </div>
