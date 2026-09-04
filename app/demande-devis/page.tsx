@@ -448,13 +448,12 @@ ${formData.message}
             className="max-w-4xl mx-auto text-center"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Sparkles className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-600">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-600">
                 Devis personnalisé
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter mb-6">
+            <h1 className="text-5xl md:text-7xl font-display uppercase tracking-wide mb-6">
               Demande de <span className="text-yellow-500">Devis</span>
             </h1>
 
@@ -478,7 +477,7 @@ ${formData.message}
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
                     {stat.icon}
-                    <span className="text-2xl font-black text-gray-900 dark:text-white">
+                    <span className="text-2xl font-display tracking-wide text-gray-900 dark:text-white">
                       {stat.value}
                     </span>
                   </div>
@@ -497,7 +496,7 @@ ${formData.message}
             >
               <a
                 href="#form-section"
-                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-yellow-500/20"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-yellow-500/20"
               >
                 <FileText className="w-5 h-5" />
                 Obtenir mon devis
@@ -506,7 +505,7 @@ ${formData.message}
 
               <Link
                 href="/contact"
-                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-900 dark:text-white font-black uppercase italic tracking-widest rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-sm"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-900 dark:text-white font-display uppercase tracking-widest rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-sm"
               >
                 <Phone className="w-5 h-5" />
                 Nous contacter
@@ -531,7 +530,7 @@ ${formData.message}
               <motion.div variants={itemVariants} className="lg:col-span-1">
                 <div className="sticky top-32 space-y-8">
                   <div className="bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 p-8 shadow-lg">
-                    <h3 className="text-2xl font-black uppercase italic mb-6 text-gray-900 dark:text-white">
+                    <h3 className="text-2xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                       Comment ça marche ?
                     </h3>
 
@@ -544,7 +543,7 @@ ${formData.message}
                             <div
                               className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
                                 isActive
-                                  ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white"
+                                  ? "bg-yellow-500 text-black"
                                   : "bg-gray-100 dark:bg-gray-800 text-gray-400"
                               }`}
                             >
@@ -565,7 +564,7 @@ ${formData.message}
                   </div>
 
                   <div className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 dark:from-yellow-500/5 dark:to-orange-500/5 border border-yellow-500/20 dark:border-yellow-500/10 rounded-3xl p-8">
-                    <h4 className="font-black uppercase italic text-yellow-600 dark:text-yellow-400 mb-6">
+                    <h4 className="font-display uppercase tracking-wide text-yellow-600 dark:text-yellow-400 mb-6">
                       <MessageCircle className="inline w-5 h-5 mr-2" />
                       Besoin d&apos;aide ?
                     </h4>
@@ -614,7 +613,7 @@ ${formData.message}
                       <Check className="w-12 h-12 text-white" />
                     </div>
 
-                    <h3 className="text-3xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                    <h3 className="text-3xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                       Demande envoyée avec succès !
                     </h3>
 
@@ -641,7 +640,7 @@ ${formData.message}
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                       <button
                         onClick={() => setIsSubmitted(false)}
-                        className="px-8 py-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold rounded-2xl transition-colors"
+                        className="px-8 py-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-display uppercase tracking-widest rounded-xl transition-colors"
                         type="button"
                       >
                         Nouvelle demande
@@ -649,7 +648,7 @@ ${formData.message}
 
                       <Link
                         href="/"
-                        className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold rounded-2xl transition-colors inline-flex items-center justify-center"
+                        className="px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-colors inline-flex items-center justify-center"
                       >
                         Retour à l&apos;accueil
                       </Link>
@@ -660,7 +659,7 @@ ${formData.message}
                     {/* Form Header */}
                     <div className="mb-10">
                       <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-3xl font-black uppercase italic text-gray-900 dark:text-white">
+                        <h3 className="text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white">
                           Votre projet,{" "}
                           <span className="text-yellow-500">notre expertise</span>
                         </h3>
@@ -683,7 +682,7 @@ ${formData.message}
 
                       <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                         <motion.div
-                          className="absolute h-full bg-gradient-to-r from-yellow-500 to-orange-500"
+                          className="absolute h-full bg-yellow-500"
                           initial={{ width: `${((currentStep - 1) / 2) * 100}%` }}
                           animate={{ width: `${((currentStep - 1) / 2) * 100}%` }}
                           transition={{ type: "spring", stiffness: 200, damping: 20 }}
@@ -703,14 +702,14 @@ ${formData.message}
                             exit="exit"
                             variants={formVariants}
                           >
-                            <h4 className="text-2xl font-black uppercase italic mb-8 text-gray-900 dark:text-white">
+                            <h4 className="text-2xl font-display uppercase tracking-wide mb-8 text-gray-900 dark:text-white">
                               <User className="inline w-6 h-6 mr-3 text-yellow-500" />
                               Vos informations
                             </h4>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                               <div>
-                                <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
+                                <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
                                   Prénom *
                                 </label>
                                 <input
@@ -733,7 +732,7 @@ ${formData.message}
                               </div>
 
                               <div>
-                                <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
+                                <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
                                   Nom *
                                 </label>
                                 <input
@@ -758,7 +757,7 @@ ${formData.message}
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                               <div>
-                                <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
+                                <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
                                   Email *
                                 </label>
                                 <input
@@ -781,7 +780,7 @@ ${formData.message}
                               </div>
 
                               <div>
-                                <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
+                                <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
                                   Téléphone *
                                 </label>
                                 <input
@@ -805,7 +804,7 @@ ${formData.message}
                             </div>
 
                             <div className="mb-10">
-                              <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
+                              <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
                                 Entreprise (optionnel)
                               </label>
                               <input
@@ -824,7 +823,7 @@ ${formData.message}
                                 onClick={nextStep}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3"
+                                className="px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3"
                               >
                                 Étape suivante
                                 <ArrowRight className="w-5 h-5" />
@@ -842,13 +841,13 @@ ${formData.message}
                             exit="exit"
                             variants={formVariants}
                           >
-                            <h4 className="text-2xl font-black uppercase italic mb-8 text-gray-900 dark:text-white">
+                            <h4 className="text-2xl font-display uppercase tracking-wide mb-8 text-gray-900 dark:text-white">
                               <Target className="inline w-6 h-6 mr-3 text-yellow-500" />
                               Détails du projet
                             </h4>
 
                             <div className="mb-10">
-                              <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-4">
+                              <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-4">
                                 Service souhaité *
                               </label>
 
@@ -880,12 +879,12 @@ ${formData.message}
                                     >
                                       <div className="flex items-start gap-4">
                                         <div
-                                          className={`p-3 rounded-xl bg-gradient-to-r ${service.color} text-white`}
+                                          className="p-3 rounded-xl bg-yellow-500 text-black"
                                         >
                                           {service.icon}
                                         </div>
                                         <div>
-                                          <h5 className="font-bold text-gray-900 dark:text-white mb-1">
+                                          <h5 className="font-display uppercase tracking-wide text-gray-900 dark:text-white mb-1">
                                             {service.name}
                                           </h5>
                                           <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
@@ -910,7 +909,7 @@ ${formData.message}
                             </div>
 
                             <div className="mb-8">
-                              <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
+                              <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
                                 Budget estimé
                               </label>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -953,7 +952,7 @@ ${formData.message}
                             </div>
 
                             <div className="mb-10">
-                              <label className="block text-sm font-bold uppercase italic text-gray-500 dark:text-gray-400 mb-3">
+                              <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
                                 Description de votre projet *
                               </label>
                               <textarea
@@ -981,7 +980,7 @@ ${formData.message}
                                 onClick={prevStep}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="px-8 py-4 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-700 dark:text-gray-300 font-bold rounded-2xl transition-colors flex items-center gap-3"
+                                className="px-8 py-4 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-700 dark:text-gray-300 font-display uppercase tracking-widest rounded-xl transition-colors flex items-center gap-3"
                               >
                                 <ArrowLeft className="w-5 h-5" />
                                 Retour
@@ -992,7 +991,7 @@ ${formData.message}
                                 onClick={nextStep}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3"
+                                className="px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3"
                               >
                                 Étape suivante
                                 <ArrowRight className="w-5 h-5" />
@@ -1010,13 +1009,13 @@ ${formData.message}
                             exit="exit"
                             variants={formVariants}
                           >
-                            <h4 className="text-2xl font-black uppercase italic mb-8 text-gray-900 dark:text-white">
+                            <h4 className="text-2xl font-display uppercase tracking-wide mb-8 text-gray-900 dark:text-white">
                               <CheckCircle className="inline w-6 h-6 mr-3 text-yellow-500" />
                               Confirmation
                             </h4>
 
                             <div className="bg-gray-50 dark:bg-gray-800 rounded-3xl p-8 mb-10">
-                              <h5 className="text-xl font-black uppercase italic mb-6 text-gray-900 dark:text-white">
+                              <h5 className="text-xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                                 Récapitulatif de votre demande
                               </h5>
 
@@ -1129,7 +1128,7 @@ ${formData.message}
                                 onClick={prevStep}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="px-8 py-4 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-700 dark:text-gray-300 font-bold rounded-2xl transition-colors flex items-center gap-3"
+                                className="px-8 py-4 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-700 dark:text-gray-300 font-display uppercase tracking-widest rounded-xl transition-colors flex items-center gap-3"
                               >
                                 <ArrowLeft className="w-5 h-5" />
                                 Retour
@@ -1140,7 +1139,7 @@ ${formData.message}
                                 disabled={isSubmitting}
                                 whileHover={!isSubmitting ? { scale: 1.02 } : undefined}
                                 whileTap={!isSubmitting ? { scale: 0.98 } : undefined}
-                                className={`px-8 py-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3 ${
+                                className={`px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3 ${
                                   isSubmitting
                                     ? "opacity-70 cursor-not-allowed"
                                     : "hover:from-yellow-600 hover:to-orange-600"
@@ -1180,7 +1179,7 @@ ${formData.message}
             viewport={{ once: true }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-white">
               Prêt à concrétiser votre projet ?
             </h2>
             <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
@@ -1190,7 +1189,7 @@ ${formData.message}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#form-section"
-                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-gray-100 text-yellow-500 font-black uppercase italic tracking-widest rounded-2xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white hover:bg-gray-100 text-yellow-500 font-display uppercase tracking-widest rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
               >
                 <FileText className="w-5 h-5" />
                 Obtenir mon devis
@@ -1199,7 +1198,7 @@ ${formData.message}
 
               <Link
                 href="/contact"
-                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white/10 font-black uppercase italic tracking-widest rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-lg"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white/10 font-display uppercase tracking-widest rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-lg"
               >
                 <Phone className="w-5 h-5" />
                 Nous appeler

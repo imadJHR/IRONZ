@@ -32,7 +32,6 @@ import {
   ShoppingCart,
   Heart,
   X,
-  Zap,
   CheckCircle,
   TrendingUp,
   Award,
@@ -463,8 +462,8 @@ function ProductCard({
 
   return (
     <motion.article
-      className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all h-full flex flex-col group"
-      whileHover={{ y: -4 }}
+      className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 hover:border-yellow-500/50 transition-all h-full flex flex-col group"
+      whileHover={{ y: -6 }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: "-50px" }}
@@ -474,36 +473,39 @@ function ProductCard({
       <meta itemProp="name" content={product.name} />
       {product.brand && <meta itemProp="brand" content={product.brand} />}
 
-      <div className="relative h-32 xs:h-40 sm:h-48 overflow-hidden">
+      <div className="relative h-32 xs:h-40 sm:h-48 overflow-hidden border-b-2 border-transparent group-hover:border-yellow-500 transition-colors">
         <Link href={`/produit/${product.slug || id}`} className="block h-full" tabIndex={-1} aria-hidden>
           <CloudImg
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             sizes="(max-width:640px) 100vw,(max-width:768px) 50vw,(max-width:1024px) 33vw,25vw"
             itemProp="image"
           />
         </Link>
         {product.isNewProduct && (
-          <Badge className="absolute top-2 left-2 bg-yellow-500 text-black text-[10px] xs:text-xs">
+          <span className="absolute top-2 left-0 clip-slant bg-yellow-500 text-black font-display uppercase tracking-widest text-[10px] xs:text-xs pl-2.5 pr-3.5 py-0.5 shadow-md">
             Nouveau
-          </Badge>
+          </span>
         )}
         {Number(product.discount || 0) > 0 && (
-          <Badge className="absolute bottom-2 left-2 bg-red-500 text-white text-[10px] xs:text-xs">
+          <span className="absolute bottom-2 left-0 clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-[10px] xs:text-xs pl-2.5 pr-3.5 py-0.5 shadow-md">
             -{product.discount}%
-          </Badge>
+          </span>
         )}
       </div>
 
       <div className="p-3 xs:p-4 flex flex-col flex-grow">
-        <div className="mb-1 text-[10px] xs:text-xs text-gray-500 dark:text-gray-400 truncate">
-          <span itemProp="category">{product.category}</span>
-          {product.subCategory && ` • ${product.subCategory}`}
+        <div className="mb-1 text-[10px] xs:text-xs truncate">
+          <span className="inline-flex items-center gap-1.5 font-display uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+            <span className="w-1.5 h-3 bg-yellow-500 -skew-x-12 shrink-0" aria-hidden="true" />
+            <span itemProp="category">{product.category}</span>
+          </span>
+          {product.subCategory && <span className="text-gray-500 dark:text-gray-400"> • {product.subCategory}</span>}
         </div>
 
         <Link href={`/produit/${product.slug || id}`}>
-          <h2 className="font-medium text-gray-900 dark:text-white mb-1 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 text-sm xs:text-base leading-tight min-h-[2.5rem]">
+          <h2 className="font-display uppercase tracking-wide text-gray-900 dark:text-white mb-1 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors line-clamp-2 text-sm xs:text-base leading-tight min-h-[2.5rem]">
             {product.name}
           </h2>
         </Link>
@@ -522,7 +524,7 @@ function ProductCard({
           />
           <div className="flex flex-col xs:flex-row xs:items-center gap-1">
             <span
-              className="text-sm xs:text-base font-bold text-gray-900 dark:text-white"
+              className="text-sm xs:text-base font-display tracking-wide text-gray-900 dark:text-white"
               itemProp="price"
             >
               {formatPrice(product.price)}
@@ -539,7 +541,7 @@ function ProductCard({
               e.preventDefault();
               addToCart({ ...product, id });
             }}
-            className="h-7 w-7 xs:h-8 xs:w-8 bg-yellow-500 hover:bg-yellow-600 text-black rounded-md flex items-center justify-center transition-colors shrink-0"
+            className="h-7 w-7 xs:h-8 xs:w-8 bg-yellow-500 hover:bg-yellow-400 text-black rounded-full flex items-center justify-center transition-all shrink-0 hover:scale-110 shadow-sm"
             aria-label={`Ajouter ${product.name} au panier`}
           >
             <ShoppingCart className="h-3 w-3 xs:h-4 xs:w-4" />
@@ -561,7 +563,7 @@ function ProductCardLarge({
 
   return (
     <motion.article
-      className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all h-full flex flex-col group"
+      className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:-translate-y-1.5 hover:border-yellow-500/50 transition-all h-full flex flex-col group"
       whileHover={{ y: -6 }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -571,12 +573,12 @@ function ProductCardLarge({
     >
       <meta itemProp="name" content={product.name} />
 
-      <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
+      <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden border-b-2 border-transparent group-hover:border-yellow-500 transition-colors">
         <Link href={`/produit/${product.slug || id}`} className="block h-full" tabIndex={-1} aria-hidden>
           <CloudImg
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             sizes="(max-width:640px) 100vw,(max-width:1024px) 50vw,33vw"
             itemProp="image"
           />
@@ -588,43 +590,43 @@ function ProductCardLarge({
               e.preventDefault();
               addToCart({ ...product, id });
             }}
-            className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-yellow-500 text-black flex items-center justify-center shadow-md hover:bg-yellow-600 transition-all"
+            className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-yellow-500 text-black flex items-center justify-center shadow-md hover:bg-yellow-400 hover:scale-110 transition-all"
             aria-label={`Ajouter ${product.name} au panier`}
           >
             <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
         </div>
 
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        <div className="absolute top-3 left-0 flex flex-col gap-1">
           {product.isNewProduct && (
-            <Badge className="bg-yellow-500 text-black shadow-md text-xs sm:text-sm">
+            <span className="clip-slant bg-yellow-500 text-black font-display uppercase tracking-widest text-xs sm:text-sm pl-3 pr-4 py-1 shadow-md">
               Nouveau
-            </Badge>
+            </span>
           )}
           {Number(product.discount || 0) > 0 && (
-            <Badge className="bg-red-500 text-white shadow-md text-xs sm:text-sm">
+            <span className="clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-xs sm:text-sm pl-3 pr-4 py-1 shadow-md">
               -{product.discount}%
-            </Badge>
+            </span>
           )}
           {product.isFeatured && (
-            <Badge className="bg-black text-yellow-500 shadow-md text-xs sm:text-sm">
-              <Flame className="w-2 h-2 sm:w-3 sm:h-3 inline mr-1" aria-hidden />
+            <span className="clip-slant bg-black text-yellow-500 font-display uppercase tracking-widest text-xs sm:text-sm pl-3 pr-4 py-1 shadow-md">
               Populaire
-            </Badge>
+            </span>
           )}
         </div>
       </div>
 
       <div className="p-4 md:p-5 flex flex-col flex-grow">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs sm:text-sm text-yellow-600 dark:text-yellow-400 font-medium uppercase tracking-wider truncate">
+          <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-yellow-600 dark:text-yellow-400 font-display uppercase tracking-widest truncate">
+            <span className="w-1.5 h-3.5 bg-yellow-500 -skew-x-12 shrink-0" aria-hidden="true" />
             {product.brand || product.category}
           </span>
 
         </div>
 
         <Link href={`/produit/${product.slug || id}`}>
-          <h2 className="font-bold text-base sm:text-lg text-gray-900 dark:text-white mb-2 hover:text-yellow-600 transition-colors line-clamp-2 leading-tight min-h-[2.5rem] sm:min-h-[3rem]">
+          <h2 className="font-display uppercase tracking-wide text-base sm:text-lg text-gray-900 dark:text-white mb-2 hover:text-yellow-600 transition-colors line-clamp-2 leading-tight min-h-[2.5rem] sm:min-h-[3rem]">
             {product.name}
           </h2>
         </Link>
@@ -636,7 +638,7 @@ function ProductCardLarge({
         )}
 
         <div
-          className="mt-auto flex items-center justify-between gap-2"
+          className="mt-auto pt-3 border-t border-gray-100 dark:border-gray-800 space-y-3"
           itemProp="offers"
           itemScope
           itemType="https://schema.org/Offer"
@@ -644,7 +646,7 @@ function ProductCardLarge({
           <meta itemProp="priceCurrency" content="MAD" />
           <meta itemProp="price" content={String(product.price)} />
           <div className="flex flex-col sm:flex-row sm:items-center gap-1">
-            <span className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
+            <span className="text-xl sm:text-2xl font-display tracking-wide text-gray-900 dark:text-white">
               {formatPrice(product.price)}
             </span>
             {product.oldPrice && (
@@ -653,14 +655,26 @@ function ProductCardLarge({
               </span>
             )}
           </div>
-          <Link
-            href={`/produit/${product.slug || id}`}
-            className="text-yellow-600 hover:text-yellow-700 font-bold text-xs sm:text-sm flex items-center gap-1 group/link whitespace-nowrap"
-            aria-label={`Voir détails de ${product.name}`}
-          >
-            Détails
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover/link:translate-x-1 transition-transform" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                e.preventDefault();
+                addToCart({ ...product, id });
+              }}
+              className="flex-1 h-9 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-black font-display text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+              aria-label={`Ajouter ${product.name} au panier`}
+            >
+              <ShoppingCart className="h-3.5 w-3.5 shrink-0" />
+              Panier
+            </button>
+            <Link
+              href={`/produit/${product.slug || id}`}
+              className="h-9 w-9 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-yellow-500 hover:border-yellow-500 hover:text-black transition-all shrink-0"
+              aria-label={`Voir détails de ${product.name}`}
+            >
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </div>
     </motion.article>
@@ -692,13 +706,13 @@ function ProductCardModern({
 
       {/* Decorative Number */}
       <div className="absolute -top-4 -right-4 z-0 pointer-events-none" aria-hidden>
-        <span className="text-7xl font-black italic text-gray-100 dark:text-gray-800/50 opacity-50">
+        <span className="text-7xl font-display text-gray-100 dark:text-gray-800/50 opacity-50">
           {String(index + 1).padStart(2, "0")}
         </span>
       </div>
 
       {/* Image */}
-      <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
+      <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden border-b-2 border-transparent group-hover:border-yellow-500 transition-colors">
         <Link href={`/produit/${product.slug || id}`} className="block h-full" tabIndex={-1} aria-hidden>
           <CloudImg
             src={product.image}
@@ -712,15 +726,15 @@ function ProductCardModern({
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        {/* Badges — slanted ribbons */}
+        <div className="absolute top-3 left-0 flex flex-col gap-1">
           {product.isNewProduct && (
-            <span className="px-3 py-1 bg-gradient-to-r from-yellow-500 to-amber-500 text-black text-xs font-black uppercase rounded-full shadow-lg">
+            <span className="clip-slant bg-yellow-500 text-black text-xs font-display uppercase tracking-widest pl-3 pr-4 py-1 shadow-md">
               Nouveau
             </span>
           )}
           {Number(product.discount || 0) > 0 && (
-            <span className="px-3 py-1 bg-gradient-to-r from-red-600 to-red-500 text-white text-xs font-black uppercase rounded-full shadow-lg">
+            <span className="clip-slant bg-red-500 text-white text-xs font-display uppercase tracking-widest pl-3 pr-4 py-1 shadow-md">
               -{product.discount}%
             </span>
           )}
@@ -734,7 +748,7 @@ function ProductCardModern({
               e.stopPropagation();
               addToCart({ ...product, id });
             }}
-            className="w-10 h-10 bg-yellow-500 hover:bg-yellow-600 text-black rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all"
+            className="w-10 h-10 bg-yellow-500 hover:bg-yellow-400 text-black rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all"
             aria-label={`Ajouter ${product.name} au panier`}
           >
             <ShoppingCart className="w-5 h-5" />
@@ -765,14 +779,14 @@ function ProductCardModern({
       {/* Content */}
       <div className="p-5 flex flex-col flex-grow relative z-10 bg-white dark:bg-gray-900">
         <div className="mb-2">
-          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-yellow-600 dark:text-yellow-400">
-            <div className="w-2 h-2 bg-yellow-500 rounded-full" aria-hidden />
+          <span className="inline-flex items-center gap-2 text-xs font-display uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+            <span className="w-2 h-3.5 bg-yellow-500 -skew-x-12 shrink-0" aria-hidden />
             <span itemProp="category">{product.category}</span>
           </span>
         </div>
 
         <Link href={`/produit/${product.slug || id}`}>
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors leading-tight">
+          <h3 className="text-lg font-display uppercase tracking-wide text-gray-900 dark:text-white mb-2 line-clamp-2 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors leading-tight">
             {product.name}
           </h3>
         </Link>
@@ -786,7 +800,7 @@ function ProductCardModern({
 
 
         <div
-          className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800"
+          className="mt-auto pt-4 border-t border-gray-100 dark:border-gray-800 space-y-3"
           itemProp="offers"
           itemScope
           itemType="https://schema.org/Offer"
@@ -795,7 +809,7 @@ function ProductCardModern({
           <meta itemProp="price" content={String(product.price)} />
           <div className="flex items-center justify-between">
             <div className="flex flex-col">
-              <span className="text-xl font-black text-gray-900 dark:text-white">
+              <span className="text-xl font-display tracking-wide text-gray-900 dark:text-white">
                 {formatPrice(product.price)}
               </span>
               {product.oldPrice && (
@@ -804,20 +818,33 @@ function ProductCardModern({
                 </span>
               )}
             </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                e.preventDefault();
+                e.stopPropagation();
+                addToCart({ ...product, id });
+              }}
+              className="flex-1 h-9 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-black font-display text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+              aria-label={`Ajouter ${product.name} au panier`}
+            >
+              <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
+              Panier
+            </button>
             <Link
               href={`/produit/${product.slug || id}`}
-              className="text-sm font-bold text-yellow-600 hover:text-yellow-700 flex items-center gap-2 group/link"
+              className="h-9 w-9 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-yellow-500 hover:border-yellow-500 hover:text-black transition-all shrink-0"
               aria-label={`Voir ${product.name}`}
             >
-              Voir
-              <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </div>
 
       {/* Hover border */}
-      <div className="absolute inset-0 border-2 border-transparent group-hover:border-yellow-500/30 rounded-2xl pointer-events-none transition-all duration-500" />
+      <div className="absolute inset-0 border-2 border-transparent group-hover:border-yellow-500/50 rounded-2xl pointer-events-none transition-all duration-500" />
     </motion.article>
   );
 }
@@ -851,18 +878,6 @@ function HeroBannerSlide({ product, index, totalSlides }: HeroBannerSlideProps) 
       <div className="relative h-full z-10 flex items-center justify-center sm:justify-start">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl relative mt-58 text-center sm:text-left">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex items-center justify-center sm:justify-start gap-3 mb-2 sm:mb-4"
-            >
-              <span className="h-1 w-6 sm:w-8 bg-yellow-500" aria-hidden />
-              <span className="text-yellow-500 font-black italic uppercase tracking-widest text-xs sm:text-sm">
-                Ironz Collection
-              </span>
-            </motion.div>
-
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -975,7 +990,7 @@ function LatestProductsSection({
         {/* Header */}
         <header className="text-center mb-12 sm:mb-16">
 
-          <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black uppercase italic tracking-tight text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-4">
             Découvrez Nos{" "}
             <span className="text-yellow-500">Nouveautés</span>
           </h2>
@@ -1493,11 +1508,9 @@ export default function HomeClient({
             <div className="container mx-auto px-4 sm:px-6 relative z-10">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 sm:mb-10">
                 <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4">
-                    <Zap className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" aria-hidden />
-                  </div>
+                  <div className="w-2 sm:w-3 self-stretch min-h-[3.5rem] sm:min-h-[4.5rem] bg-yellow-400 -skew-x-12 rounded-sm" aria-hidden />
                   <div>
-                    <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase italic tracking-tight">
+                    <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-display text-white uppercase tracking-wide">
                       Offres Flash
                     </h2>
                     <p className="text-white/80 text-xs sm:text-sm md:text-base mt-1">
@@ -1573,13 +1586,7 @@ export default function HomeClient({
           <div className="container mx-auto px-4 sm:px-6 relative z-10">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12 sm:mb-16">
               <div className="max-w-2xl">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="h-1 w-12 bg-yellow-500 skew-x-[-20deg]" aria-hidden />
-                  <span className="text-yellow-500 font-black uppercase tracking-[0.2em] text-sm italic">
-                    Explorez
-                  </span>
-                </div>
-                <h2 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-black uppercase italic tracking-tighter leading-[0.9]">
+                <h2 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl font-display uppercase leading-[0.95]">
                   Nos{" "}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
                     Catégories
@@ -1657,7 +1664,7 @@ export default function HomeClient({
                           </span>
                         </div>
                         <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                          <h3 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase italic leading-[0.85] text-white mb-4 drop-shadow-md">
+                          <h3 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase leading-[0.9] text-white mb-4 drop-shadow-md">
                             {cat.name}
                           </h3>
                           <div className="h-[2px] w-0 group-hover:w-full bg-yellow-500 transition-all duration-500 ease-out mb-4" />
@@ -1687,7 +1694,7 @@ export default function HomeClient({
             <div className="container mx-auto px-4 sm:px-6">
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 sm:mb-12">
                 <div>
-                  <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-black uppercase italic tracking-tight">
+                  <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide">
                     Arrivages{" "}
                     <span className="text-yellow-500">Récents</span>
                   </h2>
@@ -1776,7 +1783,7 @@ export default function HomeClient({
         {/* ═══ 6. FEATURED PRODUCT SPOTLIGHT ═══════════════════════════════ */}
         {featuredVedette && (
           <section
-            className="py-20 sm:py-28 lg:py-32 bg-gray-950 relative overflow-hidden flex items-center min-h-[700px] sm:min-h-[800px]"
+            className="py-16 sm:py-20 bg-gray-950 relative overflow-hidden flex items-center"
             aria-label={`Produit vedette : ${featuredVedette.name}`}
             itemScope
             itemType="https://schema.org/Product"
@@ -1786,31 +1793,8 @@ export default function HomeClient({
               <meta itemProp="description" content={featuredVedette.description} />
             )}
 
-            {/* Background glows */}
+            {/* Background glow */}
             <div className="absolute top-0 right-0 w-[600px] h-[600px] sm:w-[800px] sm:h-[800px] bg-yellow-500/10 rounded-full blur-[150px] pointer-events-none translate-x-1/3 -translate-y-1/3" aria-hidden />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bg-yellow-500/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/3 translate-y-1/3" aria-hidden />
-
-            {/* Grid texture */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" aria-hidden>
-              <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern
-                    id="premium-grid"
-                    width="60"
-                    height="60"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <path
-                      d="M0 60L60 0H30L0 30M60 60V30L30 60"
-                      stroke="currentColor"
-                      strokeWidth="1"
-                      fill="none"
-                    />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#premium-grid)" />
-              </svg>
-            </div>
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
               <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
@@ -1825,61 +1809,31 @@ export default function HomeClient({
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-zinc-800 to-zinc-900 rounded-full blur-3xl opacity-60 pointer-events-none" aria-hidden />
 
                   <div className="relative z-10 aspect-square max-w-[500px] mx-auto group">
-                    <motion.div
-                      animate={{ y: [-15, 15, -15] }}
-                      transition={{
-                        duration: 6,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      className="w-full h-full relative flex items-center justify-center p-8 sm:p-12"
+                    {/* Creative touch: giant outline rank */}
+                    <div
+                      aria-hidden
+                      className="absolute -top-10 -left-4 sm:-left-10 font-display text-[6rem] sm:text-[8rem] leading-none text-outline opacity-30 select-none pointer-events-none z-0"
                     >
+                      N°1
+                    </div>
+                    <div className="w-full h-full relative flex items-center justify-center p-8 sm:p-12">
                       <div className="absolute inset-0 bg-yellow-500/10 rounded-full blur-3xl group-hover:bg-yellow-500/20 transition-colors duration-700" aria-hidden />
                       <CloudImg
                         src={featuredVedette.image}
                         alt={`${featuredVedette.name} – ${SITE_NAME}`}
-                        className="w-full h-full object-contain rounded-xl drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-700 z-10"
+                        className="w-full h-full object-contain rounded-xl drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform duration-700 z-10"
                         sizes="(max-width:768px) 90vw,(max-width:1024px) 50vw,800px"
                         itemProp="image"
                       />
-                    </motion.div>
+                    </div>
 
-                    {/* Floating badges */}
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8, x: 20 }}
-                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                      transition={{ delay: 0.5, type: "spring" }}
-                      className="absolute top-8 right-0 sm:-right-8 bg-zinc-900/90 backdrop-blur-xl border border-white/10 px-5 py-3 sm:px-6 sm:py-4 rounded-2xl sm:rounded-3xl shadow-2xl z-20"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="bg-yellow-500/20 p-2 rounded-full">
-                          <Flame className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 animate-pulse" />
-                        </div>
-                        <span className="text-white font-black italic tracking-wider uppercase text-xs sm:text-sm">
-                          Best Seller
-                        </span>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8, x: -20 }}
-                      whileInView={{ opacity: 1, scale: 1, x: 0 }}
-                      transition={{ delay: 0.7, type: "spring" }}
-                      className="absolute bottom-12 sm:bottom-16 left-0 sm:-left-8 bg-zinc-900/90 backdrop-blur-xl border border-white/10 px-5 py-4 sm:px-6 sm:py-5 rounded-2xl sm:rounded-3xl shadow-2xl z-20 flex items-center gap-3 sm:gap-4"
-                    >
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-yellow-500/20 flex items-center justify-center shrink-0">
-                        <Star className="w-6 h-6 sm:w-7 sm:h-7 text-yellow-500 fill-yellow-500" />
-                      </div>
-                      <div>
-                        <div className="text-white font-black text-xl sm:text-2xl leading-none mb-1">
-                          4.9
-                          <span className="text-gray-500 text-lg">/5</span>
-                        </div>
-                        <div className="text-gray-400 text-xs font-bold uppercase tracking-widest">
-                          Avis Clients
-                        </div>
-                      </div>
-                    </motion.div>
+                    {/* Slanted ribbon */}
+                    <div className="absolute top-4 -right-1 sm:-right-4 z-20">
+                      <span className="clip-slant bg-yellow-500 text-black font-display uppercase tracking-widest text-xs sm:text-sm px-5 py-2 flex items-center gap-2 shadow-lg">
+                        <Flame className="w-4 h-4" aria-hidden />
+                        Best Seller
+                      </span>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -1891,37 +1845,34 @@ export default function HomeClient({
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
                   >
-                    <div className="inline-flex items-center gap-3 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-zinc-900/80 border border-zinc-800 mb-6 sm:mb-8 backdrop-blur-sm shadow-sm">
-                      <span className="relative flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75" aria-hidden />
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-yellow-500" />
-                      </span>
-                      <span className="text-xs font-bold tracking-widest uppercase text-gray-300">
-                        Équipement Vedette
-                      </span>
-                    </div>
-
                     <h2
-                      className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase italic tracking-tighter text-white mb-6 leading-[0.9]"
+                      className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display uppercase text-white mb-6 leading-[0.95]"
                       itemProp="name"
                     >
                       {featuredVedette.name}
                     </h2>
 
-                    <div className="w-24 h-1 bg-yellow-500 mb-6 sm:mb-8" aria-hidden />
+                    <div className="w-28 h-1.5 bg-yellow-500 -skew-x-12 mb-6 sm:mb-8" aria-hidden />
 
                     {featuredVedette.description && (
                       <p
-                        className="text-gray-400 text-base sm:text-lg xl:text-xl leading-relaxed mb-8 sm:mb-10 max-w-2xl font-medium"
+                        className="text-gray-400 text-base sm:text-lg xl:text-xl leading-relaxed mb-6 max-w-2xl font-medium"
                         itemProp="description"
                       >
                         {featuredVedette.description}
                       </p>
                     )}
 
-                    {/* Price */}
+                    {/* Inline rating */}
+                    <div className="flex items-center gap-2 mb-8 text-sm">
+                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" aria-hidden />
+                      <span className="text-white font-bold">4.9/5</span>
+                      <span className="text-gray-500">· Avis clients</span>
+                    </div>
+
+                    {/* Price — simple inline row */}
                     <div
-                      className="flex flex-wrap items-end gap-5 sm:gap-8 mb-10 sm:mb-12 bg-zinc-900/50 p-5 sm:p-6 rounded-2xl sm:rounded-3xl border border-zinc-800/50"
+                      className="flex flex-wrap items-end gap-x-6 gap-y-3 mb-10 sm:mb-12"
                       itemProp="offers"
                       itemScope
                       itemType="https://schema.org/Offer"
@@ -1939,7 +1890,7 @@ export default function HomeClient({
                         <span className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
                           Prix Exclusif
                         </span>
-                        <span className="text-4xl sm:text-5xl xl:text-6xl font-black text-yellow-500 leading-none">
+                        <span className="text-4xl sm:text-5xl xl:text-6xl font-display tracking-wide text-yellow-500 leading-none">
                           {formatPrice(featuredVedette.price)}
                         </span>
                       </div>
@@ -1963,7 +1914,7 @@ export default function HomeClient({
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 mb-10 sm:mb-14">
                       <button
                         onClick={() => handleAddToCart(featuredVedette)}
-                        className="group relative flex items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-yellow-500 text-black font-black text-base sm:text-lg uppercase tracking-widest rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(234,179,8,0.2)] hover:shadow-[0_0_60px_rgba(234,179,8,0.4)] transition-all duration-500 hover:-translate-y-1 flex-1 sm:flex-none"
+                        className="group relative flex items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-yellow-500 text-black font-display text-base sm:text-lg uppercase tracking-widest rounded-xl overflow-hidden shadow-[0_0_40px_rgba(234,179,8,0.2)] hover:shadow-[0_0_60px_rgba(234,179,8,0.4)] transition-all duration-500 hover:-translate-y-1 flex-1 sm:flex-none"
                         aria-label={`Ajouter ${featuredVedette.name} au panier`}
                       >
                         <div className="absolute inset-0 bg-white/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out" aria-hidden />
@@ -1973,7 +1924,7 @@ export default function HomeClient({
 
                       <Link
                         href={`/produit/${featuredVedette.slug || featuredVedette._id}`}
-                        className="group flex items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-zinc-900 text-white border border-zinc-700 hover:border-yellow-500 hover:text-yellow-500 font-bold text-base sm:text-lg uppercase tracking-widest rounded-2xl transition-all duration-500 flex-1 sm:flex-none"
+                        className="group flex items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-zinc-900 text-white border border-zinc-700 hover:border-yellow-500 hover:text-yellow-500 font-display text-base sm:text-lg uppercase tracking-widest rounded-xl transition-all duration-500 flex-1 sm:flex-none"
                         aria-label={`Voir les détails de ${featuredVedette.name}`}
                       >
                         <span>Voir Détails</span>
@@ -1981,8 +1932,8 @@ export default function HomeClient({
                       </Link>
                     </div>
 
-                    {/* Trust badges */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-4 border-t border-zinc-800 pt-6 sm:pt-8">
+                    {/* Trust badges — simple inline row */}
+                    <div className="flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-zinc-800 pt-6 sm:pt-8">
                       {[
                         {
                           icon: Truck,
@@ -1998,10 +1949,10 @@ export default function HomeClient({
                       ].map((item, i) => (
                         <div
                           key={i}
-                          className="flex items-center sm:flex-col sm:items-start gap-4 sm:gap-2"
+                          className="flex items-center gap-3"
                         >
-                          <div className="bg-zinc-900 p-3 rounded-xl border border-zinc-800 shrink-0">
-                            <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500" aria-hidden />
+                          <div className="bg-zinc-900 p-2.5 rounded-lg border border-zinc-800 shrink-0">
+                            <item.icon className="w-5 h-5 text-yellow-500" aria-hidden />
                           </div>
                           <div>
                             <div className="text-white font-bold text-sm tracking-wide">
@@ -2024,11 +1975,11 @@ export default function HomeClient({
               className="absolute top-1/2 left-0 w-full overflow-hidden pointer-events-none select-none z-0 opacity-[0.02] -translate-y-1/2 flex flex-col items-center"
               aria-hidden
             >
-              <h2 className="text-[20vw] font-black uppercase italic whitespace-nowrap text-white text-center leading-none tracking-tighter">
+              <h2 className="text-[20vw] font-display uppercase whitespace-nowrap text-white text-center leading-none">
                 IRONZ
               </h2>
               <h2
-                className="text-[20vw] font-black uppercase italic whitespace-nowrap text-transparent text-center leading-none tracking-tighter"
+                className="text-[20vw] font-display uppercase whitespace-nowrap text-transparent text-center leading-none"
                 style={{ WebkitTextStroke: "2px white" } as CSSProperties}
               >
                 PRO GEAR
@@ -2050,7 +2001,7 @@ export default function HomeClient({
               <span className="text-yellow-600 dark:text-yellow-500 font-bold uppercase tracking-widest text-xs sm:text-sm block mb-3">
                 Nos Engagements
               </span>
-              <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black italic text-gray-900 dark:text-white mb-6 tracking-tight">
+              <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-display text-gray-900 dark:text-white mb-6 tracking-wide">
                 Pourquoi Choisir{" "}
                 <span className="text-yellow-500">IRONZ</span>&nbsp;?
               </h2>

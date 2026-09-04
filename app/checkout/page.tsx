@@ -299,12 +299,12 @@ export default function CheckoutPage() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-28 pb-16">
         <div className="container mx-auto px-4 max-w-2xl">
-          <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 md:p-12 text-center shadow-xl border border-gray-100">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-8 md:p-12 text-center shadow-xl border border-gray-100">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <Check className="h-10 w-10 text-green-600" />
             </div>
 
-            <h1 className="text-3xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+            <h1 className="text-3xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
               Commande Confirmée !
             </h1>
 
@@ -312,7 +312,7 @@ export default function CheckoutPage() {
               <p className="text-sm font-bold text-yellow-800 dark:text-yellow-400 mb-1">
                 NUMÉRO DE COMMANDE
               </p>
-              <h2 className="text-2xl font-black text-gray-900 dark:text-white">
+              <h2 className="text-2xl font-display tracking-wide text-gray-900 dark:text-white">
                 {orderNumber}
               </h2>
             </div>
@@ -324,7 +324,7 @@ export default function CheckoutPage() {
 
             <div className="flex flex-col gap-4">
               <Link href="/">
-                <Button className="w-full h-14 bg-black text-white rounded-2xl font-black">
+                <Button className="w-full h-14 bg-black text-white rounded-xl font-display uppercase tracking-widest">
                   RETOUR ACCUEIL
                 </Button>
               </Link>
@@ -332,7 +332,7 @@ export default function CheckoutPage() {
               <Link href="/produit">
                 <Button
                   variant="outline"
-                  className="w-full h-14 rounded-2xl font-black"
+                  className="w-full h-14 rounded-xl font-display uppercase tracking-widest"
                 >
                   CONTINUER SHOPPING
                 </Button>
@@ -352,15 +352,15 @@ export default function CheckoutPage() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <h1 className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white leading-none">
+            <h1 className="text-4xl md:text-7xl font-display uppercase tracking-wide text-gray-900 dark:text-white leading-none">
               Finaliser ma <span className="text-yellow-500">Commande</span>
             </h1>
-            <div className="h-2 w-24 bg-yellow-500 mt-4 rounded-full" />
+            <div className="h-1.5 w-28 bg-yellow-500 mt-4 -skew-x-12" />
           </div>
 
           <Link
             href="/panier"
-            className="text-gray-400 hover:text-yellow-500 font-black uppercase italic text-sm flex items-center gap-2"
+            className="text-gray-400 hover:text-yellow-500 font-display uppercase tracking-wide text-sm flex items-center gap-2"
           >
             <ArrowLeft size={18} /> Retour au panier
           </Link>
@@ -376,14 +376,14 @@ export default function CheckoutPage() {
                     <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
                       <MapPin className="w-5 h-5 text-black" />
                     </div>
-                    <h2 className="text-2xl font-black uppercase italic">
+                    <h2 className="text-2xl font-display uppercase tracking-wide">
                       Informations de livraison
                     </h2>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="text-xs font-black uppercase flex items-center gap-1">
+                      <Label className="text-xs font-display uppercase tracking-widest flex items-center gap-1">
                         <User className="w-3 h-3" /> Prénom *
                       </Label>
                       <Input
@@ -405,7 +405,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-xs font-black uppercase flex items-center gap-1">
+                      <Label className="text-xs font-display uppercase tracking-widest flex items-center gap-1">
                         <User className="w-3 h-3" /> Nom *
                       </Label>
                       <Input
@@ -427,7 +427,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-xs font-black uppercase flex items-center gap-1">
+                    <Label className="text-xs font-display uppercase tracking-widest flex items-center gap-1">
                       <Phone className="w-3 h-3" /> Téléphone *
                     </Label>
                     <Input
@@ -448,7 +448,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-xs font-black uppercase flex items-center gap-1">
+                    <Label className="text-xs font-display uppercase tracking-widest flex items-center gap-1">
                       <Mail className="w-3 h-3" /> Email (Optionnel)
                     </Label>
                     <Input
@@ -470,7 +470,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-xs font-black uppercase flex items-center gap-1">
+                    <Label className="text-xs font-display uppercase tracking-widest flex items-center gap-1">
                       <MapPin className="w-3 h-3" /> Adresse *
                     </Label>
                     <Input
@@ -492,7 +492,7 @@ export default function CheckoutPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="text-xs font-black uppercase">
+                      <Label className="text-xs font-display uppercase tracking-widest">
                         Ville *
                       </Label>
                       <Input
@@ -513,7 +513,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-xs font-black uppercase">
+                      <Label className="text-xs font-display uppercase tracking-widest">
                         Code Postal
                       </Label>
                       <Input
@@ -527,7 +527,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-xs font-black uppercase flex items-center gap-1">
+                    <Label className="text-xs font-display uppercase tracking-widest flex items-center gap-1">
                       <MessageSquare className="w-3 h-3" /> Notes de commande
                       (Optionnel)
                     </Label>
@@ -542,7 +542,7 @@ export default function CheckoutPage() {
 
                   <Button
                     onClick={handleNextStep}
-                    className="w-full h-14 bg-yellow-500 hover:bg-yellow-600 text-black font-black uppercase italic rounded-2xl mt-4 transition-all duration-300 transform hover:scale-[1.02]"
+                    className="w-full h-14 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-wide rounded-2xl mt-4 transition-all duration-300 transform hover:scale-[1.02]"
                   >
                     ÉTAPE SUIVANTE <ChevronsRight className="ml-2" />
                   </Button>
@@ -553,7 +553,7 @@ export default function CheckoutPage() {
                     <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
                       <CreditCard className="w-5 h-5 text-black" />
                     </div>
-                    <h2 className="text-2xl font-black uppercase italic">
+                    <h2 className="text-2xl font-display uppercase tracking-wide">
                       Mode de Paiement
                     </h2>
                   </div>
@@ -565,7 +565,7 @@ export default function CheckoutPage() {
                           <Package className="text-black w-6 h-6" />
                         </div>
                         <div>
-                          <p className="font-black uppercase text-gray-900 dark:text-white text-base md:text-lg">
+                          <p className="font-display uppercase tracking-widest text-gray-900 dark:text-white text-base md:text-lg">
                             Paiement à la livraison
                           </p>
                           <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -607,7 +607,7 @@ export default function CheckoutPage() {
                     <Button
                       variant="outline"
                       onClick={() => setCurrentStep(1)}
-                      className="flex-1 h-14 rounded-xl font-black uppercase border-2 hover:bg-gray-50 dark:hover:bg-zinc-800"
+                      className="flex-1 h-14 rounded-xl font-display uppercase tracking-widest border-2 hover:bg-gray-50 dark:hover:bg-zinc-800"
                     >
                       <ArrowLeft className="mr-2" /> RETOUR
                     </Button>
@@ -615,7 +615,7 @@ export default function CheckoutPage() {
                     <Button
                       onClick={handleSubmit}
                       disabled={isSubmitting}
-                      className="flex-[2] h-14 bg-yellow-500 hover:bg-yellow-600 text-black font-black uppercase rounded-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-[2] h-14 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? (
                         <>
@@ -639,7 +639,7 @@ export default function CheckoutPage() {
             <div className="bg-black text-white rounded-[2.5rem] p-6 md:p-8 sticky top-28 border-t-8 border-yellow-500 shadow-2xl">
               <div className="flex items-center gap-3 mb-6 md:mb-8">
                 <Package className="w-6 h-6 text-yellow-500" />
-                <h2 className="text-xl md:text-2xl font-black uppercase italic">
+                <h2 className="text-xl md:text-2xl font-display uppercase tracking-wide">
                   Votre Panier
                 </h2>
               </div>
@@ -659,7 +659,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs md:text-sm font-black uppercase truncate">
+                      <p className="text-xs md:text-sm font-display uppercase tracking-widest truncate">
                         {item.name}
                       </p>
 
@@ -686,7 +686,7 @@ export default function CheckoutPage() {
                       )}
                     </div>
 
-                    <p className="text-sm md:text-base font-black text-yellow-500">
+                    <p className="text-sm md:text-base font-display tracking-wide text-yellow-500">
                       {formatPrice(item.price * item.quantity)}
                     </p>
                   </div>
@@ -694,14 +694,14 @@ export default function CheckoutPage() {
               </div>
 
               <div className="space-y-3 md:space-y-4 pt-4 md:pt-6 border-t border-white/10">
-                <div className="flex justify-between text-gray-400 uppercase text-xs font-black">
+                <div className="flex justify-between text-gray-400 uppercase text-xs font-display tracking-widest">
                   <span className="flex items-center gap-1">
                     <Package className="w-3 h-3" /> Sous-total
                   </span>
                   <span>{formatPrice(subtotal)}</span>
                 </div>
 
-                <div className="flex justify-between text-gray-400 uppercase text-xs font-black">
+                <div className="flex justify-between text-gray-400 uppercase text-xs font-display tracking-widest">
                   <span className="flex items-center gap-1">
                     <Truck className="w-3 h-3" /> Livraison
                   </span>
@@ -728,7 +728,7 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                <div className="flex justify-between text-white font-black text-xl md:text-2xl pt-3 md:pt-4 border-t border-white/10">
+                <div className="flex justify-between text-white font-display tracking-wide text-xl md:text-2xl pt-3 md:pt-4 border-t border-white/10">
                   <span>TOTAL</span>
                   <span className="text-yellow-500 italic">
                     {formatPrice(total)}
@@ -737,7 +737,7 @@ export default function CheckoutPage() {
               </div>
 
               <div className="mt-6 pt-6 border-t border-white/10 space-y-3">
-                <p className="text-xs text-gray-400 uppercase font-black flex items-center gap-2">
+                <p className="text-xs text-gray-400 uppercase font-display tracking-widest flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-green-500" /> Paiement
                   sécurisé
                 </p>

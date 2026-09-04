@@ -6,10 +6,10 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ShoppingCart, ArrowLeft, Star, Flame, CheckCircle,
-  AlertCircle, Zap, Truck, ShieldCheck, RotateCcw,
+  ShoppingCart, ArrowLeft, Star, CheckCircle,
+  AlertCircle, Truck, ShieldCheck, RotateCcw,
   ChevronRight, Package, Tag, Minus, Plus, ArrowRight,
-  Sparkles, BadgeCheck, Info, MessageSquare, List, Award,
+  BadgeCheck, Info, MessageSquare, List, Award,
   RefreshCw,
 } from "lucide-react";
 import { useCart } from "../../../context/cart-context";
@@ -212,35 +212,7 @@ const StarRating = memo(
 StarRating.displayName = "StarRating";
 
 // ─── BADGE ────────────────────────────────────────────────
-const Badge = memo(
-  ({
-    children,
-    variant = "default",
-  }: {
-    children: React.ReactNode;
-    variant?: "yellow" | "red" | "green" | "gray" | "default";
-  }) => {
-    const styles = {
-      yellow: "bg-yellow-500 text-black border-yellow-600",
-      red: "bg-red-500 text-white border-red-600",
-      green: "bg-emerald-500 text-white border-emerald-600",
-      gray: "bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white",
-      default:
-        "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700",
-    };
-    return (
-      <span
-        className={cn(
-          "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wider border",
-          styles[variant]
-        )}
-      >
-        {children}
-      </span>
-    );
-  }
-);
-Badge.displayName = "Badge";
+// ─── HELPERS ──────────────────────────────────────────
 
 // ─── FETCH ────────────────────────────────────────────────
 async function fetchProductBySlug(slug: string): Promise<Product | null> {
@@ -524,7 +496,7 @@ export default function ProductDetailClient() {
           <div className="w-20 h-20 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mx-auto mb-5">
             <RefreshCw className="w-10 h-10 text-yellow-500" />
           </div>
-          <h1 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
+          <h1 className="text-2xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-2">
             Impossible de charger
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">
@@ -691,31 +663,29 @@ export default function ProductDetailClient() {
                   </div>
                 )}
 
-                <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+                <div className="absolute top-3 left-0 flex flex-col gap-1 z-10">
                   {product.isNewProduct && (
-                    <Badge variant="yellow">
-                      <Sparkles className="w-2.5 h-2.5" />
+                    <span className="clip-slant bg-yellow-500 text-black font-display uppercase tracking-widest text-xs pl-3.5 pr-5 py-1.5 shadow-md">
                       Nouveau
-                    </Badge>
+                    </span>
                   )}
                   {discount > 0 && (
-                    <Badge variant="red">
-                      <Zap className="w-2.5 h-2.5" />-{discount}%
-                    </Badge>
+                    <span className="clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-xs pl-3.5 pr-5 py-1.5 shadow-md">
+                      -{discount}%
+                    </span>
                   )}
                   {product.isFeatured &&
                     discount === 0 &&
                     !product.isNewProduct && (
-                      <Badge variant="gray">
-                        <Flame className="w-2.5 h-2.5" />
+                      <span className="clip-slant bg-gray-900 dark:bg-white text-yellow-400 dark:text-gray-900 font-display uppercase tracking-widest text-xs pl-3.5 pr-5 py-1.5 shadow-md">
                         Populaire
-                      </Badge>
+                      </span>
                     )}
                 </div>
 
                 {isOutOfStock && (
                   <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px] flex items-center justify-center z-20">
-                    <span className="text-white font-black text-lg uppercase tracking-widest px-5 py-2 border border-white/40 rounded-xl bg-black/20">
+                    <span className="text-white font-display text-lg uppercase tracking-widest px-5 py-2 border border-white/40 rounded-xl bg-black/20">
                       Rupture de stock
                     </span>
                   </div>
@@ -787,7 +757,8 @@ export default function ProductDetailClient() {
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div className="flex items-center gap-2 flex-wrap">
                   {product.brand && (
-                    <span className="text-xs font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-display text-yellow-600 dark:text-yellow-400 uppercase tracking-widest">
+                      <span className="w-2 h-3.5 bg-yellow-500 -skew-x-12 shrink-0" aria-hidden="true" />
                       {product.brand}
                     </span>
                   )}
@@ -825,14 +796,14 @@ export default function ProductDetailClient() {
               </div>
 
               {/* Title */}
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 dark:text-white leading-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-display uppercase tracking-wide text-gray-900 dark:text-white leading-tight">
                 {product.name}
               </h1>
 
               {/* Price */}
               <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-4 sm:p-5 shadow-sm">
                 <div className="flex items-end gap-3 flex-wrap">
-                  <span className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white leading-none">
+                  <span className="text-4xl sm:text-5xl font-display tracking-wide text-gray-900 dark:text-white leading-none">
                     {formatPrice(product.price)}
                   </span>
                   {product.oldPrice && product.oldPrice > product.price && (
@@ -843,8 +814,7 @@ export default function ProductDetailClient() {
                 </div>
                 {discount > 0 && product.oldPrice && (
                   <div className="mt-2 flex items-center gap-2 flex-wrap">
-                    <span className="inline-flex items-center gap-1 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-2.5 py-1 rounded-lg text-xs font-bold">
-                      <Zap className="w-3 h-3" />
+                    <span className="clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-xs px-3 py-1">
                       Économisez{" "}
                       {formatPrice(product.oldPrice - product.price)}
                     </span>
@@ -962,7 +932,7 @@ export default function ProductDetailClient() {
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
                     className={cn(
-                      "flex-1 h-12 rounded-xl flex items-center justify-center gap-2.5 font-black text-sm uppercase tracking-wider border-2 transition-all",
+                      "flex-1 h-12 rounded-xl flex items-center justify-center gap-2.5 font-display text-sm uppercase tracking-widest border-2 transition-all",
                       isOutOfStock
                         ? "bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400 cursor-not-allowed"
                         : "bg-gray-900 dark:bg-white border-gray-900 dark:border-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 shadow-sm hover:shadow-md"
@@ -975,13 +945,12 @@ export default function ProductDetailClient() {
                     onClick={handleBuyNow}
                     disabled={isOutOfStock}
                     className={cn(
-                      "flex-1 h-12 rounded-xl flex items-center justify-center gap-2.5 font-black text-sm uppercase tracking-wider border-2 transition-all",
+                      "flex-1 h-12 rounded-xl flex items-center justify-center gap-2.5 font-display text-sm uppercase tracking-widest border-2 transition-all",
                       isOutOfStock
                         ? "bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400 cursor-not-allowed"
                         : "bg-yellow-500 hover:bg-yellow-400 border-yellow-600 hover:border-yellow-500 text-black shadow-sm hover:shadow-lg hover:shadow-yellow-500/20"
                     )}
                   >
-                    <Zap className="w-4 h-4" />
                     Achat rapide
                   </button>
                 </div>
@@ -1084,7 +1053,7 @@ export default function ProductDetailClient() {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
                     className={cn(
-                      "flex items-center gap-2 px-5 py-4 font-bold text-sm whitespace-nowrap border-b-2 transition-all",
+                      "flex items-center gap-2 px-5 py-4 font-display text-sm uppercase tracking-widest whitespace-nowrap border-b-2 transition-all",
                       activeTab === tab.id
                         ? "border-yellow-500 text-yellow-600 dark:text-yellow-400"
                         : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-200 dark:hover:border-gray-700"
@@ -1128,7 +1097,7 @@ export default function ProductDetailClient() {
                     {product.specs &&
                       Object.keys(product.specs).length > 0 && (
                         <div>
-                          <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
+                          <h3 className="text-xs font-display uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
                             Spécifications
                           </h3>
                           <div className="divide-y divide-gray-100 dark:divide-gray-800 border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden">
@@ -1153,7 +1122,7 @@ export default function ProductDetailClient() {
 
                     {product.dimensions && (
                       <div>
-                        <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
+                        <h3 className="text-xs font-display uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
                           Dimensions
                         </h3>
                         <div className="divide-y divide-gray-100 dark:divide-gray-800 border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden">
@@ -1199,7 +1168,7 @@ export default function ProductDetailClient() {
 
                     {product.shipping && (
                       <div>
-                        <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
+                        <h3 className="text-xs font-display uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
                           Livraison
                         </h3>
                         <div className="divide-y divide-gray-100 dark:divide-gray-800 border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden">
@@ -1261,7 +1230,7 @@ export default function ProductDetailClient() {
                         return (
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-5 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800">
                             <div className="text-center shrink-0">
-                              <p className="text-6xl font-black text-gray-900 dark:text-white leading-none">
+                              <p className="text-6xl font-display text-gray-900 dark:text-white leading-none">
                                 {roundedAverage.toFixed(1)}
                               </p>
                               <StarRating rating={roundedAverage} size="md" />
@@ -1443,10 +1412,10 @@ export default function ProductDetailClient() {
             <section className="mt-12 lg:mt-16">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <p className="text-xs font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-widest mb-1">
+                  <p className="text-xs font-display text-yellow-600 dark:text-yellow-400 uppercase tracking-widest mb-1">
                     Vous aimerez aussi
                   </p>
-                  <h2 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
+                  <h2 className="text-xl sm:text-2xl font-display uppercase tracking-wide text-gray-900 dark:text-white">
                     Produits similaires
                   </h2>
                 </div>
@@ -1466,7 +1435,7 @@ export default function ProductDetailClient() {
                     <Link
                       key={getProductId(prod)}
                       href={`/produit/${prod.slug || getProductId(prod)}`}
-                      className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:border-yellow-200 dark:hover:border-yellow-900/50 transition-all duration-300"
+                      className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 hover:border-yellow-500/50 dark:hover:border-yellow-900/50 transition-all duration-300"
                     >
                       <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-gray-800">
                         <CloudImg
@@ -1476,18 +1445,19 @@ export default function ProductDetailClient() {
                           fill
                         />
                         {pDiscount > 0 && (
-                          <div className="absolute top-2 left-2">
-                            <span className="inline-flex items-center gap-0.5 bg-red-500 text-white px-2 py-0.5 rounded-md text-[10px] font-bold border border-red-600">
-                              <Zap className="w-2 h-2" />-{pDiscount}%
+                          <div className="absolute top-2 left-0">
+                            <span className="clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-[10px] pl-2.5 pr-3.5 py-1 shadow-md">
+                              -{pDiscount}%
                             </span>
                           </div>
                         )}
                       </div>
                       <div className="p-3">
-                        <p className="text-[10px] font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider mb-1 truncate">
+                        <p className="inline-flex items-center gap-1.5 text-[10px] font-display text-yellow-600 dark:text-yellow-400 uppercase tracking-widest mb-1 truncate">
+                          <span className="w-1.5 h-3 bg-yellow-500 -skew-x-12 shrink-0" aria-hidden="true" />
                           {prod.brand || prod.category}
                         </p>
-                        <h3 className="font-bold text-xs sm:text-sm text-gray-900 dark:text-white line-clamp-2 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors mb-2 leading-tight">
+                        <h3 className="font-display uppercase tracking-wide text-xs sm:text-sm text-gray-900 dark:text-white line-clamp-2 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors mb-2 leading-tight">
                           {prod.name}
                         </h3>
                         {prod.rating && (
@@ -1496,7 +1466,7 @@ export default function ProductDetailClient() {
                           </div>
                         )}
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm font-black text-gray-900 dark:text-white">
+                          <span className="text-sm font-display tracking-wide text-gray-900 dark:text-white">
                             {formatPrice(prod.price)}
                           </span>
                           {prod.oldPrice && prod.oldPrice > prod.price && (

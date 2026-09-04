@@ -18,7 +18,6 @@ import {
   ShoppingCart,
   Grid,
   List,
-  Flame,
   CheckCircle,
   AlertCircle,
   ChevronDown,
@@ -248,7 +247,7 @@ const ProductCard = memo(function ProductCard({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
-        className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-lg hover:border-yellow-200 dark:hover:border-yellow-900/50 transition-all duration-300 flex"
+        className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-lg hover:border-yellow-500/50 dark:hover:border-yellow-900/50 transition-all duration-300 flex"
       >
         {/* Image – largeur adaptative */}
         <div className="relative w-full max-w-[180px] sm:max-w-[220px] md:max-w-[280px] shrink-0 overflow-hidden bg-gray-50 dark:bg-gray-800">
@@ -314,7 +313,7 @@ const ProductCard = memo(function ProductCard({
           <div className="mt-auto flex items-center justify-between flex-wrap gap-2 sm:gap-3">
             <div>
               <div className="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
-                <span className="text-base sm:text-xl md:text-2xl font-black text-gray-900 dark:text-white">
+                <span className="text-base sm:text-xl md:text-2xl font-display tracking-wide text-gray-900 dark:text-white">
                   {formatPrice(product.price)}
                 </span>
                 {product.oldPrice && product.oldPrice > product.price && (
@@ -366,7 +365,7 @@ const ProductCard = memo(function ProductCard({
 
               <Link
                 href={`/produit/${product.slug || productId}`}
-                className="h-8 sm:h-9 px-2.5 sm:px-4 rounded-xl flex items-center gap-1.5 sm:gap-2 font-bold text-[10px] sm:text-xs uppercase tracking-wider border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-yellow-500 hover:text-yellow-600 dark:hover:text-yellow-400 transition-all"
+                className="h-8 sm:h-9 px-2.5 sm:px-4 rounded-xl flex items-center gap-1.5 sm:gap-2 font-display text-[10px] sm:text-xs uppercase tracking-widest border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-yellow-500 hover:text-yellow-600 dark:hover:text-yellow-400 transition-all"
               >
                 <span className="hidden sm:inline">Voir</span>
                 <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
@@ -386,10 +385,10 @@ const ProductCard = memo(function ProductCard({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-xl hover:border-yellow-200 dark:hover:border-yellow-900/50 transition-all duration-300 flex flex-col h-full"
+      className="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1.5 hover:border-yellow-500/50 dark:hover:border-yellow-900/50 transition-all duration-300 flex flex-col h-full"
     >
       {/* Image */}
-      <div className="relative overflow-hidden bg-gray-50 dark:bg-gray-800 aspect-[4/3]">
+      <div className="relative overflow-hidden bg-gray-50 dark:bg-gray-800 aspect-[4/3] border-b-2 border-transparent group-hover:border-yellow-500 transition-colors">
         <Link
           href={`/produit/${product.slug || productId}`}
           className="block w-full h-full"
@@ -397,7 +396,7 @@ const ProductCard = memo(function ProductCard({
           <CloudImg
             src={imgSrc}
             alt={product.name}
-            className="w-full h-full group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full group-hover:scale-110 transition-transform duration-500"
             fill
             priority={index < 8}
           />
@@ -422,31 +421,28 @@ const ProductCard = memo(function ProductCard({
           </motion.button>
         </div>
 
-        {/* Badges */}
-        <div className="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 flex flex-col gap-1 z-10">
+        {/* Badges — slanted ribbons */}
+        <div className="absolute top-2 left-0 sm:top-2.5 flex flex-col gap-1 z-10">
           {product.isNewProduct && (
-            <Badge className="bg-yellow-500 text-black shadow-sm">
-              <Sparkles className="w-2.5 h-2.5" />
-              <span className="hidden xs:inline">Nouveau</span>
-            </Badge>
+            <span className="clip-slant bg-yellow-500 text-black font-display uppercase tracking-widest text-[10px] sm:text-xs pl-3 pr-4 py-1 shadow-md">
+              Nouveau
+            </span>
           )}
           {discount > 0 && (
-            <Badge className="bg-red-500 text-white shadow-sm">
-              <Zap className="w-2.5 h-2.5" />
+            <span className="clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-[10px] sm:text-xs pl-3 pr-4 py-1 shadow-md">
               -{discount}%
-            </Badge>
+            </span>
           )}
           {product.isFeatured && discount === 0 && !product.isNewProduct && (
-            <Badge className="bg-gray-900 dark:bg-white text-yellow-400 dark:text-gray-900 shadow-sm">
-              <Flame className="w-2.5 h-2.5" />
+            <span className="clip-slant bg-gray-900 dark:bg-white text-yellow-400 dark:text-gray-900 font-display uppercase tracking-widest text-[10px] sm:text-xs pl-3 pr-4 py-1 shadow-md">
               Top
-            </Badge>
+            </span>
           )}
         </div>
 
         {isOutOfStock && (
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-20">
-            <span className="text-white font-black text-xs sm:text-sm uppercase tracking-widest px-2.5 sm:px-3 py-1 sm:py-1.5 border border-white/40 rounded-lg">
+            <span className="text-white font-display uppercase tracking-widest text-xs sm:text-sm px-2.5 sm:px-3 py-1 sm:py-1.5 border border-white/40 rounded-lg">
               Rupture
             </span>
           </div>
@@ -456,7 +452,8 @@ const ProductCard = memo(function ProductCard({
       {/* Content */}
       <div className="p-3 sm:p-4 flex flex-col flex-grow">
         <div className="flex items-center justify-between gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
-          <span className="text-[10px] sm:text-[11px] font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider truncate">
+          <span className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-display text-yellow-600 dark:text-yellow-400 uppercase tracking-widest truncate">
+            <span className="w-2 h-3.5 bg-yellow-500 -skew-x-12 shrink-0" aria-hidden="true" />
             {product.brand || product.category}
           </span>
           {product.subCategory && (
@@ -467,7 +464,7 @@ const ProductCard = memo(function ProductCard({
         </div>
 
         <Link href={`/produit/${product.slug || productId}`}>
-          <h2 className="font-bold text-xs sm:text-sm md:text-base text-gray-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors line-clamp-2 mb-2 leading-snug">
+          <h2 className="font-display uppercase tracking-wide text-xs sm:text-sm md:text-base text-gray-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors line-clamp-2 mb-2 leading-snug">
             {product.name}
           </h2>
         </Link>
@@ -477,7 +474,7 @@ const ProductCard = memo(function ProductCard({
         <div className="border-t border-gray-100 dark:border-gray-800 pt-2.5 sm:pt-3 mt-2 space-y-2 sm:space-y-2.5">
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <div>
-              <span className="text-base sm:text-lg font-black text-gray-900 dark:text-white">
+              <span className="text-base sm:text-lg font-display tracking-wide text-gray-900 dark:text-white">
                 {formatPrice(product.price)}
               </span>
               {product.oldPrice && product.oldPrice > product.price && (
@@ -514,7 +511,7 @@ const ProductCard = memo(function ProductCard({
               onClick={(e) => handleAddToCart(e, product)}
               disabled={isOutOfStock}
               className={cn(
-                "flex-1 h-8 sm:h-9 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 font-bold text-[10px] sm:text-xs uppercase tracking-wider transition-all",
+                "flex-1 h-8 sm:h-9 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 font-display text-[10px] sm:text-xs uppercase tracking-widest transition-all",
                 isOutOfStock
                   ? "bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed border border-gray-200 dark:border-gray-700"
                   : "bg-yellow-500 hover:bg-yellow-400 text-black border border-yellow-600 hover:border-yellow-500 shadow-sm hover:shadow-md"
@@ -528,7 +525,7 @@ const ProductCard = memo(function ProductCard({
 
             <Link
               href={`/produit/${product.slug || productId}`}
-              className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:border-yellow-500 hover:text-yellow-600 dark:hover:text-yellow-400 transition-all shrink-0"
+              className="h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-yellow-500 hover:border-yellow-500 hover:text-black transition-all shrink-0"
             >
               <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </Link>
@@ -554,7 +551,7 @@ const CategoryPills = memo(
         whileTap={{ scale: 0.95 }}
         onClick={() => onSelect("")}
         className={cn(
-          "px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider border transition-all whitespace-nowrap",
+          "px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-display uppercase tracking-widest border transition-all whitespace-nowrap",
           selectedCategory === ""
             ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white shadow-md"
             : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
@@ -568,7 +565,7 @@ const CategoryPills = memo(
           whileTap={{ scale: 0.95 }}
           onClick={() => onSelect(cat)}
           className={cn(
-            "px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider border transition-all whitespace-nowrap",
+            "px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-display uppercase tracking-widest border transition-all whitespace-nowrap",
             selectedCategory === cat
               ? "bg-yellow-500 text-black border-yellow-600 shadow-md"
               : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-yellow-400 hover:text-yellow-600"
@@ -968,7 +965,7 @@ export default function ProductsPage() {
         }
       `}</style>
 
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <div className="min-h-screen bg-white dark:bg-gray-950">
         {/* ── TOAST ─────────────────────────────────────── */}
         <AnimatePresence>
           {toast.show && (
@@ -1002,7 +999,7 @@ export default function ProductsPage() {
         <div className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
           <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-10 lg:py-12">
             <header className="text-center">
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white mb-2 sm:mb-3 md:mb-4">
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-2 sm:mb-3 md:mb-4">
                 Tous nos{" "}
                 <span className="text-yellow-500">Produits</span>
               </h1>
@@ -1052,7 +1049,7 @@ export default function ProductsPage() {
                 </motion.div>
               )}
 
-              <div className="h-1 sm:h-1.5 w-12 sm:w-16 bg-yellow-500 mx-auto rounded-full mt-3 sm:mt-4" />
+              <div className="h-1.5 w-20 sm:w-24 bg-yellow-500 mx-auto -skew-x-12 mt-3 sm:mt-4" />
 
               <p className="mt-3 sm:mt-4 text-gray-500 dark:text-gray-400 text-xs sm:text-sm md:text-base max-w-2xl mx-auto px-4">
                 Découvrez notre gamme complète d&apos;équipements
@@ -1094,7 +1091,7 @@ export default function ProductsPage() {
               {/* Categories */}
               <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
                 <div className="px-3 xl:px-4 py-2.5 xl:py-3 border-b border-gray-100 dark:border-gray-800">
-                  <h3 className="text-[10px] xl:text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                  <h3 className="text-[10px] xl:text-xs font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 flex items-center gap-2">
                     <Layers className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
                     Catégories
                   </h3>
@@ -1158,7 +1155,7 @@ export default function ProductsPage() {
                     className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden"
                   >
                     <div className="px-3 xl:px-4 py-2.5 xl:py-3 border-b border-gray-100 dark:border-gray-800">
-                      <h3 className="text-[10px] xl:text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                      <h3 className="text-[10px] xl:text-xs font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 flex items-center gap-2">
                         <Tag className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
                         Sous-catégories
                       </h3>
@@ -1212,7 +1209,7 @@ export default function ProductsPage() {
 
               {/* Price */}
               <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-3 xl:p-4 shadow-sm">
-                <h3 className="text-[10px] xl:text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2.5 xl:mb-3 flex items-center gap-2">
+                <h3 className="text-[10px] xl:text-xs font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2.5 xl:mb-3 flex items-center gap-2">
                   <SlidersHorizontal className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
                   Prix (MAD)
                 </h3>
@@ -1308,7 +1305,7 @@ export default function ProductsPage() {
                       <Skeleton className="h-6 sm:h-7 w-28 sm:w-32" />
                     ) : (
                       <>
-                        <span className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white">
+                        <span className="text-xl sm:text-2xl font-display tracking-wide text-gray-900 dark:text-white">
                           {filtered.length}
                         </span>
                         <span className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -1488,7 +1485,7 @@ export default function ProductsPage() {
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mb-4 sm:mb-5">
                       <RefreshCw className="w-7 h-7 sm:w-9 sm:h-9 text-yellow-500" />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-lg sm:text-xl font-display tracking-wide text-gray-900 dark:text-white mb-2">
                       Impossible de charger
                     </h3>
                     <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-5 sm:mb-6 max-w-xs sm:max-w-sm">
@@ -1497,7 +1494,7 @@ export default function ProductsPage() {
                     </p>
                     <button
                       onClick={() => setRetryCounter((c) => c + 1)}
-                      className="px-4 sm:px-5 py-2 sm:py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs sm:text-sm rounded-xl transition-colors inline-flex items-center gap-2"
+                      className="px-4 sm:px-5 py-2 sm:py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest text-xs sm:text-sm rounded-xl transition-colors inline-flex items-center gap-2"
                     >
                       <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       Rafraîchir
@@ -1508,7 +1505,7 @@ export default function ProductsPage() {
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4 sm:mb-5">
                     <Search className="w-7 h-7 sm:w-9 sm:h-9 text-gray-400" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-black text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-lg sm:text-xl font-display tracking-wide text-gray-900 dark:text-white mb-2">
                     Aucun produit trouvé
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-5 sm:mb-6 max-w-xs sm:max-w-sm">
@@ -1517,7 +1514,7 @@ export default function ProductsPage() {
                   </p>
                   <button
                     onClick={handleClearFilters}
-                    className="px-4 sm:px-5 py-2 sm:py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs sm:text-sm rounded-xl transition-colors inline-flex items-center gap-2"
+                    className="px-4 sm:px-5 py-2 sm:py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest text-xs sm:text-sm rounded-xl transition-colors inline-flex items-center gap-2"
                   >
                     <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     Réinitialiser les filtres
@@ -1614,7 +1611,7 @@ export default function ProductsPage() {
                 <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 sm:space-y-5">
                   {/* Search */}
                   <div>
-                    <label className="block text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
+                    <label className="block text-[10px] sm:text-[11px] font-display uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
                       Recherche
                     </label>
                     <div className="relative">
@@ -1633,7 +1630,7 @@ export default function ProductsPage() {
 
                   {/* Sort */}
                   <div>
-                    <label className="block text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
+                    <label className="block text-[10px] sm:text-[11px] font-display uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
                       Trier par
                     </label>
                     <div className="relative">
@@ -1656,7 +1653,7 @@ export default function ProductsPage() {
 
                   {/* Category */}
                   <div>
-                    <label className="block text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
+                    <label className="block text-[10px] sm:text-[11px] font-display uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
                       Catégorie
                     </label>
                     <div className="space-y-0.5 sm:space-y-1">
@@ -1693,7 +1690,7 @@ export default function ProductsPage() {
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                       >
-                        <label className="block text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
+                        <label className="block text-[10px] sm:text-[11px] font-display uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
                           Sous-catégorie
                         </label>
                         <div className="space-y-0.5 sm:space-y-1">
@@ -1734,7 +1731,7 @@ export default function ProductsPage() {
 
                   {/* Price */}
                   <div>
-                    <label className="block text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
+                    <label className="block text-[10px] sm:text-[11px] font-display uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
                       Prix (MAD)
                     </label>
                     <div className="flex items-center gap-2">
@@ -1798,7 +1795,7 @@ export default function ProductsPage() {
                   </button>
                   <button
                     onClick={() => setShowMobileFilters(false)}
-                    className="flex-1 py-2 sm:py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs sm:text-sm rounded-xl transition-colors"
+                    className="flex-1 py-2 sm:py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest text-xs sm:text-sm rounded-xl transition-colors"
                   >
                     Voir ({filtered.length})
                   </button>

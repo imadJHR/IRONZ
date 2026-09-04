@@ -260,8 +260,7 @@ function SectionBadge({
 }) {
   return (
     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-      <span className="text-yellow-500">{icon}</span>
-      <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+      <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
         {label}
       </span>
     </div>
@@ -284,7 +283,7 @@ function ContactCard({
   return (
     <div className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors">
       <div
-        className={`w-12 h-12 rounded-xl bg-gradient-to-r ${iconBg} flex items-center justify-center group-hover:scale-110 transition-transform`}
+        className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform"
       >
         {icon}
       </div>
@@ -338,7 +337,7 @@ export default function HomeGymPage() {
               label="Solution élite"
             />
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase italic tracking-tighter mb-6 text-white leading-[0.9]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.9]">
               Home Gym{" "}
               <span className="text-yellow-500">Premium</span>
             </h1>
@@ -364,7 +363,7 @@ export default function HomeGymPage() {
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <span className="text-white">{stat.icon}</span>
-                    <span className="text-3xl md:text-4xl font-black text-yellow-500">
+                    <span className="text-3xl md:text-4xl font-display tracking-wide text-yellow-500">
                       {stat.value}
                     </span>
                   </div>
@@ -385,7 +384,7 @@ export default function HomeGymPage() {
               <motion.button
                 variants={scaleIn}
                 onClick={() => (window.location.href = "/demande-devis")}
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
+                className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
               >
                 Demander un devis gratuit
                 <ArrowRight className="w-5 h-5" />
@@ -394,7 +393,7 @@ export default function HomeGymPage() {
               <motion.button
                 variants={scaleIn}
                 onClick={openWhatsApp}
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
+                className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
               >
                 <IoLogoWhatsapp className="w-6 h-6" />
                 WhatsApp Direct
@@ -420,7 +419,7 @@ export default function HomeGymPage() {
               icon={<Trophy className="w-4 h-4" />}
               label="Avantages exclusifs"
             />
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Pourquoi choisir un{" "}
               <span className="text-yellow-500">Home Gym</span> ?
             </h2>
@@ -440,14 +439,14 @@ export default function HomeGymPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group h-full"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
                   <div
-                    className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${benefit.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
                   >
-                    <div className="text-white">{benefit.icon}</div>
+                    <div className="text-black">{benefit.icon}</div>
                   </div>
 
-                  <h3 className="text-2xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                  <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                     {benefit.title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -473,7 +472,7 @@ export default function HomeGymPage() {
               icon={<Crown className="w-4 h-4" />}
               label="Nos solutions premium"
             />
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Solutions{" "}
               <span className="text-yellow-500">Home Gym</span>
             </h2>
@@ -496,24 +495,24 @@ export default function HomeGymPage() {
               >
                 {pkg.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                    <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-6 py-2 rounded-full font-black uppercase italic tracking-widest text-sm">
+                    <div className="bg-yellow-500 text-black px-6 py-2 rounded-full font-display uppercase tracking-widest text-sm">
                       Plus populaire
                     </div>
                   </div>
                 )}
 
                 <div
-                  className={`bg-gradient-to-br ${pkg.color} rounded-3xl p-0.5 h-full ${
+                  className={`bg-yellow-500 rounded-3xl p-0.5 h-full ${
                     pkg.popular ? "scale-[1.02]" : ""
                   }`}
                 >
                   <div className="bg-white dark:bg-gray-800 rounded-[1.25rem] p-8 h-full flex flex-col">
                     {/* Header */}
                     <div className="text-center mb-8">
-                      <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mx-auto mb-4">
-                        <div className="text-white">{pkg.icon}</div>
+                      <div className="w-20 h-20 rounded-2xl bg-yellow-500 flex items-center justify-center mx-auto mb-4">
+                        <div className="text-black">{pkg.icon}</div>
                       </div>
-                      <h3 className="text-2xl font-black uppercase italic mb-2 text-gray-900 dark:text-white">
+                      <h3 className="text-2xl font-display uppercase tracking-wide mb-2 text-gray-900 dark:text-white">
                         {pkg.name}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400">
@@ -525,8 +524,8 @@ export default function HomeGymPage() {
                     <div className="space-y-4 mb-8 flex-1">
                       {pkg.features.map((feature, idx) => (
                         <div key={idx} className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle className="w-3 h-3 text-white" />
+                          <div className="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <CheckCircle className="w-3 h-3 text-black" />
                           </div>
                           <span className="text-gray-700 dark:text-gray-300">
                             {feature}
@@ -537,11 +536,11 @@ export default function HomeGymPage() {
 
                     {/* Price & CTA */}
                     <div className="text-center pt-8 border-t border-gray-100 dark:border-gray-700">
-                      <div className="text-3xl font-black text-gray-900 dark:text-white mb-6">
+                      <div className="text-3xl font-display tracking-wide text-gray-900 dark:text-white mb-6">
                         {pkg.price}
                       </div>
                       <Link href="/demande-devis">
-                        <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
+                        <button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
                           Demander un devis
                           <ArrowRight className="w-4 h-4" />
                         </button>
@@ -573,7 +572,7 @@ export default function HomeGymPage() {
               icon={<Zap className="w-4 h-4" />}
               label="Notre processus"
             />
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Excellence en{" "}
               <span className="text-yellow-500">4 Étapes</span>
             </h2>
@@ -596,8 +595,8 @@ export default function HomeGymPage() {
                 <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-8 text-center relative z-10 h-full">
                   {/* Step Number */}
                   <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center">
-                      <span className="text-lg font-black text-white">
+                    <div className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
+                      <span className="text-lg font-display text-black">
                         {step.number}
                       </span>
                     </div>
@@ -608,7 +607,7 @@ export default function HomeGymPage() {
                     <div className="text-yellow-500">{step.icon}</div>
                   </div>
 
-                  <h3 className="text-xl font-black uppercase italic mb-4 text-white">
+                  <h3 className="text-xl font-display uppercase tracking-wide mb-4 text-white">
                     {step.title}
                   </h3>
                   <p className="text-gray-400 leading-relaxed">
@@ -635,7 +634,7 @@ export default function HomeGymPage() {
             viewport={{ once: true }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-black">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">
               Prêt à créer votre Home Gym élite ?
             </h2>
             <p className="text-xl text-black/90 mb-10 max-w-2xl mx-auto">
@@ -644,14 +643,14 @@ export default function HomeGymPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/demande-devis">
-                <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+                <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
                   Demander un devis gratuit
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </Link>
               <button
                 onClick={openWhatsApp}
-                className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
+                className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
               >
                 <IoLogoWhatsapp className="w-6 h-6" />
                 WhatsApp Direct
@@ -677,7 +676,7 @@ export default function HomeGymPage() {
                 label="Contact exclusif"
               />
 
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Consultation{" "}
                 <span className="text-yellow-500">Gratuite</span>
               </h2>
@@ -723,14 +722,14 @@ export default function HomeGymPage() {
                 label="Nos garanties"
               />
 
-              <h3 className="text-3xl font-black uppercase italic mb-8 text-white">
+              <h3 className="text-3xl font-display uppercase tracking-wide mb-8 text-white">
                 Vos <span className="text-yellow-500">Avantages</span> IRONZ
               </h3>
 
               <div className="space-y-6">
                 {guarantees.map((g, index) => (
                   <div key={index} className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-yellow-500 flex items-center justify-center flex-shrink-0">
                       <CheckCircle className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -745,7 +744,7 @@ export default function HomeGymPage() {
 
               <div className="mt-10 pt-8 border-t border-white/10">
                 <Link href="/contact">
-                  <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all flex items-center justify-center gap-2">
+                  <button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all flex items-center justify-center gap-2">
                     Contacter un expert
                     <ArrowRight className="w-5 h-5" />
                   </button>

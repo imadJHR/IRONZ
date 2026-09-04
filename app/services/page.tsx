@@ -10,17 +10,13 @@ import {
   PenTool as Tool,
   Shield,
   Award,
-  Sparkles,
   ArrowRight,
   ArrowLeft,
   Clock,
   Target,
-  Zap,
   Star,
   ChevronRight,
   Phone,
-  MessageSquare,
-  Trophy,
   Medal,
   UsersRound,
   Calendar,
@@ -279,13 +275,12 @@ export default function ServicesPage() {
             className="max-w-5xl"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Sparkles className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Services élites
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase italic tracking-tighter mb-6 text-white leading-[0.9]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.95]">
               Nos <span className="text-yellow-500">Services</span>
             </h1>
 
@@ -309,11 +304,11 @@ export default function ServicesPage() {
                 >
                   <div className="flex items-center justify-center gap-2 mb-2 text-yellow-500">
                     {stat.icon}
-                    <span className="text-3xl md:text-4xl font-black">
+                    <span className="text-3xl md:text-4xl font-display tracking-wide">
                       {stat.value}
                     </span>
                   </div>
-                  <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-400">
+                  <span className="text-xs md:text-sm font-display uppercase tracking-widest text-gray-400">
                     {stat.label}
                   </span>
                 </motion.div>
@@ -329,7 +324,7 @@ export default function ServicesPage() {
               <motion.button
                 variants={scaleIn}
                 onClick={() => window.location.href = "/demande-devis"}
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
+                className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
               >
                 Demander un devis VIP
                 <ArrowRight className="w-5 h-5" />
@@ -338,7 +333,7 @@ export default function ServicesPage() {
               <motion.button
                 variants={scaleIn}
                 onClick={() => window.location.href = "/contact"}
-                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all border border-white/10"
+                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all border border-white/10"
               >
                 <Phone className="w-5 h-5" />
                 Nous contacter
@@ -362,13 +357,12 @@ export default function ServicesPage() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Trophy className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Services premium
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Nos <span className="text-yellow-500">Services</span> Élites
             </h2>
           </motion.div>
@@ -385,13 +379,13 @@ export default function ServicesPage() {
                 onMouseLeave={() => setHoveredService(null)}
                 className="group relative h-full"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full flex flex-col">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full flex flex-col">
                   <div className="mb-6">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-white`}>
+                    <div className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-black">
                         {service.icon}
                     </div>
                     
-                    <h3 className="text-2xl font-black uppercase italic mb-4 text-gray-900 dark:text-white group-hover:text-yellow-500 transition-colors">
+                    <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white group-hover:text-yellow-500 transition-colors">
                       {service.title}
                     </h3>
                     
@@ -399,7 +393,7 @@ export default function ServicesPage() {
                       {service.highlights.map((highlight, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 text-xs font-bold uppercase tracking-widest bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full"
+                          className="px-3 py-1 text-xs font-display uppercase tracking-widest bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full"
                         >
                           {highlight}
                         </span>
@@ -414,7 +408,7 @@ export default function ServicesPage() {
                   <ul className="space-y-3 mb-6">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center shrink-0 mt-0.5">
                           <CheckCircle className="w-3 h-3 text-white" />
                         </div>
                         <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -426,7 +420,7 @@ export default function ServicesPage() {
 
                   <div className="mt-auto pt-6 border-t border-gray-100 dark:border-gray-700">
                     <Link href="/demande-devis" className="block w-full">
-                      <button className="w-full px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest rounded-xl transition-all text-sm flex items-center justify-center gap-2">
+                      <button className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-all text-sm flex items-center justify-center gap-2">
                         Demander un devis
                         <ArrowRight className="w-4 h-4" />
                       </button>
@@ -449,13 +443,12 @@ export default function ServicesPage() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Zap className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Notre processus
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Excellence en <span className="text-yellow-500">4 Étapes</span>
             </h2>
           </motion.div>
@@ -470,18 +463,18 @@ export default function ServicesPage() {
                 transition={{ delay: index * 0.1 }}
                 className="relative"
               >
-                <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-8 text-center relative z-10">
-                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center text-white font-black">
-                      {step.number}
+                  <div className="bg-zinc-950 rounded-2xl p-8 text-center relative z-10 border border-white/10">
+                    <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                      <div className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center text-black font-display text-lg">
+                        {step.number}
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="w-16 h-16 rounded-2xl bg-yellow-500/10 flex items-center justify-center mx-auto mb-6 mt-6 text-yellow-500">
-                      {step.icon}
-                  </div>
-                  
-                  <h3 className="text-xl font-black uppercase italic mb-4 text-white">
+                    
+                    <div className="w-16 h-16 rounded-2xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mx-auto mb-6 mt-6 text-yellow-500">
+                        {step.icon}
+                    </div>
+                    
+                    <h3 className="text-xl font-display uppercase tracking-wide mb-4 text-white">
                     {step.title}
                   </h3>
                   <p className="text-gray-400 leading-relaxed">
@@ -510,13 +503,12 @@ export default function ServicesPage() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <MessageSquare className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 FAQ Premium
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Questions <span className="text-yellow-500">Fréquentes</span>
             </h2>
           </motion.div>
@@ -532,8 +524,8 @@ export default function ServicesPage() {
                   transition={{ delay: index * 0.1 }}
                   className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 hover:border-yellow-500/30 transition-colors"
                 >
-                  <h3 className="text-xl font-black uppercase italic mb-4 text-gray-900 dark:text-white flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center text-white text-sm font-black">
+                  <h3 className="text-xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-black text-sm font-display shrink-0">
                       ?
                     </div>
                     {faq.question}
@@ -557,18 +549,18 @@ export default function ServicesPage() {
             viewport={{ once: true }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-black">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">
               Prêt à accéder à l&apos;excellence ?
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/demande-devis">
-                <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+                <button className="px-8 py-6 bg-black hover:bg-zinc-800 text-white font-display uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-3">
                   Demander un devis VIP
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </Link>
               <Link href="/contact">
-                <button className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+                <button className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-3">
                   <Phone className="w-5 h-5" />
                   Nous contacter
                   <ChevronRight className="w-5 h-5" />

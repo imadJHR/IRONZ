@@ -12,9 +12,6 @@ import {
   CheckCircle,
   Loader2,
   AlertCircle,
-  MessageSquare,
-  MapPin,
-  Sparkles,
   Users,
   Target,
   Award,
@@ -325,13 +322,12 @@ ${data.message}`;
             className="max-w-5xl"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <MessageSquare className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Contact & Support
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase italic tracking-tighter mb-6 text-white leading-[0.9]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.9]">
               Contactez-<span className="text-yellow-500">nous</span>
             </h1>
 
@@ -349,7 +345,7 @@ ${data.message}`;
               <motion.button
                 variants={scaleIn}
                 onClick={contactViaWhatsApp}
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
+                className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
               >
                 <IoLogoWhatsapp className="w-6 h-6" />
                 WhatsApp Direct
@@ -359,7 +355,7 @@ ${data.message}`;
               <motion.button
                 variants={scaleIn}
                 onClick={() => (window.location.href = "tel:+212674114446")}
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
+                className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
               >
                 <Phone className="w-6 h-6" />
                 Nous appeler
@@ -387,12 +383,12 @@ ${data.message}`;
                 onClick={info.action}
                 className="group cursor-pointer"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${info.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <div className="text-white">{info.icon}</div>
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
+                  <div className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <div className="text-black">{info.icon}</div>
                   </div>
                   
-                  <h3 className="text-2xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                  <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                     {info.title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
@@ -427,13 +423,12 @@ ${data.message}`;
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center p-8">
                     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-                      <MapPin className="w-4 h-4 text-yellow-500" />
-                      <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                      <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                         Notre Showroom
                       </span>
                     </div>
                     
-                    <h3 className="text-3xl font-black uppercase italic mb-4 text-white">
+                    <h3 className="text-3xl font-display uppercase tracking-wide mb-4 text-white">
                       IRONZ <span className="text-yellow-500">PRO</span>
                     </h3>
                     <p className="text-gray-300 mb-6">
@@ -466,13 +461,12 @@ ${data.message}`;
               <div className="p-8 md:p-12">
                 <div className="mb-8">
                   <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-4">
-                    <MessageSquare className="w-4 h-4 text-yellow-500" />
-                    <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                    <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                       Formulaire de contact
                     </span>
                   </div>
                   
-                  <h2 className="text-3xl md:text-4xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                  <h2 className="text-3xl md:text-4xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                     Envoyez-nous un <span className="text-yellow-500">message</span>
                   </h2>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -489,7 +483,7 @@ ${data.message}`;
                     <div className="w-20 h-20 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center mx-auto mb-6">
                       <CheckCircle className="h-10 w-10 text-white" />
                     </div>
-                    <h3 className="text-2xl font-black uppercase italic mb-3 text-green-600 dark:text-green-400">
+                    <h3 className="text-2xl font-display uppercase tracking-wide mb-3 text-green-600 dark:text-green-400">
                       Message envoyé !
                     </h3>
                     <p className="text-green-700 dark:text-green-300 mb-6">
@@ -497,7 +491,7 @@ ${data.message}`;
                     </p>
                     <button
                       onClick={() => setFormStatus((prev) => ({ ...prev, isSubmitted: false }))}
-                      className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-black uppercase italic tracking-widest px-8 py-4 rounded-2xl transition-all"
+                      className="bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-4 rounded-2xl transition-all"
                     >
                       Envoyer un autre message
                     </button>
@@ -515,28 +509,28 @@ ${data.message}`;
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="name" className="text-sm font-bold uppercase tracking-widest mb-2 block">Nom complet *</Label>
+                        <Label htmlFor="name" className="text-sm font-display uppercase tracking-widest mb-2 block">Nom complet *</Label>
                         <Input id="name" name="name" value={formState.name} onChange={handleInputChange} required placeholder="Votre nom" className="bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-xl py-6" />
                       </div>
                       <div>
-                        <Label htmlFor="email" className="text-sm font-bold uppercase tracking-widest mb-2 block">Email *</Label>
+                        <Label htmlFor="email" className="text-sm font-display uppercase tracking-widest mb-2 block">Email *</Label>
                         <Input id="email" name="email" type="email" value={formState.email} onChange={handleInputChange} required placeholder="votre@email.com" className="bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-xl py-6" />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="phone" className="text-sm font-bold uppercase tracking-widest mb-2 block">Téléphone</Label>
+                        <Label htmlFor="phone" className="text-sm font-display uppercase tracking-widest mb-2 block">Téléphone</Label>
                         <Input id="phone" name="phone" value={formState.phone} onChange={handleInputChange} placeholder="Votre numéro" className="bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-xl py-6" />
                       </div>
                       <div>
-                        <Label htmlFor="subject" className="text-sm font-bold uppercase tracking-widest mb-2 block">Sujet *</Label>
+                        <Label htmlFor="subject" className="text-sm font-display uppercase tracking-widest mb-2 block">Sujet *</Label>
                         <Input id="subject" name="subject" value={formState.subject} onChange={handleInputChange} required placeholder="Sujet" className="bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-xl py-6" />
                       </div>
                     </div>
 
                     <div>
-                      <Label className="text-sm font-bold uppercase tracking-widest mb-2 block">Raison du contact</Label>
+                      <Label className="text-sm font-display uppercase tracking-widest mb-2 block">Raison du contact</Label>
                       <RadioGroup value={formState.contactReason} onValueChange={(value) => setFormState((prev) => ({ ...prev, contactReason: value }))} className="flex flex-wrap gap-4">
                         {[
                           { value: "question", label: "Question" },
@@ -554,14 +548,14 @@ ${data.message}`;
                     </div>
 
                     <div>
-                      <Label htmlFor="message" className="text-sm font-bold uppercase tracking-widest mb-2 block">Message *</Label>
+                      <Label htmlFor="message" className="text-sm font-display uppercase tracking-widest mb-2 block">Message *</Label>
                       <Textarea id="message" name="message" value={formState.message} onChange={handleInputChange} required placeholder="Votre message..." className="min-h-[150px] bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-xl py-4" />
                     </div>
 
                     <button
                       type="submit"
                       disabled={formStatus.isSubmitting}
-                      className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
+                      className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 text-white font-display uppercase tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
                     >
                       {formStatus.isSubmitting ? (
                         <>
@@ -589,17 +583,16 @@ ${data.message}`;
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Sparkles className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">Questions fréquentes</span>
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">Questions fréquentes</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">FAQ - <span className="text-yellow-500">IRONZ</span></h2>
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">FAQ - <span className="text-yellow-500">IRONZ</span></h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Tout ce que vous devez savoir sur nos produits et services</p>
           </motion.div>
 
           <Tabs defaultValue="general" className="max-w-4xl mx-auto">
             <TabsList className="grid w-full grid-cols-3 mb-12 bg-gray-100 dark:bg-gray-900 p-1 rounded-2xl">
               {faqSections.map((section) => (
-                <TabsTrigger key={section.value} value={section.value} className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-orange-500 data-[state=active]:text-white font-bold uppercase tracking-wider rounded-xl py-3">
+                <TabsTrigger key={section.value} value={section.value} className="data-[state=active]:bg-yellow-500 data-[state=active]:text-black font-display uppercase tracking-widest rounded-xl py-3">
                   {section.label}
                 </TabsTrigger>
               ))}
@@ -609,9 +602,9 @@ ${data.message}`;
               <TabsContent key={section.value} value={section.value} className="space-y-4">
                 {section.items.map((item, index) => (
                   <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 border border-gray-100 dark:border-gray-800 hover:border-yellow-500/30 transition-colors">
-                    <h3 className="text-xl font-black uppercase italic mb-4 text-gray-900 dark:text-white flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center">
-                        <span className="text-sm font-black text-white">{index + 1}</span>
+                    <h3 className="text-xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center">
+                        <span className="text-sm font-display text-black">{index + 1}</span>
                       </div>
                       {item.question}
                     </h3>
@@ -628,15 +621,15 @@ ${data.message}`;
       <section className="py-20 bg-gradient-to-r from-yellow-500 to-orange-500">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-black">Prêt à transformer votre passion en performance ?</h2>
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">Prêt à transformer votre passion en performance ?</h2>
             <p className="text-xl text-black/90 mb-10 max-w-2xl mx-auto">Contactez notre équipe d&apos;experts pour des conseils personnalisés.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button onClick={contactViaWhatsApp} className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+              <button onClick={contactViaWhatsApp} className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
                 <IoLogoWhatsapp className="w-6 h-6" />
                 Discuter sur WhatsApp
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <button onClick={() => (window.location.href = "tel:+212674114446")} className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+              <button onClick={() => (window.location.href = "tel:+212674114446")} className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
                 <Phone className="w-6 h-6" />
                 Nous appeler
                 <ChevronRight className="w-5 h-5" />

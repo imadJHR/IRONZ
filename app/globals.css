@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --font-display: "Anton", "Arial Narrow", "Impact", sans-serif;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -145,4 +149,34 @@
    en cachant les slides non encore initialisés */
 .swiper:not(.swiper-initialized) .swiper-slide:not(:first-child) {
   display: none;
+}
+
+/* ── IRONZ sport premium ───────────────────────────────
+   font-display vient de --font-display (Anton) défini dans @theme */
+.font-heading {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.bg-stripes-yellow {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #eab308 0 14px,
+    #09090b 14px 28px
+  );
+}
+
+.text-outline {
+  -webkit-text-stroke: 2px rgb(255 255 255 / 0.9);
+  color: transparent;
+}
+
+.clip-slant {
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
+.bg-carbon {
+  background-color: #09090b;
+  background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
 }

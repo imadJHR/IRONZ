@@ -17,7 +17,6 @@ import {
   Crown,
   Calendar,
   ChevronRight,
-  Zap,
   Dumbbell,
   Gamepad2,
   Puzzle,
@@ -25,7 +24,6 @@ import {
   Brain,
   Baby,
   Building,
-  Sparkles,
 } from "lucide-react";
 import { IoLogoWhatsapp } from "react-icons/io";
 import img1 from "../../../public/enfant1.webp";
@@ -320,13 +318,12 @@ export default function EspaceEnfanceClientPage() {
             className="max-w-5xl"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Sparkles className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Espace enfant
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase italic tracking-tighter mb-6 text-white leading-[0.9]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.9]">
               Espace <span className="text-yellow-500">Enfance</span>
             </h1>
 
@@ -367,7 +364,7 @@ export default function EspaceEnfanceClientPage() {
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <span className="text-yellow-500">{stat.icon}</span>
-                    <span className="text-3xl md:text-4xl font-black text-yellow-500">
+                    <span className="text-3xl md:text-4xl font-display tracking-wide text-yellow-500">
                       {stat.value}
                     </span>
                   </div>
@@ -384,7 +381,7 @@ export default function EspaceEnfanceClientPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
                 onClick={() => (window.location.href = "/demande-devis")}
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
+                className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
               >
                 Demander un devis
                 <ArrowRight className="w-5 h-5" />
@@ -395,7 +392,7 @@ export default function EspaceEnfanceClientPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}
                 onClick={() => window.open("https://wa.me/212674114446", "_blank")}
-                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all border border-white/10"
+                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all border border-white/10"
               >
                 <IoLogoWhatsapp className="w-5 h-5" />
                 WhatsApp Direct
@@ -414,13 +411,12 @@ export default function EspaceEnfanceClientPage() {
           <FadeInWhenVisible>
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-                <Trophy className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                   Solutions adaptées
                 </span>
               </div>
 
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Des espaces <span className="text-yellow-500">adaptés</span>
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -434,12 +430,12 @@ export default function EspaceEnfanceClientPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <FadeInWhenVisible delay={0.1}>
               <div className="group h-full">
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
+                  <div className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                     <Shield className="h-8 w-8 text-white" />
                   </div>
 
-                  <h3 className="text-2xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                  <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                     Sécurité & Confort
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
@@ -454,7 +450,7 @@ export default function EspaceEnfanceClientPage() {
                       "Matériaux non toxiques",
                     ].map((item, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <CheckCircle className="w-3 h-3 text-white" />
                         </div>
                         <span className="text-gray-700 dark:text-gray-300">
@@ -478,13 +474,12 @@ export default function EspaceEnfanceClientPage() {
           <FadeInWhenVisible>
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-                <Target className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                   Les bienfaits
                 </span>
               </div>
 
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Développement <span className="text-yellow-500">complet</span>
               </h2>
             </div>
@@ -494,14 +489,14 @@ export default function EspaceEnfanceClientPage() {
             {benefitItems.map((item, index) => (
               <FadeInWhenVisible key={index} delay={index * 0.1}>
                 <div className="group h-full">
-                  <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
+                  <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
                     <div
-                      className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${item.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                      className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
                     >
-                      <div className="text-white">{item.icon}</div>
+                      <div className="text-black">{item.icon}</div>
                     </div>
 
-                    <h3 className="text-xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                    <h3 className="text-xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                       {item.title}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -520,7 +515,7 @@ export default function EspaceEnfanceClientPage() {
         <div className="relative container mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Espaces <span className="text-yellow-500">sur mesure</span>
               </h2>
             </div>
@@ -532,23 +527,23 @@ export default function EspaceEnfanceClientPage() {
                 <div className="relative group h-full">
                   {pkg.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                      <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-6 py-2 rounded-full font-black uppercase italic tracking-widest text-sm">
+                      <div className="bg-yellow-500 text-black px-6 py-2 rounded-full font-display uppercase tracking-widest text-sm">
                         Plus populaire
                       </div>
                     </div>
                   )}
 
                   <div
-                    className={`bg-gradient-to-br ${pkg.color} rounded-3xl p-0.5 h-full ${
+                    className={`bg-yellow-500 rounded-3xl p-0.5 h-full ${
                       pkg.popular ? "scale-[1.02]" : ""
                     }`}
                   >
                     <div className="bg-white dark:bg-gray-800 rounded-[1.25rem] p-8 h-full">
                       <div className="text-center mb-8">
-                        <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mx-auto mb-4">
-                          <div className="text-white">{pkg.icon}</div>
+                        <div className="w-20 h-20 rounded-2xl bg-yellow-500 flex items-center justify-center mx-auto mb-4">
+                          <div className="text-black">{pkg.icon}</div>
                         </div>
-                        <h3 className="text-2xl font-black uppercase italic mb-2 text-gray-900 dark:text-white">
+                        <h3 className="text-2xl font-display uppercase tracking-wide mb-2 text-gray-900 dark:text-white">
                           {pkg.name}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400">
@@ -559,7 +554,7 @@ export default function EspaceEnfanceClientPage() {
                       <div className="space-y-4 mb-8">
                         {pkg.features.map((feature, idx) => (
                           <div key={idx} className="flex items-start gap-3">
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <div className="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                               <CheckCircle className="w-3 h-3 text-white" />
                             </div>
                             <span className="text-gray-700 dark:text-gray-300">
@@ -570,11 +565,11 @@ export default function EspaceEnfanceClientPage() {
                       </div>
 
                       <div className="text-center pt-8 border-t border-gray-100 dark:border-gray-700">
-                        <div className="text-3xl font-black text-gray-900 dark:text-white mb-6">
+                        <div className="text-3xl font-display tracking-wide text-gray-900 dark:text-white mb-6">
                           {pkg.price}
                         </div>
                         <Link href="/demande-devis" className="block">
-                          <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
+                          <button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
                             Demander un devis
                             <ArrowRight className="w-4 h-4" />
                           </button>
@@ -595,12 +590,11 @@ export default function EspaceEnfanceClientPage() {
           <FadeInWhenVisible>
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-                <Zap className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                   Nos équipements
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Solutions <span className="text-yellow-500">détaillées</span>
               </h2>
             </div>
@@ -613,7 +607,7 @@ export default function EspaceEnfanceClientPage() {
                 onClick={() => setActiveTab(key)}
                 className={`px-6 py-3 rounded-xl font-bold uppercase text-sm transition-all ${
                   activeTab === key
-                    ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-black shadow-lg"
+                    ? "bg-yellow-500 text-black shadow-lg"
                     : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-yellow-100 dark:hover:bg-yellow-900/20"
                 }`}
               >
@@ -633,17 +627,17 @@ export default function EspaceEnfanceClientPage() {
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
-                    <h3 className="text-3xl font-black uppercase italic text-white">
+                    <h3 className="text-3xl font-display uppercase tracking-wide text-white">
                       {solutions[activeTab].title}
                     </h3>
                   </div>
                 </div>
                 <div className="p-8 md:p-10 flex flex-col justify-center">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center text-white">
+                    <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center text-black">
                       {solutions[activeTab].icon}
                     </div>
-                    <h3 className="text-2xl font-black uppercase italic text-gray-900 dark:text-white">
+                    <h3 className="text-2xl font-display uppercase tracking-wide text-gray-900 dark:text-white">
                       {solutions[activeTab].title}
                     </h3>
                   </div>
@@ -655,7 +649,7 @@ export default function EspaceEnfanceClientPage() {
                   <ul className="space-y-4 mb-8">
                     {solutions[activeTab].features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <CheckCircle className="w-3 h-3 text-white" />
                         </div>
                         <span className="text-gray-700 dark:text-gray-300">
@@ -666,7 +660,7 @@ export default function EspaceEnfanceClientPage() {
                   </ul>
 
                   <Link href="/demande-devis" className="w-full">
-                    <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
+                    <button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
                       Demander un devis
                       <ArrowRight className="w-4 h-4" />
                     </button>
@@ -683,7 +677,7 @@ export default function EspaceEnfanceClientPage() {
         <div className="relative container mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Ils nous font <span className="text-yellow-500">confiance</span>
               </h2>
             </div>
@@ -692,10 +686,10 @@ export default function EspaceEnfanceClientPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <FadeInWhenVisible key={index} delay={index * 0.1}>
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg h-full">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl hover:-translate-y-1 hover:border-yellow-500/50 transition-all h-full">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center">
-                      <span className="text-lg font-black text-white">
+                    <div className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
+                      <span className="text-lg font-display text-black">
                         {testimonial.name.charAt(0)}
                       </span>
                     </div>
@@ -733,7 +727,7 @@ export default function EspaceEnfanceClientPage() {
         <div className="container mx-auto px-4">
           <FadeInWhenVisible>
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-black">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">
                 Créez un espace magique pour les enfants
               </h2>
               <p className="text-xl text-black/90 mb-10 max-w-2xl mx-auto">
@@ -742,7 +736,7 @@ export default function EspaceEnfanceClientPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/demande-devis">
-                  <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+                  <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
                     Demander un devis
                     <ArrowRight className="w-5 h-5" />
                   </button>
@@ -751,7 +745,7 @@ export default function EspaceEnfanceClientPage() {
                   onClick={() =>
                     window.open("https://wa.me/212674114446", "_blank")
                   }
-                  className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
+                  className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
                 >
                   <IoLogoWhatsapp className="w-6 h-6" />
                   WhatsApp Direct

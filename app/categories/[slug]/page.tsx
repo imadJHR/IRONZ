@@ -27,7 +27,6 @@ import {
   List,
   AlertCircle,
   ArrowRight,
-  Flame,
   Loader2,
   RefreshCw,
   CheckCircle,
@@ -258,7 +257,7 @@ const ProductCard = memo(function ProductCard({
       layout
       key={productId}
       className={cn(
-        "bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all h-full group",
+        "bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:-translate-y-1.5 hover:border-yellow-500/50 transition-all h-full group",
         viewMode === "list"
           ? "flex flex-col sm:flex-row h-auto sm:h-56 md:h-64 lg:h-72"
           : "flex flex-col"
@@ -275,7 +274,7 @@ const ProductCard = memo(function ProductCard({
     >
       <div
         className={cn(
-          "relative overflow-hidden bg-gray-50 dark:bg-gray-900 shrink-0",
+          "relative overflow-hidden bg-gray-50 dark:bg-gray-900 shrink-0 border-b-2 border-transparent group-hover:border-yellow-500 transition-colors",
           viewMode === "list"
             ? "w-full sm:w-40 md:w-56 h-48 sm:h-full"
             : "w-full h-48 sm:h-52 md:h-60 lg:h-64"
@@ -285,7 +284,7 @@ const ProductCard = memo(function ProductCard({
           <CloudImg
             src={imgSrc}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             fill
           />
         </Link>
@@ -293,35 +292,36 @@ const ProductCard = memo(function ProductCard({
         <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-col gap-1 sm:gap-2 z-10">
           <button
             onClick={(e) => handleAddToCart(e, product)}
-            className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-yellow-500 text-black flex items-center justify-center shadow-md hover:bg-yellow-600 transition-all"
+            className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-yellow-500 text-black flex items-center justify-center shadow-md hover:bg-yellow-400 hover:scale-110 transition-all"
             aria-label="Ajouter au panier"
           >
             <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
         </div>
 
-        <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-1 sm:gap-2 z-10">
+        <div className="absolute top-2 left-0 sm:top-3 flex flex-col gap-1 sm:gap-1.5 z-10">
           {product.isNewProduct && (
-            <Badge className="bg-yellow-500 text-black shadow-md border-none text-[10px] sm:text-xs px-2 py-0.5">
+            <span className="clip-slant bg-yellow-500 text-black font-display uppercase tracking-widest text-[10px] sm:text-xs pl-2.5 pr-3.5 py-0.5 shadow-md">
               Nouveau
-            </Badge>
+            </span>
           )}
           {Number(product.discount) > 0 && (
-            <Badge className="bg-red-500 text-white shadow-md border-none text-[10px] sm:text-xs px-2 py-0.5">
+            <span className="clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-[10px] sm:text-xs pl-2.5 pr-3.5 py-0.5 shadow-md">
               -{product.discount}%
-            </Badge>
+            </span>
           )}
           {product.isFeatured && (
-            <Badge className="bg-black text-yellow-500 shadow-md border-none text-[10px] sm:text-xs px-2 py-0.5">
-              <Flame className="w-2.5 h-2.5 inline mr-1" />Populaire
-            </Badge>
+            <span className="clip-slant bg-black text-yellow-500 font-display uppercase tracking-widest text-[10px] sm:text-xs pl-2.5 pr-3.5 py-0.5 shadow-md">
+              Populaire
+            </span>
           )}
         </div>
       </div>
 
       <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-grow">
         <div className="flex items-center justify-between mb-1 sm:mb-2">
-          <span className="text-[10px] sm:text-xs text-yellow-600 dark:text-yellow-400 font-medium uppercase tracking-wider line-clamp-1">
+          <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs text-yellow-600 dark:text-yellow-400 font-display uppercase tracking-widest line-clamp-1">
+            <span className="w-1.5 h-3 bg-yellow-500 -skew-x-12 shrink-0" aria-hidden="true" />
             {product.brand || product.category}
           </span>
         </div>
@@ -329,7 +329,7 @@ const ProductCard = memo(function ProductCard({
         <Link href={`/produit/${product.slug || productId}`}>
           <h2
             className={cn(
-              "font-bold text-gray-900 dark:text-white group-hover:text-yellow-600 transition-colors line-clamp-2",
+              "font-display uppercase tracking-wide text-gray-900 dark:text-white group-hover:text-yellow-600 transition-colors line-clamp-2",
               viewMode === "list"
                 ? "text-sm sm:text-base md:text-lg mb-1 sm:mb-2"
                 : "text-sm sm:text-base md:text-lg mb-2 sm:mb-3"
@@ -349,7 +349,7 @@ const ProductCard = memo(function ProductCard({
           <div>
             <span
               className={cn(
-                "font-black text-gray-900 dark:text-white",
+                "font-display tracking-wide text-gray-900 dark:text-white",
                 viewMode === "list" ? "text-lg sm:text-xl md:text-2xl" : "text-lg sm:text-xl"
               )}
             >
@@ -361,13 +361,23 @@ const ProductCard = memo(function ProductCard({
               </span>
             )}
           </div>
-          <Link
-            href={`/produit/${product.slug || productId}`}
-            className="text-yellow-600 hover:text-yellow-700 font-bold text-xs sm:text-sm flex items-center gap-1 group/link w-fit"
-          >
-            Détails
-            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover/link:translate-x-1 transition-transform" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={(e) => handleAddToCart(e, product)}
+              className="flex-1 h-9 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-black font-display text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-1.5"
+              aria-label="Ajouter au panier"
+            >
+              <ShoppingCart className="w-3.5 h-3.5 shrink-0" />
+              Panier
+            </button>
+            <Link
+              href={`/produit/${product.slug || productId}`}
+              className="h-9 w-9 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-yellow-500 hover:border-yellow-500 hover:text-black transition-all shrink-0"
+              aria-label="Voir détails"
+            >
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </div>
     </motion.article>
@@ -636,7 +646,7 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
   const FilterContent = () => (
     <div className="space-y-8">
       <div>
-        <h3 className="font-black uppercase italic text-base mb-4">Catégories</h3>
+        <h3 className="font-display uppercase tracking-widest text-base mb-4">Catégories</h3>
         <div className="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-2">
           {categories.map((cat) => (
             <div key={cat.id} className="flex items-center space-x-3 group cursor-pointer" onClick={() => handleCategoryToggle(cat.name)}>
@@ -651,7 +661,7 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
 
       {availableSubCategories.length > 0 && (
         <div>
-          <h3 className="font-black uppercase italic text-base mb-4">Sous-catégories</h3>
+          <h3 className="font-display uppercase tracking-widest text-base mb-4">Sous-catégories</h3>
           <div className="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-2">
             {availableSubCategories.map((sub) => (
               <div key={sub} className="flex items-center space-x-3 group cursor-pointer" onClick={() => handleSubCategoryToggle(sub)}>
@@ -668,7 +678,7 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
       <Separator />
 
       <div>
-        <h3 className="font-black uppercase italic text-base mb-4">Prix</h3>
+          <h3 className="font-display uppercase tracking-widest text-base mb-4">Prix</h3>
         <Slider value={priceRange} min={minPrice} max={maxPrice} step={10} onValueChange={(v) => setPriceRange([v[0], v[1]])} className="mb-4" />
         <div className="flex justify-between text-sm font-bold text-gray-500">
           <span>{formatPrice(priceRange[0])}</span>
@@ -715,10 +725,10 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
       <main className="container mx-auto px-3 sm:px-4 py-12 sm:py-16 md:py-20 lg:py-28 bg-white dark:bg-gray-950 min-h-screen">
         {/* Header */}
         <header className="mb-8 sm:mb-10 md:mb-12 text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white mb-3 sm:mb-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-3 sm:mb-4 flex flex-col sm:flex-row items-center justify-center gap-2">
             <span>Tous nos <span className="text-yellow-500">Produits</span></span>
             {!isLoading && (
-              <span className="hidden sm:inline-flex items-center justify-center ml-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-lg sm:text-xl md:text-2xl rounded-lg font-bold border border-gray-200 dark:border-gray-700">
+              <span className="hidden sm:inline-flex items-center justify-center ml-2 px-3 py-1 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 text-lg sm:text-xl md:text-2xl rounded-lg font-display tracking-wide border border-yellow-500/30">
                 ({products.length})
               </span>
             )}
@@ -742,7 +752,7 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
           {searchQuery && !isLoading && (
             <div className="mt-3 mb-1 flex items-center justify-center gap-2 flex-wrap">
               <span className="text-sm text-gray-500">Résultats pour :</span>
-              <Badge className="bg-yellow-500 text-black font-bold text-sm px-3 py-1 rounded-full gap-2 flex items-center">
+              <Badge className="bg-yellow-500 text-black font-display uppercase tracking-widest text-sm px-3 py-1 rounded-full gap-2 flex items-center">
                 &ldquo;{searchQuery}&rdquo;
                 <button onClick={() => setSearchQuery("")} aria-label="Effacer la recherche" className="ml-1 hover:text-white transition-colors">
                   <X className="h-3 w-3" />
@@ -754,14 +764,14 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
             </div>
           )}
 
-          <div className="h-1.5 w-16 bg-yellow-500 mx-auto rounded-full mt-3" />
+          <div className="h-1.5 w-20 bg-yellow-500 mx-auto -skew-x-12 mt-3" />
           <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto px-4">
             Découvrez notre gamme complète d&apos;équipements professionnels.
           </p>
         </header>
 
         {/* Sticky Filter Bar */}
-        <div className="flex flex-col gap-4 mb-6 sm:mb-8 sticky top-16 sm:top-20 z-30 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
+        <div className="flex flex-col gap-4 mb-6 sm:mb-8 sticky top-16 sm:top-20 z-30 bg-white dark:bg-gray-950 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-800 shadow-lg">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
 
             {/* Mobile Filter */}
@@ -784,7 +794,7 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
                   <FilterContent />
                 </div>
                 <SheetFooter className="p-6 border-t">
-                  <Button onClick={() => setIsFilterOpen(false)} className="w-full bg-yellow-500 text-black font-bold h-12 rounded-xl text-base">
+                  <Button onClick={() => setIsFilterOpen(false)} className="w-full bg-yellow-500 text-black font-display uppercase tracking-widest h-12 rounded-xl text-base">
                     Voir {filteredProducts.length} résultats
                   </Button>
                 </SheetFooter>

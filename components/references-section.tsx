@@ -105,11 +105,11 @@ export default function ReferencesSection({
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mt-2 text-gray-900 dark:text-white leading-tight">
-              Nos <span className="text-yellow-500">Références</span> .
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mt-2 text-gray-900 dark:text-white leading-tight">
+              Nos <span className="text-yellow-500">Références</span>
             </h2>
           </div>
-          <p className="text-gray-500 dark:text-gray-400 text-lg max-w-sm italic">
+          <p className="text-gray-500 dark:text-gray-400 text-lg max-w-sm">
             Aperçu de nos réalisations majeures pour les professionnels et particuliers.
           </p>
         </div>
@@ -127,7 +127,7 @@ export default function ReferencesSection({
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-100px" }}
-                className="group relative overflow-hidden rounded-[2.5rem] bg-gray-100 dark:bg-gray-900 shadow-sm hover:shadow-2xl transition-all duration-500"
+                className="group relative overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-900 shadow-sm hover:shadow-2xl hover:-translate-y-2 border-2 border-transparent hover:border-yellow-500/60 transition-all duration-500"
                 onMouseEnter={() => setHoveredItem(item.id)}
                 onMouseLeave={() => setHoveredItem(null)}
               >
@@ -181,10 +181,11 @@ export default function ReferencesSection({
                       isHovered ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
                     }`}
                   >
-                    <span className="text-yellow-500 font-bold uppercase tracking-widest text-[10px] mb-2">
+                    <span className="inline-flex items-center gap-2 text-yellow-500 font-display uppercase tracking-widest text-xs mb-2">
+                      <span className="w-2 h-3.5 bg-yellow-500 -skew-x-12 shrink-0" aria-hidden="true" />
                       {item.category}
                     </span>
-                    <h3 className="text-2xl font-black text-white uppercase italic leading-tight mb-4">
+                    <h3 className="text-2xl font-display text-white uppercase tracking-wide leading-tight mb-4">
                       {item.title || "Réalisation Ironz"}
                     </h3>
                     {item.description && (
@@ -192,7 +193,7 @@ export default function ReferencesSection({
                         {item.description}
                       </p>
                     )}
-                    <div className="h-1 w-12 bg-yellow-500 rounded-full" />
+                    <div className="h-1.5 w-16 bg-yellow-500 -skew-x-12" />
                   </div>
                 </div>
               </motion.div>
@@ -204,7 +205,7 @@ export default function ReferencesSection({
         <div className="mt-16 text-center">
           <button 
             onClick={handleViewAll}
-            className="inline-flex items-center gap-3 px-10 py-5 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-black uppercase italic tracking-tighter hover:bg-yellow-500 hover:text-black dark:hover:bg-yellow-400 dark:hover:text-black transition-all shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-black dark:bg-white text-white dark:text-black rounded-xl font-display uppercase tracking-widest hover:bg-yellow-500 hover:text-black dark:hover:bg-yellow-400 dark:hover:text-black transition-all shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
             type="button"
           >
             Voir tout le portfolio 

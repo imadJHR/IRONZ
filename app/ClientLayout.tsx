@@ -1,6 +1,6 @@
 "use client";
 
-import { Inter } from "next/font/google";
+import { Inter, Anton } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import { CartProvider } from "../context/cart-context";
@@ -26,10 +26,6 @@ import {
   Info,
   Home,
   ShoppingBag,
-  Instagram,
-  Youtube,
-  Mail,
-  MapPin,
   ArrowUp,
   User,
   LogIn,
@@ -58,6 +54,14 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+// Font display sportive (titres) — premium condensed
+const anton = Anton({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-display",
+});
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type Language = "fr" | "en";
@@ -75,7 +79,6 @@ interface ServiceLink {
 
 interface SocialLink {
   name: string;
-  icon: React.ReactNode;
   href: string;
 }
 
@@ -85,9 +88,10 @@ interface CategoryLink {
 }
 
 interface ContactItem {
-  icon: React.ReactNode;
+  label: string;
   content: string;
   href?: string;
+  big?: boolean;
 }
 
 interface NavLinkProps {
@@ -272,7 +276,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         <link rel="manifest" href="/manifest.webmanifest" />
       </head>
 
-      <body className={cn(inter.variable, "font-sans bg-white dark:bg-gray-950")}>
+      <body className={cn(inter.variable, anton.variable, "font-sans bg-white dark:bg-gray-950")}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <CartProvider>
             <FavoritesProvider>
@@ -562,24 +566,25 @@ const Navbar = React.memo(function Navbar({
       <div
         role="banner"
         aria-label="Promotion"
-        className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs sm:text-sm font-black uppercase italic tracking-wider py-2 px-4 text-center"
+        className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs sm:text-sm font-display uppercase tracking-widest py-2 px-4 text-center"
       >
         <p className="container mx-auto">
           {language === "fr"
-            ? "🚀 LIVRAISON EXPRESS PARTOUT AU MAROC"
-            : "🚀 EXPRESS DELIVERY ACROSS MOROCCO"}
+            ? "LIVRAISON EXPRESS PARTOUT AU MAROC"
+            : "EXPRESS DELIVERY ACROSS MOROCCO"}
         </p>
       </div>
+      <div className="bg-stripes-yellow h-1" aria-hidden="true" />
 
       {/* ── Main Navbar ── */}
       <header role="banner">
         <nav
           aria-label="Navigation principale"
           className={cn(
-            "sticky top-0 w-full z-[100] transition-all duration-300 border-b",
+            "sticky top-0 w-full z-[100] transition-all duration-300 border-b border-white/10 text-gray-200",
             scrolled
-              ? "bg-white/95 backdrop-blur-lg shadow-lg py-1 border-gray-100"
-              : "bg-white py-2 border-transparent"
+              ? "bg-zinc-950/95 backdrop-blur-lg shadow-2xl shadow-black/50 py-1"
+              : "bg-zinc-950 py-2"
           )}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -625,10 +630,10 @@ const Navbar = React.memo(function Navbar({
                     aria-haspopup="true"
                     aria-expanded="false"
                     className={cn(
-                      "flex items-center gap-1 px-3 xl:px-4 py-2.5 rounded-xl text-sm font-black uppercase italic transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
+                      "flex items-center gap-1 px-3 xl:px-4 py-2.5 rounded-xl text-sm font-display uppercase tracking-wide transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
                       isActive("/categories") || isActive("/produit")
-                        ? "text-gray-900 bg-gray-100"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        ? "text-yellow-400 bg-white/10"
+                        : "text-gray-300 hover:text-white hover:bg-white/5"
                     )}
                   >
                     {language === "fr" ? "Produits" : "Products"}
@@ -636,24 +641,24 @@ const Navbar = React.memo(function Navbar({
                   </button>
                   <div
                     role="menu"
-                    className="absolute left-0 top-full mt-2 w-64 rounded-2xl p-2 shadow-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+                    className="absolute left-0 top-full mt-2 w-64 rounded-2xl p-2 shadow-2xl border border-white/10 bg-zinc-900 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 text-gray-200"
                   >
                     {categories.map((cat) => (
                       <Link
                         key={cat.id}
                         href={cat.href}
                         role="menuitem"
-                        className="flex items-center px-3 py-2.5 text-sm rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium focus:outline-none focus-visible:bg-gray-50"
+                        className="flex items-center px-3 py-2.5 text-sm rounded-xl hover:bg-white/5 transition-colors font-medium focus:outline-none focus-visible:bg-gray-50"
                       >
                         <ChevronRight className="h-4 w-4 mr-2 text-yellow-500 opacity-0 group-focus:opacity-100" />
                         {cat.name}
                       </Link>
                     ))}
-                    <div className="h-px bg-gray-100 dark:bg-gray-800 my-2" />
+                    <div className="h-px bg-white/10 my-2" />
                     <Link
                       href="/produit"
                       role="menuitem"
-                      className="flex items-center justify-center px-3 py-2.5 text-sm font-black uppercase italic text-yellow-600 dark:text-yellow-400 rounded-xl hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
+                      className="flex items-center justify-center px-3 py-2.5 text-sm font-display uppercase tracking-widest text-yellow-400 rounded-xl hover:bg-yellow-500/10 transition-colors"
                     >
                       {language === "fr"
                         ? "Voir tous les produits"
@@ -672,10 +677,10 @@ const Navbar = React.memo(function Navbar({
                     aria-haspopup="true"
                     aria-expanded="false"
                     className={cn(
-                      "flex items-center gap-1 px-3 xl:px-4 py-2.5 rounded-xl text-sm font-black uppercase italic transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
+                      "flex items-center gap-1 px-3 xl:px-4 py-2.5 rounded-xl text-sm font-display uppercase tracking-wide transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
                       isActive("/services")
-                        ? "text-gray-900 bg-gray-100"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        ? "text-yellow-400 bg-white/10"
+                        : "text-gray-300 hover:text-white hover:bg-white/5"
                     )}
                   >
                     {language === "fr" ? "Services" : "Services"}
@@ -683,14 +688,14 @@ const Navbar = React.memo(function Navbar({
                   </button>
                   <div
                     role="menu"
-                    className="absolute left-0 top-full mt-2 w-72 rounded-2xl p-2 shadow-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+                    className="absolute left-0 top-full mt-2 w-72 rounded-2xl p-2 shadow-2xl border border-white/10 bg-zinc-900 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 text-gray-200"
                   >
                     {serviceLinks.map((link, i) => (
                       <div key={i}>
                         <Link
                           href={link.path}
                           role="menuitem"
-                          className="flex items-center px-3 py-2.5 text-sm rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+                          className="flex items-center px-3 py-2.5 text-sm rounded-xl hover:bg-white/5 transition-colors font-medium"
                         >
                           {link.name}
                         </Link>
@@ -701,7 +706,7 @@ const Navbar = React.memo(function Navbar({
                                 key={si}
                                 href={sub.path}
                                 role="menuitem"
-                                className="flex items-center px-3 py-1.5 text-xs text-gray-500 dark:text-gray-400 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                className="flex items-center px-3 py-1.5 text-xs text-gray-400 rounded-xl hover:bg-white/5 hover:text-white transition-colors"
                               >
                                 <ChevronRight className="h-3 w-3 mr-1 text-orange-400" />
                                 {sub.name}
@@ -711,11 +716,11 @@ const Navbar = React.memo(function Navbar({
                         )}
                       </div>
                     ))}
-                    <div className="h-px bg-gray-100 dark:bg-gray-800 my-2" />
+                    <div className="h-px bg-white/10 my-2" />
                     <Link
                       href="/services"
                       role="menuitem"
-                      className="flex items-center justify-center px-3 py-2.5 text-sm font-black uppercase italic text-yellow-600 dark:text-yellow-400 rounded-xl hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
+                      className="flex items-center justify-center px-3 py-2.5 text-sm font-display uppercase tracking-widest text-yellow-400 rounded-xl hover:bg-yellow-500/10 transition-colors"
                     >
                       {language === "fr" ? "Tous nos services" : "All Services"}
                     </Link>
@@ -734,7 +739,7 @@ const Navbar = React.memo(function Navbar({
                   <motion.button
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.97 }}
-                    className="ml-2 px-4 xl:px-5 py-2.5 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-600 hover:to-orange-600 font-black uppercase italic tracking-widest transition-all shadow-lg shadow-yellow-500/25 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
+                    className="ml-2 px-4 xl:px-5 py-2.5 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest transition-all shadow-lg shadow-yellow-500/30 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
                   >
                     {language === "fr" ? "Demande devis" : "Request Quote"}
                   </motion.button>
@@ -756,7 +761,7 @@ const Navbar = React.memo(function Navbar({
                       >
                         <form
                           onSubmit={handleSearch}
-                          className="flex items-center gap-2 bg-white dark:bg-gray-800 border-2 border-yellow-500 rounded-xl shadow-xl px-3 py-1.5 min-w-[280px] xl:min-w-[340px]"
+                          className="flex items-center gap-2 bg-zinc-900 border-2 border-yellow-500 rounded-xl shadow-xl px-3 py-1.5 min-w-[280px] xl:min-w-[340px]"
                         >
                           <Search className="h-4 w-4 text-yellow-500 flex-shrink-0" />
                           <input
@@ -771,14 +776,14 @@ const Navbar = React.memo(function Navbar({
                                 ? "Rechercher un produit..."
                                 : "Search a product..."
                             }
-                            className="flex-1 bg-transparent outline-none text-sm font-medium text-gray-900 dark:text-white placeholder:text-gray-400"
+                            className="flex-1 bg-transparent outline-none text-sm font-medium text-white placeholder:text-gray-500"
                             autoComplete="off"
                           />
                           {searchQuery && (
                             <button
                               type="button"
                               onClick={() => setSearchQuery("")}
-                              className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                              className="text-gray-500 hover:text-white transition-colors"
                               aria-label="Effacer"
                             >
                               <X className="h-4 w-4" />
@@ -790,7 +795,7 @@ const Navbar = React.memo(function Navbar({
                               setSearchOpen(false);
                               setSearchQuery("");
                             }}
-                            className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors ml-1 pl-2 border-l border-gray-200 dark:border-gray-600"
+                            className="text-gray-500 hover:text-white transition-colors ml-1 pl-2 border-l border-white/10"
                             aria-label="Fermer la recherche"
                           >
                             <X className="h-4 w-4" />
@@ -808,7 +813,7 @@ const Navbar = React.memo(function Navbar({
                             ? "Ouvrir la recherche"
                             : "Open search"
                         }
-                        className="p-2 sm:p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-yellow-50 dark:hover:bg-yellow-900/20 hover:text-yellow-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
+                        className="p-2 sm:p-2.5 rounded-full bg-white/10 text-gray-300 hover:text-yellow-400 hover:bg-white/15 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
                       >
                         <Search className="h-4 w-4 sm:h-5 sm:w-5" />
                       </motion.button>
@@ -828,7 +833,7 @@ const Navbar = React.memo(function Navbar({
                         : "Open search"
                     }
                     aria-expanded={mobileSearchOpen}
-                    className="p-2 sm:p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
+                    className="p-2 sm:p-2.5 rounded-full bg-white/10 text-gray-300 hover:text-yellow-400 hover:bg-white/15 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
                   >
                     <Search className="h-4 w-4 sm:h-5 sm:w-5" />
                   </motion.button>
@@ -845,7 +850,7 @@ const Navbar = React.memo(function Navbar({
                       >
                         <form
                           onSubmit={handleMobileSearch}
-                          className="flex items-center gap-2 bg-white dark:bg-gray-900 border-2 border-yellow-500 rounded-2xl shadow-2xl px-3 py-2"
+                          className="flex items-center gap-2 bg-zinc-900 border-2 border-yellow-500 rounded-2xl shadow-2xl px-3 py-2"
                         >
                           <Search className="h-4 w-4 text-yellow-500 flex-shrink-0" />
                           <input
@@ -859,7 +864,7 @@ const Navbar = React.memo(function Navbar({
                                 ? "Rechercher un produit..."
                                 : "Search a product..."
                             }
-                            className="flex-1 bg-transparent outline-none text-sm font-medium text-gray-900 dark:text-white placeholder:text-gray-400"
+                            className="flex-1 bg-transparent outline-none text-sm font-medium text-white placeholder:text-gray-500"
                             autoFocus
                             autoComplete="off"
                           />
@@ -867,7 +872,7 @@ const Navbar = React.memo(function Navbar({
                             <button
                               type="button"
                               onClick={() => setMobileSearchQuery("")}
-                              className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                              className="text-gray-500 hover:text-white transition-colors"
                               aria-label="Effacer"
                             >
                               <X className="h-4 w-4" />
@@ -875,7 +880,7 @@ const Navbar = React.memo(function Navbar({
                           )}
                           <button
                             type="submit"
-                            className="ml-1 px-3 py-1.5 rounded-lg bg-yellow-500 text-black text-xs font-black uppercase italic hover:bg-yellow-600 transition-colors flex-shrink-0"
+                            className="ml-1 px-3 py-1.5 rounded-lg bg-yellow-500 text-black text-xs font-display uppercase tracking-widest hover:bg-yellow-400 transition-colors flex-shrink-0"
                           >
                             {language === "fr" ? "OK" : "Go"}
                           </button>
@@ -893,14 +898,14 @@ const Navbar = React.memo(function Navbar({
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className="relative p-2 sm:p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
+                    className="relative p-2 sm:p-2.5 rounded-full bg-white/10 text-gray-300 hover:text-yellow-400 hover:bg-white/15 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
                   >
                     <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
                     {itemCount > 0 && (
                       <motion.span
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center rounded-full bg-yellow-500 text-white text-[10px] sm:text-xs font-black"
+                        className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center rounded-full bg-yellow-500 text-black text-[10px] sm:text-xs font-black"
                         aria-hidden="true"
                       >
                         {itemCount > 9 ? "9+" : itemCount}
@@ -919,10 +924,10 @@ const Navbar = React.memo(function Navbar({
                         onClick={() => setAuthDropdownOpen((p) => !p)}
                         aria-expanded={authDropdownOpen}
                         aria-haspopup="true"
-                        className="flex items-center gap-2 px-3 xl:px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
+                        className="flex items-center gap-2 px-3 xl:px-4 py-2.5 rounded-xl bg-white/10 text-gray-200 hover:bg-white/15 hover:text-yellow-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
                       >
                         <User className="h-4 w-4" />
-                        <span className="text-sm font-black uppercase italic hidden xl:block">
+                        <span className="text-sm font-display uppercase tracking-widest hidden xl:block">
                           {language === "fr" ? "Compte" : "Account"}
                         </span>
                       </motion.button>
@@ -935,13 +940,13 @@ const Navbar = React.memo(function Navbar({
                             exit="exit"
                             variants={dropdownVariants}
                             role="menu"
-                            className="absolute right-0 mt-2 w-52 bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden z-50"
+                            className="absolute right-0 mt-2 w-52 bg-zinc-900 rounded-2xl shadow-xl border border-white/10 overflow-hidden z-50 text-gray-200"
                           >
                             <div className="p-2 space-y-1">
                               <ConditionalSignInButton mode="modal">
                                 <button
                                   role="menuitem"
-                                  className="w-full flex items-center px-4 py-3 text-sm text-left rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                   className="w-full flex items-center px-4 py-3 text-sm text-left rounded-xl hover:bg-white/5 transition-colors"
                                 >
                                   <LogIn className="h-4 w-4 mr-3 text-yellow-500" />
                                   {language === "fr"
@@ -952,7 +957,7 @@ const Navbar = React.memo(function Navbar({
                               <ConditionalSignUpButton mode="modal">
                                 <button
                                   role="menuitem"
-                                  className="w-full flex items-center px-4 py-3 text-sm text-left rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                   className="w-full flex items-center px-4 py-3 text-sm text-left rounded-xl hover:bg-white/5 transition-colors"
                                 >
                                   <User className="h-4 w-4 mr-3 text-orange-500" />
                                   {language === "fr"
@@ -986,7 +991,7 @@ const Navbar = React.memo(function Navbar({
                   onClick={() => setMobileMenuOpen(true)}
                   aria-label="Ouvrir le menu"
                   aria-expanded={mobileMenuOpen}
-                  className="lg:hidden p-2 sm:p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
+                  className="lg:hidden p-2 sm:p-2.5 rounded-full bg-white/10 text-gray-300 hover:text-yellow-400 hover:bg-white/15 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
                 >
                   <MenuIcon className="h-5 w-5" />
                 </motion.button>
@@ -1021,10 +1026,10 @@ const Navbar = React.memo(function Navbar({
               animate="visible"
               exit="exit"
               variants={mobileMenuVariants}
-              className="absolute inset-y-0 right-0 w-full xs:w-[90vw] sm:w-[420px] bg-white dark:bg-gray-900 shadow-2xl flex flex-col"
+              className="absolute inset-y-0 right-0 w-full xs:w-[90vw] sm:w-[420px] bg-zinc-950 text-gray-200 shadow-2xl flex flex-col"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100 dark:border-gray-800 flex-shrink-0">
+              <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10 flex-shrink-0">
                 <Link
                   href="/"
                   onClick={() => setMobileMenuOpen(false)}
@@ -1042,7 +1047,7 @@ const Navbar = React.memo(function Navbar({
                 <button
                   onClick={() => setMobileMenuOpen(false)}
                   aria-label="Fermer le menu"
-                  className="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  className="p-2.5 rounded-full bg-white/10 text-gray-300 hover:bg-white/15 hover:text-yellow-400 transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -1064,7 +1069,7 @@ const Navbar = React.memo(function Navbar({
                         setMobileMenuOpen(false);
                       }
                     }}
-                    className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 focus-within:border-yellow-500 rounded-xl px-3 py-2 transition-colors"
+                    className="flex items-center gap-2 bg-white/5 border-2 border-white/10 focus-within:border-yellow-500 rounded-xl px-3 py-2 transition-colors"
                   >
                     <Search className="h-4 w-4 text-gray-400 flex-shrink-0" />
                     <input
@@ -1079,7 +1084,7 @@ const Navbar = React.memo(function Navbar({
                     />
                     <button
                       type="submit"
-                      className="px-3 py-1.5 rounded-lg bg-yellow-500 text-black text-xs font-black uppercase italic hover:bg-yellow-600 transition-colors flex-shrink-0"
+                      className="px-3 py-1.5 rounded-lg bg-yellow-500 text-black text-xs font-display uppercase tracking-widest hover:bg-yellow-400 transition-colors flex-shrink-0"
                     >
                       {language === "fr" ? "Chercher" : "Search"}
                     </button>
@@ -1092,7 +1097,7 @@ const Navbar = React.memo(function Navbar({
                     <ConditionalSignInButton mode="modal">
                       <button
                         onClick={() => setMobileMenuOpen(false)}
-                        className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-yellow-500 hover:text-yellow-600 transition-colors text-sm font-semibold"
+                        className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl border-2 border-white/15 text-gray-200 hover:border-yellow-500 hover:text-yellow-400 transition-colors text-sm font-semibold"
                       >
                         <LogIn className="h-4 w-4" />
                         {language === "fr" ? "Connexion" : "Sign In"}
@@ -1101,7 +1106,7 @@ const Navbar = React.memo(function Navbar({
                     <ConditionalSignUpButton mode="modal">
                       <button
                         onClick={() => setMobileMenuOpen(false)}
-                        className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-sm font-black uppercase italic"
+                        className="w-full flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-yellow-500 text-black text-sm font-display uppercase tracking-widest hover:bg-yellow-400"
                       >
                         <User className="h-4 w-4" />
                         {language === "fr" ? "Inscription" : "Sign Up"}
@@ -1126,8 +1131,8 @@ const Navbar = React.memo(function Navbar({
                         className={cn(
                           "flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-all",
                           isActive("/")
-                            ? "bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400"
-                            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            ? "bg-yellow-500/10 text-yellow-400"
+                            : "text-gray-300 hover:bg-white/5 hover:text-white"
                         )}
                       >
                         <Home className="h-5 w-5 flex-shrink-0" />
@@ -1141,11 +1146,11 @@ const Navbar = React.memo(function Navbar({
                     <button
                       onClick={() => setMobileProductsOpen((p) => !p)}
                       aria-expanded={mobileProductsOpen}
-                      className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <ShoppingBag className="h-5 w-5 text-yellow-500 flex-shrink-0" />
-                        <span className="font-black uppercase italic text-gray-900 dark:text-white text-sm">
+                        <span className="font-display uppercase text-white text-sm tracking-widest">
                           {language === "fr" ? "Produits" : "Products"}
                         </span>
                       </div>
@@ -1170,7 +1175,7 @@ const Navbar = React.memo(function Navbar({
                               key={cat.id}
                               href={cat.href}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
+                              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
                             >
                               <ChevronRight className="h-4 w-4 text-yellow-400 flex-shrink-0" />
                               {cat.name}
@@ -1179,7 +1184,7 @@ const Navbar = React.memo(function Navbar({
                           <Link
                             href="/produit"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-black uppercase italic text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors mt-1"
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-display uppercase tracking-widest text-yellow-400 hover:bg-yellow-500/10 transition-colors mt-1"
                           >
                             {language === "fr"
                               ? "Voir tous les produits →"
@@ -1195,11 +1200,11 @@ const Navbar = React.memo(function Navbar({
                     <button
                       onClick={() => setMobileServicesOpen((p) => !p)}
                       aria-expanded={mobileServicesOpen}
-                      className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <Package className="h-5 w-5 text-orange-500 flex-shrink-0" />
-                        <span className="font-black uppercase italic text-gray-900 dark:text-white text-sm">
+                        <span className="font-display uppercase text-white text-sm tracking-widest">
                           {language === "fr" ? "Services" : "Services"}
                         </span>
                       </div>
@@ -1224,7 +1229,7 @@ const Navbar = React.memo(function Navbar({
                               <Link
                                 href={link.path}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
                               >
                                 <ChevronRight className="h-4 w-4 text-orange-400 flex-shrink-0" />
                                 {link.name}
@@ -1236,7 +1241,7 @@ const Navbar = React.memo(function Navbar({
                                       key={si}
                                       href={sub.path}
                                       onClick={() => setMobileMenuOpen(false)}
-                                      className="flex items-center gap-1 px-4 py-1.5 rounded-xl text-xs text-gray-500 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
+                                      className="flex items-center gap-1 px-4 py-1.5 rounded-xl text-xs text-gray-500 hover:bg-white/5 hover:text-white transition-colors"
                                     >
                                       <ChevronRight className="h-3 w-3 text-gray-400" />
                                       {sub.name}
@@ -1249,7 +1254,7 @@ const Navbar = React.memo(function Navbar({
                           <Link
                             href="/services"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-black uppercase italic text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-colors mt-1"
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-display uppercase tracking-widest text-orange-400 hover:bg-orange-500/10 transition-colors mt-1"
                           >
                             {language === "fr"
                               ? "Tous nos services →"
@@ -1281,8 +1286,8 @@ const Navbar = React.memo(function Navbar({
                           className={cn(
                             "flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-all",
                             isActive(item.href)
-                              ? "bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400"
-                              : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                              ? "bg-yellow-500/10 text-yellow-400"
+                              : "text-gray-300 hover:bg-white/5 hover:text-white"
                           )}
                         >
                           {item.icon}
@@ -1295,14 +1300,14 @@ const Navbar = React.memo(function Navbar({
               </div>
 
               {/* Footer CTA */}
-              <div className="p-4 sm:p-5 border-t border-gray-100 dark:border-gray-800 flex-shrink-0 bg-white dark:bg-gray-900">
+              <div className="p-4 sm:p-5 border-t border-white/10 flex-shrink-0 bg-zinc-950">
                 <div className="grid grid-cols-2 gap-3">
                   <Link
                     href="/demande-devis"
                     onClick={() => setMobileMenuOpen(false)}
                     className="w-full"
                   >
-                    <button className="w-full py-3 px-3 rounded-xl border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-50 font-black uppercase italic text-xs sm:text-sm tracking-wider transition-colors">
+                    <button className="w-full py-3 px-3 rounded-xl border-2 border-yellow-500 text-yellow-400 hover:bg-yellow-500/10 font-display uppercase text-xs sm:text-sm tracking-widest transition-colors">
                       {language === "fr" ? "Devis" : "Quote"}
                     </button>
                   </Link>
@@ -1311,7 +1316,7 @@ const Navbar = React.memo(function Navbar({
                     onClick={() => setMobileMenuOpen(false)}
                     className="w-full"
                   >
-                    <button className="w-full py-3 px-3 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-black uppercase italic text-xs sm:text-sm tracking-wider">
+                    <button className="w-full py-3 px-3 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase text-xs sm:text-sm tracking-widest">
                       {language === "fr" ? "Contacter" : "Contact"}
                     </button>
                   </Link>
@@ -1332,10 +1337,10 @@ function NavLink({ href, children, active }: NavLinkProps) {
     <Link
       href={href}
       className={cn(
-        "px-3 xl:px-4 py-2.5 rounded-xl text-sm font-black uppercase italic transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
+        "px-3 xl:px-4 py-2.5 rounded-xl text-sm font-display uppercase tracking-wide transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
         active
-          ? "text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800"
-          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
+          ? "text-yellow-400 bg-white/10"
+          : "text-gray-300 hover:text-white hover:bg-white/5"
       )}
     >
       {children}
@@ -1355,12 +1360,10 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
     () => [
       {
         name: "Instagram",
-        icon: <Instagram className="h-5 w-5" />,
         href: "https://www.instagram.com/ironz_official/",
       },
       {
         name: "YouTube",
-        icon: <Youtube className="h-5 w-5" />,
         href: "https://www.youtube.com/@ironzofficial",
       },
     ],
@@ -1405,21 +1408,23 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
   const contactInfo = useMemo<ContactItem[]>(
     () => [
       {
-        icon: <MapPin className="h-5 w-5" aria-hidden="true" />,
+        label: language === "fr" ? "Adresse" : "Address",
         content: "SAHARA MALL 1ÈRE ÉTAGE C169 & C120",
       },
       {
-        icon: <Phone className="h-5 w-5" aria-hidden="true" />,
+        label: language === "fr" ? "Téléphone" : "Phone",
         content: "+212 669 51 00 42",
         href: "tel:+212669510042",
+        big: true,
       },
       {
-        icon: <Mail className="h-5 w-5" aria-hidden="true" />,
+        label: "Email",
         content: "info@ironz.ma",
         href: "mailto:info@ironz.ma",
+        big: true,
       },
     ],
-    []
+    [language]
   );
 
   const containerVariants: Variants = {
@@ -1443,15 +1448,16 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
 
   return (
     <footer
-      className="bg-white text-gray-900 relative overflow-hidden border-t border-gray-100"
+      className="bg-zinc-950 text-white relative overflow-hidden"
       aria-label="Pied de page IRONZ"
     >
+      {/* Stripes divider */}
+      <div className="bg-stripes-yellow h-2" aria-hidden="true" />
       <div
         className="absolute inset-0 overflow-hidden pointer-events-none"
         aria-hidden="true"
       >
         <div className="absolute top-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-yellow-500/10 rounded-full blur-[80px] sm:blur-[100px] -translate-y-1/2" />
-        <div className="absolute bottom-0 left-1/4 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-orange-500/10 rounded-full blur-[100px] sm:blur-[120px] translate-y-1/2" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8 sm:pb-12">
@@ -1477,38 +1483,44 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 unoptimized
               />
             </Link>
-            <p className="text-gray-600 leading-relaxed text-sm max-w-xs">
+            <p className="text-gray-400 leading-relaxed text-sm max-w-xs">
               {language === "fr"
                 ? "L'élite de l'équipement sportif marocain. Forgez votre avenir avec notre matériel de qualité professionnelle."
                 : "Morocco's elite sports equipment. Forge your future with our professional-grade gear."}
             </p>
-            <div className="flex items-center gap-3 pt-1">
+            {/* Social — text links, no icons */}
+            <div className="flex items-center gap-5 pt-1">
               {socialLinks.map((social, i) => (
-                <motion.a
+                <a
                   key={i}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`IRONZ sur ${social.name}`}
-                  className="h-10 w-10 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 hover:text-black hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300"
-                  whileHover={{ y: -3, scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="font-display uppercase tracking-widest text-sm text-gray-300 hover:text-yellow-400 transition-colors"
                 >
-                  {social.icon}
-                </motion.a>
+                  {social.name}{" "}
+                  <span aria-hidden="true" className="text-yellow-500">
+                    ↗
+                  </span>
+                </a>
               ))}
             </div>
             <div className="flex flex-wrap gap-2 pt-1">
               {[
-                language === "fr" ? "🚀 Livraison rapide" : "🚀 Fast delivery",
+                language === "fr" ? "Livraison rapide" : "Fast delivery",
                 language === "fr"
-                  ? "✅ Qualité garantie"
-                  : "✅ Quality guaranteed",
+                  ? "Qualité garantie"
+                  : "Quality guaranteed",
               ].map((badge, i) => (
                 <span
                   key={i}
-                  className="text-xs text-gray-600 bg-gray-100 border border-gray-200 px-2.5 py-1 rounded-full"
+                  className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-gray-300 border border-white/10 rounded-full px-3 py-1.5"
                 >
+                  <span
+                    className="w-1.5 h-1.5 bg-yellow-500 -skew-x-12"
+                    aria-hidden="true"
+                  />
                   {badge}
                 </span>
               ))}
@@ -1517,9 +1529,9 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
 
           {/* Catalog */}
           <motion.div variants={itemVariants}>
-            <h2 className="text-base font-black uppercase italic tracking-wider mb-5 flex items-center gap-2">
+            <h2 className="font-display uppercase tracking-widest text-lg mb-5 flex items-center gap-3">
               <span
-                className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"
+                className="w-6 h-1 bg-yellow-500 -skew-x-12"
                 aria-hidden="true"
               />
               {language === "fr" ? "Catalogue" : "Catalog"}
@@ -1529,9 +1541,8 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 <li key={i}>
                   <Link
                     href={cat.href}
-                    className="group flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    className="inline-block text-gray-400 hover:text-yellow-400 hover:translate-x-1 transition-all text-sm"
                   >
-                    <ChevronRight className="h-4 w-4 mr-2 text-yellow-500 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" />
                     {cat.name}
                   </Link>
                 </li>
@@ -1541,9 +1552,9 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
 
           {/* Support */}
           <motion.div variants={itemVariants}>
-            <h2 className="text-base font-black uppercase italic tracking-wider mb-5 flex items-center gap-2">
+            <h2 className="font-display uppercase tracking-widest text-lg mb-5 flex items-center gap-3">
               <span
-                className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"
+                className="w-6 h-1 bg-yellow-500 -skew-x-12"
                 aria-hidden="true"
               />
               {language === "fr" ? "Support" : "Support"}
@@ -1553,9 +1564,8 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 <li key={i}>
                   <Link
                     href={link.href}
-                    className="group flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    className="inline-block text-gray-400 hover:text-yellow-400 hover:translate-x-1 transition-all text-sm"
                   >
-                    <ChevronRight className="h-4 w-4 mr-2 text-orange-500 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all" />
                     {link.name}
                   </Link>
                 </li>
@@ -1563,40 +1573,38 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
             </ul>
           </motion.div>
 
-          {/* Contact */}
+          {/* Contact — no icons, label + value */}
           <motion.div variants={itemVariants}>
-            <h2 className="text-base font-black uppercase italic tracking-wider mb-5 flex items-center gap-2">
+            <h2 className="font-display uppercase tracking-widest text-lg mb-5 flex items-center gap-3">
               <span
-                className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"
+                className="w-6 h-1 bg-yellow-500 -skew-x-12"
                 aria-hidden="true"
               />
               Contact
             </h2>
-            <address className="not-italic space-y-3">
+            <address className="not-italic space-y-5">
               {contactInfo.map((item, i) => (
-                <motion.div
-                  key={i}
-                  className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100 hover:bg-gray-100 transition-colors group cursor-pointer"
-                  whileHover={{ y: -2 }}
-                >
-                  <div className="mt-0.5 p-1.5 rounded-lg bg-white text-gray-500 group-hover:text-yellow-500 group-hover:bg-yellow-500/10 transition-colors flex-shrink-0 border border-gray-200">
-                    {item.icon}
+                <div key={i}>
+                  <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-yellow-500 mb-1">
+                    {item.label}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    {item.href ? (
-                      <a
-                        href={item.href}
-                        className="text-sm text-gray-600 hover:text-gray-900 transition-colors leading-snug block truncate"
-                      >
-                        {item.content}
-                      </a>
-                    ) : (
-                      <span className="text-sm text-gray-600 leading-snug block">
-                        {item.content}
-                      </span>
-                    )}
-                  </div>
-                </motion.div>
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      className={
+                        item.big
+                          ? "font-display tracking-wide text-2xl hover:text-yellow-400 transition-colors"
+                          : "text-sm text-gray-300 hover:text-yellow-400 transition-colors leading-snug block"
+                      }
+                    >
+                      {item.content}
+                    </a>
+                  ) : (
+                    <span className="text-sm text-gray-300 leading-snug block">
+                      {item.content}
+                    </span>
+                  )}
+                </div>
               ))}
             </address>
           </motion.div>
@@ -1604,14 +1612,14 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
 
         {/* Bottom Bar */}
         <motion.div
-          className="border-t border-gray-100 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
+          className="border-t border-white/10 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          <p className="text-gray-600 text-xs sm:text-sm font-medium tracking-wide text-center sm:text-left">
-            <span className="text-yellow-600 font-bold">&copy;</span>{" "}
+          <p className="text-gray-500 text-xs sm:text-sm font-medium tracking-wide text-center sm:text-left">
+            <span className="text-yellow-500 font-bold">&copy;</span>{" "}
             {currentYear} IRONZ.{" "}
             {language === "fr"
               ? "Tous droits réservés."
@@ -1634,7 +1642,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 <li key={i}>
                   <Link
                     href={item.href}
-                    className="text-xs font-black uppercase tracking-wider text-gray-600 hover:text-yellow-600 transition-colors"
+                    className="text-xs font-display uppercase tracking-widest text-gray-400 hover:text-yellow-400 transition-colors"
                   >
                     {item.label}
                   </Link>

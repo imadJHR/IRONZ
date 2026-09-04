@@ -82,7 +82,7 @@ export default function CategoryCard({
         </div>
         {category.productCount !== undefined && category.productCount > 0 && (
           <span 
-            className="absolute top-4 right-4 bg-yellow-500 dark:bg-yellow-400 text-black text-xs font-bold px-2.5 py-1 rounded-full shadow-sm"
+            className="absolute top-4 right-4 bg-yellow-500 dark:bg-yellow-400 text-black text-xs font-display tracking-wider px-2.5 py-1 rounded-full shadow-sm"
             aria-label={`${category.productCount} produits dans cette catégorie`}
           >
             {category.productCount} {category.productCount === 1 ? "produit" : "produits"}

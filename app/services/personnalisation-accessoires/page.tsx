@@ -13,7 +13,6 @@ import {
   Package,
   Shield,
   Heart,
-  Sparkles,
   Target,
   Trophy,
   Crown,
@@ -285,13 +284,12 @@ export default function PersonnalisationAccessoiresPage() {
             className="max-w-5xl"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Sparkles className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Personnalisation
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase italic tracking-tighter mb-6 text-white leading-[0.9]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.9]">
               Accessoires <span className="text-yellow-500">Sur Mesure</span>
             </h1>
 
@@ -323,11 +321,11 @@ export default function PersonnalisationAccessoiresPage() {
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <span className="text-yellow-500">{stat.icon}</span>
-                    <span className="text-3xl md:text-4xl font-black text-yellow-500">
+                    <span className="text-3xl md:text-4xl font-display tracking-wide text-yellow-500">
                       {stat.value}
                     </span>
                   </div>
-                  <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-400">
+                  <span className="text-xs md:text-sm font-display uppercase tracking-widest text-gray-400">
                     {stat.label}
                   </span>
                 </motion.div>
@@ -340,7 +338,7 @@ export default function PersonnalisationAccessoiresPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
                 onClick={() => document.getElementById("explorer")?.scrollIntoView({ behavior: "smooth" })}
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg hover:shadow-xl"
+                className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg hover:shadow-xl"
               >
                 Explorer nos options
                 <ArrowRight className="w-5 h-5" />
@@ -351,7 +349,7 @@ export default function PersonnalisationAccessoiresPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}
                 onClick={() => window.open('https://wa.me/212674114446', '_blank')}
-                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all border border-white/10"
+                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-display uppercase tracking-widest px-8 py-6 rounded-2xl transition-all border border-white/10"
               >
                 <IoLogoWhatsapp className="w-5 h-5" />
                 WhatsApp Direct
@@ -374,12 +372,11 @@ export default function PersonnalisationAccessoiresPage() {
           <FadeInWhenVisible>
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-                <Package className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                   Nos produits
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Personnalisez vos <span className="text-yellow-500">accessoires</span>
               </h2>
             </div>
@@ -391,9 +388,9 @@ export default function PersonnalisationAccessoiresPage() {
               <button
                 key={type.id}
                 onClick={() => setActiveTab(type.id)}
-                className={`px-6 py-3 rounded-xl font-bold uppercase text-sm transition-all ${
+                className={`px-6 py-3 rounded-xl font-display uppercase tracking-widest text-sm transition-all ${
                   activeTab === type.id
-                    ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-black shadow-lg"
+                    ? "bg-yellow-500 text-black shadow-lg"
                     : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-yellow-100 dark:hover:bg-yellow-900/20"
                 }`}
               >
@@ -405,7 +402,7 @@ export default function PersonnalisationAccessoiresPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <FadeInWhenVisible>
               <div className="order-2 lg:order-1">
-                <h3 className="text-3xl md:text-4xl font-black uppercase italic mb-6 text-gray-900 dark:text-white leading-tight">
+                <h3 className="text-3xl md:text-4xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white leading-tight">
                   {accessoryTypes.find(t => t.id === activeTab)?.name} sur mesure
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
@@ -417,7 +414,7 @@ export default function PersonnalisationAccessoiresPage() {
                 <div className="space-y-4 mb-8">
                   {["Protection et confort optimal", "Matériaux premium durables", "Design unique 100% personnalisable"].map((benefit, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <CheckCircle className="w-3 h-3 text-white" />
                       </div>
                       <span className="text-gray-700 dark:text-gray-300">{benefit}</span>
@@ -434,12 +431,12 @@ export default function PersonnalisationAccessoiresPage() {
                     <Image src={logo} alt="Logo IRONZ PRO" fill className="object-contain" />
                   </div>
                   <div className="text-center">
-                    <h4 className="text-2xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                    <h4 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                       Aperçu Personnalisation
                     </h4>
                     <button
                       onClick={() => window.open('https://wa.me/212674114446', '_blank')}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold uppercase tracking-wider px-6 py-3 rounded-xl transition-all"
+                      className="inline-flex items-center gap-2 bg-yellow-500 text-black font-display uppercase tracking-widest px-6 py-3 rounded-xl transition-all"
                     >
                       <IoLogoWhatsapp className="w-5 h-5" />
                       Demander un devis
@@ -457,7 +454,7 @@ export default function PersonnalisationAccessoiresPage() {
         <div className="relative container mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Options de <span className="text-yellow-500">personnalisation</span>
               </h2>
             </div>
@@ -471,13 +468,13 @@ export default function PersonnalisationAccessoiresPage() {
                     <Image src={option.image} alt={option.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                     <div className="absolute bottom-4 left-4">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${option.color} flex items-center justify-center text-white`}>
+                      <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center text-black">
                         {option.icon}
                       </div>
                     </div>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-black uppercase italic mb-3 text-gray-900 dark:text-white">{option.title}</h3>
+                    <h3 className="text-xl font-display uppercase tracking-wide mb-3 text-gray-900 dark:text-white">{option.title}</h3>
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{option.description}</p>
                   </div>
                 </div>
@@ -492,7 +489,7 @@ export default function PersonnalisationAccessoiresPage() {
         <div className="container mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Notre <span className="text-yellow-500">processus</span>
               </h2>
             </div>
@@ -505,16 +502,16 @@ export default function PersonnalisationAccessoiresPage() {
                 <FadeInWhenVisible key={index} delay={index * 0.2}>
                   <div className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8 md:gap-12`}>
                     <div className="md:w-1/2 flex md:justify-center">
-                      <div className={`w-20 h-20 rounded-full bg-gradient-to-r ${step.color} flex items-center justify-center text-black text-3xl font-black shadow-lg z-10 relative`}>
+                      <div className="w-20 h-20 rounded-full bg-yellow-500 flex items-center justify-center text-black text-3xl font-display shadow-lg z-10 relative">
                         {index + 1}
                       </div>
                     </div>
                     <div className="md:w-1/2 bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-xl">
                       <div className="flex items-center mb-4">
-                        <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${step.color} flex items-center justify-center mr-4 text-white`}>
+                        <div className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center mr-4 text-black">
                           {step.icon}
                         </div>
-                        <h3 className="text-2xl font-black uppercase italic text-gray-900 dark:text-white">{step.title}</h3>
+                        <h3 className="text-2xl font-display uppercase tracking-wide text-gray-900 dark:text-white">{step.title}</h3>
                       </div>
                       <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">{step.description}</p>
                       <ul className="space-y-2">
@@ -539,13 +536,13 @@ export default function PersonnalisationAccessoiresPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {packages.map((pkg, index) => (
               <FadeInWhenVisible key={index} delay={index * 0.1}>
-                <div className={`relative h-full bg-gradient-to-br ${pkg.color} rounded-3xl p-0.5 ${pkg.popular ? 'scale-105 z-10' : ''}`}>
+                <div className={`relative h-full bg-yellow-500 rounded-3xl p-0.5 ${pkg.popular ? 'scale-105 z-10' : ''}`}>
                   <div className="bg-white dark:bg-gray-800 rounded-[1.25rem] p-8 h-full flex flex-col">
                     <div className="text-center mb-8">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mx-auto mb-4 text-white">
+                      <div className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mx-auto mb-4 text-black">
                         {pkg.icon}
                       </div>
-                      <h3 className="text-2xl font-black uppercase italic text-gray-900 dark:text-white">{pkg.name}</h3>
+                      <h3 className="text-2xl font-display uppercase tracking-wide text-gray-900 dark:text-white">{pkg.name}</h3>
                     </div>
                     <ul className="space-y-4 mb-8 flex-grow">
                       {pkg.features.map((f, i) => (
@@ -555,8 +552,8 @@ export default function PersonnalisationAccessoiresPage() {
                       ))}
                     </ul>
                     <div className="text-center pt-6 border-t dark:border-gray-700">
-                      <div className="text-2xl font-black mb-6 dark:text-white">{pkg.price}</div>
-                      <Link href="/demande-devis" className="block w-full py-4 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-black uppercase italic rounded-xl text-center">
+                      <div className="text-2xl font-display tracking-wide mb-6 dark:text-white">{pkg.price}</div>
+                      <Link href="/demande-devis" className="block w-full py-4 bg-yellow-500 text-black font-display uppercase tracking-wide rounded-xl text-center">
                         Choisir ce plan
                       </Link>
                     </div>
@@ -572,16 +569,16 @@ export default function PersonnalisationAccessoiresPage() {
       <section className="py-20 bg-gradient-to-r from-yellow-500 to-orange-500">
         <div className="container mx-auto px-4 text-center">
           <FadeInWhenVisible>
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-black">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">
               Prêt à créer votre accessoire personnalisé ?
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/demande-devis" className="px-8 py-6 bg-black text-white font-black uppercase italic rounded-2xl flex items-center gap-3">
+              <Link href="/demande-devis" className="px-8 py-6 bg-black text-white font-display uppercase tracking-wide rounded-2xl flex items-center gap-3">
                 Demander un devis <ArrowRight className="w-5 h-5" />
               </Link>
               <button
                 onClick={() => window.open('https://wa.me/212674114446', '_blank')}
-                className="px-8 py-6 bg-white text-black font-black uppercase italic rounded-2xl flex items-center gap-3"
+                className="px-8 py-6 bg-white text-black font-display uppercase tracking-wide rounded-2xl flex items-center gap-3"
               >
                 <IoLogoWhatsapp className="w-6 h-6" /> WhatsApp Direct <ChevronRight className="w-5 h-5" />
               </button>

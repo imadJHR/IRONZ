@@ -307,8 +307,8 @@ function FeatureList({
     <ul className={`space-y-${small ? "2" : "3"}`}>
       {features.map((feature, idx) => (
         <li key={idx} className="flex items-start gap-3">
-          <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <CheckCircle className="w-3 h-3 text-white" />
+                          <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <CheckCircle className="w-3 h-3 text-black" />
           </div>
           <span
             className={`text-gray-700 dark:text-gray-300 ${
@@ -334,8 +334,7 @@ function SectionBadge({
 }){
   return (
     <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-      <span className="text-yellow-500">{icon}</span>
-      <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+      <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
         {label}
       </span>
     </div>
@@ -382,7 +381,7 @@ export default function SalleProfessionnellePage(){
               label="Expertise professionnelle"
             />
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase italic tracking-tighter mb-6 text-white leading-[0.9]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.9]">
               Salle{" "}
               <span className="text-yellow-500">Professionnelle</span>
             </h1>
@@ -408,7 +407,7 @@ export default function SalleProfessionnellePage(){
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <span className="text-white">{stat.icon}</span>
-                    <span className="text-3xl md:text-4xl font-black text-yellow-500">
+                    <span className="text-3xl md:text-4xl font-display tracking-wide text-yellow-500">
                       {stat.value}
                     </span>
                   </div>
@@ -429,7 +428,7 @@ export default function SalleProfessionnellePage(){
               <motion.button
                 variants={scaleIn}
                 onClick={() => (window.location.href = "/demande-devis")}
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
+                className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
               >
                 Demander un devis gratuit
                 <ArrowRight className="w-5 h-5" />
@@ -438,7 +437,7 @@ export default function SalleProfessionnellePage(){
               <motion.button
                 variants={scaleIn}
                 onClick={openWhatsApp}
-                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all border border-white/10"
+                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all border border-white/10"
               >
                 <IoLogoWhatsapp className="w-5 h-5" />
                 WhatsApp Pro Direct
@@ -464,7 +463,7 @@ export default function SalleProfessionnellePage(){
               icon={<Target className="w-4 h-4" />}
               label="Secteurs d'expertise"
             />
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Nos <span className="text-yellow-500">Secteurs</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -483,14 +482,14 @@ export default function SalleProfessionnellePage(){
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group h-full"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
                   <div
-                    className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${sector.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
                   >
-                    <div className="text-white">{sector.icon}</div>
+                    <div className="text-black">{sector.icon}</div>
                   </div>
 
-                  <h3 className="text-2xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                  <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                     {sector.title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
@@ -518,7 +517,7 @@ export default function SalleProfessionnellePage(){
               icon={<Trophy className="w-4 h-4" />}
               label="Services professionnels"
             />
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Nos <span className="text-yellow-500">Services</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -536,14 +535,14 @@ export default function SalleProfessionnellePage(){
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group h-full"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
                   <div
-                    className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
                   >
-                    <div className="text-white">{service.icon}</div>
+                    <div className="text-black">{service.icon}</div>
                   </div>
 
-                  <h3 className="text-2xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                  <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                     {service.title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
@@ -573,7 +572,7 @@ export default function SalleProfessionnellePage(){
               icon={<Crown className="w-4 h-4" />}
               label="Formules professionnelles"
             />
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Solutions{" "}
               <span className="text-yellow-500">sur mesure</span>
             </h2>
@@ -597,24 +596,24 @@ export default function SalleProfessionnellePage(){
               >
                 {pkg.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                    <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-6 py-2 rounded-full font-black uppercase italic tracking-widest text-sm">
+                    <div className="bg-yellow-500 text-black px-6 py-2 rounded-full font-display uppercase tracking-widest text-sm">
                       Recommandé
                     </div>
                   </div>
                 )}
 
                 <div
-                  className={`bg-gradient-to-br ${pkg.color} rounded-3xl p-0.5 h-full ${
+                  className={`bg-yellow-500 rounded-3xl p-0.5 h-full ${
                     pkg.popular ? "scale-[1.02]" : ""
                   }`}
                 >
                   <div className="bg-white dark:bg-gray-800 rounded-[1.25rem] p-8 h-full flex flex-col">
                     {/* Package header */}
                     <div className="text-center mb-8">
-                      <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mx-auto mb-4">
-                        <div className="text-white">{pkg.icon}</div>
+                      <div className="w-20 h-20 rounded-2xl bg-yellow-500 flex items-center justify-center mx-auto mb-4">
+                        <div className="text-black">{pkg.icon}</div>
                       </div>
-                      <h3 className="text-2xl font-black uppercase italic mb-2 text-gray-900 dark:text-white">
+                      <h3 className="text-2xl font-display uppercase tracking-wide mb-2 text-gray-900 dark:text-white">
                         {pkg.name}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400">
@@ -626,8 +625,8 @@ export default function SalleProfessionnellePage(){
                     <div className="space-y-4 mb-8 flex-1">
                       {pkg.features.map((feature, idx) => (
                         <div key={idx} className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle className="w-3 h-3 text-white" />
+                          <div className="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <CheckCircle className="w-3 h-3 text-black" />
                           </div>
                           <span className="text-gray-700 dark:text-gray-300">
                             {feature}
@@ -638,11 +637,11 @@ export default function SalleProfessionnellePage(){
 
                     {/* Price & CTA */}
                     <div className="text-center pt-8 border-t border-gray-100 dark:border-gray-700">
-                      <div className="text-3xl font-black text-gray-900 dark:text-white mb-6">
+                      <div className="text-3xl font-display tracking-wide text-gray-900 dark:text-white mb-6">
                         {pkg.price}
                       </div>
                       <Link href="/demande-devis">
-                        <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
+                        <button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
                           Demander un devis
                           <ArrowRight className="w-4 h-4" />
                         </button>
@@ -674,7 +673,7 @@ export default function SalleProfessionnellePage(){
                 label="Consultation pro gratuite"
               />
 
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Prêt à lancer votre{" "}
                 <span className="text-yellow-500">projet pro</span> ?
               </h2>
@@ -689,7 +688,7 @@ export default function SalleProfessionnellePage(){
               <div className="space-y-6 mb-10">
                 {/* Phone */}
                 <div className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Phone className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -704,7 +703,7 @@ export default function SalleProfessionnellePage(){
 
                 {/* WhatsApp */}
                 <div className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <IoLogoWhatsapp className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -719,7 +718,7 @@ export default function SalleProfessionnellePage(){
 
                 {/* Location */}
                 <div className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -735,14 +734,14 @@ export default function SalleProfessionnellePage(){
 
               {/* Guarantees */}
               <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-                <h3 className="text-xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                <h3 className="text-xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                   Garanties professionnelles
                 </h3>
                 <div className="space-y-4">
                   {guarantees.map((g, idx) => (
                     <div key={idx} className="flex items-start gap-3">
                       <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <CheckCircle className="w-3 h-3 text-white" />
+                        <CheckCircle className="w-3 h-3 text-black" />
                       </div>
                       <span className="text-gray-700 dark:text-gray-300">
                         {g}
@@ -765,7 +764,7 @@ export default function SalleProfessionnellePage(){
                   label="Devis professionnel"
                 />
 
-                <h3 className="text-3xl font-black uppercase italic mb-8 text-white">
+                <h3 className="text-3xl font-display uppercase tracking-wide mb-8 text-white">
                   Demande de{" "}
                   <span className="text-yellow-500">devis pro</span>
                 </h3>
@@ -794,7 +793,7 @@ export default function SalleProfessionnellePage(){
             viewport={{ once: true }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-black">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">
               Transformez votre espace en succès commercial
             </h2>
             <p className="text-xl text-black/90 mb-10 max-w-2xl mx-auto">
@@ -803,14 +802,14 @@ export default function SalleProfessionnellePage(){
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/demande-devis">
-                <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+                <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
                   Demander un devis gratuit
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </Link>
               <button
                 onClick={openWhatsApp}
-                className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
+                className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
               >
                 <IoLogoWhatsapp className="w-6 h-6" />
                 WhatsApp Pro Direct

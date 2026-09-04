@@ -198,7 +198,7 @@ export default function CartPageClient() {
     return (
       <div className="min-h-screen bg-white dark:bg-gray-950 pt-40 text-center px-4">
         <ShoppingCart className="mx-auto h-24 w-24 text-gray-100 dark:text-zinc-800 mb-8" />
-        <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter mb-4">
+        <h1 className="text-4xl md:text-6xl font-display uppercase tracking-wide mb-4">
           Ton Panier est <span className="text-yellow-500">Vide</span>
         </h1>
         <p className="text-gray-500 mb-10 font-bold uppercase italic text-xs tracking-widest">
@@ -206,7 +206,7 @@ export default function CartPageClient() {
         </p>
         <Link
           href="/produit"
-          className="inline-flex items-center gap-3 bg-black text-white px-10 py-5 rounded-2xl font-black uppercase italic tracking-widest hover:bg-yellow-500 hover:text-black transition-all shadow-xl"
+          className="inline-flex items-center gap-3 bg-black text-white px-10 py-5 rounded-xl font-display uppercase tracking-widest hover:bg-yellow-500 hover:text-black transition-all shadow-xl"
         >
           Découvrir le catalogue <ArrowRight size={20} />
         </Link>
@@ -220,14 +220,14 @@ export default function CartPageClient() {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <h1 className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter text-gray-900 dark:text-white leading-none">
+            <h1 className="text-4xl md:text-7xl font-display uppercase tracking-wide text-gray-900 dark:text-white leading-none">
               Mon <span className="text-yellow-500">Panier</span>
             </h1>
-            <div className="h-2 w-24 bg-yellow-500 mt-4 rounded-full" />
+            <div className="h-1.5 w-28 bg-yellow-500 mt-4 -skew-x-12" />
           </div>
           <Link
             href="/produit"
-            className="text-gray-400 hover:text-yellow-500 font-black uppercase italic text-sm transition-colors flex items-center gap-2"
+            className="text-gray-400 hover:text-yellow-500 font-display uppercase tracking-wide text-sm transition-colors flex items-center gap-2"
           >
             <ArrowLeft size={18} /> Continuer mes achats
           </Link>
@@ -235,7 +235,7 @@ export default function CartPageClient() {
 
         {/* Banner Alert */}
         <div className="mb-8">
-          <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 dark:from-yellow-500/5 dark:to-orange-500/5 border-2 border-yellow-500/30 dark:border-yellow-500/20 rounded-2xl p-6 md:p-8">
+          <div className="bg-yellow-500/5 border-2 border-yellow-500/30 dark:border-yellow-500/20 rounded-2xl p-6 md:p-8">
             <div className="flex items-start gap-4">
               <div className="hidden sm:flex shrink-0">
                 <div className="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center">
@@ -244,7 +244,7 @@ export default function CartPageClient() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-3">
-                  <h3 className="text-lg md:text-xl font-black uppercase italic text-gray-900 dark:text-white flex items-center gap-2">
+                  <h3 className="text-lg md:text-xl font-display uppercase tracking-wide text-gray-900 dark:text-white flex items-center gap-2">
                     <CreditCard className="w-5 h-5 text-yellow-500" />
                     Information importante
                   </h3>
@@ -277,16 +277,16 @@ export default function CartPageClient() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* List of Articles */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] border border-gray-100 dark:border-zinc-800 overflow-hidden shadow-sm">
+            <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800 overflow-hidden shadow-sm">
               <div className="p-6 md:p-8 border-b border-gray-50 dark:border-zinc-800 flex justify-between items-center">
-                <h2 className="text-xl font-black uppercase italic tracking-tighter">
+                <h2 className="text-xl font-display uppercase tracking-wide">
                   Récapitulatif ({totalItems})
                 </h2>
                 <button
                   onClick={() =>
                     window.confirm("Vider le panier ?") && clearCart()
                   }
-                  className="text-red-500 text-[10px] font-black uppercase tracking-widest hover:underline flex items-center gap-1"
+                  className="text-red-500 text-[10px] font-display uppercase tracking-widest hover:underline flex items-center gap-1"
                 >
                   <Trash2 size={14} /> Vider
                 </button>
@@ -315,19 +315,20 @@ export default function CartPageClient() {
                       </div>
 
                       <div className="flex-1 text-center sm:text-left min-w-0">
-                        <span className="text-[10px] font-black text-yellow-600 uppercase tracking-[0.2em] mb-1 block">
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-display text-yellow-600 uppercase tracking-[0.2em] mb-1">
+                          <span className="w-1.5 h-3 bg-yellow-500 -skew-x-12 shrink-0" aria-hidden="true" />
                           {item.category}
                         </span>
                         <Link
                           href={`/produit/${item.slug}`}
-                          className="text-xl md:text-2xl font-black uppercase italic text-gray-900 dark:text-white hover:text-yellow-500 transition-colors line-clamp-1 leading-none mb-3"
+                          className="text-xl md:text-2xl font-display uppercase tracking-wide text-gray-900 dark:text-white hover:text-yellow-500 transition-colors line-clamp-1 leading-none mb-3"
                         >
                           {item.name}
                         </Link>
 
                         <div className="flex flex-wrap justify-center sm:justify-start gap-3 mb-4 md:mb-6">
                           {item.selectedColor && (
-                            <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-black uppercase tracking-widest text-gray-500">
+                            <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-display uppercase tracking-widest text-gray-500">
                               Couleur:{" "}
                               <div
                                 className="w-3 h-3 rounded-full border border-white"
@@ -341,7 +342,7 @@ export default function CartPageClient() {
                           )}
                           {/* ✅ ADD THIS: Display selected size */}
                           {item.selectedTaille && (
-                            <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-black uppercase tracking-widest text-gray-500">
+                            <div className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-display uppercase tracking-widest text-gray-500">
                               Taille: <span className="text-yellow-600">{item.selectedTaille}</span>
                             </div>
                           )}
@@ -363,7 +364,7 @@ export default function CartPageClient() {
                             >
                               <Minus size={16} />
                             </button>
-                            <span className="w-10 md:w-12 text-center font-black italic text-base md:text-lg">
+                            <span className="w-10 md:w-12 text-center font-display text-base md:text-lg">
                               {item.quantity}
                             </span>
                             <button
@@ -396,7 +397,7 @@ export default function CartPageClient() {
                       </div>
 
                       <div className="text-center sm:text-right sm:ml-auto w-full sm:w-auto mt-4 sm:mt-0">
-                        <p className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white italic tracking-tighter">
+                        <p className="text-2xl md:text-3xl font-display tracking-wide text-gray-900 dark:text-white">
                           {formatPrice(
                             (item.salePrice || item.price) * item.quantity
                           )}
@@ -414,43 +415,43 @@ export default function CartPageClient() {
 
           {/* Checkout Block */}
           <div className="lg:col-span-1">
-            <div className="bg-black text-white rounded-[2rem] md:rounded-[3rem] p-6 md:p-8 lg:p-10 sticky top-24 md:top-28 shadow-2xl border-t-4 md:border-t-8 border-yellow-500">
-              <h2 className="text-2xl md:text-3xl font-black uppercase italic tracking-tighter mb-8 md:mb-10 text-white leading-none">
+            <div className="bg-black text-white rounded-2xl p-6 md:p-8 lg:p-10 sticky top-24 md:top-28 shadow-2xl border-t-4 md:border-t-8 border-yellow-500">
+              <h2 className="text-2xl md:text-3xl font-display uppercase tracking-wide mb-8 md:mb-10 text-white leading-none">
                 Paiement <br /> <span className="text-yellow-500">Total.</span>
               </h2>
 
               <div className="space-y-4 md:space-y-5 mb-8 md:mb-10">
                 <div className="flex justify-between items-end border-b border-white/10 pb-3 md:pb-4">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+                  <span className="text-[10px] font-display uppercase tracking-[0.2em] text-gray-500">
                     Sous-total
                   </span>
-                  <span className="font-black italic text-base md:text-lg">
+                  <span className="font-display text-base md:text-lg">
                     {formatPrice(cartTotal)}
                   </span>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between items-end border-b border-white/10 pb-3 md:pb-4 text-yellow-500">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+                    <span className="text-[10px] font-display uppercase tracking-[0.2em]">
                       Réduction
                     </span>
-                    <span className="font-black italic text-base md:text-lg">
+                    <span className="font-display text-base md:text-lg">
                       -{formatPrice(discount)}
                     </span>
                   </div>
                 )}
                 <div className="flex justify-between items-end border-b border-white/10 pb-3 md:pb-4">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+                  <span className="text-[10px] font-display uppercase tracking-[0.2em] text-gray-500">
                     Expédition
                   </span>
-                  <span className="font-black italic text-base md:text-lg">
+                  <span className="font-display text-base md:text-lg">
                     {shippingCost === 0 ? "GRATUIT" : formatPrice(shippingCost)}
                   </span>
                 </div>
                 <div className="pt-4 md:pt-6 flex justify-between items-end">
-                  <span className="text-yellow-500 font-black uppercase italic text-xl md:text-2xl tracking-tighter">
+                  <span className="text-yellow-500 font-display uppercase tracking-wide text-xl md:text-2xl tracking-tighter">
                     Net à payer
                   </span>
-                  <span className="text-3xl md:text-4xl lg:text-5xl font-black italic tracking-tighter text-white">
+                  <span className="text-3xl md:text-4xl lg:text-5xl font-display tracking-tighter text-white">
                     {formatPrice(totalWithShipping)}
                   </span>
                 </div>
@@ -464,11 +465,11 @@ export default function CartPageClient() {
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
                     placeholder="CODE PROMO"
-                    className="flex-1 bg-transparent px-4 md:px-5 py-3 md:py-4 text-xs font-black uppercase italic outline-none text-white placeholder-gray-500"
+                    className="flex-1 bg-transparent px-4 md:px-5 py-3 md:py-4 text-xs font-display uppercase tracking-wide outline-none text-white placeholder-gray-500"
                   />
                   <button
                     type="submit"
-                    className="bg-white text-black px-4 md:px-6 font-black text-[10px] uppercase hover:bg-yellow-500 transition-colors"
+                    className="bg-white text-black px-4 md:px-6 font-display uppercase tracking-widest text-[10px] hover:bg-yellow-500 transition-colors"
                   >
                     Appliquer
                   </button>
@@ -487,18 +488,18 @@ export default function CartPageClient() {
 
               <button
                 onClick={() => router.push("/checkout")}
-                className="w-full bg-yellow-500 text-black py-4 md:py-6 rounded-2xl font-black uppercase italic tracking-widest hover:bg-white transition-all transform active:scale-95 shadow-xl shadow-yellow-500/10 mb-6 md:mb-8 text-sm md:text-base"
+                className="w-full bg-yellow-500 text-black py-4 md:py-6 rounded-xl font-display uppercase tracking-widest hover:bg-white transition-all transform active:scale-95 shadow-xl shadow-yellow-500/10 mb-6 md:mb-8 text-sm md:text-base"
               >
                 Passer la commande
               </button>
 
               {/* Trust badges */}
               <div className="space-y-3 md:space-y-4 pt-4 border-t border-white/5">
-                <div className="flex items-center gap-3 md:gap-4 text-[10px] font-black uppercase tracking-widest text-gray-500">
+                <div className="flex items-center gap-3 md:gap-4 text-[10px] font-display uppercase tracking-widest text-gray-500">
                   <Truck size={14} className="text-yellow-500" /> Livraison
                   Express
                 </div>
-                <div className="flex items-center gap-3 md:gap-4 text-[10px] font-black uppercase tracking-widest text-gray-500">
+                <div className="flex items-center gap-3 md:gap-4 text-[10px] font-display uppercase tracking-widest text-gray-500">
                   <ShieldCheck size={14} className="text-yellow-500" /> Paiement
                   sécurisé
                 </div>

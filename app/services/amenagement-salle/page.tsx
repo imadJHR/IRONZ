@@ -8,20 +8,16 @@ import {
   CheckCircle,
   ArrowRight,
   Phone,
-  Sparkles,
   Target,
   Trophy,
   Crown,
   Calendar,
   Clock,
   MapPin,
-  MessageSquare,
   ChevronRight,
   Award,
   Heart,
   Building,
-  PhoneCall,
-  Zap,
   Star,
   Home,
   Dumbbell,
@@ -344,13 +340,12 @@ export default function AmenagementSallePage() {
             className="max-w-5xl"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Sparkles className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Expertise élite
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase italic tracking-tighter mb-6 text-white leading-[0.9]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.9]">
               Aménagement de{" "}
               <span className="text-yellow-500">Salle</span>
             </h1>
@@ -376,7 +371,7 @@ export default function AmenagementSallePage() {
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <span className="text-white">{stat.icon}</span>
-                    <span className="text-3xl md:text-4xl font-black text-yellow-500">
+                    <span className="text-3xl md:text-4xl font-display tracking-wide text-yellow-500">
                       {stat.value}
                     </span>
                   </div>
@@ -397,7 +392,7 @@ export default function AmenagementSallePage() {
               <motion.button
                 variants={scaleIn}
                 onClick={() => (window.location.href = "/demande-devis")}
-                className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all shadow-lg"
+                className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
               >
                 Demander un devis gratuit
                 <ArrowRight className="w-5 h-5" />
@@ -406,7 +401,7 @@ export default function AmenagementSallePage() {
               <motion.button
                 variants={scaleIn}
                 onClick={openWhatsApp}
-                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-black uppercase italic tracking-widest px-8 py-6 rounded-2xl transition-all border border-white/10"
+                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all border border-white/10"
               >
                 <IoLogoWhatsapp className="w-5 h-5" />
                 WhatsApp Direct
@@ -429,13 +424,12 @@ export default function AmenagementSallePage() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Trophy className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Nos services premium
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Créez l&apos;espace{" "}
               <span className="text-yellow-500">fitness idéal</span>
             </h2>
@@ -455,14 +449,14 @@ export default function AmenagementSallePage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group h-full"
               >
-                <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
                   <div
-                    className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
                   >
-                    <div className="text-white">{service.icon}</div>
+                    <div className="text-black">{service.icon}</div>
                   </div>
 
-                  <h3 className="text-2xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                  <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                     {service.title}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
@@ -472,8 +466,8 @@ export default function AmenagementSallePage() {
                   <ul className="space-y-3">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <CheckCircle className="w-3 h-3 text-white" />
+                        <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <CheckCircle className="w-3 h-3 text-black" />
                         </div>
                         <span className="text-gray-700 dark:text-gray-300">
                           {feature}
@@ -498,13 +492,12 @@ export default function AmenagementSallePage() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Target className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Types de projets
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Solutions <span className="text-yellow-500">sur mesure</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -524,11 +517,11 @@ export default function AmenagementSallePage() {
               >
                 <Link href={project.link}>
                   <div className="group bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-yellow-500 transition-all duration-300 hover:shadow-xl cursor-pointer">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <div className="text-white">{project.icon}</div>
+                    <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <div className="text-black">{project.icon}</div>
                     </div>
 
-                    <h3 className="text-xl font-black uppercase italic mb-3 text-gray-900 dark:text-white group-hover:text-yellow-500 transition-colors">
+                    <h3 className="text-xl font-display uppercase tracking-wide mb-3 text-gray-900 dark:text-white group-hover:text-yellow-500 transition-colors">
                       {project.title}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
@@ -559,13 +552,12 @@ export default function AmenagementSallePage() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Crown className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Nos solutions premium
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Solutions{" "}
               <span className="text-yellow-500">d&apos;aménagement</span>
             </h2>
@@ -586,24 +578,24 @@ export default function AmenagementSallePage() {
               >
                 {pkg.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                    <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-6 py-2 rounded-full font-black uppercase italic tracking-widest text-sm">
+                    <div className="bg-yellow-500 text-black px-6 py-2 rounded-full font-display uppercase tracking-widest text-sm">
                       Plus populaire
                     </div>
                   </div>
                 )}
 
                 <div
-                  className={`bg-gradient-to-br ${pkg.color} rounded-3xl p-0.5 h-full ${
+                  className={`bg-yellow-500 rounded-3xl p-0.5 h-full ${
                     pkg.popular ? "scale-[1.02]" : ""
                   }`}
                 >
                   <div className="bg-white dark:bg-gray-800 rounded-[1.25rem] p-8 h-full">
                     <div className="text-center mb-8">
-                      <div className="w-20 h-20 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center mx-auto mb-4">
-                        <div className="text-white">{pkg.icon}</div>
+                      <div className="w-20 h-20 rounded-2xl bg-yellow-500 flex items-center justify-center mx-auto mb-4">
+                        <div className="text-black">{pkg.icon}</div>
                       </div>
 
-                      <h3 className="text-2xl font-black uppercase italic mb-2 text-gray-900 dark:text-white">
+                      <h3 className="text-2xl font-display uppercase tracking-wide mb-2 text-gray-900 dark:text-white">
                         {pkg.name}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400">
@@ -614,8 +606,8 @@ export default function AmenagementSallePage() {
                     <div className="space-y-4 mb-8">
                       {pkg.features.map((feature, idx) => (
                         <div key={idx} className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle className="w-3 h-3 text-white" />
+                          <div className="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <CheckCircle className="w-3 h-3 text-black" />
                           </div>
                           <span className="text-gray-700 dark:text-gray-300">
                             {feature}
@@ -625,12 +617,12 @@ export default function AmenagementSallePage() {
                     </div>
 
                     <div className="text-center pt-8 border-t border-gray-100 dark:border-gray-700">
-                      <div className="text-3xl font-black text-gray-900 dark:text-white mb-6">
+                      <div className="text-3xl font-display tracking-wide text-gray-900 dark:text-white mb-6">
                         {pkg.price}
                       </div>
 
                       <Link href="/demande-devis">
-                        <button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-black uppercase italic tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
+                        <button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
                           Demander un devis
                           <ArrowRight className="w-4 h-4" />
                         </button>
@@ -654,13 +646,12 @@ export default function AmenagementSallePage() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <Zap className="w-4 h-4 text-yellow-500" />
-              <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                 Notre processus élite
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
               Excellence en{" "}
               <span className="text-yellow-500">5 Étapes</span>
             </h2>
@@ -693,13 +684,13 @@ export default function AmenagementSallePage() {
                     <div className="flex-shrink-0">
                       <div className="relative">
                         <div
-                          className={`w-16 h-16 rounded-2xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center transition-all duration-300 ${
+                          className={`w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center transition-all duration-300 ${
                             activeStep === step.number ? "scale-110" : ""
                           }`}
                         >
-                          <div className="text-white">{step.icon}</div>
+                          <div className="text-black">{step.icon}</div>
                         </div>
-                        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-black text-sm">
+                        <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-display text-sm">
                           {step.number}
                         </div>
                       </div>
@@ -708,7 +699,7 @@ export default function AmenagementSallePage() {
                     {/* Step Content */}
                     <div className="flex-grow">
                       <div className="mb-4">
-                        <h3 className="text-2xl font-black uppercase italic mb-2 text-gray-900 dark:text-white">
+                        <h3 className="text-2xl font-display uppercase tracking-wide mb-2 text-gray-900 dark:text-white">
                           {step.title}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -719,8 +710,8 @@ export default function AmenagementSallePage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {step.features.map((feature, idx) => (
                           <div key={idx} className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0">
-                              <CheckCircle className="w-3 h-3 text-white" />
+                            <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0">
+                              <CheckCircle className="w-3 h-3 text-black" />
                             </div>
                             <span className="text-gray-700 dark:text-gray-300 text-sm">
                               {feature}
@@ -750,13 +741,12 @@ export default function AmenagementSallePage() {
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-                <PhoneCall className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                   Consultation gratuite
                 </span>
               </div>
 
-              <h2 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
                 Prêt à{" "}
                 <span className="text-yellow-500">transformer</span> votre
                 espace ?
@@ -771,7 +761,7 @@ export default function AmenagementSallePage() {
               <div className="space-y-6 mb-10">
                 {/* Phone */}
                 <div className="flex items-center gap-4 p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 group hover:border-yellow-500 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Phone className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -786,7 +776,7 @@ export default function AmenagementSallePage() {
 
                 {/* WhatsApp */}
                 <div className="flex items-center gap-4 p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 group hover:border-yellow-500 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <IoLogoWhatsapp className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -801,7 +791,7 @@ export default function AmenagementSallePage() {
 
                 {/* Location */}
                 <div className="flex items-center gap-4 p-6 bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 group hover:border-yellow-500 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -817,7 +807,7 @@ export default function AmenagementSallePage() {
 
               {/* Opening Hours */}
               <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-                <h3 className="text-xl font-black uppercase italic mb-4 text-gray-900 dark:text-white">
+                <h3 className="text-xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
                   Horaires d&apos;ouverture
                 </h3>
                 <div className="space-y-3">
@@ -852,13 +842,12 @@ export default function AmenagementSallePage() {
             >
               <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-8 md:p-12 shadow-2xl">
                 <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-                  <MessageSquare className="w-4 h-4 text-yellow-500" />
-                  <span className="text-sm font-black uppercase italic tracking-widest text-yellow-500">
+                  <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
                     Devis personnalisé
                   </span>
                 </div>
 
-                <h3 className="text-3xl font-black uppercase italic mb-8 text-white">
+                <h3 className="text-3xl font-display uppercase tracking-wide mb-8 text-white">
                   Demande de{" "}
                   <span className="text-yellow-500">devis premium</span>
                 </h3>
@@ -887,7 +876,7 @@ export default function AmenagementSallePage() {
             viewport={{ once: true }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-black uppercase italic mb-6 text-black">
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">
               Transformez votre vision en réalité
             </h2>
             <p className="text-xl text-black/90 mb-10 max-w-2xl mx-auto">
@@ -896,14 +885,14 @@ export default function AmenagementSallePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/demande-devis">
-                <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
+                <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
                   Demander un devis gratuit
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </Link>
               <button
                 onClick={openWhatsApp}
-                className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-black uppercase italic tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
+                className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
               >
                 <IoLogoWhatsapp className="w-6 h-6" />
                 WhatsApp Direct
