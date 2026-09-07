@@ -258,7 +258,7 @@ export default function MaintenancePage() {
           transition={{ delay: 0.8, duration: 0.6 }}
           className="mt-14 text-xs text-gray-400 font-medium"
         >
-          © {new Date().getFullYear()} IRONZ PRO — Tous droits réservés.
+          © {new Date().getFullYear()} IRONZ — Tous droits réservés.
         </motion.p>
       </div>
     </main>

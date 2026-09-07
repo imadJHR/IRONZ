@@ -723,7 +723,7 @@ export default function SalleProfessionnellePage(){
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1 text-gray-900 dark:text-white">
-                      Showroom IRONZ Pro
+                      Showroom IRONZ
                     </h4>
                     <p className="text-gray-600 dark:text-gray-400">
                       SAHARA MALL 1 ÈRE ÉTAGE C169 & C120, Agadir

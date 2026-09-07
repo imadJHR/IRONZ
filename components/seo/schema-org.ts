@@ -18,7 +18,7 @@ export const generateOrganizationSchema = () => {
         postalCode: "",
         addressCountry: "MA",
       },
-      openingHours: "Mo,Tu,We,Th,Fr 09:00-18:00",
+      openingHours: "Mo,Tu,We,Th,Fr,Sa,Su 09:00-18:00",
       priceRange: "MAD",
       paymentAccepted: "Cash, Credit Card",
       currenciesAccepted: "MAD",
@@ -84,4 +84,3 @@ export const generateOrganizationSchema = () => {
       },
     }
   }
-  

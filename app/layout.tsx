@@ -16,7 +16,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: {
     default: "IRONZ- Équipements Professionnels et Matériaux",
-    template: "%s | IRONZ PRO",
+    template: "%s | IRONZ",
   },
   description:
     "Votre partenaire de confiance pour tous vos besoins en équipements professionnels et matériaux de construction.",
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
     "Maroc",
     "ironz",
   ],
-  authors: [{ name: "IRONZ PRO", url: "https://ironz.ma" }],
-  creator: "IRONZ PRO",
-  publisher: "IRONZ PRO",
+  authors: [{ name: "IRONZ", url: "https://ironz.ma" }],
+  creator: "IRONZ",
+  publisher: "IRONZ",
   formatDetection: {
     email: false,
     address: false,
@@ -51,24 +51,24 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
   },
   openGraph: {
-    title: "IRONZ PRO - Équipements Professionnels et Matériaux",
+    title: "IRONZ - Équipements Professionnels et Matériaux",
     description:
       "Votre partenaire de confiance pour tous vos besoins en équipements professionnels et matériaux de construction.",
     url: "https://ironz.ma",
-    siteName: "IRONZ PRO",
+    siteName: "IRONZ",
     images: [
       {
         url: "https://www.instagram.com/p/DIW2nZtsx3S/",
         width: 1200,
         height: 630,
-        alt: "IRONZ PRO - Équipements Professionnels",
+        alt: "IRONZ - Équipements Professionnels",
         type: "image/jpeg",
       },
       {
         url: "/og-image.jpg",
         width: 1080,
         height: 1080,
-        alt: "IRONZ PRO - Équipements Professionnels",
+        alt: "IRONZ - Équipements Professionnels",
         type: "image/jpeg",
       },
     ],
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "IRONZ PRO - Équipements Professionnels",
+    title: "IRONZ - Équipements Professionnels",
     description: "Votre partenaire de confiance pour équipements professionnels au Maroc.",
     images: ["/og-image.jpg"],
     creator: "@ironz_official",

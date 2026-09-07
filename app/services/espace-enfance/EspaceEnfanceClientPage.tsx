@@ -149,19 +149,19 @@ export default function EspaceEnfanceClientPage() {
       name: "Marie Dupont",
       role: "Directrice, Centre de loisirs Les Petits Champions",
       quote:
-        "L'espace fitness pour enfants conçu par IRONZ PRO a transformé notre centre. Les enfants adorent les parcours moteurs et les murs d'escalade.",
+        "L'espace fitness pour enfants conçu par IRONZ a transformé notre centre. Les enfants adorent les parcours moteurs et les murs d'escalade.",
     },
     {
       name: "Thomas Martin",
       role: "Propriétaire, Salle de sport FamilyFit",
       quote:
-        "Grâce à IRONZ PRO, nous avons pu créer un espace enfants dans notre salle qui attire de nombreuses familles.",
+        "Grâce à IRONZ, nous avons pu créer un espace enfants dans notre salle qui attire de nombreuses familles.",
     },
     {
       name: "Sophie Leroy",
       role: "Directrice, École primaire Les Tournesols",
       quote:
-        "Notre salle de motricité aménagée par IRONZ PRO est un véritable succès auprès des élèves.",
+        "Notre salle de motricité aménagée par IRONZ est un véritable succès auprès des élèves.",
     },
   ];
 

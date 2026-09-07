@@ -375,7 +375,7 @@ export default function DemandeDevisPage() {
 
       const now = new Date();
 
-      const whatsappMessage = `📋 NOUVELLE DEMANDE DE DEVIS IRONZ PRO
+      const whatsappMessage = `📋 NOUVELLE DEMANDE DE DEVIS IRONZ
 
 👤 *Informations client:*
 • Nom: ${formData.firstName} ${formData.lastName}
@@ -393,7 +393,7 @@ ${formData.message}
 📅 *Envoyé le:* ${now.toLocaleDateString("fr-FR")}
 🕒 *À:* ${now.toLocaleTimeString("fr-FR")}
 
-🔗 *Source:* Site web IRONZ PRO`;
+🔗 *Source:* Site web IRONZ`;
 
       const encodedMessage = encodeURIComponent(whatsappMessage);
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`, "_blank", "noopener,noreferrer");
@@ -1107,7 +1107,7 @@ ${formData.message}
                                 />
                                 <span className="text-sm text-gray-700 dark:text-gray-300">
                                   J&apos;accepte que mes données soient traitées pour le traitement de ma
-                                  demande conformément à la politique de confidentialité d&apos;IRONZ PRO. *
+                                  demande conformément à la politique de confidentialité d&apos;IRONZ. *
                                 </span>
                               </label>
 

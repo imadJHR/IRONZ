@@ -813,9 +813,7 @@ export default function AmenagementSallePage() {
                 <div className="space-y-3">
                   {(
                     [
-                      ["Lundi - Vendredi", "9h - 18h"],
-                      ["Samedi", "10h - 16h"],
-                      ["Dimanche", "Fermé"],
+                      ["Lundi - Dimanche", "9h - 18h"],
                     ] as const
                   ).map(([day, hours]) => (
                     <div

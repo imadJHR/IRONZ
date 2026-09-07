@@ -67,10 +67,10 @@ const API_URL =
 const PLACEHOLDER = "/placeholder.svg";
 
 // Site-level SEO constants – update to match your brand
-const SITE_NAME = "IRONZ PRO";
+const SITE_NAME = "IRONZ";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://ironz.ma";
 const SITE_DESCRIPTION =
-  "IRONZ PRO – Équipements de fitness et musculation professionnels au Maroc. Livraison rapide, qualité garantie, meilleur prix.";
+  "IRONZ – Équipements de fitness et musculation professionnels au Maroc. Livraison rapide, qualité garantie, meilleur prix.";
 const SITE_OG_IMAGE = `${SITE_URL}/og-image.jpg`; // 1200×630 recommended
 
 // ─── TYPES ───────────────────────────────────────────────────────────────────
@@ -1994,7 +1994,7 @@ export default function HomeClient({
         {/* ═══ 7. WHY CHOOSE US ═════════════════════════════════════════════ */}
         <section
           className="py-14 sm:py-18 md:py-24 lg:py-28 bg-white dark:bg-gray-900"
-          aria-label="Pourquoi choisir IRONZ PRO"
+          aria-label="Pourquoi choisir IRONZ"
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <header className="text-center mb-12 sm:mb-16 lg:mb-20 max-w-3xl mx-auto">

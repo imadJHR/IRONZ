@@ -428,7 +428,7 @@ export default function PersonnalisationAccessoiresPage() {
               <div className="order-1 lg:order-2">
                 <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-2xl">
                   <div className="w-32 h-32 mx-auto mb-6 relative">
-                    <Image src={logo} alt="Logo IRONZ PRO" fill className="object-contain" />
+                    <Image src={logo} alt="Logo IRONZ" fill className="object-contain" />
                   </div>
                   <div className="text-center">
                     <h4 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">

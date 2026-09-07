@@ -23,7 +23,7 @@ interface Category {
 }
 
 export const metadata: Metadata = {
-  title: "Toutes les catégories | IRONZ PRO",
+  title: "Toutes les catégories | IRONZ",
   description: "Découvrez toutes nos catégories de produits fitness et arts martiaux",
 };
 

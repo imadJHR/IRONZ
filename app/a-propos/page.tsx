@@ -82,9 +82,9 @@ export default function AboutPage(): React.JSX.Element {
     script.innerHTML = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: "IRONZ PRO",
+      name: "IRONZ",
       url: "https://www.ironz.ma",
-      logo: "https://www.ironzpro.com/logo.png",
+      logo: "https://ironz.ma/logo.png",
       foundingDate: "2019",
       founders: [
         {
@@ -603,7 +603,7 @@ export default function AboutPage(): React.JSX.Element {
             <iframe
               className="w-full h-full"
               src="https://www.youtube.com/embed/LED1s8Ecpbw"
-              title="IRONZ PRO - L'excellence du fitness"
+              title="IRONZ - L'excellence du fitness"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />

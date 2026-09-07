@@ -145,8 +145,8 @@ export default function ContactPage() {
     script.innerHTML = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ContactPage",
-      name: "Contact IRONZ PRO",
-      description: "Contactez l'équipe IRONZ PRO pour toutes vos questions sur le fitness premium",
+      name: "Contact IRONZ",
+      description: "Contactez l'équipe IRONZ pour toutes vos questions sur le fitness premium",
       url: "https://www.ironz.ma/contact",
     });
     document.head.appendChild(script);
@@ -197,7 +197,7 @@ export default function ContactPage() {
   };
 
   const formatWhatsAppMessage = (data: FormState): string => {
-    return `*Nouveau message de contact IRONZ PRO*
+    return `*Nouveau message de contact IRONZ*
 *Nom:* ${data.name}
 *Email:* ${data.email}
 *Téléphone:* ${data.phone || "Non fourni"}
@@ -216,7 +216,7 @@ ${data.message}`;
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Téléphone",
-      description: "Notre équipe est disponible du lundi au vendredi de 9h à 18h.",
+      description: "Notre équipe est disponible 7j/7 de 9h à 18h.",
       value: "+212 674-114446",
       action: () => (window.location.href = "tel:+212674114446"),
       color: "from-yellow-500 to-orange-500",
@@ -250,7 +250,7 @@ ${data.message}`;
         },
         {
           question: "Quels sont vos horaires d'ouverture ?",
-          answer: "Notre showroom est ouvert du lundi au vendredi de 9h à 18h et le samedi de 10h à 16h. Notre service client est disponible par téléphone et email du lundi au vendredi de 9h à 18h.",
+          answer: "Notre showroom et notre service client sont disponibles 7j/7 de 9h à 18h, par téléphone et par email.",
         },
         {
           question: "Proposez-vous des services d'installation ?",
@@ -437,7 +437,7 @@ ${data.message}`;
                     
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
                       <Clock className="w-4 h-4" />
-                      <span>Lun-Ven: 9h-18h | Sam: 10h-16h | Dim: Fermé</span>
+                      <span>7j/7 : 9h-18h</span>
                     </div>
                   </div>
                 </div>
