@@ -692,9 +692,6 @@ export default function ProductsPage({ initialProducts = [] }: ProductsPageProps
   // --- RENDER ---
   return (
     <>
-      <title>Tous nos produits - IRONZ</title>
-      <meta name="description" content="Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de loisirs." />
-
       {/* Toast Notification */}
       <AnimatePresence>
         {toast.show && (
