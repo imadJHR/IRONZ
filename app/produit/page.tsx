@@ -2,10 +2,12 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import ProductsPage from "../../app/produit/page-client";
+import type { Product as CatalogProduct } from "../../app/produit/page-client";
+import { getAllProducts, productSlug } from "../../lib/products";
 
 // ─── SEO METADATA (Server Component) ─────────────────────
 export const metadata: Metadata = {
-  title: "Nos Produits | IRONZ - Équipement Sportif Premium au Maroc",
+  title: "Catalogue fitness et musculation au Maroc",
   description:
     "Découvrez notre gamme complète d'équipements sportifs premium : haltères, barres, machines, accessoires fitness. Livraison rapide partout au Maroc. Qualité professionnelle garantie.",
   keywords: [
@@ -31,6 +33,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  alternates: { canonical: "/produit" },
   openGraph: {
     title: "Nos Produits | IRONZ - Équipement Sportif Premium",
     description:
@@ -60,7 +63,7 @@ export const metadata: Metadata = {
 };
 
 // ─── JSON-LD SCHEMA ───────────────────────────────────────
-function JsonLd() {
+function JsonLd({ products }: { products: CatalogProduct[] }) {
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -113,8 +116,14 @@ function JsonLd() {
         description:
           "Notre catalogue complet d'équipements sportifs professionnels",
         url: "https://www.ironz.ma/produit",
-        numberOfItems: "100+",
+        numberOfItems: products.length,
         itemListOrder: "https://schema.org/ItemListOrderAscending",
+        itemListElement: products.map((product, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: product.name,
+          url: `https://www.ironz.ma/produit/${productSlug(product)}`,
+        })),
       },
       {
         "@type": "Organization",
@@ -211,12 +220,17 @@ function LoadingSkeleton() {
 }
 
 // ─── PAGE (Server Component) ──────────────────────────────
-export default function Page() {
+export default async function Page() {
+  const products = (await getAllProducts()) as unknown as CatalogProduct[];
+
   return (
     <>
-      <JsonLd />
+      <JsonLd products={products} />
+      <h1 className="sr-only">
+        Équipement fitness et matériel de musculation au Maroc
+      </h1>
       <Suspense fallback={<LoadingSkeleton />}>
-        <ProductsPage />
+        <ProductsPage initialProducts={products} />
       </Suspense>
     </>
   );

@@ -14,8 +14,22 @@ const questions = [
 ] as const;
 
 export default function FaqPage() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map(([question, answer]) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: { "@type": "Answer", text: answer },
+    })),
+  };
+
   return (
     <main className="min-h-screen bg-white px-4 py-24 text-gray-900 dark:bg-gray-950 dark:text-white sm:px-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <section className="mx-auto max-w-3xl">
         <h1 className="mb-10 font-display text-4xl uppercase tracking-wide sm:text-5xl">
           Questions <span className="text-yellow-500">fréquentes</span>

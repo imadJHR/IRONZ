@@ -15,11 +15,11 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "IRONZ- Équipements Professionnels et Matériaux",
+    default: "IRONZ | Équipement fitness et musculation au Maroc",
     template: "%s | IRONZ",
   },
   description:
-    "Votre partenaire de confiance pour tous vos besoins en équipements professionnels et matériaux de construction.",
+    "Équipements de fitness, matériel de musculation, accessoires et suppléments sportifs avec livraison partout au Maroc.",
   keywords: [
     "équipements professionnels",
     "matériaux de construction",
@@ -48,19 +48,12 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
   },
   openGraph: {
-    title: "IRONZ - Équipements Professionnels et Matériaux",
+    title: "IRONZ | Équipement fitness et musculation au Maroc",
     description:
-      "Votre partenaire de confiance pour tous vos besoins en équipements professionnels et matériaux de construction.",
+      "Équipements de fitness, matériel de musculation, accessoires et suppléments sportifs avec livraison partout au Maroc.",
     url: "https://www.ironz.ma",
     siteName: "IRONZ",
     images: [
-      {
-        url: "https://www.instagram.com/p/DIW2nZtsx3S/",
-        width: 1200,
-        height: 630,
-        alt: "IRONZ - Équipements Professionnels",
-        type: "image/jpeg",
-      },
       {
         url: "/og-image.jpg",
         width: 1080,
@@ -74,8 +67,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "IRONZ - Équipements Professionnels",
-    description: "Votre partenaire de confiance pour équipements professionnels au Maroc.",
+    title: "IRONZ | Équipement fitness et musculation au Maroc",
+    description: "Matériel de fitness et musculation avec livraison partout au Maroc.",
     images: ["/og-image.jpg"],
     creator: "@ironz_official",
   },
@@ -84,19 +77,6 @@ export const metadata: Metadata = {
     other: {
       monetag: "4828e1edb553377b34517c12934f4fb1",
       "facebook-domain-verification": "bhglqyk56ty0ilu2xcfi7ok1pew1f2",
-    },
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
-      index: true,
-      follow: true,
-      noimageindex: false,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
     },
   },
   other: {

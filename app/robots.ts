@@ -3,7 +3,7 @@ export default function robots() {
       rules: {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin/", "/checkout/", "/api/"],
+        disallow: ["/admin/", "/ironz-setup", "/checkout", "/api/"],
       },
       sitemap: "https://www.ironz.ma/sitemap.xml",
     }

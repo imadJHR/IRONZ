@@ -9,7 +9,6 @@ import {
   ChangeEvent,
   CSSProperties,
 } from "react";
-import Head from "next/head";
 import Link from "next/link";
 import Image, { ImageProps } from "next/image";
 
@@ -251,67 +250,6 @@ function buildProductJsonLd(product: Product) {
       },
     }),
   };
-}
-
-// ─── SEO HEAD ─────────────────────────────────────────────────────────────────
-/**
- * Drop this inside <Head> from next/head on each page.
- * For Next.js 13+ App Router, use generateMetadata() instead.
- */
-export function HomeHead({ featuredProduct }: { featuredProduct?: Product }) {
-  const title = `${SITE_NAME} | Équipements Fitness & Musculation au Maroc`;
-  const description = SITE_DESCRIPTION;
-
-  return (
-    <Head>
-      {/* Primary */}
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="robots" content="index, follow" />
-      {/* Open Graph */}
-      <meta property="og:type" content="website" />
-      <meta property="og:site_name" content={SITE_NAME} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:url" content={SITE_URL} />
-      <meta property="og:image" content={SITE_OG_IMAGE} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:locale" content="fr_MA" />
-
-      {/* Twitter Card */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={SITE_OG_IMAGE} />
-
-      {/* Geo targeting */}
-      <meta name="geo.region" content="MA" />
-      <meta name="geo.placename" content="Maroc" />
-
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(buildOrganizationJsonLd()),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(buildWebsiteJsonLd()),
-        }}
-      />
-      {featuredProduct && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(buildProductJsonLd(featuredProduct)),
-          }}
-        />
-      )}
-    </Head>
-  );
 }
 
 // ─── CLOUD IMAGE ──────────────────────────────────────────────────────────────
@@ -1436,10 +1374,10 @@ export default function HomeClient({
 
   return (
     <>
-      {/* ── SEO Head ─────────────────────────────────────────────────────── */}
-      <HomeHead featuredProduct={featuredVedette} />
-
       <main className="min-h-screen bg-white dark:bg-gray-950 overflow-x-hidden">
+        <h1 className="sr-only">
+          Équipement fitness et matériel de musculation au Maroc
+        </h1>
 
         {/* ═══ 1. HERO BANNER ═══════════════════════════════════════════════ */}
         <section

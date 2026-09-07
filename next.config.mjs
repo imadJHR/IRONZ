@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    turbopack: {
+        root: process.cwd(),
+    },
     async redirects() {
         return [
+            { source: '/index', destination: '/', permanent: true },
             { source: '/product', destination: '/produit', permanent: true },
             { source: '/produits', destination: '/produit', permanent: true },
             { source: '/produits/:slug', destination: '/produit/:slug', permanent: true },

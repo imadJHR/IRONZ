@@ -9,7 +9,6 @@ import {
   memo,
 } from "react";
 import { useSearchParams } from "next/navigation";
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -36,7 +35,7 @@ import { useFavorites } from "../../context/favorites-context";
 import { optimizeImageUrl } from "../../lib/image-url";
 
 // ─── TYPES ──────────────────────────────────────────────
-interface Product {
+export interface Product {
   _id?: string;
   id?: string;
   name: string;
@@ -746,13 +745,20 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 }
 
 // ─── MAIN PAGE ────────────────────────────────────────────
-export default function ProductsPage() {
+export default function ProductsPage({
+  initialProducts = [],
+}: {
+  initialProducts?: Product[];
+}) {
   const searchParams = useSearchParams();
   const { addToCart } = useCart();
+  const initialMaxProductPrice = initialProducts.length
+    ? Math.ceil(Math.max(...initialProducts.map((product) => product.price).filter(Boolean)))
+    : 100000;
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filtered, setFiltered] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [filtered, setFiltered] = useState<Product[]>(initialProducts);
+  const [loading, setLoading] = useState(initialProducts.length === 0);
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
   const [retryCounter, setRetryCounter] = useState(0);
@@ -763,20 +769,21 @@ export default function ProductsPage() {
     type: "success",
   });
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const [maxProductPrice, setMaxProductPrice] = useState(100000);
+  const [maxProductPrice, setMaxProductPrice] = useState(initialMaxProductPrice);
 
   const [filters, setFilters] = useState<FilterState>({
     search: searchParams?.get("q") || searchParams?.get("search") || "",
     category: searchParams?.get("category") || "",
     subCategory: searchParams?.get("subCategory") || "",
     minPrice: 0,
-    maxPrice: 100000,
+    maxPrice: initialMaxProductPrice,
     inStockOnly: false,
     sort: "featured",
   });
 
   // ── Fetch ──────────────────────────────────────────────
   useEffect(() => {
+    if (initialProducts.length > 0 && retryCounter === 0) return;
     const load = async () => {
       setLoading(true);
       setIsSyncing(true);
@@ -934,21 +941,8 @@ export default function ProductsPage() {
     (filters.minPrice > 0 || filters.maxPrice < maxProductPrice ? 1 : 0) +
     (filters.inStockOnly ? 1 : 0);
 
-  const seoTitle = "Nos Produits - IRONZ | Équipement Sportif Premium";
-  const seoDescription =
-    "Découvrez notre gamme complète d'équipements sportifs premium. Livraison rapide au Maroc.";
-
   return (
     <>
-      <Head>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDescription} />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDescription} />
-        <meta property="og:type" content="website" />
-      </Head>
-
       <style jsx global>{`
         @keyframes shimmer {
           100% {
@@ -999,10 +993,10 @@ export default function ProductsPage() {
         <div className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
           <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-10 lg:py-12">
             <header className="text-center">
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-2 sm:mb-3 md:mb-4">
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-2 sm:mb-3 md:mb-4">
                 Tous nos{" "}
                 <span className="text-yellow-500">Produits</span>
-              </h1>
+              </h2>
 
               {/* Sync indicator */}
               <div className="flex items-center justify-center gap-2 mt-1 mb-2 min-h-[20px] sm:min-h-[24px]">

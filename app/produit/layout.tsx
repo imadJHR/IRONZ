@@ -2,12 +2,12 @@ import { Metadata } from "next";
 import { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Tous nos produits - Votre Boutique de Sport",
+  title: "Catalogue fitness et musculation au Maroc",
   description:
     "Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de loisirs. Livraison rapide et service de qualité.",
   keywords: "produits sportifs, équipement sportif, aménagement sportif, loisirs, fitness, musculation",
   openGraph: {
-    title: "Tous nos produits - Votre Boutique de Sport",
+    title: "Équipement fitness et musculation au Maroc | IRONZ",
     description:
       "Découvrez notre gamme complète de produits pour l'aménagement et l'équipement de vos espaces sportifs et de loisirs.",
     type: "website",

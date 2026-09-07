@@ -168,7 +168,6 @@ const ConditionalSignUpButton: React.FC<ConditionalButtonProps> = ({
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const [language, setLanguage] = useState<Language>("fr");
   const pathname = usePathname();
-  const canonicalUrl = new URL(pathname || "/", SITE_URL).toString();
 
   const toggleLanguage = useCallback(() => {
     setLanguage((prev: Language) => (prev === "fr" ? "en" : "fr"));
@@ -179,57 +178,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   const LayoutContent = (
     <html lang={language} suppressHydrationWarning>
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          name="description"
-          content={
-            language === "fr"
-              ? "IRONZ – L'élite de l'équipement sportif au Maroc. Matériel de musculation, suppléments et accessoires de qualité professionnelle. Livraison express partout au Maroc."
-              : "IRONZ – Morocco's elite sports equipment store. Professional-grade gym equipment, supplements and accessories. Express delivery across Morocco."
-          }
-        />
-        <meta
-          name="keywords"
-          content="IRONZ, équipement sportif Maroc, musculation, salle de sport, suppléments, accessoires fitness, home gym Maroc, livraison Maroc"
-        />
-        <meta name="author" content="IRONZ" />
-        <meta name="robots" content="index, follow" />
-        <meta name="theme-color" content="#F59E0B" />
-        <link rel="canonical" href={canonicalUrl} />
-
-        <meta
-          property="og:title"
-          content="IRONZ – Équipement Sportif Premium au Maroc"
-        />
-        <meta
-          property="og:description"
-          content="Découvrez notre gamme complète d'équipements sportifs professionnels, suppléments et accessoires de fitness. Livraison express au Maroc."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:image" content={`${SITE_URL}/og-image.jpg`} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="IRONZ – Équipement Sportif" />
-        <meta property="og:site_name" content="IRONZ" />
-        <meta property="og:locale" content="fr_MA" />
-
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="IRONZ – Équipement Sportif Premium au Maroc"
-        />
-        <meta
-          name="twitter:description"
-          content="Équipements sportifs professionnels, suppléments et accessoires fitness. Livraison express au Maroc."
-        />
-        <meta
-          name="twitter:image"
-          content={`${SITE_URL}/og-image.jpg`}
-        />
-        <meta name="twitter:site" content="@ironz_official" />
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -247,6 +195,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "SAHARA MALL 1ÈRE ÉTAGE C169 & C120",
+                addressLocality: "Agadir",
                 addressCountry: "MA",
               },
               sameAs: [
@@ -274,9 +223,6 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           }}
         />
 
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
       </head>
 

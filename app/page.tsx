@@ -1,9 +1,25 @@
 import HomeClient from "./HomeClient";
 import type { Product } from "./HomeClient";
+import type { Metadata } from "next";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://cts4hw2cbnwl4ur7zp6acy6cyy0jnxeo.lambda-url.eu-north-1.on.aws/api";
 
 export const revalidate = 60; // Revalidate every 60 seconds (ISR)
+
+export const metadata: Metadata = {
+  title: "Équipement fitness et musculation au Maroc | IRONZ",
+  description:
+    "Achetez votre matériel de fitness et musculation au Maroc: machines, accessoires, suppléments et solutions d'aménagement IRONZ.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "IRONZ | Équipement fitness et musculation au Maroc",
+    description:
+      "Machines, accessoires, suppléments et aménagement de salles avec livraison partout au Maroc.",
+    url: "/",
+    locale: "fr_MA",
+    type: "website",
+  },
+};
 
 // Type for API response structure
 interface ApiListResponse<T = Product> {
@@ -74,11 +90,25 @@ export default async function Page() {
   }
 
   return (
-    <HomeClient
-      initialProducts={products}
-      initialVedetteProducts={vedetteProducts}
-      initialLatestProducts={latestProducts}
-      initialLatestTotal={latestTotal}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "IRONZ",
+            url: "https://www.ironz.ma/",
+            inLanguage: "fr-MA",
+          }),
+        }}
+      />
+      <HomeClient
+        initialProducts={products}
+        initialVedetteProducts={vedetteProducts}
+        initialLatestProducts={latestProducts}
+        initialLatestTotal={latestTotal}
+      />
+    </>
   );
 }
