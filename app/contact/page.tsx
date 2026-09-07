@@ -215,7 +215,7 @@ ${data.message}`;
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Téléphone",
-      description: "Notre équipe est disponible 7j/7 de 9h à 18h.",
+      description: "Notre équipe est disponible 7j/7.",
       value: "+212 674-114446",
       action: () => (window.location.href = "tel:+212674114446"),
       color: "from-yellow-500 to-orange-500",
@@ -249,7 +249,7 @@ ${data.message}`;
         },
         {
           question: "Quels sont vos horaires d'ouverture ?",
-          answer: "Notre showroom et notre service client sont disponibles 7j/7 de 9h à 18h, par téléphone et par email.",
+          answer: "Notre showroom et notre service client sont disponibles 7j/7, par téléphone et par email.",
         },
         {
           question: "Proposez-vous des services d'installation ?",
@@ -428,7 +428,7 @@ ${data.message}`;
                     </div>
                     
                     <h3 className="text-3xl font-display uppercase tracking-wide mb-4 text-white">
-                      IRONZ <span className="text-yellow-500">PRO</span>
+                      IRONZ
                     </h3>
                     <p className="text-gray-300 mb-6">
                       SAHARA MALL 1 ÈRE ÉTAGE C169 & C120, Agadir
@@ -436,7 +436,7 @@ ${data.message}`;
                     
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
                       <Clock className="w-4 h-4" />
-                      <span>7j/7 : 9h-18h</span>
+                      <span>7j/7</span>
                     </div>
                   </div>
                 </div>
