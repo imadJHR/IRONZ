@@ -84,7 +84,7 @@ export default function AboutPage(): React.JSX.Element {
       "@type": "Organization",
       name: "IRONZ",
       url: "https://www.ironz.ma",
-      logo: "https://ironz.ma/logo.png",
+      logo: "https://www.ironz.ma/logo-optimized.png",
       foundingDate: "2019",
       founders: [
         {

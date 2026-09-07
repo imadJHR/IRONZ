@@ -238,19 +238,19 @@ const projectTypes: ProjectType[] = [
   {
     title: "Salle Professionnelle",
     description: "Créez une salle de sport d'entreprise ou commerciale",
-    link: "/services/amenagement-salle/professionnelle",
+    link: "/services/amenagement-salle/salle-professionnelle",
     icon: <Building className="w-6 h-6" />,
   },
   {
     title: "Espace Hôtelier",
     description: "Aménagez des espaces fitness pour hôtels et résidences",
-    link: "/services/amenagement-salle/hotelier",
+    link: "/services/amenagement-salle/salle-professionnelle",
     icon: <Star className="w-6 h-6" />,
   },
   {
     title: "Centre de Rééducation",
     description: "Solutions sur mesure pour la rééducation fonctionnelle",
-    link: "/services/amenagement-salle/reeducation",
+    link: "/services/amenagement-salle/salle-professionnelle",
     icon: <Heart className="w-6 h-6" />,
   },
 ];

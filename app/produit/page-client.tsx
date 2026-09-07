@@ -33,6 +33,7 @@ import {
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useCart } from "../../context/cart-context";
 import { useFavorites } from "../../context/favorites-context";
+import { optimizeImageUrl } from "../../lib/image-url";
 
 // ─── TYPES ──────────────────────────────────────────────
 interface Product {
@@ -142,14 +143,12 @@ const CloudImg = memo(
     priority?: boolean;
     fill?: boolean;
   }) => {
-    const [imgSrc, setImgSrc] = useState(src || PLACEHOLDER);
+    const [imgSrc, setImgSrc] = useState(() =>
+      src ? optimizeImageUrl(src) : PLACEHOLDER
+    );
 
     useEffect(() => {
-      if (src?.startsWith("http")) setImgSrc(src);
-      else if (src)
-        setImgSrc(
-          `https://res.cloudinary.com/dypjgpisl/image/upload/q_auto,f_auto/${src}`
-        );
+      if (src) setImgSrc(optimizeImageUrl(src));
       else setImgSrc(PLACEHOLDER);
     }, [src]);
 
@@ -161,6 +160,8 @@ const CloudImg = memo(
         height={fill ? undefined : 800}
         fill={fill}
         priority={priority}
+        quality={45}
+        sizes={fill ? "(max-width: 768px) 100vw, 50vw" : undefined}
         onError={() => setImgSrc(PLACEHOLDER)}
         className={`object-cover ${className}`}
         loading={priority ? "eager" : "lazy"}
@@ -943,7 +944,6 @@ export default function ProductsPage() {
         <title>{seoTitle}</title>
         <meta name="description" content={seoDescription} />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://ironz.ma/produit" />
         <meta property="og:title" content={seoTitle} />
         <meta property="og:description" content={seoDescription} />
         <meta property="og:type" content="website" />

@@ -23,8 +23,8 @@ import {
 import { IoLogoWhatsapp } from "react-icons/io";
 
 // Assuming these images exist in your public folder/assets
-import logo from "../../../public/logo.png";
-import img1 from "../../../public/acce1.jpeg";
+import logo from "../../../public/logo-optimized.png";
+import img1 from "../../../public/acce1-optimized.webp";
 import img2 from "../../../public/acce2.jpeg";
 import img3 from "../../../public/acce3.jpeg";
 

@@ -77,7 +77,6 @@ interface FAQSection {
 // Si l'image n'est pas utilisée dynamiquement, on peut la garder telle quelle.
 // Pour cet exemple, je suppose que le logo est utilisé statiquement ou via Next/Image si nécessaire.
 // Si vous ne l'utilisez pas dans ce composant spécifique, vous pouvez retirer l'import.
-// import logo from "../../public/logo.png"; 
 
 export default function ContactPage() {
   const [formState, setFormState] = useState<FormState>({

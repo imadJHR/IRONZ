@@ -36,6 +36,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../../../context/cart-context";
 import { useFavorites } from "../../../context/favorites-context";
 import { cn } from "../../../lib/utils";
+import { optimizeImageUrl } from "../../../lib/image-url";
 
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
@@ -141,13 +142,13 @@ function getProductId(product: Product): string | number {
 }
 
 function CloudImg({ src, alt, fill = false, className = "" }: CloudImgProps) {
-  const [imgSrc, setImgSrc] = useState<string>(src || PLACEHOLDER);
+  const [imgSrc, setImgSrc] = useState<string>(() =>
+    src ? optimizeImageUrl(src) : PLACEHOLDER
+  );
   
   useEffect(() => {
-    if (src && src.startsWith("http")) {
-      setImgSrc(src);
-    } else if (src) {
-      setImgSrc(`https://res.cloudinary.com/dypjgpisl/image/upload/q_auto,f_auto/${src}`);
+    if (src) {
+      setImgSrc(optimizeImageUrl(src));
     } else {
       setImgSrc(PLACEHOLDER);
     }

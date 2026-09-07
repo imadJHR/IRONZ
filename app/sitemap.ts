@@ -6,7 +6,7 @@ export default function sitemap(): Array<{
   changeFrequency: "daily" | "weekly" | "monthly"
   priority: number
 }> {
-  const baseUrl = "https://ironz.ma"
+  const baseUrl = "https://www.ironz.ma"
 
   // Base routes
   const routes = [
@@ -17,22 +17,10 @@ export default function sitemap(): Array<{
       priority: 1,
     },
     {
-      url: `${baseUrl}/produits`,
+      url: `${baseUrl}/produit`,
       lastModified: new Date(),
       changeFrequency: "daily" as const,
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/promotions`,
-      lastModified: new Date(),
-      changeFrequency: "daily" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
@@ -59,10 +47,22 @@ export default function sitemap(): Array<{
       priority: 0.6,
     },
     {
-      url: `${baseUrl}/favoris`,
+      url: `${baseUrl}/confidentialite`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
-      priority: 0.6,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/conditions`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/faq`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
     },
   ]
 
@@ -90,12 +90,6 @@ export default function sitemap(): Array<{
     },
     {
       url: `${baseUrl}/services/revetement-sol-mur`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/services/conception-produits`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.8,

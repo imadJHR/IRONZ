@@ -48,6 +48,8 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 
+const SITE_URL = "https://www.ironz.ma";
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -166,6 +168,7 @@ const ConditionalSignUpButton: React.FC<ConditionalButtonProps> = ({
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const [language, setLanguage] = useState<Language>("fr");
   const pathname = usePathname();
+  const canonicalUrl = new URL(pathname || "/", SITE_URL).toString();
 
   const toggleLanguage = useCallback(() => {
     setLanguage((prev: Language) => (prev === "fr" ? "en" : "fr"));
@@ -193,7 +196,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         <meta name="author" content="IRONZ" />
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#F59E0B" />
-        <link rel="canonical" href="https://www.ironz.ma" />
+        <link rel="canonical" href={canonicalUrl} />
 
         <meta
           property="og:title"
@@ -204,8 +207,8 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           content="Découvrez notre gamme complète d'équipements sportifs professionnels, suppléments et accessoires de fitness. Livraison express au Maroc."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.ironz.ma" />
-        <meta property="og:image" content="https://www.ironz.ma/og-image.jpg" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={`${SITE_URL}/og-image.jpg`} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="IRONZ – Équipement Sportif" />
@@ -223,7 +226,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
         />
         <meta
           name="twitter:image"
-          content="https://www.ironz.ma/og-image.jpg"
+          content={`${SITE_URL}/og-image.jpg`}
         />
         <meta name="twitter:site" content="@ironz_official" />
 
@@ -236,9 +239,9 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               name: "IRONZ",
               description:
                 "L'élite de l'équipement sportif marocain. Matériel de musculation, suppléments et accessoires de qualité professionnelle.",
-              url: "https://www.ironz.ma",
-              logo: "https://www.ironz.ma/logo.png",
-              image: "https://www.ironz.ma/og-image.jpg",
+              url: SITE_URL,
+              logo: `${SITE_URL}/logo-optimized.png`,
+              image: `${SITE_URL}/og-image.jpg`,
               telephone: "+212669510042",
               email: "info@ironz.ma",
               address: {
@@ -604,7 +607,7 @@ const Navbar = React.memo(function Navbar({
                   className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 rounded-lg"
                 >
                   <Image
-                    src="/logo.png"
+                    src="/logo-optimized.png"
                     alt="IRONZ – Équipement Sportif Maroc"
                     width={160}
                     height={54}
@@ -1037,7 +1040,7 @@ const Navbar = React.memo(function Navbar({
                   aria-label="IRONZ – Accueil"
                 >
                   <Image
-                    src="/logo.png"
+                    src="/logo-optimized.png"
                     alt="IRONZ Logo"
                     width={130}
                     height={44}
@@ -1476,7 +1479,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
           >
             <Link href="/" aria-label="IRONZ – Accueil">
               <Image
-                src="/logo.png"
+                src="/logo-optimized.png"
                 alt="IRONZ – Équipement Sportif Maroc"
                 width={160}
                 height={60}

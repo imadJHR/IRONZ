@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "accessoires fitness",
     "livraison maroc sport",
   ],
-  authors: [{ name: "IRONZ", url: "https://ironz.ma" }],
+  authors: [{ name: "IRONZ", url: "https://www.ironz.ma" }],
   creator: "IRONZ",
   publisher: "IRONZ",
   robots: {
@@ -31,20 +31,17 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: "https://ironz.ma/produit",
-  },
   openGraph: {
     title: "Nos Produits | IRONZ - Équipement Sportif Premium",
     description:
       "Découvrez notre gamme complète d'équipements sportifs premium. Livraison rapide au Maroc.",
-    url: "https://ironz.ma/produit",
+    url: "https://www.ironz.ma/produit",
     siteName: "IRONZ",
     locale: "fr_MA",
     type: "website",
     images: [
       {
-        url: "https://ironz.ma/og-produits.jpg",
+        url: "https://www.ironz.ma/og-produits.jpg",
         width: 1200,
         height: 630,
         alt: "IRONZ - Équipement Sportif Premium au Maroc",
@@ -57,7 +54,7 @@ export const metadata: Metadata = {
     title: "Nos Produits | IRONZ - Équipement Sportif Premium",
     description:
       "Découvrez notre gamme complète d'équipements sportifs premium. Livraison rapide au Maroc.",
-    images: ["https://ironz.ma/og-produits.jpg"],
+    images: ["https://www.ironz.ma/og-produits.jpg"],
     creator: "@ironzmaroc",
   },
 };
@@ -69,25 +66,25 @@ function JsonLd() {
     "@graph": [
       {
         "@type": "WebPage",
-        "@id": "https://ironz.ma/produit",
-        url: "https://ironz.ma/produit",
+        "@id": "https://www.ironz.ma/produit",
+        url: "https://www.ironz.ma/produit",
         name: "Nos Produits - IRONZ Équipement Sportif Premium",
         description:
           "Découvrez notre gamme complète d'équipements sportifs premium au Maroc.",
         inLanguage: "fr-MA",
         isPartOf: {
           "@type": "WebSite",
-          "@id": "https://ironz.ma",
-          url: "https://ironz.ma",
+          "@id": "https://www.ironz.ma",
+          url: "https://www.ironz.ma",
           name: "IRONZ",
           description: "Équipement Sportif Premium au Maroc",
           publisher: {
             "@type": "Organization",
             name: "IRONZ",
-            url: "https://ironz.ma",
+            url: "https://www.ironz.ma",
             logo: {
               "@type": "ImageObject",
-              url: "https://ironz.ma/logo.png",
+              url: "https://www.ironz.ma/logo-optimized.png",
             },
           },
         },
@@ -98,33 +95,33 @@ function JsonLd() {
               "@type": "ListItem",
               position: 1,
               name: "Accueil",
-              item: "https://ironz.ma",
+              item: "https://www.ironz.ma",
             },
             {
               "@type": "ListItem",
               position: 2,
               name: "Produits",
-              item: "https://ironz.ma/produit",
+              item: "https://www.ironz.ma/produit",
             },
           ],
         },
       },
       {
         "@type": "ItemList",
-        "@id": "https://ironz.ma/produit#products",
+        "@id": "https://www.ironz.ma/produit#products",
         name: "Équipements Sportifs IRONZ",
         description:
           "Notre catalogue complet d'équipements sportifs professionnels",
-        url: "https://ironz.ma/produit",
+        url: "https://www.ironz.ma/produit",
         numberOfItems: "100+",
         itemListOrder: "https://schema.org/ItemListOrderAscending",
       },
       {
         "@type": "Organization",
-        "@id": "https://ironz.ma#organization",
+        "@id": "https://www.ironz.ma#organization",
         name: "IRONZ",
-        url: "https://ironz.ma",
-        logo: "https://ironz.ma/logo.png",
+        url: "https://www.ironz.ma",
+        logo: "https://www.ironz.ma/logo-optimized.png",
         contactPoint: {
           "@type": "ContactPoint",
           contactType: "customer service",

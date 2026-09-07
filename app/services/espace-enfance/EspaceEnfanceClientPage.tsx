@@ -26,7 +26,7 @@ import {
   Building,
 } from "lucide-react";
 import { IoLogoWhatsapp } from "react-icons/io";
-import img1 from "../../../public/enfant1.webp";
+import img1 from "../../../public/enfant1-optimized.webp";
 
 // --- Interfaces ---
 

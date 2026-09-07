@@ -56,9 +56,10 @@ import ServicesSection from "../components/ServicesSection";
 import { useCart } from "../context/cart-context";
 import { FavoriteItem, useFavorites } from "../context/favorites-context";
 import { categories as categoryData } from "../data/product";
+import { optimizeImageUrl } from "../lib/image-url";
 
 // Static Assets
-import logo from "../public/logo.png";
+import logo from "../public/logo-optimized.png";
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
 const API_URL =
@@ -68,7 +69,7 @@ const PLACEHOLDER = "/placeholder.svg";
 
 // Site-level SEO constants – update to match your brand
 const SITE_NAME = "IRONZ";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://ironz.ma";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ironz.ma";
 const SITE_DESCRIPTION =
   "IRONZ – Équipements de fitness et musculation professionnels au Maroc. Livraison rapide, qualité garantie, meilleur prix.";
 const SITE_OG_IMAGE = `${SITE_URL}/og-image.jpg`; // 1200×630 recommended
@@ -189,7 +190,7 @@ function buildOrganizationJsonLd() {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-    logo: `${SITE_URL}/logo.png`,
+    logo: `${SITE_URL}/logo-optimized.png`,
     sameAs: [
       "https://www.facebook.com/ironzpro",
       "https://www.instagram.com/ironzpro",
@@ -267,8 +268,6 @@ export function HomeHead({ featuredProduct }: { featuredProduct?: Product }) {
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="robots" content="index, follow" />
-      <link rel="canonical" href={SITE_URL} />
-
       {/* Open Graph */}
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={SITE_NAME} />
@@ -331,7 +330,7 @@ function CloudImg({
   let source = PLACEHOLDER;
   if (src) {
     if (typeof src === "object" && "src" in src) source = src.src;
-    else if (typeof src === "string") source = src;
+    else if (typeof src === "string") source = optimizeImageUrl(src);
   }
   if (error || !source) source = PLACEHOLDER;
   const isFill = fill || (!width && !height);
@@ -342,6 +341,7 @@ function CloudImg({
       alt={alt}
       loading={priority ? undefined : "lazy"}
       priority={priority}
+      quality={45}
       fill={isFill}
       width={isFill ? undefined : width || 800}
       height={isFill ? undefined : height || 800}
@@ -1701,7 +1701,7 @@ export default function HomeClient({
                 </div>
                 <div className="flex items-center gap-4">
                   <Link
-                    href="/product?filter=new"
+                    href="/produit"
                     className="text-yellow-600 hover:text-yellow-700 font-bold flex items-center gap-1 text-sm sm:text-base group"
                     aria-label="Voir tous les nouveaux produits"
                   >

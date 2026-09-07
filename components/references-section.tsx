@@ -7,11 +7,11 @@ import { StaticImageData } from "next/image";
 
 // Imports des images locales
 import ref1 from "../public/ref1.jpg";
-import ref2 from "../public/ref2.jpg";
-import ref3 from "../public/ref3.jpg";
-import ref4 from "../public/ref4.jpg";
-import ref7 from "../public/ref7.jpg";
-import ref8 from "../public/ref8.jpg";
+import ref2 from "../public/ref2-optimized.webp";
+import ref3 from "../public/ref3-optimized.webp";
+import ref4 from "../public/ref4-optimized.webp";
+import ref7 from "../public/ref7-optimized.webp";
+import ref8 from "../public/ref8-optimized.webp";
 
 // Types
 export type PortfolioItemType = "image" | "video";

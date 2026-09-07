@@ -31,6 +31,7 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { RadioGroup, RadioGroupItem } from "../../components/ui/radio-group";
 import { cn } from "../../lib/utils";
+import { optimizeImageUrl } from "../../lib/image-url";
 import { trackFBEvent } from "../../components/FacebookPixel";
 
 // --- TYPES & INTERFACES ---
@@ -77,10 +78,12 @@ const PLACEHOLDER = "/placeholder.svg";
 // --- COMPOSANT IMAGE OPTIMISÉ ---
 
 function CloudImg({ src, alt, fill = false, className = "" }: CloudImgProps) {
-  const [imgSrc, setImgSrc] = useState<string>(src || PLACEHOLDER);
+  const [imgSrc, setImgSrc] = useState<string>(() =>
+    src ? optimizeImageUrl(src) : PLACEHOLDER
+  );
 
   useEffect(() => {
-    setImgSrc(src || PLACEHOLDER);
+    setImgSrc(src ? optimizeImageUrl(src) : PLACEHOLDER);
   }, [src]);
 
   const handleError = () => setImgSrc(PLACEHOLDER);

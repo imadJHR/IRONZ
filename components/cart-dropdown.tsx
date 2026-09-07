@@ -135,7 +135,7 @@ const handleRemoveItem = (item: CartItem, e: MouseEvent<HTMLButtonElement>): voi
               className="mt-4 bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500 text-white dark:text-gray-900"
               onClick={() => setIsOpen(false)}
             >
-              <Link href="/produits">Découvrir nos produits</Link>
+              <Link href="/produit">Découvrir nos produits</Link>
             </Button>
           </div>
         ) : (

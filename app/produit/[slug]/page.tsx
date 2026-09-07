@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useCart } from "../../../context/cart-context";
 import { useFavorites } from "../../../context/favorites-context";
+import { optimizeImageUrl } from "../../../lib/image-url";
 
 // ─── CONSTANTS ───────────────────────────────────────────
 const API_URL =
@@ -137,14 +138,12 @@ const CloudImg = memo(
     priority?: boolean;
     fill?: boolean;
   }) => {
-    const [imgSrc, setImgSrc] = useState(src || PLACEHOLDER);
+    const [imgSrc, setImgSrc] = useState(() =>
+      src ? optimizeImageUrl(src) : PLACEHOLDER
+    );
 
     useEffect(() => {
-      if (src?.startsWith("http")) setImgSrc(src);
-      else if (src)
-        setImgSrc(
-          `https://res.cloudinary.com/dypjgpisl/image/upload/q_auto,f_auto/${src}`
-        );
+      if (src) setImgSrc(optimizeImageUrl(src));
       else setImgSrc(PLACEHOLDER);
     }, [src]);
 
@@ -156,6 +155,8 @@ const CloudImg = memo(
         height={fill ? undefined : 800}
         fill={fill}
         priority={priority}
+        quality={45}
+        sizes={fill ? "(max-width: 768px) 100vw, 50vw" : undefined}
         onError={() => setImgSrc(PLACEHOLDER)}
         className={`object-cover ${className}`}
         loading={priority ? "eager" : "lazy"}

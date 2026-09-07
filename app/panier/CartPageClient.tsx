@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useCart } from "../../context/cart-context";
 import { cn } from "../../lib/utils";
+import { optimizeImageUrl } from "../../lib/image-url";
 
 // --- TYPES & INTERFACES ---
 
@@ -64,10 +65,12 @@ const COLOR_MAP: Record<string, string> = {
    ✅ COMPOSANT IMAGE SÉCURISÉ
 ------------------------------ */
 function CloudImg({ src, alt, fill = false, className = "", priority = false }: CloudImgProps) {
-  const [imgSrc, setImgSrc] = useState<string>(src || PLACEHOLDER);
+  const [imgSrc, setImgSrc] = useState<string>(() =>
+    src ? optimizeImageUrl(src) : PLACEHOLDER
+  );
 
   useEffect(() => {
-    setImgSrc(src || PLACEHOLDER);
+    setImgSrc(src ? optimizeImageUrl(src) : PLACEHOLDER);
   }, [src]);
 
   const handleError = () => setImgSrc(PLACEHOLDER);

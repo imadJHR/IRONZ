@@ -24,11 +24,11 @@ import { IoLogoWhatsapp } from "react-icons/io";
 
 // Imports d'images
 import img1 from "../../../public/dalles.jpeg";
-import img2 from "../../../public/pvc.png";
-import img3 from "../../../public/poly.png";
-import img4 from "../../../public/accou.jpeg";
-import img5 from "../../../public/mir.jpeg";
-import img6 from "../../../public/plan.png";
+import img2 from "../../../public/pvc-optimized.webp";
+import img3 from "../../../public/poly-optimized.webp";
+import img4 from "../../../public/accou-optimized.webp";
+import img5 from "../../../public/mir-optimized.webp";
+import img6 from "../../../public/plan-optimized.webp";
 
 // --- Interfaces ---
 

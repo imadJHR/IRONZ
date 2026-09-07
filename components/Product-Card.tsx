@@ -101,7 +101,7 @@ export default function ProductCard({
   if (variant === "compact") {
     return (
       <div className={`flex items-center gap-4 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow ${className}`}>
-        <Link href={`/produits/${product.slug || product.id}`} className="relative h-16 w-16 flex-shrink-0 bg-gray-100 dark:bg-gray-700 rounded-md overflow-hidden">
+        <Link href={`/produit/${product.slug || product.id}`} className="relative h-16 w-16 flex-shrink-0 bg-gray-100 dark:bg-gray-700 rounded-md overflow-hidden">
           <Image
             src={getImageUrl()}
             alt={product.name}
@@ -112,7 +112,7 @@ export default function ProductCard({
           />
         </Link>
         <div className="flex-1 min-w-0">
-          <Link href={`/produits/${product.slug || product.id}`} className="block">
+          <Link href={`/produit/${product.slug || product.id}`} className="block">
             <h3 className="font-medium text-sm text-gray-900 dark:text-white truncate hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
               {product.name}
             </h3>
@@ -154,7 +154,7 @@ export default function ProductCard({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <Link href={`/produits/${product.slug || product.id}`} className="block">
+        <Link href={`/produit/${product.slug || product.id}`} className="block">
           <div className="absolute top-0 left-0 right-0 bg-yellow-500 text-black py-1 px-3 text-xs font-bold text-center z-10">
             OFFRE SPÉCIALE
           </div>
@@ -231,7 +231,7 @@ export default function ProductCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href={`/produits/${product.slug || product.id}`} className="block">
+      <Link href={`/produit/${product.slug || product.id}`} className="block">
         <div className="relative h-64 overflow-hidden bg-gray-100 dark:bg-gray-700">
           <Image
             src={getImageUrl()}

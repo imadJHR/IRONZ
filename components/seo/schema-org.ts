@@ -5,9 +5,9 @@ export const generateOrganizationSchema = () => {
       name: "IRONZ",
       description:
         "Équipement de fitness professionnel, suppléments alimentaires et accessoires de musculation et d'arts martiaux de qualité professionnelle.",
-      url: "https://ironz.ma",
-      logo: "https://ironz.ma/logo.png",
-      image: "https://ironz.ma/images/og-image.jpg",
+      url: "https://www.ironz.ma",
+      logo: "https://www.ironz.ma/logo-optimized.png",
+      image: "https://www.ironz.ma/og-image.jpg",
       telephone: "+212-000-000000",
       email: "contact@ironz.com",
       address: {
@@ -24,7 +24,6 @@ export const generateOrganizationSchema = () => {
       currenciesAccepted: "MAD",
     }
   }
-  
   export const generateProductSchema = (product) => {
     return {
       "@context": "https://schema.org",
@@ -39,7 +38,7 @@ export const generateOrganizationSchema = () => {
       },
       offers: {
         "@type": "Offer",
-        url: `https://ironz.com/produits/${product.slug}`,
+        url: `https://www.ironz.ma/produit/${product.slug}`,
         priceCurrency: "MAD",
         price: product.price,
         priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(),
@@ -74,13 +73,13 @@ export const generateOrganizationSchema = () => {
         name: "IRONZ",
         logo: {
           "@type": "ImageObject",
-          url: "https://ironz.ma/logo.png",
+          url: "https://www.ironz.ma/logo-optimized.png",
         },
       },
       description: article.excerpt,
       mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": `https://ironz.ma/blog/${article.slug}`,
+        "@id": `https://www.ironz.ma/blog/${article.slug}`,
       },
     }
   }

@@ -5,7 +5,6 @@ export default function robots() {
         allow: "/",
         disallow: ["/admin/", "/checkout/", "/api/"],
       },
-      sitemap: "https://ironz.ma/sitemap.xml",
+      sitemap: "https://www.ironz.ma/sitemap.xml",
     }
   }
-  

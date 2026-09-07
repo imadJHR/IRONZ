@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "Maroc",
     "ironz",
   ],
-  authors: [{ name: "IRONZ", url: "https://ironz.ma" }],
+  authors: [{ name: "IRONZ", url: "https://www.ironz.ma" }],
   creator: "IRONZ",
   publisher: "IRONZ",
   formatDetection: {
@@ -37,24 +37,21 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://ironz.ma"),
-  alternates: {
-    canonical: "/",
-  },
+  metadataBase: new URL("https://www.ironz.ma"),
   icons: {
     icon: [
       { url: "/favicon.ico" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
-    apple: [{ url: "/logo.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: "/logo-optimized.png", sizes: "180x180", type: "image/png" }],
     shortcut: "/favicon.ico",
   },
   openGraph: {
     title: "IRONZ - Équipements Professionnels et Matériaux",
     description:
       "Votre partenaire de confiance pour tous vos besoins en équipements professionnels et matériaux de construction.",
-    url: "https://ironz.ma",
+    url: "https://www.ironz.ma",
     siteName: "IRONZ",
     images: [
       {

@@ -95,7 +95,7 @@ export default function MaintenancePage() {
           transition={{ duration: 0.6 }}
         >
           <Image
-            src="/logo.png"
+            src="/logo-optimized.png"
             alt="IRONZ"
             width={180}
             height={60}

@@ -2,17 +2,17 @@ import { StaticImageData } from "next/image";
 
 // Static Assets
 import a5 from "../public/a5.jpg";
-import img2 from "../public/equipement.jpg";
+import img2 from "../public/equipement-optimized.webp";
 import img3 from "../public/complement.jpg";
-import img4 from "../public/accessoire.jpg";
+import img4 from "../public/accessoire-optimized.webp";
 import img5 from "../public/matrix.png";
 import img6 from "../public/lifefitness.png";
 import img66 from "../public/panatta.png";
 import topgym from "../public/topgym.png";
 import teslaa from "../public/teslaa.png";
-import sup from "../public/14.png";
-import adidas from "../public/logo.png";
-import red from "../public/logo.png";
+import sup from "../public/14-optimized.webp";
+import adidas from "../public/logo-optimized.png";
+import red from "../public/logo-optimized.png";
 
 // --- TYPES ---
 

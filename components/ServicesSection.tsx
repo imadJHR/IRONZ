@@ -11,10 +11,10 @@ import { motion, Variants } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
-import img1 from "../public/salle1.jpg";
-import img2 from "../public/salle2.jpg";
-import img3 from "../public/salle3.jpg";
-import img4 from "../public/salle4.jpg";
+import img1 from "../public/salle1-optimized.webp";
+import img2 from "../public/salle2-optimized.webp";
+import img3 from "../public/salle3-optimized.webp";
+import img4 from "../public/salle4-optimized.webp";
 
 // Types
 export interface ServiceItem {

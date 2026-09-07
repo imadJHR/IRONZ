@@ -109,8 +109,7 @@ function LoginPage({ onLogin }: LoginPageProps) {
 
         <div className="relative z-10 text-center p-12">
           <div className="w-32 h-32 mx-auto bg-black rounded-2xl flex items-center justify-center mb-8 shadow-[0_0_40px_rgba(234,179,8,0.3)] transform rotate-3 hover:rotate-0 transition-all duration-500">
-             {/* Note: Ensure /logo.png exists in your public folder */}
-            <img src="/logo.png" alt="Ironz Logo" className="w-20 h-20 object-contain" />
+            <img src="/logo-optimized.png" alt="Ironz Logo" className="w-20 h-20 object-contain" />
           </div>
 
           <h1 className="text-6xl font-black text-white tracking-tighter mb-4">
