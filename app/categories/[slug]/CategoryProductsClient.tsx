@@ -356,7 +356,7 @@ const ProductCard = memo(function ProductCard({
             >
               {formatPrice(product.price)}
             </span>
-            {product.oldPrice && (
+            {Number(product.oldPrice) > 0 && (
               <span className="ml-1 sm:ml-2 text-xs sm:text-sm line-through text-gray-500">
                 {formatPrice(product.oldPrice)}
               </span>
@@ -705,7 +705,7 @@ export default function ProductsPage({
             initial={{ opacity: 0, y: -20, x: 20 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-6 right-6 z-50"
+            className="fixed top-4 right-4 z-[300] max-w-[calc(100vw-2rem)] sm:top-6 sm:right-6"
           >
             <div
               className={cn(

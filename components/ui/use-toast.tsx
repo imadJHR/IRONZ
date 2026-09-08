@@ -62,11 +62,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
       
       {/* Toast Container */}
-      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+      <div className="fixed bottom-4 right-4 z-[300] flex max-w-[calc(100vw-2rem)] flex-col gap-2">
         {toasts.map((toastItem) => (
           <div
             key={toastItem.id}
-            className={`min-w-[350px] p-4 rounded-lg shadow-lg border transition-all animate-in slide-in-from-right-4 ${
+            className={`w-full min-w-0 sm:min-w-[350px] p-4 rounded-lg shadow-lg border transition-all animate-in slide-in-from-right-4 ${
               toastItem.variant === "destructive"
                 ? "bg-red-50 text-red-900 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/50"
                 : "bg-green-50 text-green-900 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-900/50"

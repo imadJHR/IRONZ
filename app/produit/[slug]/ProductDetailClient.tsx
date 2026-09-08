@@ -13,7 +13,6 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { useCart } from "../../../context/cart-context";
-import { useFavorites } from "../../../context/favorites-context";
 import { optimizeImageUrl } from "../../../lib/image-url";
 
 // ─── CONSTANTS ───────────────────────────────────────────
@@ -330,7 +329,6 @@ export default function ProductDetailClient({
   });
 
   const { addToCart } = useCart();
-  const { isInFavorites, addToFavorites, removeFromFavorites } = useFavorites();
 
   useEffect(() => {
     if (!slug || retryCounter === 0) return;
@@ -391,18 +389,6 @@ export default function ProductDetailClient({
       showToast("Lien copié ✓", "success");
     }
   }, [product, showToast]);
-
-  const handleFavoriteToggle = useCallback(() => {
-    if (!product) return;
-    const id = getProductId(product);
-    if (isInFavorites(id)) {
-      removeFromFavorites(id);
-      showToast("Retiré des favoris", "success");
-    } else {
-      addToFavorites({ ...product, id } as any);
-      showToast("Ajouté aux favoris ♥", "success");
-    }
-  }, [product, isInFavorites, addToFavorites, removeFromFavorites, showToast]);
 
   const loadReviews = useCallback(async (productId: string) => {
     if (!productId) return;
@@ -535,7 +521,6 @@ export default function ProductDetailClient({
   }
 
   const isOutOfStock = !product.inStock || product.stockQuantity === 0;
-  const isFav = isInFavorites(getProductId(product));
   const discount = getDiscount(product);
   const productImages = [
     product.image,
@@ -584,7 +569,7 @@ export default function ProductDetailClient({
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
         {/* ── TOAST ──────────────────────────────────── */}
         {toast.show && (
-          <div className="fixed top-5 right-5 z-50 fade-up">
+          <div className="fixed top-4 right-4 z-[300] max-w-[calc(100vw-2rem)] sm:top-5 sm:right-5 fade-up">
             <div
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl border font-semibold text-sm",
@@ -817,13 +802,13 @@ export default function ProductDetailClient({
                   <span className="text-4xl sm:text-5xl font-display tracking-wide text-gray-900 dark:text-white leading-none">
                     {formatPrice(product.price)}
                   </span>
-                  {product.oldPrice && product.oldPrice > product.price && (
+                  {Number(product.oldPrice) > product.price && (
                     <span className="text-xl text-gray-400 dark:text-gray-600 line-through font-medium mb-0.5">
                       {formatPrice(product.oldPrice)}
                     </span>
                   )}
                 </div>
-                {discount > 0 && product.oldPrice && (
+                {discount > 0 && Number(product.oldPrice) > 0 && (
                   <div className="mt-2 flex items-center gap-2 flex-wrap">
                     <span className="clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-xs px-3 py-1">
                       Économisez{" "}
@@ -859,19 +844,8 @@ export default function ProductDetailClient({
                       : "text-red-700 dark:text-red-400"
                   )}
                 >
-                  {product.inStock
-                    ? product.stockQuantity
-                      ? `${product.stockQuantity} unité${product.stockQuantity > 1 ? "s" : ""} disponible${product.stockQuantity > 1 ? "s" : ""}`
-                      : "En stock"
-                    : "Rupture de stock"}
+                  {product.inStock ? "En stock" : "Rupture de stock"}
                 </span>
-                {product.inStock &&
-                  product.stockQuantity &&
-                  product.stockQuantity <= 5 && (
-                    <span className="text-xs text-yellow-600 dark:text-yellow-400 font-medium">
-                      — Plus que {product.stockQuantity} !
-                    </span>
-                  )}
               </div>
 
               {/* Short description */}
@@ -931,19 +905,19 @@ export default function ProductDetailClient({
                       <Plus className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                  {product.stockQuantity && (
+                  {Number(product.stockQuantity) > 0 && (
                     <span className="text-xs text-gray-400 dark:text-gray-600">
                       max {product.stockQuantity}
                     </span>
                   )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="grid grid-cols-1 gap-2.5 min-[480px]:grid-cols-2 sm:gap-3">
                   <button
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
                     className={cn(
-                      "flex-1 h-12 rounded-xl flex items-center justify-center gap-2.5 font-display text-sm uppercase tracking-widest border-2 transition-all",
+                      "h-11 w-full min-w-0 rounded-xl px-3 flex items-center justify-center gap-2 font-display text-xs uppercase tracking-wide whitespace-nowrap border-2 transition-all sm:h-12 sm:text-sm sm:tracking-widest",
                       isOutOfStock
                         ? "bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400 cursor-not-allowed"
                         : "bg-gray-900 dark:bg-white border-gray-900 dark:border-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 shadow-sm hover:shadow-md"
@@ -956,7 +930,7 @@ export default function ProductDetailClient({
                     onClick={handleBuyNow}
                     disabled={isOutOfStock}
                     className={cn(
-                      "flex-1 h-12 rounded-xl flex items-center justify-center gap-2.5 font-display text-sm uppercase tracking-widest border-2 transition-all",
+                      "h-11 w-full min-w-0 rounded-xl px-3 flex items-center justify-center gap-2 font-display text-xs uppercase tracking-wide whitespace-nowrap border-2 transition-all sm:h-12 sm:text-sm sm:tracking-widest",
                       isOutOfStock
                         ? "bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-400 cursor-not-allowed"
                         : "bg-yellow-500 hover:bg-yellow-400 border-yellow-600 hover:border-yellow-500 text-black shadow-sm hover:shadow-lg hover:shadow-yellow-500/20"
@@ -966,35 +940,11 @@ export default function ProductDetailClient({
                   </button>
                 </div>
 
-                {/* Favorite + Share */}
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleFavoriteToggle}
-                    className={cn(
-                      "flex-1 h-10 rounded-xl flex items-center justify-center gap-2 font-bold text-xs border transition-all",
-                      isFav
-                        ? "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400"
-                        : "border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-red-300 hover:text-red-500 bg-white dark:bg-gray-900"
-                    )}
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      fill={isFav ? "currentColor" : "none"}
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
-                    {isFav ? "Favori" : "Favoris"}
-                  </button>
+                {/* Share */}
+                <div>
                   <button
                     onClick={handleShare}
-                    className="flex-1 h-10 rounded-xl flex items-center justify-center gap-2 font-bold text-xs border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-yellow-400 hover:text-yellow-600 bg-white dark:bg-gray-900 transition-all"
+                    className="w-full h-10 rounded-xl flex items-center justify-center gap-2 font-bold text-xs border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-yellow-400 hover:text-yellow-600 bg-white dark:bg-gray-900 transition-all"
                   >
                     <svg
                       className="w-4 h-4"
@@ -1039,7 +989,7 @@ export default function ProductDetailClient({
               </div>
 
               {/* Tags */}
-              {product.tags?.length && (
+              {Boolean(product.tags?.length) && (
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {product.tags.map((tag) => (
                     <Link
@@ -1471,7 +1421,7 @@ export default function ProductDetailClient({
                         <h3 className="font-display uppercase tracking-wide text-xs sm:text-sm text-gray-900 dark:text-white line-clamp-2 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors mb-2 leading-tight">
                           {prod.name}
                         </h3>
-                        {prod.rating && (
+                        {Number(prod.rating) > 0 && (
                           <div className="mb-2">
                             <StarRating rating={prod.rating} size="xs" />
                           </div>
@@ -1480,7 +1430,7 @@ export default function ProductDetailClient({
                           <span className="text-sm font-display tracking-wide text-gray-900 dark:text-white">
                             {formatPrice(prod.price)}
                           </span>
-                          {prod.oldPrice && prod.oldPrice > prod.price && (
+                          {Number(prod.oldPrice) > prod.price && (
                             <span className="text-xs line-through text-gray-400 dark:text-gray-600">
                               {formatPrice(prod.oldPrice)}
                             </span>

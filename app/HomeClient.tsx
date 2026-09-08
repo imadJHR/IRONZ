@@ -467,7 +467,7 @@ function ProductCard({
             >
               {formatPrice(product.price)}
             </span>
-            {product.oldPrice && (
+            {Number(product.oldPrice) > 0 && (
               <span className="text-[10px] xs:text-xs line-through text-gray-500">
                 {formatPrice(product.oldPrice)}
               </span>
@@ -587,7 +587,7 @@ function ProductCardLarge({
             <span className="text-xl sm:text-2xl font-display tracking-wide text-gray-900 dark:text-white">
               {formatPrice(product.price)}
             </span>
-            {product.oldPrice && (
+            {Number(product.oldPrice) > 0 && (
               <span className="text-xs sm:text-sm line-through text-gray-500">
                 {formatPrice(product.oldPrice)}
               </span>
@@ -750,7 +750,7 @@ function ProductCardModern({
               <span className="text-xl font-display tracking-wide text-gray-900 dark:text-white">
                 {formatPrice(product.price)}
               </span>
-              {product.oldPrice && (
+              {Number(product.oldPrice) > 0 && (
                 <span className="text-sm text-gray-500 line-through">
                   {formatPrice(product.oldPrice)}
                 </span>
@@ -1181,7 +1181,7 @@ function LatestProductsSection({
                               <div className="text-2xl font-black text-gray-900 dark:text-white">
                                 {formatPrice(product.price)}
                               </div>
-                              {product.oldPrice && (
+                              {Number(product.oldPrice) > 0 && (
                                 <div className="text-sm text-gray-500 line-through">
                                   {formatPrice(product.oldPrice)}
                                 </div>
@@ -1832,7 +1832,7 @@ export default function HomeClient({
                           {formatPrice(featuredVedette.price)}
                         </span>
                       </div>
-                      {featuredVedette.oldPrice && (
+                      {Number(featuredVedette.oldPrice) > 0 && (
                         <div className="flex flex-col pb-1">
                           <span className="text-xl sm:text-2xl text-gray-500 line-through decoration-2 decoration-red-500/50 mb-2">
                             {formatPrice(featuredVedette.oldPrice)}

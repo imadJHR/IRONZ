@@ -316,7 +316,7 @@ const ProductCard = memo(function ProductCard({
                 <span className="text-base sm:text-xl md:text-2xl font-display tracking-wide text-gray-900 dark:text-white">
                   {formatPrice(product.price)}
                 </span>
-                {product.oldPrice && product.oldPrice > product.price && (
+                {Number(product.oldPrice) > product.price && (
                   <span className="text-xs sm:text-sm line-through text-gray-400 dark:text-gray-600">
                     {formatPrice(product.oldPrice)}
                   </span>
@@ -477,7 +477,7 @@ const ProductCard = memo(function ProductCard({
               <span className="text-base sm:text-lg font-display tracking-wide text-gray-900 dark:text-white">
                 {formatPrice(product.price)}
               </span>
-              {product.oldPrice && product.oldPrice > product.price && (
+              {Number(product.oldPrice) > product.price && (
                 <span className="text-[10px] sm:text-xs line-through text-gray-400 dark:text-gray-600 ml-1.5 sm:ml-2">
                   {formatPrice(product.oldPrice)}
                 </span>
@@ -985,7 +985,7 @@ export default function ProductsPage({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -16, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-4 right-4 z-50 max-w-[calc(100vw-2rem)] break-words"
+              className="fixed top-4 right-4 z-[300] max-w-[calc(100vw-2rem)] break-words"
             >
               <div
                 className={cn(

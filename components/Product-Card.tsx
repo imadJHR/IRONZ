@@ -196,7 +196,7 @@ export default function ProductCard({
 
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                {product.oldPrice && (
+                {Number(product.oldPrice) > 0 && (
                   <span className="text-gray-400 dark:text-gray-500 line-through text-sm mr-2">
                     {formatPrice(product.oldPrice)}
                   </span>
@@ -242,7 +242,7 @@ export default function ProductCard({
             unoptimized={getImageUrl().startsWith("http")}
           />
 
-          {product.discount && product.discount > 0 && (
+          {Number(product.discount) > 0 && (
             <Badge className="absolute top-2 left-2 bg-red-500 hover:bg-red-600 text-white shadow-sm">
               -{product.discount}%
             </Badge>
@@ -288,7 +288,7 @@ export default function ProductCard({
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              {product.oldPrice && product.oldPrice > product.price && (
+              {Number(product.oldPrice) > product.price && (
                 <span className="text-gray-400 dark:text-gray-500 line-through text-sm mr-2">
                   {formatPrice(product.oldPrice)}
                 </span>
