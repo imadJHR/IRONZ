@@ -781,6 +781,23 @@ export default function ProductsPage({
     sort: "featured",
   });
 
+  useEffect(() => {
+    if (!showMobileFilters) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowMobileFilters(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [showMobileFilters]);
+
   // ── Fetch ──────────────────────────────────────────────
   useEffect(() => {
     if (initialProducts.length > 0 && retryCounter === 0) return;
@@ -1573,17 +1590,20 @@ export default function ProductsPage({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setShowMobileFilters(false)}
-                className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"
+                className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[200] lg:hidden"
               />
               <motion.div
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="fixed right-0 top-0 bottom-0 w-[85vw] max-w-xs bg-white dark:bg-gray-900 z-50 lg:hidden flex flex-col shadow-2xl"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Filtres des produits"
+                className="fixed inset-y-0 right-0 z-[210] flex w-full max-w-sm flex-col bg-white shadow-2xl dark:bg-gray-900 sm:w-[85vw] lg:hidden"
               >
                 {/* Drawer header */}
-                <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-100 dark:border-gray-800">
+                <div className="flex shrink-0 items-center justify-between border-b border-gray-100 p-3 dark:border-gray-800 sm:p-4">
                   <h3 className="text-sm sm:text-base font-black uppercase tracking-wider text-gray-900 dark:text-white flex items-center gap-2">
                     <SlidersHorizontal className="w-4 h-4 text-yellow-500" />
                     Filtres
@@ -1602,7 +1622,7 @@ export default function ProductsPage({
                 </div>
 
                 {/* Drawer content */}
-                <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 sm:space-y-5">
+                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3 sm:p-4 space-y-4 sm:space-y-5">
                   {/* Search */}
                   <div>
                     <label className="block text-[10px] sm:text-[11px] font-display uppercase tracking-widest text-gray-500 mb-1.5 sm:mb-2">
@@ -1780,7 +1800,7 @@ export default function ProductsPage({
                 </div>
 
                 {/* Drawer footer */}
-                <div className="p-3 sm:p-4 border-t border-gray-100 dark:border-gray-800 flex gap-2 sm:gap-3">
+                <div className="flex shrink-0 gap-2 border-t border-gray-100 p-3 dark:border-gray-800 sm:gap-3 sm:p-4">
                   <button
                     onClick={handleClearFilters}
                     className="flex-1 py-2 sm:py-2.5 border border-gray-200 dark:border-gray-700 font-bold text-xs sm:text-sm rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-gray-700 dark:text-gray-300"
