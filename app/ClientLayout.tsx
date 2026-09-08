@@ -538,7 +538,7 @@ const Navbar = React.memo(function Navbar({
           )}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16 sm:h-18 lg:h-20">
+            <div className="relative flex items-center justify-between h-16 sm:h-18 lg:h-20">
               {/* Logo */}
               <motion.div
                 onHoverStart={() => setIsHoveringLogo(true)}
@@ -772,7 +772,7 @@ const Navbar = React.memo(function Navbar({
                 </div>
 
                 {/* Mobile Search Button */}
-                <div className="lg:hidden relative" ref={mobileSearchRef}>
+                <div className="static lg:hidden" ref={mobileSearchRef}>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
@@ -796,11 +796,11 @@ const Navbar = React.memo(function Navbar({
                         animate="visible"
                         exit="exit"
                         variants={searchDropdownVariants}
-                        className="absolute right-0 top-full mt-2 w-[85vw] max-w-sm origin-top-right z-50"
+                        className="absolute inset-x-0 top-full mt-2 w-auto origin-top z-50"
                       >
                         <form
                           onSubmit={handleMobileSearch}
-                          className="flex items-center gap-2 bg-zinc-900 border-2 border-yellow-500 rounded-2xl shadow-2xl px-3 py-2"
+                          className="flex w-full min-w-0 items-center gap-2 bg-zinc-900 border-2 border-yellow-500 rounded-2xl shadow-2xl px-3 py-2"
                         >
                           <Search className="h-4 w-4 text-yellow-500 flex-shrink-0" />
                           <input
@@ -814,7 +814,7 @@ const Navbar = React.memo(function Navbar({
                                 ? "Rechercher un produit..."
                                 : "Search a product..."
                             }
-                            className="flex-1 bg-transparent outline-none text-sm font-medium text-white placeholder:text-gray-500"
+                            className="min-w-0 flex-1 bg-transparent outline-none text-sm font-medium text-white placeholder:text-gray-500"
                             autoFocus
                             autoComplete="off"
                           />
