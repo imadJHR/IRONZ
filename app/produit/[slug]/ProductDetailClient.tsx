@@ -1,6 +1,8 @@
 // Client-side interactions for the server-rendered product detail page.
 "use client";
 
+import { getDiscount } from "../../../lib/product-pricing";
+
 import { useState, useEffect, useCallback, memo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
@@ -95,11 +97,6 @@ const getProductId = (p: Product) => p._id || p.id || "";
 
 const cn = (...classes: (string | boolean | undefined)[]) =>
   classes.filter(Boolean).join(" ");
-
-const getDiscount = (product: Product): number =>
-  product.oldPrice
-    ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
-    : product.discount || 0;
 
 const formatDate = (date?: { $date: string } | string): string => {
   if (!date) return "";

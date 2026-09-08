@@ -1,5 +1,7 @@
 "use client";
 
+import { getDiscount } from "../../lib/product-pricing";
+
 import {
   useState,
   useEffect,
@@ -104,11 +106,6 @@ const formatPrice = (price: number): string =>
   }).format(price || 0);
 
 const getProductId = (p: Product): string => p._id || p.id || "";
-
-const getDiscount = (product: Product): number =>
-  product.oldPrice
-    ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
-    : product.discount || 0;
 
 const isProductOutOfStock = (product: Product): boolean =>
   !product.inStock || product.stockQuantity === 0;

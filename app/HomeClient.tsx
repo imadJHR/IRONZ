@@ -1,5 +1,7 @@
 "use client";
 
+import { getDiscount } from "../lib/product-pricing";
+
 import {
   useState,
   useEffect,
@@ -426,9 +428,9 @@ function ProductCard({
             Nouveau
           </span>
         )}
-        {Number(product.discount || 0) > 0 && (
+        {getDiscount(product) > 0 && (
           <span className="absolute bottom-2 left-0 clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-[10px] xs:text-xs pl-2.5 pr-3.5 py-0.5 shadow-md">
-            -{product.discount}%
+            -{getDiscount(product)}%
           </span>
         )}
       </div>
@@ -467,7 +469,7 @@ function ProductCard({
             >
               {formatPrice(product.price)}
             </span>
-            {Number(product.oldPrice) > 0 && (
+            {Number(product.oldPrice) > Number(product.price) && (
               <span className="text-[10px] xs:text-xs line-through text-gray-500">
                 {formatPrice(product.oldPrice)}
               </span>
@@ -541,9 +543,9 @@ function ProductCardLarge({
               Nouveau
             </span>
           )}
-          {Number(product.discount || 0) > 0 && (
+          {getDiscount(product) > 0 && (
             <span className="clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-xs sm:text-sm pl-3 pr-4 py-1 shadow-md">
-              -{product.discount}%
+              -{getDiscount(product)}%
             </span>
           )}
           {product.isFeatured && (
@@ -587,7 +589,7 @@ function ProductCardLarge({
             <span className="text-xl sm:text-2xl font-display tracking-wide text-gray-900 dark:text-white">
               {formatPrice(product.price)}
             </span>
-            {Number(product.oldPrice) > 0 && (
+            {Number(product.oldPrice) > Number(product.price) && (
               <span className="text-xs sm:text-sm line-through text-gray-500">
                 {formatPrice(product.oldPrice)}
               </span>
@@ -671,9 +673,9 @@ function ProductCardModern({
               Nouveau
             </span>
           )}
-          {Number(product.discount || 0) > 0 && (
+          {getDiscount(product) > 0 && (
             <span className="clip-slant bg-red-500 text-white text-xs font-display uppercase tracking-widest pl-3 pr-4 py-1 shadow-md">
-              -{product.discount}%
+              -{getDiscount(product)}%
             </span>
           )}
         </div>
@@ -750,7 +752,7 @@ function ProductCardModern({
               <span className="text-xl font-display tracking-wide text-gray-900 dark:text-white">
                 {formatPrice(product.price)}
               </span>
-              {Number(product.oldPrice) > 0 && (
+              {Number(product.oldPrice) > Number(product.price) && (
                 <span className="text-sm text-gray-500 line-through">
                   {formatPrice(product.oldPrice)}
                 </span>
@@ -1123,11 +1125,18 @@ function LatestProductsSection({
                             itemProp="image"
                           />
                         </Link>
-                        {product.isNewProduct && (
-                          <Badge className="absolute top-3 left-3 bg-yellow-500 text-black text-xs">
-                            Nouveau
-                          </Badge>
-                        )}
+                        <div className="absolute top-3 left-3 flex flex-col items-start gap-1">
+                          {product.isNewProduct && (
+                            <Badge className="bg-yellow-500 text-black text-xs">
+                              Nouveau
+                            </Badge>
+                          )}
+                          {getDiscount(product) > 0 && (
+                            <Badge className="bg-red-500 text-white text-xs">
+                              -{getDiscount(product)}%
+                            </Badge>
+                          )}
+                        </div>
                       </div>
 
                       <div className="flex-1 p-5 sm:p-6">
@@ -1181,7 +1190,7 @@ function LatestProductsSection({
                               <div className="text-2xl font-black text-gray-900 dark:text-white">
                                 {formatPrice(product.price)}
                               </div>
-                              {Number(product.oldPrice) > 0 && (
+                              {Number(product.oldPrice) > Number(product.price) && (
                                 <div className="text-sm text-gray-500 line-through">
                                   {formatPrice(product.oldPrice)}
                                 </div>
@@ -1284,7 +1293,7 @@ export default function HomeClient({
 
   // Memoised lists
   const featuredVedette = useMemo(
-    () => products.find((p) => p.isFeatured && Number(p.discount) > 0) || products[0],
+    () => products.find((p) => p.isFeatured && getDiscount(p) > 0) || products[0],
     [products]
   );
   const newArrivals = useMemo(
@@ -1292,7 +1301,7 @@ export default function HomeClient({
     [products]
   );
   const discountedProducts = useMemo(
-    () => products.filter((p) => Number(p.discount) > 0).slice(0, 12),
+    () => products.filter((p) => getDiscount(p) > 0).slice(0, 12),
     [products]
   );
 

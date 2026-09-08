@@ -1,5 +1,7 @@
 "use client";
 
+import { getDiscount } from "../../../lib/product-pricing";
+
 import React, {
   useState,
   useEffect,
@@ -306,9 +308,9 @@ const ProductCard = memo(function ProductCard({
               Nouveau
             </span>
           )}
-          {Number(product.discount) > 0 && (
+          {getDiscount(product) > 0 && (
             <span className="clip-slant bg-red-500 text-white font-display uppercase tracking-widest text-[10px] sm:text-xs pl-2.5 pr-3.5 py-0.5 shadow-md">
-              -{product.discount}%
+              -{getDiscount(product)}%
             </span>
           )}
           {product.isFeatured && (
@@ -356,7 +358,7 @@ const ProductCard = memo(function ProductCard({
             >
               {formatPrice(product.price)}
             </span>
-            {Number(product.oldPrice) > 0 && (
+            {Number(product.oldPrice) > Number(product.price) && (
               <span className="ml-1 sm:ml-2 text-xs sm:text-sm line-through text-gray-500">
                 {formatPrice(product.oldPrice)}
               </span>
@@ -587,7 +589,7 @@ export default function ProductsPage({
         return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
       });
       case "rating": return result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      case "discount": return result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
+      case "discount": return result.sort((a, b) => getDiscount(b) - getDiscount(a));
       default: return result.sort((a, b) => {
         if (a.isFeatured && !b.isFeatured) return -1;
         if (!a.isFeatured && b.isFeatured) return 1;
