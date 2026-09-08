@@ -68,7 +68,8 @@ function productRows(payload: ProductListResponse | ProductRecord[]): ProductRec
 }
 
 async function requestProducts(url: string): Promise<ProductListResponse | ProductRecord[]> {
-  const response = await fetch(url, { next: { revalidate: 300 } });
+  // Prices and promotions must stay current across catalogue and detail queries.
+  const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) throw new Error(`Product API returned ${response.status}`);
   return response.json();
 }
