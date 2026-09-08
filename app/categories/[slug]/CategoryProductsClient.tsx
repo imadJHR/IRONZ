@@ -774,8 +774,8 @@ export default function ProductsPage({
           </p>
         </header>
 
-        {/* Sticky Filter Bar */}
-        <div className="flex flex-col gap-4 mb-6 sm:mb-8 sticky top-16 sm:top-20 z-30 bg-white dark:bg-gray-950 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-800 shadow-lg">
+        {/* Filter Bar */}
+        <div className="flex flex-col gap-4 mb-6 sm:mb-8 bg-white dark:bg-gray-950 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-800 shadow-lg">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
 
             {/* Mobile Filter */}
