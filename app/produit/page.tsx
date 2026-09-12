@@ -5,62 +5,84 @@ import ProductsPage from "../../app/produit/page-client";
 import type { Product as CatalogProduct } from "../../app/produit/page-client";
 import { getAllProducts, productSlug } from "../../lib/products";
 
-// ─── SEO METADATA (Server Component) ─────────────────────
-export const metadata: Metadata = {
+type ProductsPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+const baseMetadata = {
   title: "Catalogue fitness et musculation au Maroc",
   description:
     "Découvrez notre gamme complète d'équipements sportifs premium : haltères, barres, machines, accessoires fitness. Livraison rapide partout au Maroc. Qualité professionnelle garantie.",
-  keywords: [
-    "équipement sportif maroc",
-    "matériel fitness maroc",
-    "haltères maroc",
-    "salle de sport équipement",
-    "ironz maroc",
-    "musculation équipement",
-    "accessoires fitness",
-    "livraison maroc sport",
-  ],
-  authors: [{ name: "IRONZ", url: "https://www.ironz.ma" }],
-  creator: "IRONZ",
-  publisher: "IRONZ",
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  alternates: { canonical: "/produit" },
-  openGraph: {
-    title: "Nos Produits | IRONZ - Équipement Sportif Premium",
-    description:
-      "Découvrez notre gamme complète d'équipements sportifs premium. Livraison rapide au Maroc.",
-    url: "https://www.ironz.ma/produit",
-    siteName: "IRONZ",
-    locale: "fr_MA",
-    type: "website",
-    images: [
-      {
-        url: "https://www.ironz.ma/og-produits.jpg",
-        width: 1200,
-        height: 630,
-        alt: "IRONZ - Équipement Sportif Premium au Maroc",
-        type: "image/jpeg",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Nos Produits | IRONZ - Équipement Sportif Premium",
-    description:
-      "Découvrez notre gamme complète d'équipements sportifs premium. Livraison rapide au Maroc.",
-    images: ["https://www.ironz.ma/og-produits.jpg"],
-    creator: "@ironzmaroc",
-  },
 };
+
+// ─── SEO METADATA (Server Component) ─────────────────────
+export async function generateMetadata({
+  searchParams,
+}: ProductsPageProps): Promise<Metadata> {
+  const params = searchParams ? await searchParams : {};
+  const hasQueryParams = Object.values(params).some((value) =>
+    Array.isArray(value) ? value.length > 0 : Boolean(value),
+  );
+
+  return {
+    ...baseMetadata,
+    keywords: [
+      "équipement sportif maroc",
+      "matériel fitness maroc",
+      "haltères maroc",
+      "salle de sport équipement",
+      "ironz maroc",
+      "musculation équipement",
+      "accessoires fitness",
+      "livraison maroc sport",
+    ],
+    authors: [{ name: "IRONZ", url: "https://www.ironz.ma" }],
+    creator: "IRONZ",
+    publisher: "IRONZ",
+    robots: hasQueryParams
+      ? {
+          index: false,
+          follow: true,
+        }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+          },
+        },
+    alternates: { canonical: "/produit" },
+    openGraph: {
+      title: "Nos Produits | IRONZ - Équipement Sportif Premium",
+      description:
+        "Découvrez notre gamme complète d'équipements sportifs premium. Livraison rapide au Maroc.",
+      url: "https://www.ironz.ma/produit",
+      siteName: "IRONZ",
+      locale: "fr_MA",
+      type: "website",
+      images: [
+        {
+          url: "https://www.ironz.ma/og-produits.jpg",
+          width: 1200,
+          height: 630,
+          alt: "IRONZ - Équipement Sportif Premium au Maroc",
+          type: "image/jpeg",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Nos Produits | IRONZ - Équipement Sportif Premium",
+      description:
+        "Découvrez notre gamme complète d'équipements sportifs premium. Livraison rapide au Maroc.",
+      images: ["https://www.ironz.ma/og-produits.jpg"],
+      creator: "@ironzmaroc",
+    },
+  };
+}
 
 // ─── JSON-LD SCHEMA ───────────────────────────────────────
 function JsonLd({ products }: { products: CatalogProduct[] }) {

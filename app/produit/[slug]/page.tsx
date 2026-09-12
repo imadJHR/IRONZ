@@ -1,14 +1,26 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import ProductDetailClient from "./ProductDetailClient";
 import type { Product } from "./ProductDetailClient";
-import { getAllProducts, getProductBySlug, productSlug } from "../../../lib/products";
+import {
+  getCachedAllProducts,
+  getCachedProductBySlug,
+  isValidProductSlug,
+  productSlug,
+} from "../../../lib/products";
+import { categoryUrl, subcategoryUrl } from "../../../lib/category-taxonomy";
 
 const SITE_URL = "https://www.ironz.ma";
+export const revalidate = 600;
+export const dynamicParams = true;
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+const getProductForRequest = cache(async (slug: string) => getCachedProductBySlug(slug));
+const getProductsForRequest = cache(async () => getCachedAllProducts());
 
 function plainText(value?: string): string {
   return (value || "")
@@ -25,7 +37,25 @@ function productDescription(product: Product): string {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = (await getProductBySlug(slug)) as unknown as Product | null;
+  if (!isValidProductSlug(slug)) {
+    return {
+      title: "Produit introuvable",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  let product: Product | null = null;
+  try {
+    product = (await getProductForRequest(slug)) as unknown as Product | null;
+  } catch (error) {
+    console.error(`[product] Unable to generate metadata for ${slug}.`, error);
+    return {
+      title: "Produit IRONZ",
+      description: "Équipement sportif disponible chez IRONZ au Maroc.",
+      alternates: { canonical: `/produit/${slug}` },
+      robots: { index: true, follow: true },
+    };
+  }
 
   if (!product) {
     return {
@@ -58,10 +88,18 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = (await getProductBySlug(slug)) as unknown as Product | null;
+  if (!isValidProductSlug(slug)) notFound();
+
+  const product = (await getProductForRequest(slug)) as unknown as Product | null;
   if (!product) notFound();
 
-  const allProducts = (await getAllProducts()) as unknown as Product[];
+  let allProducts: Product[] = [];
+  try {
+    allProducts = (await getProductsForRequest()) as unknown as Product[];
+  } catch (error) {
+    console.error(`[product] Unable to load related products for ${slug}.`, error);
+  }
+
   const related = allProducts
     .filter(
       (item) =>
@@ -105,13 +143,39 @@ export default async function ProductPage({ params }: ProductPageProps) {
     };
   }
 
+  const categoryPath = categoryUrl(product.category);
+  const subcategoryPath = subcategoryUrl(product.category, product.subCategory);
+  const breadcrumbItems = [
+    { "@type": "ListItem", position: 1, name: "Accueil", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Produits", item: `${SITE_URL}/produit` },
+    ...(categoryPath && product.category
+      ? [{
+          "@type": "ListItem",
+          position: 3,
+          name: product.category,
+          item: `${SITE_URL}${categoryPath}`,
+        }]
+      : []),
+    ...(subcategoryPath && product.subCategory
+      ? [{
+          "@type": "ListItem",
+          position: categoryPath ? 4 : 3,
+          name: product.subCategory,
+          item: `${SITE_URL}${subcategoryPath}`,
+        }]
+      : []),
+  ];
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Produits", item: `${SITE_URL}/produit` },
-      { "@type": "ListItem", position: 3, name: product.name, item: canonicalUrl },
+      ...breadcrumbItems,
+      {
+        "@type": "ListItem",
+        position: breadcrumbItems.length + 1,
+        name: product.name,
+        item: canonicalUrl,
+      },
     ],
   };
 

@@ -1,6 +1,11 @@
+import { unstable_cache } from "next/cache";
+
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://cts4hw2cbnwl4ur7zp6acy6cyy0jnxeo.lambda-url.eu-north-1.on.aws/api";
+export const PRODUCT_DETAIL_REVALIDATE_SECONDS = 600;
+const PRODUCT_CACHE_NAMESPACE = "v2-taxonomy-output";
+const PRODUCT_CACHE_TAGS = ["product-detail", "product-taxonomy"];
 
 export interface ProductRecord {
   _id?: string;
@@ -43,15 +48,17 @@ interface ProductListResponse {
   pagination?: { totalItems?: number };
 }
 
-export function productSlug(product: {
+type ProductSlugSource = {
   slug?: string;
-  name: string;
+  name?: string;
   _id?: string;
   id?: string;
-}): string {
+};
+
+export function productSlug(product: ProductSlugSource): string {
   if (product.slug) return product.slug;
 
-  const base = product.name
+  const base = (product.name || "")
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -62,25 +69,39 @@ export function productSlug(product: {
   return id ? `${base}-${id.slice(-6)}` : base;
 }
 
+export function isValidProductSlug(slug: string): boolean {
+  return Boolean(
+    slug &&
+      slug !== "undefined" &&
+      slug !== "null" &&
+      !slug.includes("/") &&
+      !slug.includes("?") &&
+      !slug.includes("#"),
+  );
+}
+
 function productRows(payload: ProductListResponse | ProductRecord[]): ProductRecord[] {
   if (Array.isArray(payload)) return payload;
   return payload.data || payload.products || [];
 }
 
-async function requestProducts(url: string): Promise<ProductListResponse | ProductRecord[]> {
-  // Prices and promotions must stay current across catalogue and detail queries.
-  const response = await fetch(url, { cache: "no-store" });
+async function requestProducts(
+  url: string,
+  init: RequestInit = { cache: "no-store" },
+): Promise<ProductListResponse | ProductRecord[]> {
+  const response = await fetch(url, init);
   if (!response.ok) throw new Error(`Product API returned ${response.status}`);
   return response.json();
 }
 
-export async function getAllProducts(): Promise<ProductRecord[]> {
+async function fetchAllProducts(init?: RequestInit): Promise<ProductRecord[]> {
   const all: ProductRecord[] = [];
   const limit = 100;
 
   for (let page = 1; page <= 20; page += 1) {
     const payload = await requestProducts(
       `${API_URL}/products?limit=${limit}&page=${page}`,
+      init,
     );
     const rows = productRows(payload);
     all.push(...rows);
@@ -96,7 +117,14 @@ export async function getAllProducts(): Promise<ProductRecord[]> {
   );
 }
 
+export async function getAllProducts(): Promise<ProductRecord[]> {
+  // Prices and promotions must stay current across catalogue and detail queries.
+  return fetchAllProducts();
+}
+
 export async function getProductBySlug(slug: string): Promise<ProductRecord | null> {
+  if (!isValidProductSlug(slug)) return null;
+
   try {
     const directPayload = await requestProducts(
       `${API_URL}/products?slug=${encodeURIComponent(slug)}`,
@@ -113,6 +141,54 @@ export async function getProductBySlug(slug: string): Promise<ProductRecord | nu
   const product = products.find((item) => productSlug(item) === slug);
   return product ? { ...product, slug } : null;
 }
+
+const cachedAllProducts = unstable_cache(
+  async () =>
+    fetchAllProducts({
+      next: {
+        revalidate: PRODUCT_DETAIL_REVALIDATE_SECONDS,
+        tags: PRODUCT_CACHE_TAGS,
+      },
+    }),
+  ["ironz-product-detail-list", PRODUCT_CACHE_NAMESPACE],
+  {
+    revalidate: PRODUCT_DETAIL_REVALIDATE_SECONDS,
+    tags: PRODUCT_CACHE_TAGS,
+  },
+);
+
+export async function getCachedAllProducts(): Promise<ProductRecord[]> {
+  return cachedAllProducts();
+}
+
+export const getCachedProductBySlug = unstable_cache(
+  async (slug: string): Promise<ProductRecord | null> => {
+    if (!isValidProductSlug(slug)) return null;
+
+    const directPayload = await requestProducts(
+      `${API_URL}/products?slug=${encodeURIComponent(slug)}`,
+      {
+        next: {
+          revalidate: PRODUCT_DETAIL_REVALIDATE_SECONDS,
+          tags: [...PRODUCT_CACHE_TAGS, `product-detail:${slug}`],
+        },
+      },
+    );
+    const direct = productRows(directPayload).find(
+      (product) => productSlug(product) === slug,
+    );
+    if (direct) return { ...direct, slug };
+
+    const products = await cachedAllProducts();
+    const product = products.find((item) => productSlug(item) === slug);
+    return product ? { ...product, slug } : null;
+  },
+  ["ironz-product-detail-by-slug", PRODUCT_CACHE_NAMESPACE],
+  {
+    revalidate: PRODUCT_DETAIL_REVALIDATE_SECONDS,
+    tags: PRODUCT_CACHE_TAGS,
+  },
+);
 
 export function productUpdatedAt(product: ProductRecord): Date | undefined {
   const raw = product.updatedAt || product.createdAt;

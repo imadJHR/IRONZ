@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useCart } from "../../../context/cart-context";
 import { optimizeImageUrl } from "../../../lib/image-url";
+import { categoryUrl, subcategoryUrl } from "../../../lib/category-taxonomy";
 
 // ─── CONSTANTS ───────────────────────────────────────────
 const API_URL =
@@ -524,6 +525,12 @@ export default function ProductDetailClient({
     ...(product.gallery || []),
     ...(product.images || []),
   ].filter(Boolean) as string[];
+  const cleanCategoryUrl =
+    categoryUrl(product.category) ||
+    `/produit?category=${encodeURIComponent(product.category || "")}`;
+  const cleanSubcategoryUrl =
+    subcategoryUrl(product.category, product.subCategory) ||
+    `/produit?category=${encodeURIComponent(product.category || "")}&subCategory=${encodeURIComponent(product.subCategory || "")}`;
 
   const tabs = [
     { id: "desc", label: "Description", icon: Info },
@@ -610,7 +617,7 @@ export default function ProductDetailClient({
               <>
                 <ChevronRight className="w-3 h-3 text-gray-300 dark:text-gray-600" />
                 <Link
-                  href={`/produit?category=${encodeURIComponent(product.category)}`}
+                  href={cleanCategoryUrl}
                   className="hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors"
                 >
                   {product.category}
@@ -621,7 +628,7 @@ export default function ProductDetailClient({
               <>
                 <ChevronRight className="w-3 h-3 text-gray-300 dark:text-gray-600" />
                 <Link
-                  href={`/produit?category=${encodeURIComponent(product.category || "")}&subCategory=${encodeURIComponent(product.subCategory)}`}
+                  href={cleanSubcategoryUrl}
                   className="hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors"
                 >
                   {product.subCategory}
@@ -760,7 +767,7 @@ export default function ProductDetailClient({
                   )}
                   {product.category && (
                     <Link
-                      href={`/produit?category=${encodeURIComponent(product.category)}`}
+                      href={cleanCategoryUrl}
                       className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors flex items-center gap-1"
                     >
                       <Tag className="w-3 h-3" />
@@ -773,7 +780,7 @@ export default function ProductDetailClient({
                         ·
                       </span>
                       <Link
-                        href={`/produit?category=${encodeURIComponent(product.category || "")}&subCategory=${encodeURIComponent(product.subCategory)}`}
+                        href={cleanSubcategoryUrl}
                         className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors"
                       >
                         {product.subCategory}
@@ -1378,7 +1385,7 @@ export default function ProductDetailClient({
                   </h2>
                 </div>
                 <Link
-                  href={`/produit?category=${encodeURIComponent(product.category || "")}`}
+                  href={cleanCategoryUrl}
                   className="hidden sm:flex items-center gap-1.5 text-sm font-bold text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors"
                 >
                   Voir tout
@@ -1441,7 +1448,7 @@ export default function ProductDetailClient({
 
               <div className="mt-5 text-center sm:hidden">
                 <Link
-                  href={`/produit?category=${encodeURIComponent(product.category || "")}`}
+                  href={cleanCategoryUrl}
                   className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 font-bold text-sm rounded-xl hover:border-yellow-400 hover:text-yellow-600 transition-colors"
                 >
                   Voir plus de produits

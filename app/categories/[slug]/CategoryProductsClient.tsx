@@ -392,12 +392,20 @@ interface ProductsPageProps {
   initialProducts?: Product[];
   heading?: string;
   intro?: string;
+  initialCategoryName?: string;
+  initialSubCategoryName?: string;
+  lockedCategoryName?: string;
+  lockedSubCategoryName?: string;
 }
 
 export default function ProductsPage({
   initialProducts = [],
   heading = "Produits",
   intro = "Découvrez notre gamme complète d'équipements professionnels.",
+  initialCategoryName,
+  initialSubCategoryName,
+  lockedCategoryName,
+  lockedSubCategoryName,
 }: ProductsPageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -426,11 +434,23 @@ export default function ProductsPage({
 
   const [searchQuery, setSearchQuery] = useState<string>(searchParams?.get("search") || "");
   const deferredSearchQuery = useDeferredValue(searchQuery);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
-  const [minPrice, setMinPrice] = useState<number>(0);
-  const [maxPrice, setMaxPrice] = useState<number>(10000);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    initialCategoryName ? [initialCategoryName] : [],
+  );
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
+    initialSubCategoryName ? [initialSubCategoryName] : [],
+  );
+  const initialPriceBounds = useMemo<[number, number]>(() => {
+    const prices = initialProducts
+      .map((product) => parseFloat(String(product.price)))
+      .filter((price) => !isNaN(price));
+
+    if (prices.length === 0) return [0, 10000];
+    return [Math.floor(Math.min(...prices)), Math.ceil(Math.max(...prices))];
+  }, [initialProducts]);
+  const [priceRange, setPriceRange] = useState<[number, number]>(initialPriceBounds);
+  const [minPrice, setMinPrice] = useState<number>(initialPriceBounds[0]);
+  const [maxPrice, setMaxPrice] = useState<number>(initialPriceBounds[1]);
   const [sortOption, setSortOption] = useState<SortOption["value"]>("featured");
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -503,10 +523,10 @@ export default function ProductsPage({
       apiCategories.some((apiCat) => apiCat.toLowerCase() === cat.toLowerCase())
     );
 
-    if (matchedCategory) {
+    if (matchedCategory && !lockedCategoryName) {
       setSelectedCategories([matchedCategory]);
     }
-  }, [slug, slugToCategory, products]);
+  }, [slug, slugToCategory, products, lockedCategoryName]);
 
   // AUTO-REFRESH every 30 seconds (like CategoryPage pattern)
   useEffect(() => {
@@ -618,21 +638,23 @@ export default function ProductsPage({
   }, [addToCart, showNotification]);
 
   const handleCategoryToggle = useCallback((cat: string) => {
+    if (lockedCategoryName) return;
     setSelectedCategories((prev) => prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]);
-  }, []);
+  }, [lockedCategoryName]);
 
   const handleSubCategoryToggle = useCallback((sub: string) => {
+    if (lockedSubCategoryName) return;
     setSelectedSubCategories((prev) => prev.includes(sub) ? prev.filter((s) => s !== sub) : [...prev, sub]);
-  }, []);
+  }, [lockedSubCategoryName]);
 
   const clearFilters = useCallback(() => {
     setSearchQuery("");
-    setSelectedCategories([]);
-    setSelectedSubCategories([]);
+    setSelectedCategories(lockedCategoryName ? [lockedCategoryName] : []);
+    setSelectedSubCategories(lockedSubCategoryName ? [lockedSubCategoryName] : []);
     setPriceRange([minPrice, maxPrice]);
     setSortOption("featured");
     showNotification("Filtres réinitialisés", "success");
-  }, [minPrice, maxPrice, showNotification]);
+  }, [lockedCategoryName, lockedSubCategoryName, minPrice, maxPrice, showNotification]);
 
   const getPageNumbers = useCallback((): (number | string)[] => {
     const max = isMobile ? 3 : 5;
@@ -659,7 +681,11 @@ export default function ProductsPage({
         <div className="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-2">
           {categories.map((cat) => (
             <div key={cat.id} className="flex items-center space-x-3 group cursor-pointer" onClick={() => handleCategoryToggle(cat.name)}>
-              <Checkbox id={`cat-${cat.id}`} checked={selectedCategories.includes(cat.name)} />
+              <Checkbox
+                id={`cat-${cat.id}`}
+                checked={selectedCategories.includes(cat.name)}
+                disabled={Boolean(lockedCategoryName)}
+              />
               <label htmlFor={`cat-${cat.id}`} className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors cursor-pointer flex-1">
                 {cat.name}
               </label>
@@ -674,7 +700,11 @@ export default function ProductsPage({
           <div className="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-2">
             {availableSubCategories.map((sub) => (
               <div key={sub} className="flex items-center space-x-3 group cursor-pointer" onClick={() => handleSubCategoryToggle(sub)}>
-                <Checkbox id={`sub-${sub}`} checked={selectedSubCategories.includes(sub)} />
+                <Checkbox
+                  id={`sub-${sub}`}
+                  checked={selectedSubCategories.includes(sub)}
+                  disabled={Boolean(lockedSubCategoryName)}
+                />
                 <label htmlFor={`sub-${sub}`} className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors cursor-pointer flex-1">
                   {sub}
                 </label>
@@ -735,7 +765,7 @@ export default function ProductsPage({
             <span>{heading}</span>
             {!isLoading && (
               <span className="hidden sm:inline-flex items-center justify-center ml-2 px-3 py-1 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 text-lg sm:text-xl md:text-2xl rounded-lg font-display tracking-wide border border-yellow-500/30">
-                ({products.length})
+                ({filteredProducts.length})
               </span>
             )}
           </h1>
@@ -877,12 +907,18 @@ export default function ProductsPage({
               )}
               {selectedCategories.map((cat) => (
                 <Badge key={cat} variant="outline" className="h-7 sm:h-8 gap-1.5 pl-2.5 pr-1.5 rounded-full text-xs">
-                  {cat} <X className="h-3 w-3 cursor-pointer" onClick={() => handleCategoryToggle(cat)} />
+                  {cat}
+                  {!lockedCategoryName && (
+                    <X className="h-3 w-3 cursor-pointer" onClick={() => handleCategoryToggle(cat)} />
+                  )}
                 </Badge>
               ))}
               {selectedSubCategories.map((sub) => (
                 <Badge key={sub} variant="outline" className="h-7 sm:h-8 gap-1.5 pl-2.5 pr-1.5 rounded-full border-dashed text-xs">
-                  {sub} <X className="h-3 w-3 cursor-pointer" onClick={() => handleSubCategoryToggle(sub)} />
+                  {sub}
+                  {!lockedSubCategoryName && (
+                    <X className="h-3 w-3 cursor-pointer" onClick={() => handleSubCategoryToggle(sub)} />
+                  )}
                 </Badge>
               ))}
               {(priceRange[0] > minPrice || priceRange[1] < maxPrice) && (

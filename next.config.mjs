@@ -5,6 +5,12 @@ const nextConfig = {
     },
     async redirects() {
         return [
+            {
+                source: '/:path*',
+                has: [{ type: 'host', value: 'ironz.ma' }],
+                destination: 'https://www.ironz.ma/:path*',
+                permanent: true,
+            },
             { source: '/index', destination: '/', permanent: true },
             { source: '/product', destination: '/produit', permanent: true },
             { source: '/produits', destination: '/produit', permanent: true },
