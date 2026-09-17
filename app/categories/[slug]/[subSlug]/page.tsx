@@ -56,7 +56,7 @@ const SUBCATEGORY_SEO: Record<
       "Retrouvez les accessoires qui complètent vos exercices de tirage et de musculation : cordes triceps, barre de tirage et poignée de prise en croix. Le rayon comprend également des barres de musculation, des barres de traction et une référence de charges de 5 kg. Avant de choisir, consultez la longueur, la fixation et les caractéristiques renseignées sur chaque fiche afin de vérifier la compatibilité avec votre installation. Cette sélection se concentre sur les accessoires de travail, distincts des machines complètes et du rayon haltères et kettlebells.",
   },
   "supplement/healthy-products": {
-    title: "Crème de riz, sauces et sirops | IRONZ Maroc",
+    title: "Crème de riz, sauces et sirops | IRONZ",
     description:
       "Crème de riz Applied Nutrition, sauces ServiVita et sirop Vitadulce : retrouvez les produits du rayon Healthy Products chez IRONZ au Maroc.",
     heading: "Crème de riz, sauces et sirops",
