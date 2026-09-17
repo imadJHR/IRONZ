@@ -10,9 +10,9 @@ type ProductsPageProps = {
 };
 
 const baseMetadata = {
-  title: "Catalogue fitness et musculation au Maroc",
+  title: "Catalogue produits | IRONZ",
   description:
-    "Découvrez notre gamme complète d'équipements sportifs premium : haltères, barres, machines, accessoires fitness. Livraison rapide partout au Maroc. Qualité professionnelle garantie.",
+    "Parcourez tous les produits IRONZ: équipements de fitness, machines, accessoires de sport et suppléments disponibles au Maroc.",
 };
 
 // ─── SEO METADATA (Server Component) ─────────────────────
@@ -56,9 +56,9 @@ export async function generateMetadata({
         },
     alternates: { canonical: "/produit" },
     openGraph: {
-      title: "Nos Produits | IRONZ - Équipement Sportif Premium",
+          title: "Catalogue produits | IRONZ",
       description:
-        "Découvrez notre gamme complète d'équipements sportifs premium. Livraison rapide au Maroc.",
+        "Parcourez tous les produits IRONZ: équipements, accessoires et suppléments disponibles au Maroc.",
       url: "https://www.ironz.ma/produit",
       siteName: "IRONZ",
       locale: "fr_MA",
@@ -74,10 +74,10 @@ export async function generateMetadata({
       ],
     },
     twitter: {
-      card: "summary_large_image",
-      title: "Nos Produits | IRONZ - Équipement Sportif Premium",
+          card: "summary_large_image",
+          title: "Catalogue produits | IRONZ",
       description:
-        "Découvrez notre gamme complète d'équipements sportifs premium. Livraison rapide au Maroc.",
+        "Parcourez tous les produits IRONZ: équipements, accessoires et suppléments disponibles au Maroc.",
       images: ["https://www.ironz.ma/og-produits.jpg"],
       creator: "@ironzmaroc",
     },
@@ -249,7 +249,7 @@ export default async function Page() {
     <>
       <JsonLd products={products} />
       <h1 className="sr-only">
-        Équipement fitness et matériel de musculation au Maroc
+        Catalogue complet des produits IRONZ
       </h1>
       <Suspense fallback={<LoadingSkeleton />}>
         <ProductsPage initialProducts={products} />

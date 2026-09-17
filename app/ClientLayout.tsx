@@ -1341,6 +1341,23 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
     ],
     [language]
   );
+  const footerSubcategories = useMemo<CategoryLink[]>(
+    () => [
+      {
+        name: language === "fr" ? "Machines de fitness" : "Fitness Machines",
+        href: "/categories/equipements/machine-de-fitness",
+      },
+      {
+        name: language === "fr" ? "Poids libres" : "Free Weights",
+        href: "/categories/accessoires/poids-libres",
+      },
+      {
+        name: language === "fr" ? "Accessoires de boxe" : "Boxing Accessories",
+        href: "/categories/accessoires/accessoires-de-boxe",
+      },
+    ],
+    [language]
+  );
 
   const infoLinks = useMemo<CategoryLink[]>(
     () => [
@@ -1492,6 +1509,16 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                   <Link
                     href={cat.href}
                     className="inline-block text-gray-400 hover:text-yellow-400 hover:translate-x-1 transition-all text-sm"
+                  >
+                    {cat.name}
+                  </Link>
+                </li>
+              ))}
+              {footerSubcategories.map((cat, i) => (
+                <li key={`sub-${i}`}>
+                  <Link
+                    href={cat.href}
+                    className="inline-block text-gray-500 hover:text-yellow-400 hover:translate-x-1 transition-all text-sm"
                   >
                     {cat.name}
                   </Link>

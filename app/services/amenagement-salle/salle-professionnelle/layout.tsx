@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Équipement de salle de sport professionnelle au Maroc",
-  description: "Équipez votre salle de sport professionnelle au Maroc avec l’étude, le matériel et l’installation IRONZ.",
+  title: "Salle de sport professionnelle au Maroc | IRONZ",
+  description:
+    "Équipement et aménagement de salles professionnelles au Maroc : salles de sport, hôtels, entreprises et centres sportifs. Devis personnalisé.",
   alternates: { canonical: "/services/amenagement-salle/salle-professionnelle" },
 };
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact et showroom à Agadir",
+  title: "Contact et showroom à Agadir | IRONZ",
   description: "Contactez IRONZ pour vos équipements sportifs, commandes et projets de salle au Maroc. Showroom au Sahara Mall à Agadir.",
   alternates: { canonical: "/contact" },
 };

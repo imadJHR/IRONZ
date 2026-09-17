@@ -9,7 +9,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const category = CATEGORY_DEFINITIONS[slug as keyof typeof CATEGORY_DEFINITIONS] ?? {
-    title: "Produits de sport et fitness",
+    title: "Produits de sport et fitness | IRONZ",
     description:
       "Découvrez les produits IRONZ pour le sport, le fitness et la remise en forme au Maroc.",
   };

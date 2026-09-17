@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home gym sur mesure au Maroc",
-  description: "Créez votre home gym au Maroc avec une étude sur mesure, des équipements adaptés et une installation professionnelle IRONZ.",
+  title: "Home Gym sur mesure au Maroc | IRONZ",
+  description:
+    "Créez votre home gym au Maroc : étude sur mesure, conception 3D, équipements premium et installation professionnelle. Devis gratuit.",
   alternates: { canonical: "/services/amenagement-salle/home-gym" },
 };
 

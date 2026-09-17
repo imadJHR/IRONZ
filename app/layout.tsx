@@ -14,10 +14,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: {
-    default: "IRONZ | Équipement fitness et musculation au Maroc",
-    template: "%s | IRONZ",
-  },
+  title: "IRONZ | Équipement fitness et musculation au Maroc",
   description:
     "Équipements de fitness, matériel de musculation, accessoires et suppléments sportifs avec livraison partout au Maroc.",
   keywords: [

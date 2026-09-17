@@ -433,6 +433,70 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* ── Service Routes ───────────────────────────────────────────── */}
+      <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+
+        <div className="relative container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
+              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
+                Services détaillés
+              </span>
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
+              Chaque <span className="text-yellow-500">Service</span> en détail
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Explorez nos prestations spécifiques et trouvez la solution adaptée à vos besoins
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {[
+              { href: "/services/amenagement-salle", title: "Aménagement de salle", desc: "Home gym, salles pro, hôtels et centres sportifs", icon: "🏋️" },
+              { href: "/services/amenagement-salle/home-gym", title: "Home Gym", desc: "Salle de sport privée sur mesure à domicile", icon: "🏠" },
+              { href: "/services/amenagement-salle/salle-professionnelle", title: "Salle professionnelle", desc: "Équipement complet pour salles commerciales", icon: "🏢" },
+              { href: "/services/espace-enfance", title: "Espace Enfance", desc: "Aires de jeux et fitness adaptés aux enfants", icon: "🧒" },
+              { href: "/services/revetement-sol-mur", title: "Revêtements", desc: "Sol et mur sportifs : caoutchouc, PVC, résine", icon: "🛡️" },
+              { href: "/services/personnalisation-accessoires", title: "Personnalisation", desc: "Accessoires sur mesure : couleurs et logo", icon: "🎨" },
+            ].map((service, index) => (
+              <motion.div
+                key={service.href}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Link href={service.href}>
+                  <div className="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 cursor-pointer h-full flex flex-col">
+                    <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
+                      {service.icon}
+                    </div>
+                    <h3 className="text-xl font-display uppercase tracking-wide mb-2 text-gray-900 dark:text-white group-hover:text-yellow-500 transition-colors">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed flex-grow">
+                      {service.desc}
+                    </p>
+                    <div className="mt-4 text-yellow-500 font-medium text-sm flex items-center gap-2">
+                      En savoir plus
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Process Section */}
       <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">

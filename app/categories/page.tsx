@@ -23,8 +23,10 @@ interface Category {
 }
 
 export const metadata: Metadata = {
-  title: "Toutes les catégories | IRONZ",
-  description: "Découvrez toutes nos catégories de produits fitness et arts martiaux",
+  title: "Catégories de produits fitness | IRONZ",
+  description:
+    "Explorez les grandes catégories IRONZ: équipements de fitness, accessoires de sport et suppléments.",
+  alternates: { canonical: "/categories" },
 };
 
 // 2. Fonction de récupération des données typée
@@ -127,7 +129,7 @@ export default async function CategoriesPage() {
         </Link>
 
         <h1 className="text-3xl md:text-4xl font-heading font-bold mb-8">
-          Toutes nos catégories
+          Catégories de produits IRONZ
         </h1>
 
         {categories.length === 0 ? (

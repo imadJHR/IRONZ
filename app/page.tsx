@@ -1,6 +1,7 @@
 import HomeClient from "./HomeClient";
 import type { Product } from "./HomeClient";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://cts4hw2cbnwl4ur7zp6acy6cyy0jnxeo.lambda-url.eu-north-1.on.aws/api";
 
@@ -111,6 +112,17 @@ export default async function Page() {
           }),
         }}
       />
+      <nav aria-label="Sous-catégories prioritaires" className="sr-only">
+        <Link href="/categories/equipements/machine-de-fitness">
+          Machines de fitness
+        </Link>
+        <Link href="/categories/accessoires/poids-libres">
+          Poids libres
+        </Link>
+        <Link href="/categories/accessoires/accessoires-de-boxe">
+          Accessoires de boxe
+        </Link>
+      </nav>
       <HomeClient
         initialProducts={products}
         initialVedetteProducts={vedetteProducts}

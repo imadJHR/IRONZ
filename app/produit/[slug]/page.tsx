@@ -35,6 +35,52 @@ function productDescription(product: Product): string {
   return `${product.name} disponible chez IRONZ. Équipement sportif livré partout au Maroc.`;
 }
 
+function stringScore(value: string): number {
+  return Array.from(value).reduce(
+    (score, character) => (score * 31 + character.charCodeAt(0)) % 100000,
+    7,
+  );
+}
+
+function sortFromProductSeed(products: Product[], seed: string): Product[] {
+  const offset = stringScore(seed);
+  return [...products].sort((left, right) => {
+    const leftScore = stringScore(`${seed}:${productSlug(left)}`) + offset;
+    const rightScore = stringScore(`${seed}:${productSlug(right)}`) + offset;
+    return leftScore - rightScore;
+  });
+}
+
+function selectRelatedProducts(product: Product, products: Product[]): Product[] {
+  const currentSlug = productSlug(product);
+  const related = new Map<string, Product>();
+  const addCandidates = (candidates: Product[]) => {
+    for (const candidate of sortFromProductSeed(candidates, currentSlug)) {
+      const candidateSlug = productSlug(candidate);
+      if (candidateSlug === currentSlug || related.has(candidateSlug)) continue;
+      related.set(candidateSlug, candidate);
+      if (related.size >= 4) break;
+    }
+  };
+
+  addCandidates(
+    products.filter(
+      (item) =>
+        item.subCategory &&
+        product.subCategory &&
+        item.subCategory === product.subCategory,
+    ),
+  );
+
+  if (related.size < 4) {
+    addCandidates(
+      products.filter((item) => item.category === product.category),
+    );
+  }
+
+  return Array.from(related.values()).slice(0, 4);
+}
+
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   if (!isValidProductSlug(slug)) {
@@ -100,12 +146,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     console.error(`[product] Unable to load related products for ${slug}.`, error);
   }
 
-  const related = allProducts
-    .filter(
-      (item) =>
-        item.category === product.category && productSlug(item) !== productSlug(product),
-    )
-    .slice(0, 4);
+  const related = selectRelatedProducts(product, allProducts);
   const canonicalUrl = `${SITE_URL}/produit/${productSlug(product)}`;
   const images = [product.image, ...(product.gallery || []), ...(product.images || [])].filter(
     (image): image is string => Boolean(image),

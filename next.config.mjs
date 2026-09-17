@@ -6,6 +6,11 @@ const nextConfig = {
     async redirects() {
         return [
             {
+                source: '/categories/equipements/accessoires-de-boxe',
+                destination: '/categories/accessoires/accessoires-de-boxe',
+                permanent: true,
+            },
+            {
                 source: '/:path*',
                 has: [{ type: 'host', value: 'ironz.ma' }],
                 destination: 'https://www.ironz.ma/:path*',

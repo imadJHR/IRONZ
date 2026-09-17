@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Accessoires sportifs personnalisés au Maroc",
-  description: "Personnalisez vos accessoires et équipements sportifs avec vos couleurs et votre logo grâce au service IRONZ.",
+  title: "Personnalisation d'accessoires sportifs au Maroc | IRONZ",
+  description:
+    "Personnalisez vos accessoires sportifs au Maroc : gants, ceintures, sangles, genouillères avec vos couleurs et logo. Livraison rapide.",
   alternates: { canonical: "/services/personnalisation-accessoires" },
 };
 

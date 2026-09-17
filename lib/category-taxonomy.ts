@@ -36,12 +36,12 @@ export const CATEGORY_DEFINITIONS: Record<CategorySlug, CategoryDefinition> = {
     slug: "equipements",
     name: "Equipements",
     aliases: ["equipements", "équipements"],
-    heading: "Équipements fitness et musculation",
+    heading: "Équipements pour cardio et musculation",
     intro:
-      "Découvrez nos machines et équipements de fitness pour la maison, les salles de sport et les espaces professionnels au Maroc.",
-    title: "Équipements fitness professionnels au Maroc",
+      "Un espace d'entraînement se construit autour du matériel adapté à vos exercices. Cette catégorie réunit les équipements IRONZ pour le cardio et la musculation : vélos, rameur, tapis roulant, machines de travail des jambes, rack et banc. Vous y trouverez aussi un Reformer Pilates, une barre de traction et des haltères. Parcourez les sous-catégories pour choisir une famille de matériel, puis consultez les dimensions et caractéristiques indiquées sur chaque fiche avant d'équiper votre espace au Maroc.",
+    title: "Équipements de cardio et musculation au Maroc | IRONZ",
     description:
-      "Découvrez les équipements IRONZ pour salles de sport, fitness, musculation et remise en forme au Maroc.",
+      "Équipez votre espace avec IRONZ : vélos, rameur, tapis roulant, banc et machines de musculation. Parcourez les familles d'équipements au Maroc.",
   },
   supplement: {
     slug: "supplement",
@@ -49,21 +49,21 @@ export const CATEGORY_DEFINITIONS: Record<CategorySlug, CategoryDefinition> = {
     aliases: ["supplement", "supplément"],
     heading: "Suppléments et nutrition sportive",
     intro:
-      "Découvrez notre sélection de suppléments et produits de nutrition sportive disponibles avec livraison au Maroc.",
-    title: "Suppléments et nutrition sportive au Maroc",
+      "La nutrition sportive regroupe ici plusieurs familles de produits : whey, isolat de whey, gainer, multivitamines, zinc et oméga-3. Le rayon comprend également une boisson énergisante, de la crème de riz, des sauces et des sirops. Utilisez les sous-catégories pour accéder au type de produit recherché, puis consultez sa composition, son format et ses indications d'utilisation sur la fiche. Ce catalogue IRONZ au Maroc permet de distinguer les compléments alimentaires des produits destinés à vos préparations culinaires.",
+    title: "Suppléments et nutrition sportive au Maroc | IRONZ",
     description:
-      "Découvrez les suppléments et produits de nutrition sportive IRONZ pour accompagner vos objectifs de performance.",
+      "Whey, isolat, gainer, vitamines et oméga-3 : parcourez la nutrition sportive IRONZ au Maroc, ainsi que les crèmes de riz, sauces et sirops.",
   },
   accessoires: {
     slug: "accessoires",
     name: "Accessoires",
     aliases: ["accessoires"],
-    heading: "Accessoires de fitness et musculation",
+    heading: "Accessoires de sport et d'entraînement",
     intro:
-      "Retrouvez nos accessoires pour le fitness, la musculation, la récupération et l'entraînement quotidien au Maroc.",
-    title: "Accessoires de sport et fitness au Maroc",
+      "Complétez votre matériel selon votre pratique : fitness, musculation, boxe ou entraînement avec poids libres. Ce rayon rassemble des accessoires aussi variés que les tapis, bandes de résistance, cordes à sauter, poignées de tirage, haltères et protections de boxe. Des vêtements, sacs et accessoires de natation sont également présents. Les sous-catégories vous orientent vers les produits propres à chaque activité ; consultez ensuite les formats, charges et détails de chaque référence pour préparer votre achat chez IRONZ au Maroc.",
+    title: "Accessoires de sport et fitness au Maroc | IRONZ",
     description:
-      "Découvrez les accessoires IRONZ pour le sport, le fitness, la musculation et le bien-être au Maroc.",
+      "Trouvez vos accessoires chez IRONZ : fitness, boxe, poids libres, poignées de musculation, vêtements et sacs. Un rayon organisé par pratique sportive.",
   },
 };
 

@@ -120,6 +120,56 @@ const generateSlug = (name: string, id?: string): string => {
   return id ? `${base}-${id.slice(-6)}` : base;
 };
 
+const productSlug = (product: Product): string =>
+  product.slug || generateSlug(product.name, product._id || product.id);
+
+const stringScore = (value: string): number =>
+  Array.from(value).reduce(
+    (score, character) => (score * 31 + character.charCodeAt(0)) % 100000,
+    7
+  );
+
+const sortFromProductSeed = (products: Product[], seed: string): Product[] =>
+  [...products].sort((left, right) => {
+    const leftScore = stringScore(`${seed}:${productSlug(left)}`);
+    const rightScore = stringScore(`${seed}:${productSlug(right)}`);
+    return leftScore - rightScore;
+  });
+
+function selectRelatedProducts(
+  products: Product[],
+  currentSlug?: string,
+  category?: string,
+  subCategory?: string
+): Product[] {
+  if (!currentSlug) return [];
+
+  const related = new Map<string, Product>();
+  const addCandidates = (candidates: Product[]) => {
+    for (const candidate of sortFromProductSeed(candidates, currentSlug)) {
+      const candidateSlug = productSlug(candidate);
+      if (candidateSlug === currentSlug || related.has(candidateSlug)) continue;
+      related.set(candidateSlug, candidate);
+      if (related.size >= 4) break;
+    }
+  };
+
+  addCandidates(
+    products.filter(
+      (product) =>
+        Boolean(subCategory) &&
+        Boolean(product.subCategory) &&
+        product.subCategory === subCategory
+    )
+  );
+
+  if (related.size < 4) {
+    addCandidates(products.filter((product) => product.category === category));
+  }
+
+  return Array.from(related.values()).slice(0, 4);
+}
+
 // ─── CLOUD IMAGE ─────────────────────────────────────────
 const CloudImg = memo(
   ({
@@ -262,23 +312,19 @@ async function fetchProductBySlug(slug: string): Promise<Product | null> {
 
 async function fetchRelatedProducts(
   category?: string,
+  subCategory?: string,
   currentSlug?: string
 ): Promise<Product[]> {
   if (!category) return [];
   try {
     const res = await fetch(
-      `${API_URL}/products?category=${encodeURIComponent(category)}&limit=10`,
+      `${API_URL}/products?category=${encodeURIComponent(category)}&limit=100`,
       { cache: "no-store" }
     );
     if (!res.ok) return [];
     const data = await res.json();
     const products = data.data || data.products || data || [];
-    return products
-      .filter((p: Product) => {
-        const pSlug = p.slug || generateSlug(p.name, p._id || p.id);
-        return pSlug !== currentSlug;
-      })
-      .slice(0, 4);
+    return selectRelatedProducts(products, currentSlug, category, subCategory);
   } catch {
     return [];
   }
@@ -336,7 +382,7 @@ export default function ProductDetailClient({
         setProduct(prod);
         if (prod) {
           await loadReviews(prod._id || prod.id || "");
-          const rel = await fetchRelatedProducts(prod.category, slug);
+          const rel = await fetchRelatedProducts(prod.category, prod.subCategory, slug);
           setRelated(rel);
         }
       })
@@ -996,13 +1042,12 @@ export default function ProductDetailClient({
               {Boolean(product.tags?.length) && (
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {product.tags.map((tag) => (
-                    <Link
+                    <span
                       key={tag}
-                      href={`/produit?q=${encodeURIComponent(tag)}`}
-                      className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-yellow-100 dark:hover:bg-yellow-900/20 text-gray-600 dark:text-gray-400 hover:text-yellow-700 dark:hover:text-yellow-400 rounded-lg text-[11px] font-semibold transition-colors border border-transparent hover:border-yellow-200 dark:hover:border-yellow-800"
+                      className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-lg text-[11px] font-semibold border border-transparent"
                     >
                       #{tag}
-                    </Link>
+                    </span>
                   ))}
                 </div>
               )}

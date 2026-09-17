@@ -4,7 +4,7 @@ const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://cts4hw2cbnwl4ur7zp6acy6cyy0jnxeo.lambda-url.eu-north-1.on.aws/api";
 export const PRODUCT_DETAIL_REVALIDATE_SECONDS = 600;
-const PRODUCT_CACHE_NAMESPACE = "v2-taxonomy-output";
+const PRODUCT_CACHE_NAMESPACE = "v3-boxing-taxonomy";
 const PRODUCT_CACHE_TAGS = ["product-detail", "product-taxonomy"];
 
 export interface ProductRecord {

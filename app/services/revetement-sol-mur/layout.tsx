@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Revêtement de sol sportif au Maroc",
-  description: "Solutions IRONZ de sols et murs sportifs: revêtements amortissants, durables et installés sur mesure au Maroc.",
+  title: "Revêtement de sol sportif au Maroc | IRONZ",
+  description:
+    "Revêtements de sol et murs sportifs au Maroc : dalles caoutchouc, PVC, résine polyuréthane, miroirs et protections murales. Garantie 5 ans.",
   alternates: { canonical: "/services/revetement-sol-mur" },
 };
 

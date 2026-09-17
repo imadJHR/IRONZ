@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Conditions générales",
+  title: "Conditions générales | IRONZ",
   description: "Conditions générales d’utilisation et de vente du site IRONZ.",
+  alternates: { canonical: "/conditions" },
 };
 
 export default function ConditionsPage() {

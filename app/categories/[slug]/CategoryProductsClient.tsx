@@ -398,6 +398,11 @@ interface ProductsPageProps {
   lockedSubCategoryName?: string;
 }
 
+function productHref(product: Product): string {
+  const productId = getProductId(product);
+  return `/produit/${product.slug || productId}`;
+}
+
 export default function ProductsPage({
   initialProducts = [],
   heading = "Produits",
@@ -456,6 +461,17 @@ export default function ProductsPage({
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const productsPerPage = 12;
+  const crawlableProducts = useMemo(
+    () =>
+      Array.from(
+        new Map(
+          initialProducts
+            .filter((product) => product.slug || getProductId(product))
+            .map((product) => [productHref(product), product]),
+        ).values(),
+      ),
+    [initialProducts],
+  );
 
   const { addToCart } = useCart();
   const pollRef = useRef<NodeJS.Timeout | null>(null);
@@ -804,6 +820,18 @@ export default function ProductsPage({
           <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto px-4">
             {intro}
           </p>
+          {crawlableProducts.length > 0 && (
+            <nav
+              aria-label="Liens produits de cette sélection"
+              className="sr-only focus-within:not-sr-only focus-within:mt-6 focus-within:flex focus-within:flex-wrap focus-within:justify-center focus-within:gap-2"
+            >
+              {crawlableProducts.map((product) => (
+                <Link key={productHref(product)} href={productHref(product)}>
+                  {product.name}
+                </Link>
+              ))}
+            </nav>
+          )}
         </header>
 
         {/* Filter Bar */}

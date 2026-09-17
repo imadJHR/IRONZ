@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Questions fréquentes",
-  description: "Réponses aux questions fréquentes sur les produits et services IRONZ.",
+  title: "Questions fréquentes | IRONZ",
+  description: "Réponses aux questions fréquentes sur les produits, services et devis IRONZ.",
+  alternates: { canonical: "/faq" },
 };
 
 const questions = [

@@ -9,7 +9,7 @@ const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://cts4hw2cbnwl4ur7zp6acy6cyy0jnxeo.lambda-url.eu-north-1.on.aws/api";
 const SITEMAP_REVALIDATE_SECONDS = 3600;
-const SITEMAP_CACHE_NAMESPACE = "v2-taxonomy-output";
+const SITEMAP_CACHE_NAMESPACE = "v3-boxing-taxonomy";
 const SITEMAP_CACHE_TAGS = ["sitemap-products", "product-taxonomy"];
 
 export const revalidate = 3600;
