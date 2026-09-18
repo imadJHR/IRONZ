@@ -301,6 +301,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
 
   const canonicalUrl = `${SITE_URL}/categories/${data.category.slug}/${data.subcategory.slug}`;
   const { heading, intro } = subcategorySeoText(data);
+  const renderIntroInClient = true;
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -375,7 +376,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
       <CategoryProductsClient
         initialProducts={data.products as Product[]}
         heading={heading}
-        intro={intro}
+        intro={renderIntroInClient ? intro : undefined}
         initialCategoryName={data.category.name}
         initialSubCategoryName={data.subcategory.name}
         lockedCategoryName={data.category.name}

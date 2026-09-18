@@ -817,9 +817,11 @@ export default function ProductsPage({
           )}
 
           <div className="h-1.5 w-20 bg-yellow-500 mx-auto -skew-x-12 mt-3" />
-          <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto px-4">
-            {intro}
-          </p>
+          {intro && (
+            <p className="mt-4 text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-2xl mx-auto px-4">
+              {intro}
+            </p>
+          )}
           {crawlableProducts.length > 0 && (
             <nav
               aria-label="Liens produits de cette sélection"

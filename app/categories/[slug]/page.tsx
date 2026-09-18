@@ -24,9 +24,13 @@ export default async function CategoryPage({
   );
   const canonicalUrl = `https://www.ironz.ma/categories/${slug}`;
   const subcategories = category.subcategories;
-  const introSubcategories = subcategories.slice(0, 3);
+  const introSubcategories = [...subcategories]
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "fr"))
+    .slice(0, 3);
   const introParts = category.intro.split("Parcourez les sous-catégories");
-  const introTail = introParts.length > 1 ? introParts[1] : "";
+  const introTail = introParts.length > 1
+    ? introParts[1].replace(/^[\s,]+/, "").trim()
+    : "";
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -113,6 +117,7 @@ export default async function CategoryPage({
           {introParts[0]}{" "}
           {subcategories.length > 0 && (
             <>
+              {" "}
               Parcourez les sous-catégories pour choisir une famille de
               matériel&nbsp;:{" "}
               {introSubcategories.map((subcategory, index) => (
@@ -127,7 +132,7 @@ export default async function CategoryPage({
                   </Link>
                 </React.Fragment>
               ))}
-              .&nbsp;{introTail}
+              . {introTail}
             </>
           )}
         </p>
@@ -135,7 +140,6 @@ export default async function CategoryPage({
       <CategoryProductsClient
         initialProducts={initialProducts as Product[]}
         heading={category.heading}
-        intro={introParts[0]}
         initialCategoryName={category.name}
         lockedCategoryName={category.name}
       />
