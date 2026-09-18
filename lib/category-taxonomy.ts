@@ -58,12 +58,12 @@ export const CATEGORY_DEFINITIONS: Record<CategorySlug, CategoryDefinition> = {
     slug: "accessoires",
     name: "Accessoires",
     aliases: ["accessoires"],
-    heading: "Accessoires de sport et d'entraînement",
+    heading: "Accessoires de sport, fitness et entraînement",
     intro:
-      "Complétez votre matériel selon votre pratique : fitness, musculation, boxe ou entraînement avec poids libres. Ce rayon rassemble des accessoires aussi variés que les tapis, bandes de résistance, cordes à sauter, poignées de tirage, haltères et protections de boxe. Des vêtements, sacs et accessoires de natation sont également présents. Les sous-catégories vous orientent vers les produits propres à chaque activité ; consultez ensuite les formats, charges et détails de chaque référence pour préparer votre achat chez IRONZ au Maroc.",
-    title: "Accessoires de sport et fitness au Maroc | IRONZ",
+      "Le rayon Accessoires IRONZ regroupe 85 produits pour compléter vos séances de sport, fitness et musculation au Maroc. Il sert de point d'entrée vers le petit matériel d'entraînement, les poids libres, les accessoires de boxe, les poignées et barres de travail, ainsi que les vêtements, sacs et packs. Parcourez les sous-catégories pour rejoindre le bon univers avant de comparer les formats, charges et détails de chaque référence.",
+    title: "Accessoires de sport, fitness et musculation au Maroc | IRONZ",
     description:
-      "Trouvez vos accessoires chez IRONZ : fitness, boxe, poids libres, poignées de musculation, vêtements et sacs. Un rayon organisé par pratique sportive.",
+      "Explorez les accessoires de sport IRONZ au Maroc : fitness, musculation, boxe, poids libres, vêtements et packs, avec accès aux bons rayons.",
   },
 };
 

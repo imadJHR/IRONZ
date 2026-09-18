@@ -24,9 +24,10 @@ export default async function CategoryPage({
   );
   const canonicalUrl = `https://www.ironz.ma/categories/${slug}`;
   const subcategories = category.subcategories;
+  const introSubcategoryLimit = category.slug === "accessoires" ? 4 : 3;
   const introSubcategories = [...subcategories]
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "fr"))
-    .slice(0, 3);
+    .slice(0, introSubcategoryLimit);
   const introParts = category.intro.split("Parcourez les sous-catégories");
   const introTail = introParts.length > 1
     ? introParts[1].replace(/^[\s,]+/, "").trim()
