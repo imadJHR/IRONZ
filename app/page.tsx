@@ -113,6 +113,7 @@ export default async function Page() {
         }}
       />
       <nav aria-label="Sous-catégories prioritaires" className="sr-only">
+        <Link href="/categories/equipements">Équipements</Link>
         <Link href="/categories/equipements/machine-de-fitness">
           Machines de fitness
         </Link>

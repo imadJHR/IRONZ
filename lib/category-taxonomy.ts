@@ -38,10 +38,10 @@ export const CATEGORY_DEFINITIONS: Record<CategorySlug, CategoryDefinition> = {
     aliases: ["equipements", "équipements"],
     heading: "Équipements pour cardio et musculation",
     intro:
-      "Un espace d'entraînement se construit autour du matériel adapté à vos exercices. Cette catégorie réunit les équipements IRONZ pour le cardio et la musculation : vélos, rameur, tapis roulant, machines de travail des jambes, rack et banc. Vous y trouverez aussi un Reformer Pilates, une barre de traction et des haltères. Parcourez les sous-catégories pour choisir une famille de matériel, puis consultez les dimensions et caractéristiques indiquées sur chaque fiche avant d'équiper votre espace au Maroc.",
-    title: "Équipements de cardio et musculation au Maroc | IRONZ",
+      "Un espace d'entraînement se construit autour du matériel adapté à vos exercices. Cette catégorie réunit les équipements IRONZ pour le cardio et la musculation : vélos, rameur, tapis roulant, machines de travail des jambes, rack et banc. Vous y trouverez aussi un Reformer Pilates, une barre de traction et des haltères, ainsi que des home gyms complets. Les marques Panatta et Adidas complètent la sélection, avec des références allant de 249 à 65 000 DH selon le type de machine. Parcourez les sous-catégories pour choisir une famille de matériel, puis consultez les dimensions et caractéristiques indiquées sur chaque fiche avant d'équiper votre espace au Maroc.",
+    title: "Équipements cardio et musculation au Maroc | IRONZ",
     description:
-      "Équipez votre espace avec IRONZ : vélos, rameur, tapis roulant, banc et machines de musculation. Parcourez les familles d'équipements au Maroc.",
+      "Comparez tapis roulant, vélo d'appartement, rameur, home gym et machines de musculation Panatta & Adidas. Prix de 249 à 65 000 DH, livraison au Maroc.",
   },
   supplement: {
     slug: "supplement",
