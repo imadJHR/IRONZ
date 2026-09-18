@@ -67,7 +67,7 @@ export default function ReferencesSection({
 
   const defaultPortfolioItems: PortfolioItem[] = [
     { id: 1, type: "image", src: ref1, category: "Projet Pro" },
-    { id: 3, type: "video", src: "/refV.mp4", category: "Installation" },
+    { id: 3, type: "video", src: "/refV-optimized.mp4", category: "Installation" },
     { id: 4, type: "image", src: ref3, category: "Home Gym" },
     { id: 5, type: "image", src: ref4, category: "Fitness Club" },
     { id: 8, type: "image", src: ref7, category: "Crossfit" },
@@ -150,7 +150,8 @@ export default function ReferencesSection({
                         loop
                         muted
                         playsInline
-                        preload="metadata"
+                        preload="none"
+                        poster="/refV-poster.webp"
                         aria-label={`Vidéo de référence ${item.category}`}
                       >
                         <source src={item.src as string} type="video/mp4" />
