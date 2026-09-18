@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, ChangeEvent, FormEvent, MouseEvent } from "react";
-import { CheckCircle, LucideProps } from "lucide-react";
+import { CheckCircle, ExternalLink } from "lucide-react";
+
+const WHATSAPP_NUMBER = "212674114446";
 
 // Types
 export interface ContactFormData {
@@ -79,20 +81,36 @@ export default function ServiceContactForm({
     setError(null);
 
     try {
-      // Simulate API call (replace with actual fetch when ready)
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      if (endpoint) {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...formData, service }),
+        });
+        if (!response.ok) throw new Error("Submission failed");
+      } else {
+        const whatsappMessage = `📋 DEMANDE DE SERVICE IRONZ
 
-      // Optional: Send to actual endpoint
-      // if (endpoint) {
-      //   const response = await fetch(endpoint, {
-      //     method: "POST",
-      //     headers: { "Content-Type": "application/json" },
-      //     body: JSON.stringify({ ...formData, service }),
-      //   });
-      //   if (!response.ok) throw new Error("Submission failed");
-      // }
+👤 Client:
+• Nom: ${formData.firstName} ${formData.lastName}
+• Email: ${formData.email}
+• Téléphone: ${formData.phone || "Non spécifié"}
 
-      // Call success callback with form data
+🎯 Service:
+${service}
+
+💬 Message:
+${formData.message}
+
+🔗 Source: Page service IRONZ`;
+
+        window.open(
+          `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`,
+          "_blank",
+          "noopener,noreferrer",
+        );
+      }
+
       onSuccess?.(formData);
 
       // Reset form and show success
@@ -126,12 +144,21 @@ export default function ServiceContactForm({
           <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" aria-hidden="true" />
         </div>
         <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
-          Demande envoyée avec succès!
+          Demande préparée sur WhatsApp
         </h3>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
-          Merci pour votre intérêt pour notre service de <span className="font-semibold text-yellow-600 dark:text-yellow-400">{service}</span>. 
-          Notre équipe vous contactera dans les plus brefs délais.
+          Votre message pour le service <span className="font-semibold text-yellow-600 dark:text-yellow-400">{service}</span> a été préparé.
+          Validez l&apos;envoi dans WhatsApp pour transmettre votre demande à IRONZ.
         </p>
+        <a
+          href={`https://wa.me/${WHATSAPP_NUMBER}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-offset-2 dark:focus:ring-offset-gray-950 mb-3"
+        >
+          Ouvrir WhatsApp
+          <ExternalLink className="h-4 w-4" aria-hidden="true" />
+        </a>
         <button
           onClick={handleReset}
           className="px-6 py-2.5 bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-500 dark:hover:bg-yellow-400 text-black font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-offset-2 dark:focus:ring-offset-gray-950"

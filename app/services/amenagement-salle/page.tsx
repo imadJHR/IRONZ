@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
 import {
-  ArrowLeft,
   CheckCircle,
   ArrowRight,
   Phone,
@@ -12,7 +11,6 @@ import {
   Trophy,
   Crown,
   Calendar,
-  Clock,
   MapPin,
   ChevronRight,
   Award,
@@ -42,12 +40,6 @@ interface ProcessStep {
   description: string;
   icon: React.ReactNode;
   features: string[];
-}
-
-interface Stat {
-  value: string;
-  label: string;
-  icon: React.ReactNode;
 }
 
 interface ProjectType {
@@ -91,6 +83,45 @@ const scaleIn: Variants = {
   },
 };
 
+const CANONICAL_URL = "https://www.ironz.ma/services/amenagement-salle";
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Accueil",
+      item: "https://www.ironz.ma/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Services",
+      item: "https://www.ironz.ma/services",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Aménagement de salle",
+      item: CANONICAL_URL,
+    },
+  ],
+};
+
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  serviceType: "Aménagement de salle de sport",
+  provider: {
+    "@type": "Organization",
+    name: "IRONZ",
+    url: "https://www.ironz.ma/",
+  },
+  url: CANONICAL_URL,
+};
+
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const services: Service[] = [
@@ -102,8 +133,8 @@ const services: Service[] = [
     features: [
       "Plans 2D et 3D personnalisés",
       "Optimisation des flux de circulation",
-      "Respect des normes de sécurité",
-      "Visualisation immersive 3D",
+      "Implantation selon l'espace disponible",
+      "Préparation du choix des équipements",
       "Conception sur mesure",
     ],
     color: "from-yellow-500 to-orange-500",
@@ -114,11 +145,11 @@ const services: Service[] = [
     description:
       "Mise en place complète de votre espace fitness, de la préparation à l'installation.",
     features: [
-      "Installation professionnelle certifiée",
+      "Préparation de l'espace",
       "Gestion de projet complète",
       "Coordination des corps de métier",
-      "Suivi qualité rigoureux",
-      "Respect des délais",
+      "Organisation de l'implantation",
+      "Suivi du projet",
     ],
     color: "from-blue-500 to-purple-500",
   },
@@ -128,11 +159,11 @@ const services: Service[] = [
     description:
       "Sélection et installation des équipements adaptés avec finitions personnalisées.",
     features: [
-      "Sélection d'équipements premium",
+      "Sélection d'équipements adaptés",
       "Personnalisation des finitions",
       "Formation à l'utilisation",
-      "Garantie étendue incluse",
-      "Service après-vente premium",
+      "Lien avec les machines fitness",
+      "Lien avec le revêtement sol et mur",
     ],
     color: "from-green-500 to-emerald-500",
   },
@@ -160,9 +191,9 @@ const processSteps: ProcessStep[] = [
     icon: <Target className="w-8 h-8" />,
     features: [
       "Plans 2D et 3D haute définition",
-      "Sélection des matériaux premium",
+      "Sélection des matériaux adaptés",
       "Proposition d'équipements sur mesure",
-      "Visualisation immersive VR",
+      "Préparation de l'implantation",
     ],
   },
   {
@@ -193,63 +224,40 @@ const processSteps: ProcessStep[] = [
   },
   {
     number: "05",
-    title: "Livraison & Suivi VIP",
-    description: "Remise des clés et mise en place du suivi premium",
+    title: "Livraison & Suivi",
+    description: "Remise du projet et accompagnement après installation",
     icon: <Award className="w-8 h-8" />,
     features: [
       "Formation complète à l'utilisation",
-      "Remise des documents garantie",
-      "Service après-vente prioritaire",
-      "Suivi de satisfaction",
+      "Remise des informations utiles",
+      "Point de suivi après installation",
+      "Échange sur les besoins complémentaires",
     ],
-  },
-];
-
-const stats: Stat[] = [
-  {
-    value: "200+",
-    label: "Projets réalisés",
-    icon: <Trophy className="w-5 h-5" />,
-  },
-  {
-    value: "100%",
-    label: "Satisfaction client",
-    icon: <Star className="w-5 h-5" />,
-  },
-  {
-    value: "5",
-    label: "Ans d'expertise",
-    icon: <Calendar className="w-5 h-5" />,
-  },
-  {
-    value: "24h",
-    label: "Support technique",
-    icon: <Clock className="w-5 h-5" />,
   },
 ];
 
 const projectTypes: ProjectType[] = [
   {
-    title: "Home Gym Élite",
-    description: "Transformez votre espace personnel en salle de fitness privée",
+    title: "Home Gym",
+    description: "Projet privé ou résidentiel pour créer une salle de sport à domicile",
     link: "/services/amenagement-salle/home-gym",
     icon: <Home className="w-6 h-6" />,
   },
   {
     title: "Salle Professionnelle",
-    description: "Créez une salle de sport d'entreprise ou commerciale",
+    description: "Projet commercial, entreprise ou espace sportif ouvert au public",
     link: "/services/amenagement-salle/salle-professionnelle",
     icon: <Building className="w-6 h-6" />,
   },
   {
     title: "Espace Hôtelier",
-    description: "Aménagez des espaces fitness pour hôtels et résidences",
+    description: "Espace fitness pour hôtel, résidence ou établissement d'accueil",
     link: "/services/amenagement-salle/salle-professionnelle",
     icon: <Star className="w-6 h-6" />,
   },
   {
     title: "Centre de Rééducation",
-    description: "Solutions sur mesure pour la rééducation fonctionnelle",
+    description: "Projet sportif spécialisé lorsque l'espace exige un choix d'équipements adapté",
     link: "/services/amenagement-salle/salle-professionnelle",
     icon: <Heart className="w-6 h-6" />,
   },
@@ -267,7 +275,7 @@ const packages: Package[] = [
       "Installation professionnelle de base",
       "Formation à l'utilisation",
     ],
-    price: "À partir de 25,000 MAD",
+    price: "Sur devis",
     popular: false,
     color: "from-yellow-500 to-orange-500",
   },
@@ -276,13 +284,13 @@ const packages: Package[] = [
     description: "Solution complète pour une salle optimisée",
     icon: <Crown className="h-10 w-10" />,
     features: [
-      "Conception architecturale complète",
+      "Conception complète",
       "Plans 3D haute définition",
-      "Équipements IRONZ premium",
+      "Équipements IRONZ adaptés",
       "Installation complète clé en main",
       "Formation et suivi personnalisé",
     ],
-    price: "À partir de 50,000 MAD",
+    price: "Sur devis",
     popular: true,
     color: "from-black to-yellow-500",
   },
@@ -292,12 +300,12 @@ const packages: Package[] = [
     icon: <Trophy className="h-10 w-10" />,
     features: [
       "Design et architecture d'intérieur",
-      "Visualisation VR immersive",
-      "Équipements haut de gamme exclusifs",
+      "Étude approfondie de l'espace",
+      "Équipements adaptés au projet",
       "Gestion complète de projet",
-      "Service après-vente VIP 24/7",
+      "Accompagnement après installation",
     ],
-    price: "À partir de 100,000 MAD",
+    price: "Sur devis",
     popular: false,
     color: "from-gray-900 to-yellow-600",
   },
@@ -314,6 +322,14 @@ export default function AmenagementSallePage() {
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
       {/* ── Hero Section ───────────────────────────────────────────────────── */}
       <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-gray-900 via-gray-900 to-black overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-orange-500/10" />
@@ -322,14 +338,28 @@ export default function AmenagementSallePage() {
 
         <div className="relative container mx-auto px-4">
           {/* Breadcrumb */}
-          <nav className="mb-8">
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-yellow-500 transition-colors group"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              Retour aux services
-            </Link>
+          <nav className="mb-8" aria-label="Fil d'Ariane">
+            <ol className="flex flex-wrap items-center gap-2 text-sm font-medium text-gray-400">
+              <li>
+                <Link href="/" className="hover:text-yellow-500 transition-colors">
+                  Accueil
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <ChevronRight className="w-4 h-4" />
+              </li>
+              <li>
+                <Link href="/services" className="hover:text-yellow-500 transition-colors">
+                  Services
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <ChevronRight className="w-4 h-4" />
+              </li>
+              <li className="text-yellow-500" aria-current="page">
+                Aménagement de salle
+              </li>
+            </ol>
           </nav>
 
           {/* Hero Content */}
@@ -345,42 +375,23 @@ export default function AmenagementSallePage() {
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.9]">
-              Aménagement de{" "}
-              <span className="text-yellow-500">Salle</span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display uppercase tracking-wide mb-6 text-white leading-[0.95]">
+              Aménagement de salle de sport{" "}
+              <span className="text-yellow-500">au Maroc</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl leading-relaxed">
-              Transformez votre espace en une salle de fitness élite et
-              fonctionnelle avec notre expertise premium en aménagement
-              d&apos;espaces sportifs sur mesure.
+            <p className="text-lg md:text-2xl text-gray-300 mb-6 max-w-3xl leading-relaxed">
+              IRONZ accompagne les projets d&apos;aménagement de salle de sport,
+              du cadrage de l&apos;espace au choix des équipements, avec des
+              solutions adaptées pour <Link href="/services/amenagement-salle/home-gym" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4">home gym</Link>,{" "}
+              <Link href="/services/amenagement-salle/salle-professionnelle" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4">salle professionnelle</Link> et espaces sportifs au Maroc.
             </p>
-
-            {/* Stats */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mb-10"
-            >
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  variants={scaleIn}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 md:p-6 text-center"
-                >
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <span className="text-white">{stat.icon}</span>
-                    <span className="text-3xl md:text-4xl font-display tracking-wide text-yellow-500">
-                      {stat.value}
-                    </span>
-                  </div>
-                  <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-400">
-                    {stat.label}
-                  </span>
-                </motion.div>
-              ))}
-            </motion.div>
+            <p className="text-base md:text-lg text-gray-400 mb-10 max-w-3xl leading-relaxed">
+              Le projet peut intégrer l&apos;étude, l&apos;implantation, la sélection de
+              <Link href="/categories/equipements" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4"> matériel de fitness</Link>, les
+              <Link href="/categories/equipements/machine-de-fitness" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4"> machines de cardio et musculation</Link>, ainsi que le
+              <Link href="/services/revetement-sol-mur" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4"> revêtement sol et mur</Link>. Pour avancer, demandez un devis ou contactez l&apos;équipe IRONZ sur WhatsApp.
+            </p>
 
             {/* CTA Buttons */}
             <motion.div
@@ -430,12 +441,13 @@ export default function AmenagementSallePage() {
             </div>
 
             <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Créez l&apos;espace{" "}
-              <span className="text-yellow-500">fitness idéal</span>
+              Conception, équipement et{" "}
+              <span className="text-yellow-500">aménagement</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Expertise complète en aménagement d&apos;espaces sportifs, de la
-              conception à la livraison clé en main
+              Un projet de salle de sport combine l&apos;étude de l&apos;espace,
+              l&apos;organisation de l&apos;implantation, le choix des équipements et les
+              finitions adaptées à l&apos;usage.
             </p>
           </motion.div>
 
@@ -781,10 +793,10 @@ export default function AmenagementSallePage() {
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1 text-gray-900 dark:text-white">
-                      WhatsApp VIP
+                      WhatsApp
                     </h4>
                     <p className="text-lg font-bold text-gray-900 dark:text-white">
-                      Réponse rapide garantie
+                      Contact direct
                     </p>
                   </div>
                 </div>
@@ -852,12 +864,12 @@ export default function AmenagementSallePage() {
 
                 <p className="text-gray-300 mb-8 leading-relaxed">
                   Remplissez ce formulaire pour obtenir un devis détaillé et
-                  personnalisé pour votre projet d&apos;aménagement. Notre
-                  équipe vous répond sous 24h.
+                  personnalisé pour votre projet d&apos;aménagement. Votre message
+                  sera préparé pour un envoi direct sur WhatsApp.
                 </p>
 
                 <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                  <ServiceContactForm service="Aménagement Salle Professionnelle Premium" />
+                  <ServiceContactForm service="Aménagement de salle de sport" />
                 </div>
               </div>
             </motion.div>
