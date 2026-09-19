@@ -18,6 +18,8 @@ type SubcategorySeo = {
   intro: string;
   families?: { name: string; detail: string }[];
   guidance?: { title: string; text: string }[];
+  guidanceTitle?: string;
+  guidanceAriaLabel?: string;
   linksShopping?: { href: string; label: string }[];
   linksProject?: { href: string; label: string }[];
 };
@@ -114,12 +116,66 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
       "Le travail de frappe et les exercices à deux demandent des accessoires différents. Ce rayon réunit sacs de frappe, gants, bandes de boxe, paos, pads et cibles, ainsi qu'un plastron et des bâtons d'esquive. Vous y trouverez également des protège-tibias, dont un modèle enfant, et un protège-dents. Comparez les dimensions et les indications propres à chaque référence pour choisir le matériel correspondant à votre pratique. Les fiches IRONZ présentent les produits séparément pour préparer votre équipement de boxe au Maroc.",
   },
   "accessoires/poids-libres": {
-    title: "Haltères, kettlebells et disques au Maroc | IRONZ",
+    title: "Poids libres : haltères, kettlebells et disques au Maroc | IRONZ",
     description:
-      "Parcourez les haltères IRONBULL, haltères PVC, kettlebells et disques de musculation chez IRONZ. Comparez les charges proposées pour vos exercices.",
-    heading: "Haltères, kettlebells et disques de musculation",
+      "Poids libres au Maroc : haltères IRONBULL, haltères PVC, kettlebells et disques de musculation. Comparez 19 références de 99 à 2 350 MAD.",
+    heading: "Poids libres, haltères et kettlebells au Maroc",
     intro:
-      "Choisissez vos poids libres selon la charge et le type de prise recherchés. Cette page rassemble des haltères IRONBULL, des haltères PVC, des kettlebells et des disques de musculation, dont des disques olympiques. Plusieurs charges sont proposées dans ces familles ; ouvrez chaque fiche pour vérifier le poids annoncé, le conditionnement et les caractéristiques disponibles. Pour les disques, contrôlez aussi la compatibilité avec votre barre. Le rayon permet de comparer directement ces références IRONZ pour compléter votre matériel de musculation au Maroc.",
+      "Ce rayon rassemble les poids libres IRONZ pour la musculation et l'entraînement à domicile ou en salle : haltères IRONBULL dans plusieurs charges, haltères PVC, kettlebells et disques de musculation, dont des disques olympiques. Pour choisir, partez des exercices prévus et de la progression recherchée, puis vérifiez le poids annoncé et les caractéristiques de chaque fiche. Pour les disques, contrôlez aussi la compatibilité avec votre barre.",
+    families: [
+      {
+        name: "Haltères",
+        detail:
+          "Haltères IRONBULL dans plusieurs charges et haltères PVC légers pour le travail unilateral et la progression.",
+      },
+      {
+        name: "Kettlebells",
+        detail:
+          "Kettlebells proposés dans plusieurs poids pour les exercices fonctionnels, le gainage et le renforcement.",
+      },
+      {
+        name: "Disques",
+        detail:
+          "Disques de musculation, dont des disques olympiques, pour augmenter la résistance de vos exercices.",
+      },
+    ],
+    guidanceTitle: "vos poids libres",
+    guidanceAriaLabel: "Choisir vos poids libres",
+    guidance: [
+      {
+        title: "Votre objectif d'entraînement",
+        text: "Les haltères conviennent aux exercices de musculation classiques par groupe musculaire, les kettlebells aux mouvements fonctionnels et au gainage, et les disques à l'augmentation de la résistance sur une barre. Votre programme détermine la famille à privilégier.",
+      },
+      {
+        title: "La charge et la progression",
+        text: "Choisissez une charge adaptée à votre niveau, puis progressez par paliers. Les haltères IRONBULL couvrent plusieurs poids successifs, ce qui permet d'augmenter la charge au fur et à mesure de votre évolution.",
+      },
+      {
+        title: "L'espace disponible",
+        text: "Les haltères et les kettlebells s'utilisent sur un espace réduit, sans installation. Les disques nécessitent une barre pour être chargés. Vérifiez les dimensions et le poids annoncé sur chaque fiche avant de choisir.",
+      },
+      {
+        title: "Vérifier chaque fiche avant l'achat",
+        text: "Chaque fiche produit indique le poids exact, le conditionnement et les caractéristiques de la référence. Pour les disques, contrôlez la compatibilité avec votre barre avant de commander.",
+      },
+    ],
+    linksShopping: [
+      { href: "/categories/accessoires", label: "Accessoires de sport" },
+      {
+        href: "/categories/equipements/machine-de-fitness",
+        label: "Machines de fitness et musculation",
+      },
+    ],
+    linksProject: [
+      {
+        href: "/services/amenagement-salle/home-gym",
+        label: "Projet Home Gym",
+      },
+      {
+        href: "/demande-devis?service=amenagement-salle",
+        label: "Demander un devis d'aménagement",
+      },
+    ],
   },
   "accessoires/accessoires-de-musculation": {
     title: "Accessoires de musculation : barres et cordes | IRONZ",
@@ -293,7 +349,7 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
   },
 };
 
-function MachineFitnessBlocks({ seo }: { seo: SubcategorySeo }) {
+function SubcategoryBlocks({ seo }: { seo: SubcategorySeo }) {
   return (
     <>
       {seo.families && seo.families.length > 0 && (
@@ -323,12 +379,14 @@ function MachineFitnessBlocks({ seo }: { seo: SubcategorySeo }) {
 
       {seo.guidance && seo.guidance.length > 0 && (
         <section
-          aria-label="Choisir sa machine de fitness"
+          aria-label={seo.guidanceAriaLabel || "Choisir sa machine de fitness"}
           className="container mx-auto px-3 sm:px-4 mt-10 sm:mt-12"
         >
           <div className="mx-auto max-w-5xl">
             <h2 className="text-center font-display uppercase tracking-wide text-base sm:text-lg text-gray-900 dark:text-white mb-4 sm:mb-5">
-              Comment choisir votre machine
+              {seo.guidanceTitle
+                ? `Comment choisir ${seo.guidanceTitle}`
+                : "Comment choisir votre machine"}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
               {seo.guidance.map((item) => (
@@ -483,8 +541,9 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   const canonicalUrl = `${SITE_URL}/categories/${data.category.slug}/${data.subcategory.slug}`;
   const seoAll = subcategorySeoText(data);
   const { heading, intro } = seoAll;
-  const seoMachineFitness =
-    seoAll === SUBCATEGORY_SEO["equipements/machine-de-fitness"]
+  const seoSubcategoryBlocks =
+    seoAll === SUBCATEGORY_SEO["equipements/machine-de-fitness"] ||
+    seoAll === SUBCATEGORY_SEO["accessoires/poids-libres"]
       ? seoAll
       : null;
   const renderIntroInClient = true;
@@ -559,7 +618,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
           </li>
         </ol>
       </nav>
-      {seoMachineFitness && <MachineFitnessBlocks seo={seoMachineFitness} />}
+      {seoSubcategoryBlocks && <SubcategoryBlocks seo={seoSubcategoryBlocks} />}
       <CategoryProductsClient
         initialProducts={data.products as Product[]}
         heading={heading}
