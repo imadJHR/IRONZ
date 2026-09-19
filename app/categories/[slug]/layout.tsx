@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { CATEGORY_DEFINITIONS } from "../../../lib/category-taxonomy";
+import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../lib/og-image";
 
 export async function generateMetadata({
   params,
@@ -24,6 +25,14 @@ export async function generateMetadata({
       description: category.description,
       url: canonicalPath,
       type: "website",
+      images: OG_LOGO_IMAGES,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: category.title,
+      description: category.description,
+      images: TWITTER_LOGO_IMAGES,
+      creator: "@ironz_official",
     },
   };
 }

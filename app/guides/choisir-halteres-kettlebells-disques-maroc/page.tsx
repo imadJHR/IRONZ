@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../lib/og-image";
 
 export const metadata = {
   title: "Comment choisir ses haltères, kettlebells et disques au Maroc ? | IRONZ",
@@ -12,6 +13,15 @@ export const metadata = {
       "Haltères, kettlebells ou disques : quelles différences, comment choisir le poids adapté à votre entraînement et éviter les mauvais achats.",
     url: "https://www.ironz.ma/guides/choisir-halteres-kettlebells-disques-maroc",
     type: "article",
+    images: OG_LOGO_IMAGES,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Comment choisir ses haltères, kettlebells et disques au Maroc ? | IRONZ",
+    description:
+      "Haltères, kettlebells ou disques : quelles différences, comment choisir le poids adapté à votre entraînement et éviter les mauvais achats.",
+    images: TWITTER_LOGO_IMAGES,
+    creator: "@ironz_official",
   },
 };
 

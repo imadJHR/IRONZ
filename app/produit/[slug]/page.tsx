@@ -10,6 +10,7 @@ import {
   productSlug,
 } from "../../../lib/products";
 import { categoryUrl, subcategoryUrl } from "../../../lib/category-taxonomy";
+import { OG_LOGO_URL } from "../../../lib/og-image";
 
 const SITE_URL = "https://www.ironz.ma";
 export const revalidate = 600;
@@ -127,6 +128,15 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       type: "website",
       locale: "fr_MA",
       images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} | Prix au Maroc | IRONZ`,
+      description,
+      // A Twitter Card renders a single image; the primary product photo is
+      // the same one Open Graph leads with. Logo fallback when none exists.
+      images: [images[0] ?? OG_LOGO_URL],
+      creator: "@ironz_official",
     },
     robots: { index: true, follow: true },
   };

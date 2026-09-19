@@ -8,6 +8,10 @@ import {
   findTaxonomySubcategory,
   productMatchesSubcategory,
 } from "../../../../lib/category-taxonomy";
+import {
+  OG_LOGO_IMAGES,
+  TWITTER_LOGO_IMAGES,
+} from "../../../../lib/og-image";
 
 const SITE_URL = "https://www.ironz.ma";
 
@@ -699,6 +703,14 @@ export async function generateMetadata({
       description,
       url: canonicalPath,
       type: "website",
+      images: OG_LOGO_IMAGES,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: TWITTER_LOGO_IMAGES,
+      creator: "@ironz_official",
     },
   };
 }

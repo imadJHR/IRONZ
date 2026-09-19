@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../lib/og-image";
 
 export const metadata = {
   title:
@@ -16,6 +17,16 @@ export const metadata = {
       "Tapis roulant, vélo ou rameur : quelles différences, quelles caractéristiques comparer et comment choisir selon votre espace avant d'acheter au Maroc.",
     url: "https://www.ironz.ma/guides/choisir-machine-cardio-tapis-velo-rameur-maroc",
     type: "article",
+    images: OG_LOGO_IMAGES,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title:
+      "Tapis roulant, vélo ou rameur : quelle machine cardio choisir au Maroc ? | IRONZ",
+    description:
+      "Tapis roulant, vélo ou rameur : quelles différences, quelles caractéristiques comparer et comment choisir selon votre espace avant d'acheter au Maroc.",
+    images: TWITTER_LOGO_IMAGES,
+    creator: "@ironz_official",
   },
 };
 

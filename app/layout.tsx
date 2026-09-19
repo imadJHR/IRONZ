@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import ClientLayout from "./ClientLayout";
 import FacebookPixel from "../components/FacebookPixel";
+import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../lib/og-image";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -50,15 +51,7 @@ export const metadata: Metadata = {
       "Équipements de fitness, matériel de musculation, accessoires et suppléments sportifs avec livraison partout au Maroc.",
     url: "https://www.ironz.ma",
     siteName: "IRONZ",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1080,
-        height: 1080,
-        alt: "IRONZ - Équipements Professionnels",
-        type: "image/jpeg",
-      },
-    ],
+    images: OG_LOGO_IMAGES,
     locale: "fr_MA",
     type: "website",
   },
@@ -66,7 +59,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "IRONZ | Équipement fitness et musculation au Maroc",
     description: "Matériel de fitness et musculation avec livraison partout au Maroc.",
-    images: ["/og-image.jpg"],
+    images: TWITTER_LOGO_IMAGES,
     creator: "@ironz_official",
   },
   verification: {

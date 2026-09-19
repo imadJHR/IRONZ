@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import ProductsPage from "../../app/produit/page-client";
 import type { Product as CatalogProduct } from "../../app/produit/page-client";
 import { getAllProducts, productSlug } from "../../lib/products";
+import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../lib/og-image";
 
 type ProductsPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -63,23 +64,15 @@ export async function generateMetadata({
       siteName: "IRONZ",
       locale: "fr_MA",
       type: "website",
-      images: [
-        {
-          url: "https://www.ironz.ma/og-produits.jpg",
-          width: 1200,
-          height: 630,
-          alt: "IRONZ - Équipement Sportif Premium au Maroc",
-          type: "image/jpeg",
-        },
-      ],
+      images: OG_LOGO_IMAGES,
     },
     twitter: {
-          card: "summary_large_image",
-          title: "Catalogue produits | IRONZ",
+      card: "summary_large_image",
+      title: "Catalogue produits | IRONZ",
       description:
         "Parcourez tous les produits IRONZ: équipements, accessoires et suppléments disponibles au Maroc.",
-      images: ["https://www.ironz.ma/og-produits.jpg"],
-      creator: "@ironzmaroc",
+      images: TWITTER_LOGO_IMAGES,
+      creator: "@ironz_official",
     },
   };
 }
