@@ -122,6 +122,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/guides/choisir-machine-cardio-tapis-velo-rameur-maroc`,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     { url: `${baseUrl}/faq`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/confidentialite`, changeFrequency: "yearly", priority: 0.2 },
     { url: `${baseUrl}/conditions`, changeFrequency: "yearly", priority: 0.2 },

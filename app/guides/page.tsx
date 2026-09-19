@@ -7,6 +7,13 @@ const guides = [
       "Différences entre haltères, kettlebells et disques, comment choisir le poids adapté à votre entraînement et éviter les mauvais achats.",
     href: "/guides/choisir-halteres-kettlebells-disques-maroc",
   },
+  {
+    title:
+      "Tapis roulant, vélo ou rameur : quelle machine cardio choisir au Maroc ?",
+    description:
+      "Différences entre tapis roulant, vélos et rameur, comment choisir selon votre espace et les caractéristiques à comparer avant d'acheter.",
+    href: "/guides/choisir-machine-cardio-tapis-velo-rameur-maroc",
+  },
 ];
 
 export default function GuidesIndexPage() {
