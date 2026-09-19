@@ -219,8 +219,10 @@ export default function GuideChoixPoidsLibres() {
           </li>
         </ul>
         <p className="mt-4 leading-relaxed text-gray-700 dark:text-gray-300">
-          Côté catalogue IRONZ : disques à <strong>5 kg, 10 kg, 20 kg</strong> et{" "}
-          <strong>disques olympiques 50 mm</strong>.
+          Côté catalogue IRONZ : disques à <strong>10 kg et 20 kg</strong> et{" "}
+          <strong>disques olympiques 50 mm</strong>. Les disques olympiques 50 mm
+          existent aussi en 10 kg : un disque de faible charge reste utile, car
+          c’est lui qui permet d’augmenter peu à peu.
         </p>
       </section>
 
