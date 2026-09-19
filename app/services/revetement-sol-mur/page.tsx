@@ -374,7 +374,7 @@ export default function RevetementSolMurPage() {
             </motion.div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/demande-devis">
+              <Link href="/demande-devis?service=revetement-sol-mur">
                 <motion.button
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -531,7 +531,7 @@ export default function RevetementSolMurPage() {
                           </li>
                         ))}
                       </ul>
-                      <Link href="/demande-devis" className="w-full">
+                      <Link href="/demande-devis?service=revetement-sol-mur" className="w-full">
                         <button className="w-full bg-yellow-500 text-black font-display uppercase tracking-widest px-6 py-4 rounded-2xl transition-all flex items-center justify-center gap-2">
                           Demander un devis
                           <ArrowRight className="w-4 h-4" />
@@ -597,7 +597,7 @@ export default function RevetementSolMurPage() {
                     </ul>
                     <div className="text-center pt-6 border-t dark:border-gray-700">
                       <div className="text-2xl font-display tracking-wide text-gray-900 dark:text-white mb-6">{pkg.price}</div>
-                      <Link href="/demande-devis" className="block w-full py-4 bg-yellow-500 text-black font-display uppercase tracking-wide rounded-xl text-center">
+                      <Link href="/demande-devis?service=revetement-sol-mur" className="block w-full py-4 bg-yellow-500 text-black font-display uppercase tracking-wide rounded-xl text-center">
                         Choisir cette offre
                       </Link>
                     </div>
@@ -662,7 +662,7 @@ export default function RevetementSolMurPage() {
                 Pour accélérer l&apos;échange, préparez si possible la surface approximative, la ville, le type d&apos;espace, l&apos;usage principal, quelques photos ou un plan, et le délai souhaité.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/demande-devis" className="px-6 py-4 bg-yellow-500 text-black font-display uppercase tracking-wide rounded-xl text-center">
+                <Link href="/demande-devis?service=revetement-sol-mur" className="px-6 py-4 bg-yellow-500 text-black font-display uppercase tracking-wide rounded-xl text-center">
                   Demander un devis
                 </Link>
                 <a
@@ -687,7 +687,7 @@ export default function RevetementSolMurPage() {
               Transformez votre espace dès maintenant
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/demande-devis" className="px-8 py-6 bg-black text-white font-display uppercase tracking-wide rounded-2xl flex items-center gap-3">
+              <Link href="/demande-devis?service=revetement-sol-mur" className="px-8 py-6 bg-black text-white font-display uppercase tracking-wide rounded-2xl flex items-center gap-3">
                 Demander un devis <ArrowRight className="w-5 h-5" />
               </Link>
               <a

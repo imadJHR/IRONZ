@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, type ChangeEvent, type FormEvent, type ReactNode } from "react";
+import React, { useEffect, useState, useRef, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
@@ -46,8 +46,13 @@ interface QuoteFormData {
   email: string;
   phone: string;
   company: string;
+  city: string;
   service: ServiceId | "";
+  projectContext: string;
+  surface: string;
+  spaceType: string;
   budget: BudgetValue | "";
+  desiredTiming: string;
   message: string;
   terms: boolean;
 }
@@ -77,6 +82,13 @@ interface HeroStat {
 
 const WHATSAPP_NUMBER = "212674114446";
 
+const SERVICE_CONTEXT_MAP: Record<string, { service: ServiceId; context: string }> = {
+  "amenagement-salle": { service: "amenagement-salle", context: "Aménagement de salle" },
+  "home-gym": { service: "amenagement-salle", context: "Home Gym" },
+  "salle-professionnelle": { service: "amenagement-salle", context: "Salle Professionnelle" },
+  "revetement-sol-mur": { service: "revetement-sol-mur", context: "Revêtement sol & mur" },
+};
+
 export default function DemandeDevisPage() {
   const [formData, setFormData] = useState<QuoteFormData>({
     firstName: "",
@@ -84,8 +96,13 @@ export default function DemandeDevisPage() {
     email: "",
     phone: "",
     company: "",
+    city: "",
     service: "",
+    projectContext: "",
+    surface: "",
+    spaceType: "",
     budget: "",
+    desiredTiming: "",
     message: "",
     terms: false,
   });
@@ -93,9 +110,24 @@ export default function DemandeDevisPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [preparedWhatsappUrl, setPreparedWhatsappUrl] = useState<string>("");
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
 
   const formRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const serviceParam = new URLSearchParams(window.location.search).get("service") || "";
+    const mappedContext = SERVICE_CONTEXT_MAP[serviceParam];
+
+    if (!mappedContext) return;
+
+    setFormData((prev) => ({
+      ...prev,
+      service: prev.service || mappedContext.service,
+      projectContext: prev.projectContext || mappedContext.context,
+      spaceType: prev.spaceType || mappedContext.context,
+    }));
+  }, []);
 
   const services: ServiceItem[] = [
     {
@@ -177,10 +209,10 @@ export default function DemandeDevisPage() {
   ];
 
   const heroStats: HeroStat[] = [
-    { icon: <Clock className="w-5 h-5" />, value: "24h", label: "Réponse rapide" },
-    { icon: <CheckCircle className="w-5 h-5" />, value: "100%", label: "Satisfaction" },
+    { icon: <Clock className="w-5 h-5" />, value: "Devis", label: "Sur demande" },
+    { icon: <CheckCircle className="w-5 h-5" />, value: "Projet", label: "Étude dédiée" },
     { icon: <ShieldCheck className="w-5 h-5" />, value: "Gratuit", label: "Devis offert" },
-    { icon: <Star className="w-5 h-5" />, value: "500+", label: "Projets réalisés" },
+    { icon: <Star className="w-5 h-5" />, value: "IRONZ", label: "Accompagnement" },
   ];
 
   const processSteps = [
@@ -314,6 +346,7 @@ export default function DemandeDevisPage() {
     setFormData((prev) => ({
       ...prev,
       service: serviceId,
+      projectContext: serviceId === "amenagement-salle" ? prev.projectContext : "",
     }));
     setErrors((prev) => ({ ...prev, service: "" }));
   };
@@ -329,7 +362,15 @@ export default function DemandeDevisPage() {
       } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
         newErrors.email = "Email invalide";
       }
-      if (!formData.phone.trim()) newErrors.phone = "Téléphone requis";
+      if (!formData.phone.trim()) {
+        newErrors.phone = "Téléphone requis";
+      } else {
+        const phoneDigits = formData.phone.replace(/\D/g, "");
+        if (phoneDigits.length < 9 || phoneDigits.length > 15 || !/^[+\d\s().-]+$/.test(formData.phone)) {
+          newErrors.phone = "Téléphone invalide";
+        }
+      }
+      if (!formData.city.trim()) newErrors.city = "Ville requise";
     } else if (step === 2) {
       if (!formData.service) newErrors.service = "Veuillez sélectionner un service";
       if (!formData.message.trim()) newErrors.message = "Message requis";
@@ -349,6 +390,29 @@ export default function DemandeDevisPage() {
   const prevStep = () => {
     setCurrentStep((prev) => (prev > 1 ? ((prev - 1) as 1 | 2 | 3) : prev));
     formRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const resetForm = () => {
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      company: "",
+      city: "",
+      service: "",
+      projectContext: "",
+      surface: "",
+      spaceType: "",
+      budget: "",
+      desiredTiming: "",
+      message: "",
+      terms: false,
+    });
+    setErrors({});
+    setPreparedWhatsappUrl("");
+    setCurrentStep(1);
+    setIsSubmitted(false);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -373,19 +437,29 @@ export default function DemandeDevisPage() {
       const selectedBudget =
         budgetOptions.find((b) => b.value === formData.budget)?.label || "Non spécifié";
 
+      const projectContext = formData.projectContext || "Non spécifié";
+      const surface = formData.surface || "Non spécifiée";
+      const spaceType = formData.spaceType || "Non spécifié";
+      const desiredTiming = formData.desiredTiming || "Non spécifié";
+
       const now = new Date();
 
-      const whatsappMessage = `📋 NOUVELLE DEMANDE DE DEVIS IRONZ
+      const whatsappMessage = `📋 DEMANDE DE DEVIS IRONZ À FINALISER
 
 👤 *Informations client:*
 • Nom: ${formData.firstName} ${formData.lastName}
 • Email: ${formData.email}
 • Téléphone: ${formData.phone}
 • Entreprise: ${formData.company || "Non spécifié"}
+• Ville: ${formData.city}
 
 🎯 *Détails du projet:*
 • Service: ${selectedService}
+• Contexte projet: ${projectContext}
+• Type d'espace: ${spaceType}
+• Surface approximative: ${surface}
 • Budget: ${selectedBudget}
+• Délai souhaité: ${desiredTiming}
 
 💬 *Description du projet:*
 ${formData.message}
@@ -396,21 +470,21 @@ ${formData.message}
 🔗 *Source:* Site web IRONZ`;
 
       const encodedMessage = encodeURIComponent(whatsappMessage);
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`, "_blank", "noopener,noreferrer");
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+      setPreparedWhatsappUrl(whatsappUrl);
+      const whatsappWindow = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+      if (!whatsappWindow) {
+        setErrors((prev) => ({
+          ...prev,
+          submit:
+            "WhatsApp n'a pas pu s'ouvrir automatiquement. Utilisez le lien manuel ci-dessous pour finaliser votre demande.",
+        }));
+        return;
+      }
 
       setIsSubmitted(true);
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        company: "",
-        service: "",
-        budget: "",
-        message: "",
-        terms: false,
-      });
-      setCurrentStep(1);
+      setErrors({});
     } catch (error) {
       console.error("Error submitting form:", error);
       setErrors((prev) => ({
@@ -458,9 +532,7 @@ ${formData.message}
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Transformez votre vision en réalité avec notre expertise premium.
-              Obtenez un devis personnalisé sous{" "}
-              <span className="font-bold text-yellow-500">24 heures</span>.
+              Préparez votre projet avec les informations utiles pour recevoir un devis adapté à votre espace.
             </p>
 
             <motion.div
@@ -614,44 +686,51 @@ ${formData.message}
                     </div>
 
                     <h3 className="text-3xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
-                      Demande envoyée avec succès !
+                      Demande préparée sur WhatsApp
                     </h3>
 
                     <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg max-w-2xl mx-auto">
-                      Votre demande a été transférée sur WhatsApp. Notre équipe d&apos;experts
-                      l&apos;étudiera et vous contactera dans les{" "}
-                      <span className="font-bold text-yellow-500">24 heures</span> pour
-                      discuter de votre projet.
+                      Votre demande a été préparée. Vérifiez les informations puis envoyez le message dans WhatsApp pour finaliser votre demande.
                     </p>
 
                     <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 dark:from-green-500/5 dark:to-emerald-500/5 border border-green-500/20 dark:border-green-500/10 rounded-2xl p-6 mb-8 max-w-md mx-auto">
                       <div className="flex items-center justify-center gap-3 mb-4">
                         <Clock className="w-5 h-5 text-green-500" />
                         <span className="font-bold text-green-600 dark:text-green-400">
-                          Prochaines étapes
+                          À faire dans WhatsApp
                         </span>
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Notre commercial vous appellera pour discuter des détails et vous
-                        proposer un rendez-vous avec notre équipe technique.
+                        Le message n&apos;est pas livré tant que vous ne l&apos;envoyez pas dans WhatsApp. Vos informations restent disponibles ici si vous devez les modifier.
                       </p>
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      {preparedWhatsappUrl && (
+                        <a
+                          href={preparedWhatsappUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-colors inline-flex items-center justify-center"
+                        >
+                          Ouvrir WhatsApp
+                        </a>
+                      )}
                       <button
                         onClick={() => setIsSubmitted(false)}
                         className="px-8 py-4 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-display uppercase tracking-widest rounded-xl transition-colors"
                         type="button"
                       >
-                        Nouvelle demande
+                        Modifier ma demande
                       </button>
 
-                      <Link
-                        href="/"
-                        className="px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-colors inline-flex items-center justify-center"
+                      <button
+                        onClick={resetForm}
+                        className="px-8 py-4 border-2 border-gray-200 dark:border-gray-700 hover:border-yellow-500 text-gray-900 dark:text-white font-display uppercase tracking-widest rounded-xl transition-colors"
+                        type="button"
                       >
-                        Retour à l&apos;accueil
-                      </Link>
+                        Réinitialiser le formulaire
+                      </button>
                     </div>
                   </motion.div>
                 ) : (
@@ -803,18 +882,38 @@ ${formData.message}
                               </div>
                             </div>
 
-                            <div className="mb-10">
-                              <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
-                                Entreprise (optionnel)
-                              </label>
-                              <input
-                                type="text"
-                                name="company"
-                                value={formData.company}
-                                onChange={handleChange}
-                                className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors"
-                                placeholder="Nom de votre entreprise"
-                              />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                              <div>
+                                <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
+                                  Ville *
+                                </label>
+                                <input
+                                  type="text"
+                                  name="city"
+                                  value={formData.city}
+                                  onChange={handleChange}
+                                  className={`w-full px-5 py-4 rounded-2xl border-2 ${
+                                    errors.city
+                                      ? "border-red-500"
+                                      : "border-gray-200 dark:border-gray-700"
+                                  } bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors`}
+                                  placeholder="Votre ville"
+                                />
+                                {errors.city && <p className="mt-2 text-sm text-red-500">{errors.city}</p>}
+                              </div>
+                              <div>
+                                <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
+                                  Entreprise (optionnel)
+                                </label>
+                                <input
+                                  type="text"
+                                  name="company"
+                                  value={formData.company}
+                                  onChange={handleChange}
+                                  className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                                  placeholder="Nom de votre entreprise"
+                                />
+                              </div>
                             </div>
 
                             <div className="flex justify-end">
@@ -951,6 +1050,49 @@ ${formData.message}
                               </div>
                             </div>
 
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                              <div>
+                                <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
+                                  Surface approximative (optionnel)
+                                </label>
+                                <input
+                                  type="text"
+                                  name="surface"
+                                  value={formData.surface}
+                                  onChange={handleChange}
+                                  className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                                  placeholder="Ex. 40 m²"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
+                                  Type d&apos;espace (optionnel)
+                                </label>
+                                <input
+                                  type="text"
+                                  name="spaceType"
+                                  value={formData.spaceType}
+                                  onChange={handleChange}
+                                  className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                                  placeholder="Home gym, salle pro, hôtel..."
+                                />
+                              </div>
+                            </div>
+
+                            <div className="mb-8">
+                              <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
+                                Délai souhaité (optionnel)
+                              </label>
+                              <input
+                                type="text"
+                                name="desiredTiming"
+                                value={formData.desiredTiming}
+                                onChange={handleChange}
+                                className="w-full px-5 py-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:border-yellow-500 transition-colors"
+                                placeholder="Ex. ce mois-ci, date à définir"
+                              />
+                            </div>
+
                             <div className="mb-10">
                               <label className="block text-sm font-display uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
                                 Description de votre projet *
@@ -1056,6 +1198,15 @@ ${formData.message}
 
                                   <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
                                     <h6 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-2">
+                                      Ville
+                                    </h6>
+                                    <p className="text-lg font-bold text-gray-900 dark:text-white">
+                                      {formData.city}
+                                    </p>
+                                  </div>
+
+                                  <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
+                                    <h6 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-2">
                                       Budget
                                     </h6>
                                     <p className="text-lg font-bold text-gray-900 dark:text-white">
@@ -1073,6 +1224,20 @@ ${formData.message}
                                     <p className="text-lg font-bold text-gray-900 dark:text-white">
                                       {formData.company}
                                     </p>
+                                  </div>
+                                )}
+
+                                {(formData.projectContext || formData.surface || formData.spaceType || formData.desiredTiming) && (
+                                  <div className="bg-white dark:bg-gray-900 p-4 rounded-xl">
+                                    <h6 className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-2">
+                                      Contexte du projet
+                                    </h6>
+                                    <div className="space-y-1 text-gray-700 dark:text-gray-300">
+                                      {formData.projectContext && <p>Contexte : {formData.projectContext}</p>}
+                                      {formData.spaceType && <p>Type d&apos;espace : {formData.spaceType}</p>}
+                                      {formData.surface && <p>Surface : {formData.surface}</p>}
+                                      {formData.desiredTiming && <p>Délai souhaité : {formData.desiredTiming}</p>}
+                                    </div>
                                   </div>
                                 )}
 
@@ -1117,7 +1282,17 @@ ${formData.message}
 
                               {errors.submit && (
                                 <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl text-red-700 dark:text-red-300">
-                                  {errors.submit}
+                                  <p>{errors.submit}</p>
+                                  {preparedWhatsappUrl && (
+                                    <a
+                                      href={preparedWhatsappUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="mt-3 inline-flex font-display uppercase tracking-widest text-sm underline underline-offset-4"
+                                    >
+                                      Ouvrir WhatsApp manuellement
+                                    </a>
+                                  )}
                                 </div>
                               )}
                             </div>

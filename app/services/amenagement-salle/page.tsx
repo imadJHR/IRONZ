@@ -402,7 +402,7 @@ export default function AmenagementSallePage() {
             >
               <motion.button
                 variants={scaleIn}
-                onClick={() => (window.location.href = "/demande-devis")}
+                onClick={() => (window.location.href = "/demande-devis?service=amenagement-salle")}
                 className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
               >
                 Demander un devis gratuit
@@ -633,7 +633,7 @@ export default function AmenagementSallePage() {
                         {pkg.price}
                       </div>
 
-                      <Link href="/demande-devis">
+                      <Link href="/demande-devis?service=amenagement-salle">
                         <button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
                           Demander un devis
                           <ArrowRight className="w-4 h-4" />
@@ -894,7 +894,7 @@ export default function AmenagementSallePage() {
               optimiser votre espace et booster vos performances
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/demande-devis">
+              <Link href="/demande-devis?service=amenagement-salle">
                 <button className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
                   Demander un devis gratuit
                   <ArrowRight className="w-5 h-5" />
