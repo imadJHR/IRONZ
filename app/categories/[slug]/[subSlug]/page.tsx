@@ -17,9 +17,12 @@ type SubcategorySeo = {
   heading: string;
   intro: string;
   families?: { name: string; detail: string }[];
+  familiesTitle?: string;
+  familiesAriaLabel?: string;
   guidance?: { title: string; text: string }[];
   guidanceTitle?: string;
   guidanceAriaLabel?: string;
+  linksAriaLabel?: string;
   linksShopping?: { href: string; label: string }[];
   linksProject?: { href: string; label: string }[];
 };
@@ -108,12 +111,59 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
       "Organisez vos séances avec du petit matériel : tapis de yoga, bandes élastiques, steps, cordes à sauter et ballon de fitness. Des poignées pour pompes, un hand grip et un rouleau en mousse complètent ce rayon, aux côtés de bandes de maintien et de sacs de sport. Choisissez vos accessoires selon les exercices prévus et consultez les indications de chaque fiche pour les formats ou résistances proposés. Vous pouvez ainsi réunir le matériel utile à votre routine sans parcourir les machines de cardio ou les poids libres.",
   },
   "accessoires/accessoires-de-boxe": {
-    title: "Boxe : sacs de frappe, gants et protections au Maroc | IRONZ",
+    title: "Accessoires de boxe au Maroc : gants, sacs et protections | IRONZ",
     description:
-      "Sacs de frappe, gants, bandes, paos et protections : parcourez les accessoires de boxe IRONZ au Maroc pour préparer vos entraînements.",
-    heading: "Sacs de frappe et accessoires de boxe",
+      "Accessoires de boxe au Maroc : gants, bandes, protège-dents, protège-tibias, sacs de frappe, paos, pads et cibles. 15 références de 55 à 1 499 MAD.",
+    heading: "Accessoires et équipement de boxe au Maroc",
     intro:
-      "Le travail de frappe et les exercices à deux demandent des accessoires différents. Ce rayon réunit sacs de frappe, gants, bandes de boxe, paos, pads et cibles, ainsi qu'un plastron et des bâtons d'esquive. Vous y trouverez également des protège-tibias, dont un modèle enfant, et un protège-dents. Comparez les dimensions et les indications propres à chaque référence pour choisir le matériel correspondant à votre pratique. Les fiches IRONZ présentent les produits séparément pour préparer votre équipement de boxe au Maroc.",
+      "Ce rayon rassemble le matériel de boxe IRONZ pour préparer vos entraînements : gants, bandes et protège-dents côté protections, sacs de frappe en plusieurs dimensions, et paos, pads, cibles, plastron et bâtons d'esquive pour le travail à deux. Vous y trouverez aussi un sac de boxe compact, un Bulgarian bag et des protège-tibias, dont un modèle enfant. Comparez les dimensions et les indications de chaque fiche pour choisir le matériel correspondant à votre pratique.",
+    familiesTitle: "Matériel de boxe",
+    familiesAriaLabel: "Matériel de boxe",
+    families: [
+      {
+        name: "Protections",
+        detail:
+          "Gants de boxe, bandes, protège-dents et protège-tibias, dont un modèle enfant, pour équiper le combattant avant la séance.",
+      },
+      {
+        name: "Sacs de frappe",
+        detail:
+          "Sacs de frappe IRONZ en plusieurs dimensions, un sac de boxe compact et un Bulgarian bag pour le travail de puissance.",
+      },
+      {
+        name: "Cibles et travail à deux",
+        detail:
+          "Paos, pads, cibles de frappe, plastron et bâtons d'esquive pour les exercices de frappe et d'esquive avec un partenaire.",
+      },
+    ],
+    guidanceTitle: "votre matériel de boxe",
+    guidanceAriaLabel: "Choisir votre matériel de boxe",
+    guidance: [
+      {
+        title: "Votre type d'entraînement",
+        text: "Le travail de frappe seul se fait sur un sac, à deux sur des paos, pads ou cibles. Les protections — gants, bandes, protège-dents — sont communes à toutes les séances, et les bâtons d'esquive ou le plastron sont dédiés aux exercices à deux.",
+      },
+      {
+        title: "Protections ou cibles",
+        text: "On distingue d'abord ce qui se porte (gants, bandes, protège-dents, protège-tibias) de ce qui sert de cible (sacs, paos, pads, cibles, plastron). Un pratiquant a besoin des deux : se protéger et frapper.",
+      },
+      {
+        title: "Dimensions et usage",
+        text: "Les sacs de frappe IRONZ existent en plusieurs dimensions, et plusieurs cibles sont proposées en formats différents. Vérifiez les dimensions, le poids et les indications de chaque fiche avant de choisir.",
+      },
+      {
+        title: "Vérifier chaque fiche avant l'achat",
+        text: "Chaque fiche produit présente la référence précisément : dimensions, conditionnement et caractéristiques disponibles. Comparez les fiches pour vous assurer que le matériel correspond à votre pratique.",
+      },
+    ],
+    linksAriaLabel: "Voir aussi",
+    linksShopping: [
+      { href: "/categories/accessoires", label: "Accessoires de sport" },
+      {
+        href: "/categories/accessoires/poids-libres",
+        label: "Poids libres, haltères et kettlebells",
+      },
+    ],
   },
   "accessoires/poids-libres": {
     title: "Poids libres : haltères, kettlebells et disques au Maroc | IRONZ",
@@ -354,12 +404,12 @@ function SubcategoryBlocks({ seo }: { seo: SubcategorySeo }) {
     <>
       {seo.families && seo.families.length > 0 && (
         <section
-          aria-label="Familles de machines"
+          aria-label={seo.familiesAriaLabel || "Familles de machines"}
           className="container mx-auto px-3 sm:px-4 mt-2"
         >
           <div className="mx-auto max-w-5xl rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-5 sm:p-7">
             <h2 className="text-center font-display uppercase tracking-wide text-base sm:text-lg text-gray-900 dark:text-white mb-4 sm:mb-5">
-              Familles de machines
+              {seo.familiesTitle || "Familles de machines"}
             </h2>
             <ul className="grid gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
               {seo.families.map((family) => (
@@ -409,7 +459,7 @@ function SubcategoryBlocks({ seo }: { seo: SubcategorySeo }) {
 
       {(seo.linksShopping || seo.linksProject) && (
         <section
-          aria-label="Voir aussi"
+          aria-label={seo.linksAriaLabel || "Voir aussi"}
           className="container mx-auto px-3 sm:px-4 mt-10 sm:mt-12"
         >
           <div className="mx-auto max-w-5xl grid gap-6 sm:grid-cols-2">
@@ -543,7 +593,8 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   const { heading, intro } = seoAll;
   const seoSubcategoryBlocks =
     seoAll === SUBCATEGORY_SEO["equipements/machine-de-fitness"] ||
-    seoAll === SUBCATEGORY_SEO["accessoires/poids-libres"]
+    seoAll === SUBCATEGORY_SEO["accessoires/poids-libres"] ||
+    seoAll === SUBCATEGORY_SEO["accessoires/accessoires-de-boxe"]
       ? seoAll
       : null;
   const renderIntroInClient = true;
