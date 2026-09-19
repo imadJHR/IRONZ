@@ -289,12 +289,63 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
     ],
   },
   "accessoires/accessoires-de-musculation": {
-    title: "Accessoires de musculation : barres et cordes | IRONZ",
+    title: "Accessoires de musculation au Maroc : barres et cordes | IRONZ",
     description:
-      "Cordes triceps, barre de tirage, poignée de prise, barres de musculation et de traction : choisissez vos accessoires de musculation chez IRONZ.",
-    heading: "Barres, poignées et cordes de musculation",
+      "Accessoires de musculation au Maroc : barres de traction et tirage, corde triceps, poignée de prise et charges 5 kg. 9 références de 155 à 1 459 MAD.",
+    heading: "Accessoires de musculation au Maroc",
     intro:
-      "Retrouvez les accessoires qui complètent vos exercices de tirage et de musculation : cordes triceps, barre de tirage et poignée de prise en croix. Le rayon comprend également des barres de musculation, des barres de traction et une référence de charges de 5 kg. Avant de choisir, consultez la longueur, la fixation et les caractéristiques renseignées sur chaque fiche afin de vérifier la compatibilité avec votre installation. Cette sélection se concentre sur les accessoires de travail, distincts des machines complètes et du rayon haltères et kettlebells.",
+      "Ce rayon rassemble les accessoires de musculation IRONZ pour compléter vos exercices de tirage, traction et travail des triceps : barres de traction, barre de tirage, barre de musculation, cordes triceps, poignée de prise en croix et charges de 5 kg. La sélection reste distincte des haltères, kettlebells et disques du rayon Poids libres. Avant de choisir, vérifiez sur chaque fiche la longueur, la fixation, le format et les caractéristiques utiles à votre installation.",
+    familiesTitle: "Types d'accessoires de musculation",
+    familiesAriaLabel: "Types d'accessoires de musculation",
+    families: [
+      {
+        name: "Barres et tirage",
+        detail:
+          "Barre de tirage, barres de traction en plusieurs formats et barre de musculation pour compléter les exercices haut du corps.",
+      },
+      {
+        name: "Cordes triceps",
+        detail:
+          "Corde triceps IRONZ et Triceps Rope pour les mouvements de poussée, tirage et isolation sur installation adaptée.",
+      },
+      {
+        name: "Poignées et charges",
+        detail:
+          "Poignée de prise en croix simple en inox et charges de 5 kg : vérifiez le format exact et les usages indiqués sur la fiche.",
+      },
+    ],
+    guidanceTitle: "vos accessoires de musculation",
+    guidanceAriaLabel: "Choisir vos accessoires de musculation",
+    guidance: [
+      {
+        title: "Selon l'exercice visé",
+        text: "Les barres de traction et de tirage servent aux exercices haut du corps, les cordes ciblent surtout les mouvements triceps et les poignées changent la prise. Choisissez d'abord selon l'exercice prévu.",
+      },
+      {
+        title: "Format et prise en main",
+        text: "Longueur de barre, forme de poignée, corde ou accessoire de prise : chaque format modifie l'utilisation. Comparez les fiches pour vérifier le format exact avant l'achat.",
+      },
+      {
+        title: "Installation disponible",
+        text: "Certains accessoires se fixent ou s'utilisent avec une installation adaptée. Vérifiez la fixation, les dimensions et les indications de compatibilité disponibles sur la fiche produit.",
+      },
+      {
+        title: "Ne pas confondre avec les poids libres",
+        text: "Ce rayon couvre les barres, cordes, poignées et compléments de travail. Pour haltères, kettlebells et disques, utilisez le rayon Poids libres, plus adapté à la charge indépendante.",
+      },
+    ],
+    linksAriaLabel: "Voir aussi les rayons liés à la musculation",
+    linksShopping: [
+      { href: "/categories/accessoires", label: "Accessoires de sport" },
+      {
+        href: "/categories/accessoires/poids-libres",
+        label: "Poids libres, haltères et kettlebells",
+      },
+      {
+        href: "/categories/equipements/machine-de-fitness",
+        label: "Machines de fitness et musculation",
+      },
+    ],
   },
   "supplement/healthy-products": {
     title: "Crème de riz, sauces et sirops | IRONZ",
@@ -656,7 +707,8 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
     seoAll === SUBCATEGORY_SEO["equipements/machine-de-fitness"] ||
     seoAll === SUBCATEGORY_SEO["accessoires/poids-libres"] ||
     seoAll === SUBCATEGORY_SEO["accessoires/accessoires-de-boxe"] ||
-    seoAll === SUBCATEGORY_SEO["accessoires/accessoires-de-fitness"]
+    seoAll === SUBCATEGORY_SEO["accessoires/accessoires-de-fitness"] ||
+    seoAll === SUBCATEGORY_SEO["accessoires/accessoires-de-musculation"]
       ? seoAll
       : null;
   const renderIntroInClient = true;
