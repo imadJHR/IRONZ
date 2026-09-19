@@ -116,6 +116,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/demande-devis`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/a-propos`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${baseUrl}/services`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/guides`, changeFrequency: "monthly", priority: 0.6 },
+    {
+      url: `${baseUrl}/guides/choisir-halteres-kettlebells-disques-maroc`,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     { url: `${baseUrl}/faq`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/confidentialite`, changeFrequency: "yearly", priority: 0.2 },
     { url: `${baseUrl}/conditions`, changeFrequency: "yearly", priority: 0.2 },
