@@ -271,6 +271,10 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
       },
     ],
     linksShopping: [
+      {
+        href: "/guides/choisir-halteres-kettlebells-disques-maroc",
+        label: "Guide achat poids libres : haltères, kettlebells et disques",
+      },
       { href: "/categories/accessoires", label: "Accessoires de sport" },
       {
         href: "/categories/equipements/machine-de-fitness",

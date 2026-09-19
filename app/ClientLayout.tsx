@@ -1362,6 +1362,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
   const infoLinks = useMemo<CategoryLink[]>(
     () => [
       { name: language === "fr" ? "À propos" : "About", href: "/a-propos" },
+      { name: language === "fr" ? "Guides" : "Guides", href: "/guides" },
       { name: "Contact", href: "/contact" },
       {
         name: language === "fr" ? "Demande de devis" : "Quote Request",
