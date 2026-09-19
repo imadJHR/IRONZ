@@ -81,6 +81,10 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
       },
     ],
     linksShopping: [
+      {
+        href: "/guides/choisir-machine-cardio-tapis-velo-rameur-maroc",
+        label: "Guide cardio : tapis roulant, vélo ou rameur",
+      },
       { href: "/categories/equipements", label: "Voir tous les équipements" },
       {
         href: "/categories/accessoires/poids-libres",
