@@ -11,17 +11,91 @@ import {
 
 const SITE_URL = "https://www.ironz.ma";
 
-const SUBCATEGORY_SEO: Record<
-  string,
-  { title: string; description: string; heading: string; intro: string }
-> = {
+type SubcategorySeo = {
+  title: string;
+  description: string;
+  heading: string;
+  intro: string;
+  families?: { name: string; detail: string }[];
+  guidance?: { title: string; text: string }[];
+  linksShopping?: { href: string; label: string }[];
+  linksProject?: { href: string; label: string }[];
+};
+
+const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
   "equipements/machine-de-fitness": {
-    title: "Machines de fitness : cardio et musculation | IRONZ",
+    title: "Machines de fitness et musculation au Maroc | IRONZ",
     description:
-      "Comparez vélos, rameur, tapis roulant, presse à jambes, rack, banc et Reformer Pilates chez IRONZ pour choisir votre matériel d'entraînement.",
-    heading: "Machines de fitness, bancs et stations",
+      "Machines de fitness et musculation au Maroc : tapis roulant, vélos, rameur, presse à jambes, rack et home gym. 13 appareils de 1 999 à 65 000 MAD.",
+    heading: "Machines de fitness et musculation au Maroc",
     intro:
-      "Vélos d'appartement, rameur et tapis roulant côtoient ici les appareils de musculation, dont une presse à jambes, un leg curl, un rack multifonction et une station Home Gym. Le rayon comprend aussi un banc Adidas, un Reformer Pilates et un pack fitness pour la maison. Pour choisir votre matériel, partez des exercices souhaités et de l'espace disponible, puis vérifiez les dimensions et caractéristiques de la référence qui vous intéresse. Chaque fiche permet d'examiner un appareil précis avant votre achat.",
+      "Ce rayon réunit les machines de fitness et de musculation IRONZ : tapis roulant, vélos d'appartement, spinning, semi-allongé et rameur pour le cardio, presse à jambes, leg curl, rack et banc pour la musculation, ainsi qu'une station Home Gym, un pack fitness maison et un Reformer Pilates. Pour comparer, partez de vos exercices et de l'espace disponible, puis vérifiez dimensions et caractéristiques sur chaque fiche produit.",
+    families: [
+      {
+        name: "Cardio",
+        detail:
+          "Tapis roulant, vélos d'appartement, spinning, semi-allongé et rameur pour l'endurance et la perte de poids.",
+      },
+      {
+        name: "Musculation",
+        detail:
+          "Presse à jambes, leg curl et rack multifonction pour les exercices de renforcement à charge guidée.",
+      },
+      {
+        name: "Home Gym",
+        detail:
+          "Station multifonction et pack fitness complet pour s'entraîner à la maison sur un espace réduit.",
+      },
+      {
+        name: "Bancs & racks",
+        detail:
+          "Banc Adidas et structures d'accueil pour compléter vos exercices avec poids libres ou guidés.",
+      },
+      {
+        name: "Pilates",
+        detail:
+          "Reformer Pilates pour un travail de gainage, de souplesse et de renforcement profond.",
+      },
+    ],
+    guidance: [
+      {
+        title: "Votre objectif d'entraînement",
+        text: "Le cardio (tapis roulant, vélos, rameur) vise l'endurance et la dépense calorique ; la musculation (presse, leg curl, rack, banc) vise le renforcement et la prise de muscle. Plusieurs appareils, comme le rack multifonction et la station Home Gym, combinent les deux.",
+      },
+      {
+        title: "L'espace dont vous disposez",
+        text: "Mesurez l'emplacement prévu avant de choisir : un rameur ou un banc reste compact, tandis qu'une presse à jambes, un rack ou un tapis roulant demandent plus de profondeur. Chaque fiche indique les dimensions de l'appareil, vérifiables avant l'achat.",
+      },
+      {
+        title: "Usage à domicile ou projet professionnel",
+        text: "Pour un usage à domicile, les vélos, le rameur, le banc et la station Home Gym couvrent l'essentiel. Pour un projet de salle professionnelle, la presse à jambes, le leg curl et le rack Panatta sont conçus pour un usage intensif ; la page aménagement de salle professionnelle vous accompagne sur l'implantation.",
+      },
+      {
+        title: "Comparer les fiches avant de décider",
+        text: "Chaque fiche produit détaille les dimensions, le poids maximal supporté, les fonctionnalités et le prix. Vérifiez ces informations avant votre achat, et demandez un devis pour les appareils destinés à un projet.",
+      },
+    ],
+    linksShopping: [
+      { href: "/categories/equipements", label: "Voir tous les équipements" },
+      {
+        href: "/categories/accessoires/poids-libres",
+        label: "Compléter avec haltères, kettlebells et disques",
+      },
+    ],
+    linksProject: [
+      {
+        href: "/services/amenagement-salle/home-gym",
+        label: "Aménager une salle à domicile",
+      },
+      {
+        href: "/services/amenagement-salle/salle-professionnelle",
+        label: "Aménager une salle professionnelle",
+      },
+      {
+        href: "/demande-devis?service=amenagement-salle",
+        label: "Demander un devis pour un projet",
+      },
+    ],
   },
   "accessoires/accessoires-de-fitness": {
     title: "Accessoires fitness : tapis, bandes et steps | IRONZ",
@@ -219,6 +293,113 @@ const SUBCATEGORY_SEO: Record<
   },
 };
 
+function MachineFitnessBlocks({ seo }: { seo: SubcategorySeo }) {
+  return (
+    <>
+      {seo.families && seo.families.length > 0 && (
+        <section
+          aria-label="Familles de machines"
+          className="container mx-auto px-3 sm:px-4 mt-2"
+        >
+          <div className="mx-auto max-w-5xl rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-5 sm:p-7">
+            <h2 className="text-center font-display uppercase tracking-wide text-base sm:text-lg text-gray-900 dark:text-white mb-4 sm:mb-5">
+              Familles de machines
+            </h2>
+            <ul className="grid gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+              {seo.families.map((family) => (
+                <li key={family.name}>
+                  <p className="font-display uppercase tracking-wide text-sm text-yellow-600 dark:text-yellow-400">
+                    {family.name}
+                  </p>
+                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    {family.detail}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {seo.guidance && seo.guidance.length > 0 && (
+        <section
+          aria-label="Choisir sa machine de fitness"
+          className="container mx-auto px-3 sm:px-4 mt-10 sm:mt-12"
+        >
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-center font-display uppercase tracking-wide text-base sm:text-lg text-gray-900 dark:text-white mb-4 sm:mb-5">
+              Comment choisir votre machine
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {seo.guidance.map((item) => (
+                <article
+                  key={item.title}
+                  className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 p-5 sm:p-6"
+                >
+                  <h3 className="mb-2 text-sm sm:text-base font-bold text-gray-900 dark:text-white">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                    {item.text}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {(seo.linksShopping || seo.linksProject) && (
+        <section
+          aria-label="Voir aussi"
+          className="container mx-auto px-3 sm:px-4 mt-10 sm:mt-12"
+        >
+          <div className="mx-auto max-w-5xl grid gap-6 sm:grid-cols-2">
+            {seo.linksShopping && seo.linksShopping.length > 0 && (
+              <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 p-5 sm:p-6">
+                <h2 className="mb-3 text-sm font-bold text-gray-900 dark:text-white">
+                  Côté achat
+                </h2>
+                <ul className="space-y-2">
+                  {seo.linksShopping.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-sm text-gray-600 dark:text-gray-400 underline-offset-4 hover:text-yellow-600 dark:hover:text-yellow-400 hover:underline"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {seo.linksProject && seo.linksProject.length > 0 && (
+              <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 p-5 sm:p-6">
+                <h2 className="mb-3 text-sm font-bold text-gray-900 dark:text-white">
+                  Côté projet et installation
+                </h2>
+                <ul className="space-y-2">
+                  {seo.linksProject.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-sm text-gray-600 dark:text-gray-400 underline-offset-4 hover:text-yellow-600 dark:hover:text-yellow-400 hover:underline"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+    </>
+  );
+}
+
 type SubcategoryPageProps = {
   params: Promise<{ slug: string; subSlug: string }>;
 };
@@ -300,7 +481,12 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   if (!data) notFound();
 
   const canonicalUrl = `${SITE_URL}/categories/${data.category.slug}/${data.subcategory.slug}`;
-  const { heading, intro } = subcategorySeoText(data);
+  const seoAll = subcategorySeoText(data);
+  const { heading, intro } = seoAll;
+  const seoMachineFitness =
+    seoAll === SUBCATEGORY_SEO["equipements/machine-de-fitness"]
+      ? seoAll
+      : null;
   const renderIntroInClient = true;
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -373,6 +559,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
           </li>
         </ol>
       </nav>
+      {seoMachineFitness && <MachineFitnessBlocks seo={seoMachineFitness} />}
       <CategoryProductsClient
         initialProducts={data.products as Product[]}
         heading={heading}
