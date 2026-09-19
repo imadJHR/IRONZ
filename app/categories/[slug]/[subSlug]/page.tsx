@@ -103,12 +103,73 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
     ],
   },
   "accessoires/accessoires-de-fitness": {
-    title: "Accessoires fitness : tapis, bandes et steps | IRONZ",
+    title: "Accessoires de fitness au Maroc : bandes, tapis et steps | IRONZ",
     description:
-      "Tapis de yoga, bandes de résistance, steps, cordes à sauter et ballons : retrouvez les accessoires pour vos séances de fitness chez IRONZ.",
-    heading: "Accessoires pour vos séances de fitness",
+      "Accessoires de fitness au Maroc : bandes de résistance, tapis de yoga, steps, cordes à sauter, ballons et maintiens. 22 références de 75 à 489 MAD.",
+    heading: "Accessoires de fitness au Maroc",
     intro:
-      "Organisez vos séances avec du petit matériel : tapis de yoga, bandes élastiques, steps, cordes à sauter et ballon de fitness. Des poignées pour pompes, un hand grip et un rouleau en mousse complètent ce rayon, aux côtés de bandes de maintien et de sacs de sport. Choisissez vos accessoires selon les exercices prévus et consultez les indications de chaque fiche pour les formats ou résistances proposés. Vous pouvez ainsi réunir le matériel utile à votre routine sans parcourir les machines de cardio ou les poids libres.",
+      "Ce rayon rassemble le petit matériel pour vos séances de fitness : bandes de résistance, tapis de yoga, steps, cordes à sauter, ballon et foam roller, ainsi que des poignées de pompes, un hand grip et du matériel de maintien comme des bandes, un bandage de genou ou un support de poignet. Vous y trouverez aussi un sac de sport, un shaker et une goupille de sécurité pour machine. Comparez les formats, résistances et dimensions de chaque fiche pour choisir l'accessoire adapté à vos exercices.",
+    familiesTitle: "Types d'accessoires",
+    familiesAriaLabel: "Types d'accessoires de fitness",
+    families: [
+      {
+        name: "Bandes de résistance",
+        detail:
+          "Bandes et élastiques de résistance proposés en plusieurs formats pour le renforcement et le travail musculaire à domicile.",
+      },
+      {
+        name: "Maintien et protections",
+        detail:
+          "Bandes de maintien, bandage de genou, épaule de maintien, support de poignet et kinesiology tape pour accompagner l'effort.",
+      },
+      {
+        name: "Steps, tapis et équilibre",
+        detail:
+          "Steps, tapis de yoga, ballon et foam roller pour les exercices au sol, d'équilibre et la récupération.",
+      },
+      {
+        name: "Cordes et poignées",
+        detail:
+          "Cordes à sauter, poignées de pompes et hand grip pour le travail cardio et la prise des avant-bras.",
+      },
+    ],
+    guidanceTitle: "vos accessoires de fitness",
+    guidanceAriaLabel: "Choisir vos accessoires de fitness",
+    guidance: [
+      {
+        title: "Selon vos exercices",
+        text: "Les bandes servent au renforcement, les steps et cordes au cardio, les tapis et ballons aux exercices au sol, et le matériel de maintien à accompagner l'effort. Partez des exercices prévus dans votre routine.",
+      },
+      {
+        title: "Résistance et format",
+        text: "Les bandes de résistance existent en plusieurs niveaux, et les steps ou ballons en plusieurs formats. Chaque fiche indique la résistance ou les dimensions proposées pour la référence.",
+      },
+      {
+        title: "L'espace disponible",
+        text: "Ce petit matériel s'utilise sans installation et se range facilement, ce qui convient à un entraînement à domicile comme en salle. Vérifiez les dimensions sur la fiche si l'encombrement compte pour vous.",
+      },
+      {
+        title: "Vérifier chaque fiche avant l'achat",
+        text: "Chaque fiche présente la résistance, le format, le conditionnement et les caractéristiques de l'accessoire. Comparez les références pour choisir celle qui correspond à vos exercices.",
+      },
+    ],
+    linksShopping: [
+      { href: "/categories/accessoires", label: "Accessoires de sport" },
+      {
+        href: "/categories/accessoires/poids-libres",
+        label: "Poids libres, haltères et kettlebells",
+      },
+      {
+        href: "/categories/equipements/machine-de-fitness",
+        label: "Machines de fitness et musculation",
+      },
+    ],
+    linksProject: [
+      {
+        href: "/services/amenagement-salle/home-gym",
+        label: "Projet Home Gym",
+      },
+    ],
   },
   "accessoires/accessoires-de-boxe": {
     title: "Accessoires de boxe au Maroc : gants, sacs et protections | IRONZ",
@@ -594,7 +655,8 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   const seoSubcategoryBlocks =
     seoAll === SUBCATEGORY_SEO["equipements/machine-de-fitness"] ||
     seoAll === SUBCATEGORY_SEO["accessoires/poids-libres"] ||
-    seoAll === SUBCATEGORY_SEO["accessoires/accessoires-de-boxe"]
+    seoAll === SUBCATEGORY_SEO["accessoires/accessoires-de-boxe"] ||
+    seoAll === SUBCATEGORY_SEO["accessoires/accessoires-de-fitness"]
       ? seoAll
       : null;
   const renderIntroInClient = true;
