@@ -390,7 +390,8 @@ export default function AmenagementSallePage() {
               Le projet peut intégrer l&apos;étude, l&apos;implantation, la sélection de
               <Link href="/categories/equipements" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4"> matériel de fitness</Link>, les
               <Link href="/categories/equipements/machine-de-fitness" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4"> machines de cardio et musculation</Link>, ainsi que le
-              <Link href="/services/revetement-sol-mur" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4"> revêtement sol et mur</Link>. Pour avancer, demandez un devis ou contactez l&apos;équipe IRONZ sur WhatsApp.
+              <Link href="/services/revetement-sol-mur" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4"> revêtement sol et mur</Link>. Pour les projets de terrain extérieur, IRONZ aménage aussi des{" "}
+              <Link href="/services/amenagement-terrains-sport" className="text-yellow-400 hover:text-yellow-300 underline underline-offset-4">terrains de sport</Link>. Pour avancer, demandez un devis ou contactez l&apos;équipe IRONZ sur WhatsApp.
             </p>
 
             {/* CTA Buttons */}

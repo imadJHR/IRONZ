@@ -3,6 +3,7 @@ import {
   Palette,
   ToyBrick,
   SquareStack,
+  Fence,
   Check,
   ArrowRight,
   LucideIcon,
@@ -15,6 +16,7 @@ import img1 from "../public/salle1-optimized.webp";
 import img2 from "../public/salle2-optimized.webp";
 import img3 from "../public/salle3-optimized.webp";
 import img4 from "../public/salle4-optimized.webp";
+import img5 from "../public/terrain-poster.webp";
 
 // Types
 export interface ServiceItem {
@@ -85,6 +87,18 @@ const defaultServices: ServiceItem[] = [
     features: ["Sols amortissants", "Murs d'escalade", "Isolation acoustique", "Installation rapide"],
     delay: 0.3,
     isWide: true,
+  },
+  {
+    id: "terrain-sport",
+    title: "Terrains de Sport",
+    description:
+      "Aménagement de terrains de sport sur mesure : étude du projet, surface sportive, clôture périphérique et équipement. Sur devis.",
+    href: "/services/amenagement-terrains-sport",
+    image: img5,
+    icon: Fence,
+    features: ["Étude de projet", "Surface sportive", "Clôture périphérique", "Devis personnalisé"],
+    delay: 0.4,
+    isWide: false,
   },
 ];
 

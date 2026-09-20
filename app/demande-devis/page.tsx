@@ -23,6 +23,7 @@ import {
   Building,
   User,
   MessageCircle,
+  Fence,
 } from "lucide-react";
 
 type ServiceId =
@@ -30,6 +31,7 @@ type ServiceId =
   | "personnalisation-accessoires"
   | "espace-enfance"
   | "revetement-sol-mur"
+  | "terrain-sport"
   | "conception-produits"
   | "autre";
 
@@ -87,6 +89,7 @@ const SERVICE_CONTEXT_MAP: Record<string, { service: ServiceId; context: string 
   "home-gym": { service: "amenagement-salle", context: "Home Gym" },
   "salle-professionnelle": { service: "amenagement-salle", context: "Salle Professionnelle" },
   "revetement-sol-mur": { service: "revetement-sol-mur", context: "Revêtement sol & mur" },
+  "terrain-sport": { service: "terrain-sport", context: "Terrain de sport" },
 };
 
 export default function DemandeDevisPage() {
@@ -161,6 +164,14 @@ export default function DemandeDevisPage() {
       color: "from-red-500 to-pink-500",
       description: "Solutions de revêtement spécialisées sportives",
       features: ["Antidérapant", "Facile à nettoyer", "Résistance aux chocs"],
+    },
+    {
+      id: "terrain-sport",
+      name: "Aménagement de terrain de sport",
+      icon: <Fence className="w-6 h-6" />,
+      color: "from-green-500 to-emerald-600",
+      description: "Terrain de sport sur mesure : surface, clôture et équipement",
+      features: ["Étude de projet", "Devis personnalisé", "Sur mesure"],
     },
     {
       id: "conception-produits",

@@ -150,6 +150,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/services/amenagement-salle/salle-professionnelle",
     "/services/revetement-sol-mur",
     "/services/espace-enfance",
+    "/services/amenagement-terrains-sport",
   ].map((path) => ({
     url: `${baseUrl}${path}`,
     changeFrequency: "monthly",

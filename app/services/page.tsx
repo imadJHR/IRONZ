@@ -466,6 +466,7 @@ export default function ServicesPage() {
               { href: "/services/espace-enfance", title: "Espace Enfance", desc: "Aires de jeux et fitness adaptés aux enfants", icon: "🧒" },
               { href: "/services/revetement-sol-mur", title: "Revêtements", desc: "Sol et mur sportifs : caoutchouc, PVC, résine", icon: "🛡️" },
               { href: "/services/personnalisation-accessoires", title: "Personnalisation", desc: "Accessoires sur mesure : couleurs et logo", icon: "🎨" },
+              { href: "/services/amenagement-terrains-sport", title: "Terrains de sport", desc: "Surface sportive, clôture périphérique et équipement", icon: "🏟️" },
             ].map((service, index) => (
               <motion.div
                 key={service.href}
