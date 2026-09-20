@@ -1957,6 +1957,16 @@ export default function HomeClient({
                 l'assurance d'atteindre vos objectifs avec des équipements
                 professionnels.
               </p>
+              <p className="mt-5 text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                Un doute sur le matériel à choisir ?{" "}
+                <Link
+                  href="/guides"
+                  className="text-yellow-600 dark:text-yellow-400 font-semibold underline underline-offset-4 hover:text-yellow-500"
+                >
+                  Voir nos guides fitness et musculation
+                </Link>
+                .
+              </p>
             </header>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
