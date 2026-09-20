@@ -35,7 +35,7 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
   "equipements/machine-de-fitness": {
     title: "Machines de fitness et musculation au Maroc | IRONZ",
     description:
-      "Machines de fitness et musculation au Maroc : tapis roulant, vélos, rameur, presse à jambes, rack et home gym. 13 appareils de 1 999 à 65 000 MAD.",
+      "Machines de fitness et musculation au Maroc : tapis roulant, vélos, rameur, presse à jambes, rack et home gym, avec des références de 1 999 à 65 000 MAD.",
     heading: "Machines de fitness et musculation au Maroc",
     intro:
       "Ce rayon réunit les machines de fitness et de musculation IRONZ : tapis roulant, vélos d'appartement, spinning, semi-allongé et rameur pour le cardio, presse à jambes, leg curl, rack et banc pour la musculation, ainsi qu'une station Home Gym, un pack fitness maison et un Reformer Pilates. Pour comparer, partez de vos exercices et de l'espace disponible, puis vérifiez dimensions et caractéristiques sur chaque fiche produit.",
