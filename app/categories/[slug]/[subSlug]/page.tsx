@@ -227,6 +227,10 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
     ],
     linksAriaLabel: "Voir aussi",
     linksShopping: [
+      {
+        href: "/guides/choisir-equipement-boxe-debutant-maroc",
+        label: "Guide débutant : par quoi commencer la boxe",
+      },
       { href: "/categories/accessoires", label: "Accessoires de sport" },
       {
         href: "/categories/accessoires/poids-libres",

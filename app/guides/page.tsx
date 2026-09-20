@@ -14,6 +14,12 @@ const guides = [
       "Différences entre tapis roulant, vélos et rameur, comment choisir selon votre espace et les caractéristiques à comparer avant d'acheter.",
     href: "/guides/choisir-machine-cardio-tapis-velo-rameur-maroc",
   },
+  {
+    title: "Équipement de boxe débutant au Maroc : par quoi commencer ?",
+    description:
+      "Quel matériel de boxe acheter en premier, ce qui peut attendre, et comment comparer gants, bandes, sacs et protections avant l'achat au Maroc.",
+    href: "/guides/choisir-equipement-boxe-debutant-maroc",
+  },
 ];
 
 export default function GuidesIndexPage() {
