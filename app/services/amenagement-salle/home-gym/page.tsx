@@ -651,7 +651,22 @@ export default function HomeGymPage() {
               Solutions <span className="text-yellow-500">Home Gym</span>
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Des aménagements pensés selon l'espace disponible et vos pratiques
+              Des aménagements pensés selon l'espace disponible et vos pratiques.
+              L'équipement d'un home gym s'organise autour de deux piliers : les{" "}
+              <Link
+                href="/categories/equipements/machine-de-fitness"
+                className="text-yellow-600 dark:text-yellow-400 font-semibold underline underline-offset-4 hover:text-yellow-500"
+              >
+                machines de fitness et de musculation
+              </Link>{" "}
+              pour le cardio et le travail guidé, et les{" "}
+              <Link
+                href="/categories/accessoires/poids-libres"
+                className="text-yellow-600 dark:text-yellow-400 font-semibold underline underline-offset-4 hover:text-yellow-500"
+              >
+                haltères, kettlebells et disques
+              </Link>{" "}
+              pour la musculation libre, qui demandent moins de surface.
             </p>
           </motion.div>
 
@@ -926,7 +941,15 @@ export default function HomeGymPage() {
                       >
                         revêtement de sol sportif
                       </Link>{" "}
-                      font partie du projet d'aménagement.
+                      font partie du projet d'aménagement. Côté matériel, les{" "}
+                      <Link
+                        href="/categories/accessoires/accessoires-de-fitness"
+                        className="text-yellow-600 dark:text-yellow-400 font-semibold underline underline-offset-4 hover:text-yellow-500"
+                      >
+                        accessoires de fitness
+                      </Link>{" "}
+                      complètent l'espace pour la récupération et le travail au
+                      sol.
                     </p>
                   </div>
                 </div>
