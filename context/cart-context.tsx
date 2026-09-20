@@ -89,12 +89,18 @@ export function CartProvider({ children }: CartProviderProps) {
     }
 
     setCart((prevCart) => {
+      // Normalize missing variant keys to null: stored items persist explicit
+      // null, but callers may omit selectedColor/selectedTaille (undefined).
+      // Without this, `null === undefined` fails and duplicate lines are added.
+      const incomingColor = productToAdd.selectedColor || null;
+      const incomingTaille = productToAdd.selectedTaille || null;
+
       const existingItemIndex = prevCart.findIndex(
-        (item) => 
-          item.id === productToAdd.id && 
-          item.selectedColor === productToAdd.selectedColor &&
-          item.selectedTaille === productToAdd.selectedTaille  // ✅ ADD THIS
-      )
+        (item) =>
+          item.id === productToAdd.id &&
+          (item.selectedColor || null) === incomingColor &&
+          (item.selectedTaille || null) === incomingTaille
+      );
 
       if (existingItemIndex !== -1) {
         const updatedCart = [...prevCart]
@@ -108,8 +114,8 @@ export function CartProvider({ children }: CartProviderProps) {
         const newItem: CartItem = {
           ...productToAdd,
           quantity: productToAdd.quantity || 1,
-          selectedColor: productToAdd.selectedColor || null,
-          selectedTaille: productToAdd.selectedTaille || null,  // ✅ ADD THIS
+          selectedColor: incomingColor,
+          selectedTaille: incomingTaille,
         }
         return [...prevCart, newItem]
       }
@@ -130,8 +136,8 @@ export function CartProvider({ children }: CartProviderProps) {
     setCart((prevCart) =>
       prevCart.map((item) =>
         item.id === productId &&
-        item.selectedColor === selectedColor &&
-        item.selectedTaille === selectedTaille  // ✅ ADD THIS
+        (item.selectedColor || null) === (selectedColor || null) &&
+        (item.selectedTaille || null) === (selectedTaille || null)
           ? { ...item, quantity }
           : item
       )
@@ -145,11 +151,11 @@ export function CartProvider({ children }: CartProviderProps) {
   ) => {
     setCart((prevCart) => {
       return prevCart.filter(
-        (item) => 
+        (item) =>
           !(
             item.id === productId &&
-            item.selectedColor === selectedColor &&
-            item.selectedTaille === selectedTaille  // ✅ ADD THIS
+            (item.selectedColor || null) === (selectedColor || null) &&
+            (item.selectedTaille || null) === (selectedTaille || null)
           )
       )
     })
@@ -172,30 +178,30 @@ export function CartProvider({ children }: CartProviderProps) {
   }
   
   const isInCart = (
-    productId: string | number,
-    selectedColor: string | null = null,
-    selectedTaille: string | null = null  // ✅ ADD THIS
-  ): boolean => {
-    return cart.some(
-      (item) =>
-        item.id === productId &&
-        item.selectedColor === selectedColor &&
-        item.selectedTaille === selectedTaille  // ✅ ADD THIS
-    )
-  }
+      productId: string | number,
+      selectedColor: string | null = null,
+      selectedTaille: string | null = null  // ✅ ADD THIS
+    ): boolean => {
+      return cart.some(
+        (item) =>
+          item.id === productId &&
+          (item.selectedColor || null) === (selectedColor || null) &&
+          (item.selectedTaille || null) === (selectedTaille || null)
+      )
+    }
 
-  const getCartItem = (
-    productId: string | number,
-    selectedColor: string | null = null,
-    selectedTaille: string | null = null  // ✅ ADD THIS
-  ): CartItem | undefined => {
-    return cart.find(
-      (item) =>
-        item.id === productId &&
-        item.selectedColor === selectedColor &&
-        item.selectedTaille === selectedTaille  // ✅ ADD THIS
-    )
-  }
+    const getCartItem = (
+      productId: string | number,
+      selectedColor: string | null = null,
+      selectedTaille: string | null = null  // ✅ ADD THIS
+    ): CartItem | undefined => {
+      return cart.find(
+        (item) =>
+          item.id === productId &&
+          (item.selectedColor || null) === (selectedColor || null) &&
+          (item.selectedTaille || null) === (selectedTaille || null)
+      )
+    }
 
   const value: CartContextType = {
     cart,

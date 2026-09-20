@@ -67,12 +67,12 @@ export default function CartDropdown({ className = "", onCartOpen, onCartClose }
 
 const handleQuantityChange = (item: CartItem, newQuantity: number): void => {
   if (newQuantity < 1) return;
-  updateQuantity(item.id, item.selectedColor || "", item.selectedTaille || "", newQuantity);
+  updateQuantity(item.id, item.selectedColor ?? null, item.selectedTaille ?? null, newQuantity);
 };
 
 const handleRemoveItem = (item: CartItem, e: MouseEvent<HTMLButtonElement>): void => {
   e.preventDefault();
-  removeFromCart(item.id, item.selectedColor || "", item.selectedTaille || "");
+  removeFromCart(item.id, item.selectedColor ?? null, item.selectedTaille ?? null);
 };
   const handleSheetOpenChange = (open: boolean): void => {
     setIsOpen(open);
@@ -144,7 +144,7 @@ const handleRemoveItem = (item: CartItem, e: MouseEvent<HTMLButtonElement>): voi
               <ul className="divide-y divide-gray-200 dark:divide-gray-700" role="list">
                 {mounted &&
                   cart.map((item: CartItem) => {
-                    const itemKey = `${item.id}-${item.selectedColor || "default"}`;
+                    const itemKey = `${item.id}-${item.selectedColor || "default"}-${item.selectedTaille || "default"}`;
                     const itemTotal = item.price * item.quantity;
                     
                     return (

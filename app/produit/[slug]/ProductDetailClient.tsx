@@ -72,7 +72,7 @@ export interface Product {
     weight?: number;
     estimatedDelivery?: string;
   };
-  colors?: string[];
+  colors?: unknown;
   sku?: string;
   warranty?: string;
   materials?: string[];
@@ -122,6 +122,62 @@ const generateSlug = (name: string, id?: string): string => {
 
 const productSlug = (product: Product): string =>
   product.slug || generateSlug(product.name, product._id || product.id);
+
+type ColorOption = {
+  value: string;
+  label: string;
+};
+
+const formatColorLabel = (value: string): string =>
+  value
+    .replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\b\p{L}/gu, (letter) => letter.toLocaleUpperCase("fr-MA"));
+
+const normalizeColorOptions = (colors: unknown): ColorOption[] => {
+  const rawValues: unknown[] = [];
+
+  const collect = (value: unknown) => {
+    if (Array.isArray(value)) {
+      value.forEach(collect);
+      return;
+    }
+
+    if (typeof value === "string") {
+      value
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .forEach((item) => rawValues.push(item));
+      return;
+    }
+
+    if (value && typeof value === "object") {
+      const record = value as Record<string, unknown>;
+      const candidate =
+        record.value ||
+        record.name ||
+        record.label ||
+        record.color ||
+        record.couleur ||
+        record.title;
+      if (candidate) collect(candidate);
+    }
+  };
+
+  collect(colors);
+
+  const seen = new Set<string>();
+  return rawValues.reduce<ColorOption[]>((options, rawValue) => {
+    const value = String(rawValue).trim();
+    const key = value.toLocaleLowerCase("fr-MA");
+    if (!value || seen.has(key)) return options;
+    seen.add(key);
+    options.push({ value, label: formatColorLabel(value) });
+    return options;
+  }, []);
+};
 
 const stringScore = (value: string): number =>
   Array.from(value).reduce(
@@ -353,6 +409,10 @@ export default function ProductDetailClient({
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [selectedColor, setSelectedColor] = useState<string | null>(() => {
+    const firstColor = normalizeColorOptions(initialProduct.colors)[0];
+    return firstColor?.value || null;
+  });
   const [toast, setToast] = useState<ToastState>({
     show: false,
     message: "",
@@ -373,6 +433,19 @@ export default function ProductDetailClient({
   });
 
   const { addToCart } = useCart();
+
+  const colorOptions = product ? normalizeColorOptions(product.colors) : [];
+
+  useEffect(() => {
+    const nextColors = product ? normalizeColorOptions(product.colors) : [];
+    setSelectedColor((currentColor) => {
+      if (nextColors.length === 0) return null;
+      if (currentColor && nextColors.some((color) => color.value === currentColor)) {
+        return currentColor;
+      }
+      return nextColors[0].value;
+    });
+  }, [product]);
 
   useEffect(() => {
     if (!slug || retryCounter === 0) return;
@@ -405,21 +478,30 @@ export default function ProductDetailClient({
     !product?.inStock || product?.stockQuantity === 0;
 
   const handleAddToCart = useCallback(() => {
-    if (!product || isOutOfStockDerived) return;
+    if (!product || isOutOfStockDerived) return false;
+    const normalizedColors = normalizeColorOptions(product.colors);
+    const colorForCart = normalizedColors.length > 0 ? selectedColor : null;
+
+    if (normalizedColors.length > 0 && !colorForCart) {
+      showToast("Sélectionnez une couleur", "error");
+      return false;
+    }
+
     addToCart({
       id: getProductId(product),
       name: product.name,
       price: product.price,
       image: product.image,
       slug: product.slug,
+      selectedColor: colorForCart,
       quantity,
     });
     showToast("Ajouté au panier ✓", "success");
-  }, [product, quantity, isOutOfStockDerived, addToCart, showToast]);
+    return true;
+  }, [product, quantity, selectedColor, isOutOfStockDerived, addToCart, showToast]);
 
   const handleBuyNow = useCallback(() => {
-    handleAddToCart();
-    router.push("/panier");
+    if (handleAddToCart()) router.push("/panier");
   }, [handleAddToCart, router]);
 
   const handleShare = useCallback(async () => {
@@ -908,20 +990,31 @@ export default function ProductDetailClient({
               )}
 
               {/* Colors */}
-              {product.colors && product.colors.length > 0 && (
+              {colorOptions.length > 0 && (
                 <div>
                   <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
                     Couleur
                   </p>
                   <div className="flex gap-2 flex-wrap">
-                    {product.colors.map((color) => (
-                      <span
-                        key={color}
-                        className="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide"
+                    {colorOptions.map((color) => {
+                      const isSelected = selectedColor === color.value;
+                      return (
+                      <button
+                        key={color.value}
+                        type="button"
+                        onClick={() => setSelectedColor(color.value)}
+                        aria-pressed={isSelected}
+                        className={cn(
+                          "px-3 py-1.5 rounded-lg border text-xs font-bold uppercase tracking-wide transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
+                          isSelected
+                            ? "border-yellow-500 bg-yellow-500 text-black shadow-sm"
+                            : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-yellow-400"
+                        )}
                       >
-                        {color}
-                      </span>
-                    ))}
+                        {color.label}
+                      </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
