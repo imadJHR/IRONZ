@@ -17,6 +17,8 @@ import {
 import { useCart } from "../../../context/cart-context";
 import { optimizeImageUrl } from "../../../lib/image-url";
 import { categoryUrl, subcategoryUrl } from "../../../lib/category-taxonomy";
+import { ReviewsSection } from "../../../components/reviews/reviews-section";
+import { ChevronRightIcon, StarSolid, StarOutline } from "../../../components/reviews/icons";
 
 // ─── CONSTANTS ───────────────────────────────────────────
 const API_URL =
@@ -404,7 +406,6 @@ export default function ProductDetailClient({
   const [reviews, setReviews] = useState<Product["reviews"]>(
     initialProduct.reviews || [],
   );
-  const [reviewsLoading, setReviewsLoading] = useState(false);
   const [related, setRelated] = useState<Product[]>(initialRelated);
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -424,14 +425,6 @@ export default function ProductDetailClient({
   const [imgZoom, setImgZoom] = useState(false);
   const [retryCounter, setRetryCounter] = useState(0);
 
-  const [reviewForm, setReviewForm] = useState({
-    username: "",
-    title: "",
-    body: "",
-    rating: 5,
-    verified: false,
-  });
-
   const { addToCart } = useCart();
 
   const colorOptions = product ? normalizeColorOptions(product.colors) : [];
@@ -447,21 +440,6 @@ export default function ProductDetailClient({
     });
   }, [product]);
 
-  useEffect(() => {
-    if (!slug || retryCounter === 0) return;
-    setLoading(true);
-    fetchProductBySlug(slug)
-      .then(async (prod) => {
-        setProduct(prod);
-        if (prod) {
-          await loadReviews(prod._id || prod.id || "");
-          const rel = await fetchRelatedProducts(prod.category, prod.subCategory, slug);
-          setRelated(rel);
-        }
-      })
-      .catch(() => showToast("Erreur de chargement", "error"))
-      .finally(() => setLoading(false));
-  }, [slug, retryCounter]);
 
   const showToast = useCallback(
     (message: string, type: ToastState["type"]) => {
@@ -518,7 +496,6 @@ export default function ProductDetailClient({
 
   const loadReviews = useCallback(async (productId: string) => {
     if (!productId) return;
-    setReviewsLoading(true);
     try {
       // Le Lambda n'expose pas d'endpoint /reviews séparé :
       // on récupère le produit complet qui contient déjà le tableau `reviews`.
@@ -535,35 +512,24 @@ export default function ProductDetailClient({
       }
     } catch {
       setReviews([]);
-    } finally {
-      setReviewsLoading(false);
     }
   }, []);
 
-  const handleAddReview = useCallback(async () => {
-    if (!product) return;
-    if (!reviewForm.username.trim() || !reviewForm.body.trim()) {
-      showToast("Nom et message sont requis", "error");
-      return;
-    }
-    try {
-      const res = await fetch(
-        `${API_URL}/products/${encodeURIComponent(product._id || product.id || "")}/reviews`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(reviewForm),
+  useEffect(() => {
+    if (!slug || retryCounter === 0) return;
+    setLoading(true);
+    fetchProductBySlug(slug)
+      .then(async (prod) => {
+        setProduct(prod);
+        if (prod) {
+          await loadReviews(prod._id || prod.id || "");
+          const rel = await fetchRelatedProducts(prod.category, prod.subCategory, slug);
+          setRelated(rel);
         }
-      );
-      if (!res.ok) throw new Error("Erreur");
-      await loadReviews(product._id || product.id || "");
-      setReviewForm({ username: "", title: "", body: "", rating: 5, verified: false });
-      showToast("Avis ajouté", "success");
-    } catch {
-      showToast("Impossible d'ajouter l'avis", "error");
-    }
-  }, [product, reviewForm, loadReviews, showToast]);
-
+      })
+      .catch(() => showToast("Erreur de chargement", "error"))
+      .finally(() => setLoading(false));
+  }, [slug, retryCounter, loadReviews, showToast]);
   // ── Loading ───────────────────────────────────────────
   if (loading) {
     return (
@@ -1147,8 +1113,60 @@ export default function ProductDetailClient({
             </div>
           </div>
 
+          {/* ── RATING SUMMARY (above tabs) ───────────── */}
+          {(() => {
+            const reviewRows = reviews || [];
+            const detailedCount = reviewRows.length;
+            const declaredCount = product.reviewCount || 0;
+            const summaryCount = Math.max(declaredCount, detailedCount);
+            const summaryAverage =
+              detailedCount > 0
+                ? reviewRows.reduce((s, r) => s + (Number(r.rating) || 0), 0) /
+                  detailedCount
+                : Number(product.rating || 0);
+            if (!(summaryAverage > 0) && !(summaryCount > 0)) return null;
+
+            return (
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab("reviews");
+                  document
+                    .getElementById("product-tabs")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="mt-8 lg:mt-10 flex items-center gap-4 sm:gap-5 w-full text-left p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm hover:border-yellow-300 dark:hover:border-yellow-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2"
+                aria-label={`${summaryCount} avis, moyenne ${summaryAverage.toFixed(1)} sur 5. Voir les avis.`}
+              >
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-3xl sm:text-4xl font-display text-gray-900 dark:text-white leading-none">
+                    {summaryAverage.toFixed(1)}
+                  </span>
+                  <div className="flex gap-0.5" aria-hidden="true">
+                    {[...Array(5)].map((_, i) =>
+                      i < Math.round(summaryAverage) ? (
+                        <StarSolid key={i} className="w-4 h-4 text-yellow-400" />
+                      ) : (
+                        <StarOutline key={i} className="w-4 h-4 text-gray-300 dark:text-gray-600" />
+                      ),
+                    )}
+                  </div>
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                    {summaryCount} avis clients
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                    Cliquez pour lire les témoignages
+                  </p>
+                </div>
+                <ChevronRightIcon className="w-5 h-5 text-gray-300 dark:text-gray-600 ml-auto shrink-0" />
+              </button>
+            );
+          })()}
+
           {/* ── TABS ──────────────────────────────────── */}
-          <div className="mt-12 lg:mt-16">
+          <div className="mt-12 lg:mt-16" id="product-tabs">
             <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
               <div className="flex border-b border-gray-100 dark:border-gray-800 overflow-x-auto scrollbar-hide">
                 {tabs.map((tab) => (
@@ -1315,195 +1333,13 @@ export default function ProductDetailClient({
 
                 {activeTab === "reviews" && (
                   <div className="space-y-6">
-                    {(() => {
-                      const detailedReviews = reviews || [];
-                      const detailedCount = detailedReviews.length;
-                      const declaredCount = product.reviewCount || 0;
-                      const displayCount = Math.max(declaredCount, detailedCount);
-                      const average =
-                        detailedCount > 0
-                          ? detailedReviews.reduce(
-                              (s, r) => s + (Number(r.rating) || 0),
-                              0
-                            ) / detailedCount
-                          : product.rating || 0;
-                      const roundedAverage = Number(average.toFixed(1));
-
-                      if (roundedAverage > 0 || displayCount > 0) {
-                        return (
-                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-5 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800">
-                            <div className="text-center shrink-0">
-                              <p className="text-6xl font-display text-gray-900 dark:text-white leading-none">
-                                {roundedAverage.toFixed(1)}
-                              </p>
-                              <StarRating rating={roundedAverage} size="md" />
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
-                                {displayCount || 0} avis
-                              </p>
-                            </div>
-                            <div className="flex-1 w-full space-y-1.5">
-                              {[5, 4, 3, 2, 1].map((star) => {
-                                const count = detailedReviews.filter(
-                                  (r) => Math.round(r.rating) === star
-                                ).length;
-                                const total = detailedCount || 1;
-                                const pct = Math.round((count / total) * 100);
-                                return (
-                                  <div
-                                    key={star}
-                                    className="flex items-center gap-2"
-                                  >
-                                    <span className="text-xs font-bold text-gray-500 w-4">
-                                      {star}
-                                    </span>
-                                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400 shrink-0" />
-                                    <div className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                      <div
-                                        className="h-full bg-yellow-400 rounded-full transition-all"
-                                        style={{ width: `${pct}%` }}
-                                      />
-                                    </div>
-                                    <span className="text-xs text-gray-400 w-8 text-right">
-                                      {pct}%
-                                    </span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        );
-                      }
-                      return null;
-                    })()}
-
-                    <div className="space-y-4">
-                      {reviewsLoading ? (
-                        <div className="text-center py-8 text-sm text-gray-500">
-                          Chargement des avis...
-                        </div>
-                      ) : (() => {
-                        const detailedReviews = reviews || [];
-                        const declaredCount = product.reviewCount || 0;
-                        const displayCount = Math.max(declaredCount, detailedReviews.length);
-                        if (detailedReviews.length > 0) {
-                          return detailedReviews.map((review) => (
-                            <div
-                              key={String(review._id)}
-                              className="p-4 sm:p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800"
-                            >
-                              <div className="flex items-start justify-between gap-3 mb-3">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-9 h-9 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center shrink-0">
-                                    <span className="text-yellow-700 dark:text-yellow-400 font-black text-sm">
-                                      {review.username
-                                        ?.charAt(0)
-                                        .toUpperCase() || "?"}
-                                    </span>
-                                  </div>
-                                  <div>
-                                    <div className="flex items-center gap-2">
-                                      <p className="text-sm font-bold text-gray-900 dark:text-white">
-                                        {review.username}
-                                      </p>
-                                      {review.verified && (
-                                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                                          <BadgeCheck className="w-3 h-3" />
-                                          Vérifié
-                                        </span>
-                                      )}
-                                    </div>
-                                    <StarRating rating={review.rating} size="xs" />
-                                  </div>
-                                </div>
-                                <span className="text-[11px] text-gray-400 dark:text-gray-500 shrink-0">
-                                  {formatDate(review.createdAt || review.date)}
-                                </span>
-                              </div>
-
-                              {review.title && (
-                                <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">
-                                  {review.title}
-                                </p>
-                              )}
-                              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                                {review.body}
-                              </p>
-                            </div>
-                          ));
-                        }
-
-                        if (displayCount > 0) {
-                          return (
-                            <div className="text-center py-10">
-                              <div className="w-14 h-14 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mx-auto mb-3">
-                                <MessageSquare className="w-7 h-7 text-yellow-500" />
-                              </div>
-                              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                                {displayCount} avis clients
-                              </p>
-                              <p className="text-xs text-gray-400 dark:text-gray-600 mt-1">
-                                Les témoignages détaillés ne sont pas encore chargés.
-                              </p>
-                            </div>
-                          );
-                        }
-
-                        return (
-                          <div className="text-center py-10">
-                            <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-3">
-                              <MessageSquare className="w-7 h-7 text-gray-400" />
-                            </div>
-                            <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-                              Aucun avis pour le moment
-                            </p>
-                            <p className="text-xs text-gray-400 dark:text-gray-600 mt-1">
-                              Soyez le premier à donner votre avis !
-                            </p>
-                          </div>
-                        );
-                      })()}
-                    </div>
-
-                    <div className="mt-2 rounded-xl border border-gray-100 dark:border-gray-800 p-4 sm:p-5 space-y-3">
-                      <p className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
-                        Ajouter un avis
-                      </p>
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        <input
-                          value={reviewForm.username}
-                          onChange={(e) => setReviewForm((f) => ({ ...f, username: e.target.value }))}
-                          placeholder="Votre nom"
-                          className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm outline-none focus:border-yellow-500"
-                        />
-                        <input
-                          value={reviewForm.title}
-                          onChange={(e) => setReviewForm((f) => ({ ...f, title: e.target.value }))}
-                          placeholder="Titre"
-                          className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm outline-none focus:border-yellow-500"
-                        />
-                      </div>
-                      <textarea
-                        value={reviewForm.body}
-                        onChange={(e) => setReviewForm((f) => ({ ...f, body: e.target.value }))}
-                        placeholder="Votre avis..."
-                        className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm outline-none focus:border-yellow-500"
-                        rows={3}
-                      />
-                      <div className="flex flex-wrap items-center gap-4">
-                        <StarRating
-                          rating={reviewForm.rating}
-                          size="sm"
-                          interactive
-                          onChange={(r) => setReviewForm((f) => ({ ...f, rating: r }))}
-                        />
-                        <button
-                          onClick={handleAddReview}
-                          className="ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-500 text-black text-sm font-bold hover:bg-yellow-400"
-                        >
-                          Publier
-                        </button>
-                      </div>
-                    </div>
+                    <ReviewsSection
+                      productId={getProductId(product)}
+                      productSlug={String(product.slug || "")}
+                      initialReviews={reviews || []}
+                      declaredRating={product.rating}
+                      declaredReviewCount={product.reviewCount}
+                    />
                   </div>
                 )}
               </div>
