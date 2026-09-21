@@ -47,6 +47,11 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import {
+  clerkAppearance,
+  clerkLocalization,
+  userButtonAppearance,
+} from "../lib/clerk-appearance";
 
 const SITE_URL = "https://www.ironz.ma";
 
@@ -261,7 +266,14 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   );
 
   if (hasClerkKeys) {
-    return <ClerkProvider>{LayoutContent}</ClerkProvider>;
+    return (
+      <ClerkProvider
+        appearance={clerkAppearance}
+        localization={clerkLocalization}
+      >
+        {LayoutContent}
+      </ClerkProvider>
+    );
   }
   return LayoutContent;
 }
@@ -925,11 +937,7 @@ const Navbar = React.memo(function Navbar({
                   <ConditionalSignedIn>
                     <ConditionalUserButton
                       afterSignOutUrl="/"
-                      appearance={{
-                        elements: {
-                          userButtonAvatarBox: "h-9 w-9 xl:h-10 xl:w-10",
-                        },
-                      }}
+                      appearance={userButtonAppearance}
                     />
                   </ConditionalSignedIn>
                 </div>
@@ -1067,7 +1075,10 @@ const Navbar = React.memo(function Navbar({
 
                 <ConditionalSignedIn>
                   <div className="mb-6 flex justify-center">
-                    <ConditionalUserButton afterSignOutUrl="/" />
+                    <ConditionalUserButton
+                      afterSignOutUrl="/"
+                      appearance={userButtonAppearance}
+                    />
                   </div>
                 </ConditionalSignedIn>
 
