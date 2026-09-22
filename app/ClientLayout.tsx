@@ -1488,29 +1488,6 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
             </div>
           </motion.div>
 
-          {/* Services */}
-          <motion.div variants={itemVariants}>
-            <h2 className="font-display uppercase tracking-widest text-lg mb-5 flex items-center gap-3">
-              <span
-                className="w-6 h-1 bg-yellow-500 -skew-x-12"
-                aria-hidden="true"
-              />
-              Services
-            </h2>
-            <ul className="space-y-3" role="list">
-              {footerServices.map((service) => (
-                <li key={service.href}>
-                  <Link
-                    href={service.href}
-                    className="inline-block text-gray-400 hover:text-yellow-400 hover:translate-x-1 transition-all text-sm"
-                  >
-                    {service.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
           {/* Catalog */}
           <motion.div variants={itemVariants}>
             <h2 className="font-display uppercase tracking-widest text-lg mb-5 flex items-center gap-3">
@@ -1538,6 +1515,29 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                     className="inline-block text-gray-500 hover:text-yellow-400 hover:translate-x-1 transition-all text-sm"
                   >
                     {cat.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Services */}
+          <motion.div variants={itemVariants}>
+            <h2 className="font-display uppercase tracking-widest text-lg mb-5 flex items-center gap-3">
+              <span
+                className="w-6 h-1 bg-yellow-500 -skew-x-12"
+                aria-hidden="true"
+              />
+              Services
+            </h2>
+            <ul className="space-y-3" role="list">
+              {footerServices.map((service) => (
+                <li key={service.href}>
+                  <Link
+                    href={service.href}
+                    className="inline-block text-gray-400 hover:text-yellow-400 hover:translate-x-1 transition-all text-sm"
+                  >
+                    {service.name}
                   </Link>
                 </li>
               ))}
