@@ -1,900 +1,191 @@
-"use client";
-
 import Link from "next/link";
-import { motion, Variants } from "framer-motion";
-import {
-  CheckCircle,
-  ArrowRight,
-  Phone,
-  Building,
-  Users,
-  Zap,
-  Shield,
-  Star,
-  Award,
-  TrendingUp,
-  Clock,
-  Sparkles,
-  Target,
-  Trophy,
-  Crown,
-  MapPin,
-  MessageSquare,
-  ChevronRight,
-  PhoneCall,
-} from "lucide-react";
-import { IoLogoWhatsapp } from "react-icons/io";
+import type { ReactNode } from "react";
 import ServiceContactForm from "../../../../components/service-contact-form";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+const PAGE_URL = "https://www.ironz.ma/services/amenagement-salle/salle-professionnelle";
+const DEVIS_URL = "/demande-devis?service=salle-professionnelle";
+const WHATSAPP_URL =
+  "https://wa.me/212674114446?text=Bonjour%2C%20je%20souhaite%20discuter%20d%27un%20projet%20de%20salle%20de%20sport%20professionnelle%20avec%20IRONZ.";
 
-interface Sector {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  features: string[];
-  color: string;
+type IconName =
+  | "building"
+  | "users"
+  | "cardio"
+  | "strength"
+  | "dumbbell"
+  | "zones"
+  | "route"
+  | "surface"
+  | "maintenance"
+  | "quote"
+  | "check";
+
+type Card = { icon: IconName; title: string; text: string };
+
+const projectTypes: Card[] = [
+  { icon: "building", title: "Salle commerciale", text: "Un projet ouvert à plusieurs profils d'adhérents, avec une offre d'entraînement lisible et un parc d'équipements cohérent." },
+  { icon: "users", title: "Club fitness", text: "Un espace à organiser autour des habitudes des membres, des zones prioritaires et des périodes de fréquentation." },
+  { icon: "building", title: "Hôtel ou résidence", text: "Une salle fitness intégrée à un établissement, pensée pour un public varié et une utilisation simple au quotidien." },
+  { icon: "users", title: "Entreprise ou centre sportif", text: "Un espace multi-utilisateur qui doit concilier activités prévues, surface disponible et niveau d'équipement souhaité." },
+];
+
+const userProfiles: Card[] = [
+  { icon: "users", title: "Profils variés", text: "Débutants, pratiquants réguliers et utilisateurs expérimentés n'attendent pas la même chose des zones et des machines." },
+  { icon: "route", title: "Usage et fréquentation", text: "Le projet tient compte de la fréquence prévue, des moments de forte utilisation et des transitions entre activités." },
+  { icon: "zones", title: "Offre d'entraînement", text: "Cardio, force, poids libres, fonctionnel ou mobilité : les priorités dépendent du concept de l'établissement." },
+  { icon: "maintenance", title: "Praticité au quotidien", text: "L'accès, le rangement, l'entretien et la facilité d'utilisation comptent autant que la liste des équipements." },
+];
+
+const zones: Card[] = [
+  { icon: "cardio", title: "Cardio", text: "Tapis, vélos ou elliptiques trouvent leur place selon le parcours, la visibilité, la circulation et l'usage attendu." },
+  { icon: "strength", title: "Machines guidées", text: "Les postes de musculation structurent l'offre et sont répartis pour rester accessibles sans bloquer les passages." },
+  { icon: "dumbbell", title: "Poids libres", text: "Bancs, racks, haltères et disques demandent une zone lisible, du rangement et une surface adaptée à la pratique." },
+  { icon: "zones", title: "Fonctionnel et mobilité", text: "Une zone dégagée accueille accessoires, mouvements au sol, échauffement ou étirements selon le projet." },
+  { icon: "route", title: "Circulation", text: "Les passages entre les zones restent compréhensibles afin d'éviter un espace surchargé ou difficile à exploiter." },
+  { icon: "maintenance", title: "Rangement", text: "Le stockage des accessoires et consommables est prévu pour préserver l'ordre et la disponibilité des équipements." },
+];
+
+const equipmentFactors = [
+  "profils utilisateurs et activités prévues",
+  "surface réellement exploitable et accès aux zones",
+  "fréquence et intensité d'utilisation attendues",
+  "polyvalence, confort d'utilisation et cohérence du parc",
+  "maintenance, rangement et disponibilité des équipements",
+  "budget et périmètre réel du projet",
+];
+
+const projectSteps = [
+  { title: "Définir le projet", text: "Préciser le type d'établissement, la ville, le contexte neuf ou rénovation et le périmètre recherché." },
+  { title: "Comprendre les utilisateurs", text: "Identifier les profils, les activités, les habitudes d'utilisation et les priorités de l'offre fitness." },
+  { title: "Étudier l'espace", text: "Lire les dimensions, accès, contraintes visibles, zones existantes et possibilités d'implantation." },
+  { title: "Organiser les zones", text: "Structurer cardio, machines, poids libres, fonctionnel, mobilité, circulation et rangement." },
+  { title: "Sélectionner les solutions", text: "Relier les équipements, le sol et les compléments au niveau d'usage et aux objectifs du lieu." },
+  { title: "Préparer le devis", text: "Formaliser le périmètre convenu et les informations utiles à une proposition adaptée au projet." },
+];
+
+const quotePreparation = [
+  "ville et type d'établissement",
+  "surface utile, dimensions ou plan disponible",
+  "photos et accès visibles du local",
+  "profils d'utilisateurs et activités prévues",
+  "zones et familles d'équipements prioritaires",
+  "revêtement existant, contraintes pratiques et budget indicatif si utile",
+];
+
+const usefulLinks = [
+  { href: "/services/amenagement-salle", title: "Aménagement de salle", text: "Pour revenir au cadrage global d'un projet fitness." },
+  { href: "/services/amenagement-salle/home-gym", title: "Home Gym", text: "Pour un espace privé et résidentiel avec un usage personnel." },
+  { href: "/services/revetement-sol-mur", title: "Revêtement sol & mur", text: "Pour approfondir les surfaces selon les zones et l'intensité d'usage." },
+  { href: "/categories/equipements", title: "Équipements fitness", text: "Pour explorer les familles de matériel disponibles sur le catalogue." },
+  { href: "/categories/equipements/machine-de-fitness", title: "Machines de fitness", text: "Pour découvrir les appareils pouvant composer un parc professionnel." },
+  { href: "/categories/accessoires/poids-libres", title: "Poids libres", text: "Pour les haltères, barres, disques et solutions liées à la force." },
+  { href: "/categories/accessoires/accessoires-de-musculation", title: "Accessoires de musculation", text: "Pour compléter l'équipement selon les usages et les zones." },
+];
+
+const faqs = [
+  { question: "Comment organiser les zones d'une salle de sport professionnelle ?", answer: "On part du public, des activités et de la surface disponible pour répartir cardio, machines guidées, poids libres, fonctionnel, mobilité, rangement et circulation. L'objectif est de garder un parcours lisible et pratique." },
+  { question: "Quels équipements prévoir en priorité ?", answer: "Le mix dépend du concept de l'établissement, des profils d'utilisateurs et de la fréquence d'usage. Il peut combiner cardio, machines de force, poids libres, accessoires et une zone dégagée." },
+  { question: "Comment choisir les équipements selon les utilisateurs ?", answer: "Il faut considérer les niveaux de pratique, les activités proposées, les usages de pointe et la polyvalence recherchée. Il n'existe pas de composition universelle ni de capacité à calculer sans étude du projet." },
+  { question: "Pourquoi prévoir le revêtement dès la conception ?", answer: "Le sol influence le confort, l'entretien, la protection du support et les contraintes liées aux équipements et aux charges. Les zones peuvent avoir des besoins différents." },
+  { question: "Quelle différence avec un Home Gym ?", answer: "Un Home Gym répond à un usage privé avec une sélection souvent plus ciblée. Une salle professionnelle doit organiser un usage multi-utilisateur, une offre plus large, la circulation et une fréquence d'utilisation plus élevée." },
+  { question: "Que préparer avant de demander un devis ?", answer: "Préparez la ville, la surface, les dimensions ou un plan, des photos, le type d'établissement, les utilisateurs, les activités, les équipements prioritaires et le périmètre souhaité." },
+];
+
+function ServiceIcon({ name, className = "h-7 w-7" }: { name: IconName; className?: string }) {
+  const paths: Record<IconName, ReactNode> = {
+    building: <><path d="M4 20V6l8-3 8 3v14" /><path d="M8 20v-5h8v5M8 9h1M12 9h1M16 9h1M8 12h1M12 12h1M16 12h1" /></>,
+    users: <><circle cx="9" cy="8" r="3" /><path d="M3 20c1-4 4-6 6-6s5 2 6 6" /><path d="M15 11a3 3 0 1 0 0-6M17 14c2 .6 3.3 2.5 4 6" /></>,
+    cardio: <><path d="M4 13h3l2-5 4 10 2-5h5" /><path d="M6 20h12" /></>,
+    strength: <><path d="M7 20V9a4 4 0 0 1 8 0v11" /><path d="M5 20h12M9 13h4M9 16h4M17 8h2v12" /></>,
+    dumbbell: <><path d="M5 8v8M8 7v10M16 7v10M19 8v8M8 12h8M3 10v4M21 10v4" /></>,
+    zones: <><rect x="4" y="4" width="7" height="7" rx="1" /><rect x="13" y="4" width="7" height="4" rx="1" /><rect x="13" y="11" width="7" height="9" rx="1" /><rect x="4" y="13" width="7" height="7" rx="1" /></>,
+    route: <><path d="M5 6h5a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h11" /><path d="m17 15 3 3-3 3" /></>,
+    surface: <><path d="m4 17 8 4 8-4" /><path d="m4 12 8 4 8-4-8-4-8 4Z" /><path d="M12 8V3" /></>,
+    maintenance: <><path d="m14 7 3-3 3 3-3 3Z" /><path d="m4 20 8-8" /><path d="M6 6h6v6H6zM15 15h5v5h-5z" /></>,
+    quote: <><path d="M6 3h9l4 4v14H6z" /><path d="M15 3v5h4M9 12h6M9 16h6" /></>,
+    check: <path d="m20 6-11 11-5-5" />,
+  };
+
+  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>{paths[name]}</svg>;
 }
 
-interface Service {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  features: string[];
-  color: string;
+function SectionLabel({ children }: { children: ReactNode }) {
+  return <span className="inline-flex items-center rounded-full border border-yellow-500/30 bg-yellow-500/10 px-4 py-2 text-xs font-display uppercase tracking-[0.25em] text-yellow-600 dark:text-yellow-400">{children}</span>;
 }
 
-interface Package {
-  name: string;
-  description: string;
-  icon: React.ReactNode;
-  features: string[];
-  price: string;
-  popular: boolean;
-  color: string;
+function CardGrid({ cards, columns = "md:grid-cols-2 xl:grid-cols-4" }: { cards: Card[]; columns?: string }) {
+  return <div className={`grid grid-cols-1 gap-6 ${columns}`}>{cards.map((card) => <article key={card.title} className="group rounded-2xl border border-gray-100 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-900/60 hover:border-yellow-500/40 transition-colors"><div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black"><ServiceIcon name={card.icon} /></div><h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">{card.title}</h3><p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{card.text}</p></article>)}</div>;
 }
 
-// ─── Animation Variants ───────────────────────────────────────────────────────
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.ironz.ma/" },
+    { "@type": "ListItem", position: 2, name: "Services", item: "https://www.ironz.ma/services" },
+    { "@type": "ListItem", position: 3, name: "Aménagement de salle", item: "https://www.ironz.ma/services/amenagement-salle" },
+    { "@type": "ListItem", position: 4, name: "Salle professionnelle", item: PAGE_URL },
+  ],
 };
 
-const scaleIn: Variants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-      ease: "easeOut",
-    },
-  },
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Aménagement de salle de sport professionnelle au Maroc",
+  serviceType: "Aménagement de salle de sport professionnelle",
+  provider: { "@type": "Organization", name: "IRONZ", url: "https://www.ironz.ma/" },
+  areaServed: "Maroc",
+  url: PAGE_URL,
+  description: "Service d'aménagement de salle de sport professionnelle au Maroc : étude des utilisateurs et de l'espace, zonage, sélection d'équipements, revêtement et préparation du devis.",
 };
 
-// ─── Guarantee items ──────────────────────────────────────────────────────────
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+};
 
-const guarantees: string[] = [
-  "Étude du besoin et cadrage du projet",
-  "Sélection des équipements selon l'espace et l'usage",
-  "Accompagnement pour la mise en place du projet",
-];
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-const sectors: Sector[] = [
-  {
-    icon: <Building className="h-8 w-8" />,
-    title: "Salles de Sport",
-    description:
-      "Équipement complet pour salles de fitness, clubs de sport et centres d'entraînement.",
-    features: [
-      "Zones cardio et musculation",
-      "Espaces cours collectifs",
-      "Vestiaires et réception",
-    ],
-    color: "from-yellow-500 to-orange-500",
-  },
-  {
-    icon: <Star className="h-8 w-8" />,
-    title: "Hôtels & Resorts",
-    description:
-      "Espaces fitness adaptés aux hôtels et établissements d'accueil.",
-    features: [
-      "Zone fitness dédiée",
-      "Organisation de l'espace",
-      "Équipements selon le besoin",
-    ],
-    color: "from-blue-500 to-purple-500",
-  },
-  {
-    icon: <Users className="h-8 w-8" />,
-    title: "Entreprises",
-    description:
-      "Espaces fitness d'entreprise pour le bien-être des employés.",
-    features: [
-      "Salles de sport corporate",
-      "Espaces détente",
-      "Solutions modulaires",
-    ],
-    color: "from-green-500 to-emerald-500",
-  },
-  {
-    icon: <Award className="h-8 w-8" />,
-    title: "Centres Sportifs",
-    description:
-      "Équipements pour centres municipaux et complexes sportifs.",
-    features: [
-      "Équipements multi-sports",
-      "Espaces polyvalents",
-      "Solutions durables",
-    ],
-    color: "from-red-500 to-pink-500",
-  },
-];
-
-const services: Service[] = [
-  {
-    icon: <Building className="h-8 w-8" />,
-    title: "Étude & Conception",
-    description:
-      "Analyse complète de vos besoins et conception de plans détaillés avec visualisation 3D.",
-    features: [
-      "Audit de l'espace existant",
-      "Organisation des zones d'entraînement",
-      "Étude du besoin et de l'espace",
-    ],
-    color: "from-yellow-500 to-orange-500",
-  },
-  {
-    icon: <Building className="h-8 w-8" />,
-    title: "Aménagement Complet",
-    description:
-      "Réalisation complète de votre projet avec coordination de tous les corps de métier.",
-    features: [
-      "Coordination des étapes du projet",
-      "Organisation de l'aménagement",
-      "Suivi selon le périmètre convenu",
-    ],
-    color: "from-blue-500 to-purple-500",
-  },
-  {
-    icon: <Zap className="h-8 w-8" />,
-    title: "Équipements",
-    description:
-      "Sélection et installation des équipements adaptés à votre projet.",
-    features: [
-      "Choix selon les zones et l'usage",
-      "Installation selon le projet",
-      "Prise en main de l'espace installé",
-    ],
-    color: "from-green-500 to-emerald-500",
-  },
-  {
-    icon: <Shield className="h-8 w-8" />,
-    title: "Maintenance & Support",
-    description:
-      "Échange sur les besoins de suivi et les solutions adaptées à votre installation.",
-    features: [
-      "Suivi selon le périmètre du projet",
-      "Échange sur les besoins complémentaires",
-      "Solutions adaptées à l'installation",
-    ],
-    color: "from-red-500 to-pink-500",
-  },
-  {
-    icon: <TrendingUp className="h-8 w-8" />,
-    title: "Conseil & Formation",
-    description:
-      "Accompagnement dans la préparation et l'organisation de votre espace fitness.",
-    features: [
-      "Cadrage du besoin",
-      "Organisation des zones",
-      "Conseils liés à l'aménagement",
-    ],
-    color: "from-indigo-500 to-blue-500",
-  },
-  {
-    icon: <Clock className="h-8 w-8" />,
-    title: "Solutions du projet",
-    description:
-      "Échangez avec IRONZ sur le périmètre, les équipements et les étapes de votre projet.",
-    features: [
-      "Projet neuf ou rénovation",
-      "Équipements et zones souhaités",
-      "Devis personnalisé",
-    ],
-    color: "from-purple-500 to-pink-500",
-  },
-];
-
-const packages: Package[] = [
-  {
-    name: "Étude du projet",
-    description: "Pour cadrer le besoin et l'espace",
-    icon: <Building className="h-10 w-10" />,
-    features: [
-      "Analyse de l'espace",
-      "Organisation des zones",
-      "Sélection selon l'usage",
-      "Première orientation du projet",
-    ],
-    price: "Sur devis",
-    popular: false,
-    color: "from-yellow-500 to-orange-500",
-  },
-  {
-    name: "Aménagement professionnel",
-    description: "Pour organiser un espace fitness professionnel",
-    icon: <Users className="h-10 w-10" />,
-    features: [
-      "Conception de l'aménagement",
-      "Équipements adaptés au projet",
-      "Organisation des zones d'entraînement",
-      "Installation selon le périmètre",
-      "Prise en main de l'espace",
-    ],
-    price: "Sur devis",
-    popular: true,
-    color: "from-black to-yellow-500",
-  },
-  {
-    name: "Projet sur mesure",
-    description: "Pour les configurations et besoins spécifiques",
-    icon: <Crown className="h-10 w-10" />,
-    features: [
-      "Étude approfondie de l'espace",
-      "Équipements adaptés au besoin",
-      "Coordination de l'aménagement",
-      "Solutions de revêtement selon le projet",
-      "Accompagnement après installation selon le périmètre",
-    ],
-    price: "Sur devis",
-    popular: false,
-    color: "from-gray-900 to-yellow-600",
-  },
-];
-
-const projectSignals = [
-  "Projet neuf ou rénovation",
-  "Organisation des zones",
-  "Sélection d'équipements",
-  "Installation selon le besoin",
-];
-
-// ─── Reusable feature list ────────────────────────────────────────────────────
-
-function FeatureList({
-  features,
-  small = false,
-}: {
-  features: string[];
-  small?: boolean;
-}) {
-  return (
-    <ul className={`space-y-${small ? "2" : "3"}`}>
-      {features.map((feature, idx) => (
-        <li key={idx} className="flex items-start gap-3">
-                          <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <CheckCircle className="w-3 h-3 text-black" />
-          </div>
-          <span
-            className={`text-gray-700 dark:text-gray-300 ${
-              small ? "text-sm" : ""
-            }`}
-          >
-            {feature}
-          </span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-// ─── Section badge ────────────────────────────────────────────────────────────
-
-function SectionBadge({ icon, label }: {
-  icon: React.ReactNode;
-  label: string;
-}){
-  return (
-    <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-      <span className="text-yellow-500" aria-hidden="true">{icon}</span>
-      <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
-        {label}
-      </span>
-    </div>
-  );
-}
-
-// ─── Component ────────────────────────────────────────────────────────────────
-
-export default function SalleProfessionnellePage(){
-  const whatsappHref =
-    "https://wa.me/212674114446?text=Bonjour%2C%20je%20souhaite%20discuter%20d%27un%20projet%20de%20salle%20de%20sport%20professionnelle%20avec%20IRONZ.";
-  const pageUrl = "https://www.ironz.ma/services/amenagement-salle/salle-professionnelle";
-  const structuredData = [
-    {
-      "@context": "https://schema.org",
-      "@type": "SportingGoodsStore",
-      name: "IRONZ",
-      url: "https://www.ironz.ma",
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.ironz.ma" },
-        { "@type": "ListItem", position: 2, name: "Services", item: "https://www.ironz.ma/services" },
-        { "@type": "ListItem", position: 3, name: "Aménagement de salle", item: "https://www.ironz.ma/services/amenagement-salle" },
-        { "@type": "ListItem", position: 4, name: "Salle Professionnelle", item: pageUrl },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      serviceType: "Aménagement de salle de sport professionnelle",
-      provider: { "@type": "Organization", name: "IRONZ", url: "https://www.ironz.ma" },
-      url: pageUrl,
-    },
-  ];
-
+export default function SalleProfessionnellePage() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      {/* ── Hero ───────────────────────────────────────────────────────────── */}
-      <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-gray-900 via-gray-900 to-black overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-orange-500/10" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+      {[breadcrumbJsonLd, serviceJsonLd, faqJsonLd].map((schema) => <script key={schema["@type"]} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />)}
 
-        <div className="relative container mx-auto px-4">
-          {/* Breadcrumb */}
-          <nav aria-label="Fil d’Ariane" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-400">
-              <li><Link href="/" className="hover:text-yellow-500">Accueil</Link></li>
-              <li aria-hidden="true">→</li>
-              <li><Link href="/services" className="hover:text-yellow-500">Services</Link></li>
-              <li aria-hidden="true">→</li>
-              <li><Link href="/services/amenagement-salle" className="hover:text-yellow-500">Aménagement de salle</Link></li>
-              <li aria-hidden="true">→</li>
-              <li aria-current="page" className="text-gray-300">Salle Professionnelle</li>
-            </ol>
-          </nav>
+      <div className="border-b border-gray-100 bg-gray-50/70 dark:border-gray-800 dark:bg-gray-900/40">
+        <div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8"><nav aria-label="Fil d'Ariane" className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400"><Link href="/" className="hover:text-yellow-600">Accueil</Link><span aria-hidden="true">/</span><Link href="/services" className="hover:text-yellow-600">Services</Link><span aria-hidden="true">/</span><Link href="/services/amenagement-salle" className="hover:text-yellow-600">Aménagement de salle</Link><span aria-hidden="true">/</span><span aria-current="page" className="font-medium text-gray-900 dark:text-white">Salle professionnelle</span></nav></div>
+      </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-5xl"
-          >
-            <SectionBadge icon={<Sparkles className="w-4 h-4" />} label="Projet fitness professionnel" />
-
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.9]">
-              Aménagement de salle de sport{" "}
-              <span className="text-yellow-500">professionnelle au Maroc</span>
-            </h1>
-
-            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl leading-relaxed">
-              Préparez votre projet fitness professionnel avec une organisation
-              de l&apos;espace, une sélection d&apos;équipements et une installation
-              adaptées aux salles de sport, hôtels, entreprises et centres sportifs.
-            </p>
-
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mb-10"
-            >
-              {projectSignals.map((signal, index) => (
-                <motion.div
-                  key={index}
-                  variants={scaleIn}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 md:p-6 text-center"
-                >
-                  <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-300">{signal}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="flex flex-col sm:flex-row gap-4"
-            >
-              <motion.div variants={scaleIn}>
-                <Link
-                  href="/demande-devis?service=salle-professionnelle"
-                  className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
-                >
-                  Demander un devis personnalisé
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-              </motion.div>
-
-              <motion.a
-                variants={scaleIn}
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
-              >
-                <IoLogoWhatsapp className="w-5 h-5" />
-                WhatsApp projet professionnel
-                <ArrowRight className="w-5 h-5" />
-              </motion.a>
-            </motion.div>
-          </motion.div>
-        </div>
+      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-900 to-black py-20 md:py-28">
+        <div className="absolute inset-0 bg-yellow-500/5" aria-hidden="true" /><div className="absolute right-0 top-0 h-full w-1/3 -skew-x-12 bg-yellow-500/5" aria-hidden="true" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8"><div className="max-w-5xl"><span className="mb-6 inline-block bg-yellow-500 px-4 py-1.5 text-xs font-black uppercase italic tracking-wider text-black">Projet fitness professionnel</span><h1 className="mb-6 text-4xl font-display uppercase leading-[0.95] tracking-wide text-white xs:text-5xl sm:text-6xl md:text-7xl">Aménagement de salle de sport <span className="text-yellow-500">professionnelle au Maroc</span></h1><p className="mb-6 max-w-3xl text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">Un projet professionnel doit relier les utilisateurs, les activités, l'espace, le zonage et le choix du matériel. IRONZ vous aide à structurer une salle de sport multi-utilisateur, un club fitness ou un espace fitness d'établissement.</p><p className="mb-8 max-w-3xl leading-relaxed text-gray-400">Cardio, machines guidées, poids libres, fonctionnel, circulation et revêtement sont étudiés selon le périmètre convenu, sans imposer une configuration identique à chaque lieu.</p><div className="flex flex-col gap-4 sm:flex-row"><Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 px-7 py-4 font-display uppercase tracking-wide text-black shadow-lg transition-colors hover:bg-yellow-600"><ServiceIcon name="quote" className="h-5 w-5" />Demander un devis</Link><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-7 py-4 font-display uppercase tracking-wide text-white transition-colors hover:border-yellow-500/60 hover:text-yellow-400">Échanger sur le projet</a></div></div></div>
       </section>
 
-      {/* ── Target Sectors ──────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+      <section className="py-16 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16"><div><SectionLabel>Projet multi-utilisateur</SectionLabel><h2 className="mb-6 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Une salle professionnelle ne se résume pas aux machines</h2><div className="space-y-5 leading-relaxed text-gray-600 dark:text-gray-400"><p>Un projet de salle de sport professionnelle commence par le public visé, les activités proposées et la manière dont les utilisateurs vont circuler dans l'espace.</p><p>La surface, l'intensité d'utilisation, le mix d'équipements, le rangement, la maintenance et le revêtement influencent la composition du projet. Un appareil pertinent seul peut devenir peu pratique si l'implantation d'ensemble n'est pas cohérente.</p><p>Cette page concerne les projets commerciaux, hôteliers, d'entreprise, de résidence ou de centre sportif. Les contextes sont présentés comme des types de projet, pas comme des références réalisées.</p></div></div><div className="rounded-3xl border border-yellow-500/20 bg-gray-50 p-6 dark:bg-gray-900/60 sm:p-8"><h3 className="mb-5 text-xl font-bold text-gray-900 dark:text-white">À clarifier avant le devis</h3><ul className="space-y-4">{quotePreparation.slice(0, 6).map((item) => <li key={item} className="flex items-start gap-3 text-gray-700 dark:text-gray-300"><span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/30"><ServiceIcon name="check" className="h-3.5 w-3.5 text-yellow-600 dark:text-yellow-400" /></span><span>{item}</span></li>)}</ul></div></div></div></section>
 
-        <div className="relative container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <SectionBadge
-              icon={<Target className="w-4 h-4" />}
-              label="Secteurs d'expertise"
-            />
-            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Nos <span className="text-yellow-500">Secteurs</span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Des solutions professionnelles adaptées à chaque type
-              d&apos;établissement
-            </p>
-          </motion.div>
+      <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mb-12 max-w-3xl"><SectionLabel>Types de projets</SectionLabel><h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Adapter l'aménagement au contexte du lieu</h2><p className="leading-relaxed text-gray-600 dark:text-gray-400">Les objectifs et les contraintes changent selon l'établissement. Le point commun reste une organisation pensée pour plusieurs utilisateurs.</p></div><CardGrid cards={projectTypes} /></div></section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {sectors.map((sector, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group h-full"
-              >
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
-                  <div
-                    className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-                  >
-                    <div className="text-black">{sector.icon}</div>
-                  </div>
+      <section className="py-16 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mb-12 max-w-3xl"><SectionLabel>Utilisateurs et usage</SectionLabel><h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Concevoir pour des usages différents</h2><p className="leading-relaxed text-gray-600 dark:text-gray-400">Une salle professionnelle accueille rarement un seul profil. Les décisions d'équipement doivent rester liées à l'usage réel et au niveau de service attendu.</p></div><CardGrid cards={userProfiles} /></div></section>
 
-                  <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
-                    {sector.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                    {sector.description}
-                  </p>
+      <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mb-12 max-w-3xl"><SectionLabel>Zonage fonctionnel</SectionLabel><h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Organiser les zones avant de remplir la salle</h2><p className="leading-relaxed text-gray-600 dark:text-gray-400">Le zonage rend l'offre lisible, facilite le parcours et aide à sélectionner les équipements qui ont réellement leur place dans le projet.</p></div><CardGrid cards={zones} columns="md:grid-cols-2 xl:grid-cols-3" /></div></section>
 
-                  <FeatureList features={sector.features} small />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section className="py-16 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="grid items-start gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16"><div><SectionLabel>Équipement professionnel</SectionLabel><h2 className="mb-6 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Composer un mix d'équipements cohérent</h2><div className="space-y-5 leading-relaxed text-gray-600 dark:text-gray-400"><p>Un parc professionnel peut combiner cardio, machines de force, poids libres, accessoires fonctionnels et équipements complémentaires. La composition dépend du public, de la surface, des activités et de l'intensité d'utilisation.</p><p>La polyvalence, la facilité d'entretien, le rangement et la praticité comptent autant que la famille de produit. Le budget et le périmètre du projet déterminent ensuite les priorités.</p></div><div className="mt-8 flex flex-col gap-4 sm:flex-row"><Link href="/categories/equipements" className="inline-flex items-center justify-center rounded-xl bg-yellow-500 px-6 py-4 font-display uppercase tracking-wide text-black hover:bg-yellow-600">Voir les équipements</Link><Link href="/categories/equipements/machine-de-fitness" className="inline-flex items-center justify-center rounded-xl border border-gray-200 px-6 py-4 font-display uppercase tracking-wide text-gray-900 hover:border-yellow-500/60 dark:border-gray-700 dark:text-white">Machines de fitness</Link></div></div><ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">{equipmentFactors.map((factor) => <li key={factor} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50 p-4 text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300"><span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-yellow-500" aria-hidden="true" /><span>{factor}</span></li>)}</ul></div></div></section>
 
-      {/* ── Services ────────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <SectionBadge
-              icon={<Trophy className="w-4 h-4" />}
-              label="Services professionnels"
-            />
-            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Nos <span className="text-yellow-500">Services</span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Une organisation du projet, de l&apos;étude de l&apos;espace à la mise en place
-            </p>
-          </motion.div>
+      <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16"><div><SectionLabel>Circulation et implantation</SectionLabel><h2 className="mb-6 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Garder un espace lisible et praticable</h2><p className="leading-relaxed text-gray-600 dark:text-gray-400">L'implantation doit laisser des accès clairs entre les zones, éviter les postes qui se gênent et tenir compte de l'emplacement des équipements, du rangement et des transitions. Ces principes restent généraux : les dimensions exactes dépendent du local et des équipements retenus.</p></div><div className="rounded-3xl bg-gray-950 p-7 text-white sm:p-9"><div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black"><ServiceIcon name="route" /></div><h3 className="mb-4 text-2xl font-display uppercase tracking-wide">Une circulation pensée avec le parc matériel</h3><p className="leading-relaxed text-gray-300">Le plan d'implantation ne doit pas être séparé de la sélection des machines. Les passages, les zones de travail et les équipements sont étudiés ensemble pour éviter une salle surchargée.</p></div></div></div></section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group h-full"
-              >
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
-                  <div
-                    className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-                  >
-                    <div className="text-black">{service.icon}</div>
-                  </div>
+      <section className="py-16 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16"><div><SectionLabel>Usage et revêtement</SectionLabel><h2 className="mb-6 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Prévoir le sol selon les zones</h2><div className="space-y-5 leading-relaxed text-gray-600 dark:text-gray-400"><p>Une salle professionnelle peut réunir plusieurs contraintes de sol : machines, charges, déplacements, confort, entretien et usage répété. Toutes les zones ne demandent pas nécessairement la même approche.</p><p>Le revêtement est à intégrer dès la conception, sans promettre une isolation acoustique ou une performance non vérifiée.</p></div><Link href="/services/revetement-sol-mur" className="mt-8 inline-flex items-center justify-center rounded-xl border border-yellow-500/40 px-6 py-4 font-display uppercase tracking-wide text-gray-900 hover:bg-yellow-500 hover:text-black dark:text-white">Découvrir le revêtement sportif</Link></div><div className="rounded-3xl border border-gray-800 bg-gray-950 p-7 text-white sm:p-9"><div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black"><ServiceIcon name="surface" /></div><h3 className="mb-4 text-2xl font-display uppercase tracking-wide text-yellow-500">Durabilité pratique</h3><p className="leading-relaxed text-gray-300">La fréquence d'utilisation influence le choix des équipements, la facilité de maintenance et les solutions de surface. Le bon niveau de robustesse se définit avec le périmètre du lieu, pas avec une promesse standard.</p></div></div></div></section>
 
-                  <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
-                    {service.description}
-                  </p>
+      <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mb-12 max-w-3xl"><SectionLabel>Process professionnel</SectionLabel><h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">De l'étude du lieu à la proposition</h2><p className="leading-relaxed text-gray-600 dark:text-gray-400">Le processus avance par décisions successives. Aucune échéance ou formule standard n'est promise : le périmètre est défini avec le projet.</p></div><div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">{projectSteps.map((step, index) => <article key={step.title} className="rounded-2xl border border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-950 sm:p-8"><div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 font-display text-black">{String(index + 1).padStart(2, "0")}</div><h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">{step.title}</h3><p className="leading-relaxed text-gray-600 dark:text-gray-400">{step.text}</p></article>)}</div></div></section>
 
-                  <FeatureList features={service.features} />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section className="py-16 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16"><div><SectionLabel>Préparer le devis</SectionLabel><h2 className="mb-6 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Que préparer pour votre projet de salle professionnelle ?</h2><p className="mb-8 leading-relaxed text-gray-600 dark:text-gray-400">Une demande documentée aide à comprendre le lieu, l'usage et le périmètre souhaité avant de sélectionner les équipements.</p><Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 px-7 py-4 font-display uppercase tracking-wide text-black shadow-lg hover:bg-yellow-600"><ServiceIcon name="quote" className="h-5 w-5" />Demander un devis</Link></div><ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">{quotePreparation.map((item) => <li key={item} className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50 p-4 text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300"><span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-yellow-500" aria-hidden="true" /><span>{item}</span></li>)}</ul></div></div></section>
 
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="max-w-3xl mb-12">
-            <SectionBadge icon={<Building className="w-4 h-4" />} label="Pour quels projets ?" />
-            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Un projet fitness <span className="text-yellow-500">professionnel</span>
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-              Cette prestation s&apos;adresse aux porteurs de projets et aux établissements qui souhaitent organiser ou réorganiser un espace fitness avec une sélection d&apos;équipements cohérente avec le lieu et l&apos;usage.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {[
-              "Nouvel espace fitness",
-              "Rénovation d'une salle existante",
-              "Espace fitness d'un hôtel",
-              "Espace fitness d'entreprise",
-              "Espace d'un centre sportif",
-            ].map((projectType) => (
-              <div key={projectType} className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-5">
-                <h3 className="text-lg font-display uppercase tracking-wide text-gray-900 dark:text-white">{projectType}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mb-12 max-w-3xl"><SectionLabel>Choisir la bonne page</SectionLabel><h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Salle professionnelle ou Home Gym ?</h2><p className="leading-relaxed text-gray-600 dark:text-gray-400">Un Home Gym répond à un usage privé et personnel. Une salle professionnelle doit gérer plusieurs utilisateurs, une offre plus large, le zonage, la circulation et une utilisation plus fréquente.</p></div><div className="grid grid-cols-1 gap-6 md:grid-cols-2"><Link href="/services/amenagement-salle/home-gym" className="group rounded-3xl border border-gray-100 bg-white p-7 dark:border-gray-800 dark:bg-gray-950 sm:p-9"><div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black"><ServiceIcon name="users" /></div><h3 className="mb-3 text-2xl font-bold text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">Home Gym</h3><p className="leading-relaxed text-gray-600 dark:text-gray-400">Pour une salle privée, une pièce dédiée, un garage ou un espace résidentiel organisé autour d'objectifs personnels.</p></Link><Link href="/services/amenagement-salle" className="group rounded-3xl border border-gray-100 bg-white p-7 dark:border-gray-800 dark:bg-gray-950 sm:p-9"><div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black"><ServiceIcon name="building" /></div><h3 className="mb-3 text-2xl font-bold text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">Aménagement de salle</h3><p className="leading-relaxed text-gray-600 dark:text-gray-400">Pour revenir au service parent lorsque le projet doit encore être cadré à un niveau plus général.</p></Link></div></div></section>
 
-      <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div>
-              <SectionBadge icon={<Target className="w-4 h-4" />} label="Périmètre du projet" />
-              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-                De l&apos;espace à la <span className="text-yellow-500">mise en place</span>
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-                IRONZ vous accompagne pour comprendre le besoin, organiser les zones, sélectionner les équipements et préparer leur installation. Les solutions de revêtement peuvent être étudiées lorsqu&apos;elles sont utiles au projet.
-              </p>
-              <Link href="/services/revetement-sol-mur" className="text-yellow-600 dark:text-yellow-400 font-display uppercase tracking-widest hover:underline">
-                Découvrir le revêtement de sol sportif
-              </Link>
-            </div>
-            <div>
-              <h2 className="text-3xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">Les étapes</h2>
-              <ol className="space-y-4">
-                {[
-                  "Étude du projet",
-                  "Organisation de l'espace",
-                  "Sélection des équipements et solutions",
-                  "Installation et prise en main",
-                ].map((step, index) => (
-                  <li key={step} className="flex items-start gap-4 rounded-2xl bg-white dark:bg-gray-800 p-5 border border-gray-100 dark:border-gray-700">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-yellow-500 font-bold text-black">{index + 1}</span>
-                    <span className="text-lg text-gray-700 dark:text-gray-300">{step}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section className="py-16 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mb-12 max-w-3xl"><SectionLabel>Liens utiles</SectionLabel><h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Poursuivre la préparation du projet</h2><p className="leading-relaxed text-gray-600 dark:text-gray-400">Explorez uniquement les ressources utiles à la définition d'une salle professionnelle et de son parc matériel.</p></div><div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">{usefulLinks.map((link) => <Link key={link.href} href={link.href} className="group rounded-2xl border border-gray-100 p-6 transition-all hover:border-yellow-500/50 hover:shadow-lg dark:border-gray-800"><h3 className="mb-3 text-lg font-bold text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">{link.title}</h3><p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{link.text}</p></Link>)}</div></div></section>
 
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <SectionBadge icon={<MessageSquare className="w-4 h-4" />} label="Préparez votre demande" />
-          <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-            Les informations utiles pour <span className="text-yellow-500">votre projet</span>
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-            Pour recevoir une première orientation, indiquez si possible votre ville, le type d&apos;établissement, s&apos;il s&apos;agit d&apos;un projet neuf ou d&apos;une rénovation, la surface approximative, les zones souhaitées, vos besoins en équipements ou en revêtement, votre budget approximatif et le délai souhaité. Des plans ou photos peuvent compléter la demande.
-          </p>
-          <Link href="/demande-devis?service=salle-professionnelle" className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-6 py-4 rounded-xl transition-all shadow-lg">
-            Préparer ma demande
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </div>
-      </section>
+      <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mx-auto mb-12 max-w-3xl text-center"><SectionLabel>FAQ professionnelle</SectionLabel><h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Questions fréquentes sur les salles professionnelles</h2><p className="leading-relaxed text-gray-600 dark:text-gray-400">Réponses pratiques pour cadrer un projet fitness multi-utilisateur.</p></div><div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2">{faqs.map((faq) => <article key={faq.question} className="rounded-2xl border border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-950"><h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">{faq.question}</h3><p className="leading-relaxed text-gray-600 dark:text-gray-400">{faq.answer}</p></article>)}</div></div></section>
 
-      {/* ── Packages ────────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+      <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-24"><div className="container mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8"><div><SectionLabel>Échange projet</SectionLabel><h2 className="mb-6 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Décrivez votre salle professionnelle</h2><p className="mb-8 leading-relaxed text-gray-600 dark:text-gray-400">Le formulaire permet de transmettre les premières informations du projet et de préciser le contexte de la demande.</p><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center rounded-xl border border-yellow-500/40 px-6 py-4 font-display uppercase tracking-wide text-gray-900 hover:bg-yellow-500 hover:text-black dark:text-white">Échanger sur WhatsApp</a></div><div className="rounded-3xl bg-gradient-to-br from-gray-900 to-black p-6 shadow-2xl sm:p-9"><h3 className="mb-4 text-2xl font-display uppercase tracking-wide text-white">Demande de <span className="text-yellow-500">devis</span></h3><p className="mb-8 leading-relaxed text-gray-300">Renseignez les éléments disponibles. Le message reste ajustable avant son envoi sur WhatsApp.</p><div className="rounded-2xl border border-white/10 bg-white/5 p-5"><ServiceContactForm service="Aménagement Salle Professionnelle" /></div></div></div></section>
 
-        <div className="relative container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <SectionBadge
-              icon={<Crown className="w-4 h-4" />}
-              label="Formules professionnelles"
-            />
-            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Périmètre du projet{" "}
-              <span className="text-yellow-500">sur devis</span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Des étapes et solutions adaptées au besoin de votre établissement
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {packages.map((pkg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="relative group h-full"
-              >
-                {pkg.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                    <div className="bg-yellow-500 text-black px-6 py-2 rounded-full font-display uppercase tracking-widest text-sm">
-                      Recommandé
-                    </div>
-                  </div>
-                )}
-
-                <div
-                  className={`bg-yellow-500 rounded-3xl p-0.5 h-full ${
-                    pkg.popular ? "scale-[1.02]" : ""
-                  }`}
-                >
-                  <div className="bg-white dark:bg-gray-800 rounded-[1.25rem] p-8 h-full flex flex-col">
-                    {/* Package header */}
-                    <div className="text-center mb-8">
-                      <div className="w-20 h-20 rounded-2xl bg-yellow-500 flex items-center justify-center mx-auto mb-4">
-                        <div className="text-black">{pkg.icon}</div>
-                      </div>
-                      <h3 className="text-2xl font-display uppercase tracking-wide mb-2 text-gray-900 dark:text-white">
-                        {pkg.name}
-                      </h3>
-                      <p className="text-gray-600 dark:text-gray-400">
-                        {pkg.description}
-                      </p>
-                    </div>
-
-                    {/* Features */}
-                    <div className="space-y-4 mb-8 flex-1">
-                      {pkg.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle className="w-3 h-3 text-black" />
-                          </div>
-                          <span className="text-gray-700 dark:text-gray-300">
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Price & CTA */}
-                    <div className="text-center pt-8 border-t border-gray-100 dark:border-gray-700">
-                      <div className="text-3xl font-display tracking-wide text-gray-900 dark:text-white mb-6">
-                        {pkg.price}
-                      </div>
-                      <Link href="/demande-devis?service=salle-professionnelle" className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">
-                        Demander un devis
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── Contact ─────────────────────────────────────────────────────────── */}
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 max-w-7xl mx-auto">
-            {/* Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <SectionBadge
-                icon={<PhoneCall className="w-4 h-4" />}
-                label="Échange sur votre projet"
-              />
-
-              <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-                Prêt à lancer votre{" "}
-                <span className="text-yellow-500">projet pro</span> ?
-              </h2>
-
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 leading-relaxed">
-                Décrivez votre projet d&apos;espace fitness professionnel pour
-                recevoir une première orientation et un devis personnalisé.
-              </p>
-
-              {/* Contact cards */}
-              <div className="space-y-6 mb-10">
-                {/* Phone */}
-                <div className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Phone className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-lg mb-1 text-gray-900 dark:text-white">
-                      Ligne dédiée professionnels
-                    </h4>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">
-                      +212 674-114446
-                    </p>
-                  </div>
-                </div>
-
-                {/* WhatsApp */}
-                <div className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <IoLogoWhatsapp className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-lg mb-1 text-gray-900 dark:text-white">
-                      WhatsApp projet professionnel
-                    </h4>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">
-                      Message prérempli à valider
-                    </p>
-                  </div>
-                </div>
-
-                {/* Location */}
-                <div className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <MapPin className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-lg mb-1 text-gray-900 dark:text-white">
-                      Showroom IRONZ
-                    </h4>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      SAHARA MALL 1 ÈRE ÉTAGE C169 & C120, Agadir
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Guarantees */}
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-                <h3 className="text-xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
-                  Points de cadrage du projet
-                </h3>
-                <div className="space-y-4">
-                  {guarantees.map((g, idx) => (
-                    <div key={idx} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <CheckCircle className="w-3 h-3 text-black" />
-                      </div>
-                      <span className="text-gray-700 dark:text-gray-300">
-                        {g}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Form */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-            >
-              <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-8 md:p-12 shadow-2xl">
-                <SectionBadge
-                  icon={<MessageSquare className="w-4 h-4" />}
-                  label="Devis professionnel"
-                />
-
-                <h3 className="text-3xl font-display uppercase tracking-wide mb-8 text-white">
-                  Demande de{" "}
-                  <span className="text-yellow-500">devis pro</span>
-                </h3>
-
-                <p className="text-gray-300 mb-8 leading-relaxed">
-                  Remplissez ce formulaire pour décrire votre projet professionnel
-                  et recevoir une orientation ainsi qu&apos;un devis personnalisé.
-                </p>
-
-                <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                  <ServiceContactForm service="Aménagement Salle Professionnelle" />
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA ─────────────────────────────────────────────────────────────── */}
-      <section className="py-20 bg-gradient-to-r from-yellow-500 to-orange-500">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">
-              Préparez votre projet d&apos;espace fitness
-            </h2>
-            <p className="text-xl text-black/90 mb-10 max-w-2xl mx-auto">
-              Échangez avec IRONZ sur l&apos;organisation de l&apos;espace, les
-              équipements et les solutions adaptées à votre établissement.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/demande-devis?service=salle-professionnelle" className="px-8 py-6 bg-black hover:bg-gray-900 text-white font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3">
-                Demander un devis personnalisé
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-2xl transition-all shadow-lg flex items-center justify-center gap-3"
-              >
-                <IoLogoWhatsapp className="w-6 h-6" />
-                WhatsApp projet professionnel
-                <ChevronRight className="w-5 h-5" />
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── WhatsApp Floating Button ─────────────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.5 }}
-        className="fixed bottom-6 right-6 z-50"
-      >
-        <a
-          href={whatsappHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Contact via WhatsApp"
-          className="w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-2xl transition-all flex items-center justify-center"
-        >
-          <IoLogoWhatsapp className="w-7 h-7" />
-        </a>
-      </motion.div>
+      <section className="bg-gradient-to-r from-yellow-500 to-yellow-600 py-20"><div className="container mx-auto px-4 text-center sm:px-6 lg:px-8"><h2 className="mb-6 text-3xl font-display uppercase tracking-wide text-black sm:text-4xl md:text-5xl">Un projet fitness professionnel à structurer ?</h2><p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-black/80">Partagez le lieu, les utilisateurs, les activités et le périmètre souhaité. IRONZ vous aide à préparer une demande adaptée.</p><Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-8 py-5 font-display uppercase tracking-wide text-white shadow-2xl hover:bg-gray-900"><ServiceIcon name="quote" />Demander un devis</Link></div></section>
     </main>
   );
 }

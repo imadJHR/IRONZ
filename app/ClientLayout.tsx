@@ -39,6 +39,7 @@ import { useFavorites } from "../context/favorites-context";
 import { useTheme } from "next-themes";
 import { cn } from "../lib/utils";
 import { categories } from "../data/product";
+import { getServiceNavigationItems } from "../lib/services";
 import {
   ClerkProvider,
   SignInButton,
@@ -306,7 +307,7 @@ function ScrollToTop() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.8 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 lg:right-8 lg:bottom-8 p-3 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-2xl shadow-yellow-500/30 z-50 hover:from-yellow-600 hover:to-orange-600 transition-all duration-300 hover:scale-110 active:scale-95"
+          className="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 lg:right-8 lg:bottom-8 p-3 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white shadow-2xl shadow-yellow-500/30 z-50 hover:from-yellow-600 hover:to-yellow-600 transition-all duration-300 hover:scale-110 active:scale-95"
           aria-label="Retour en haut de page"
         >
           <ArrowUp className="h-5 w-5" />
@@ -433,43 +434,7 @@ const Navbar = React.memo(function Navbar({
     path === "/" ? pathname === "/" : pathname?.startsWith(path) ?? false;
 
   const serviceLinks = useMemo<ServiceLink[]>(
-    () => [
-      {
-        name: language === "fr" ? "Aménagement de salle" : "Room Setup",
-        path: "/services/amenagement-salle",
-        subLinks: [
-          {
-            name: "Home Gym",
-            path: "/services/amenagement-salle/home-gym",
-          },
-          {
-            name:
-              language === "fr"
-                ? "Salle Professionnelle"
-                : "Professional Gym",
-            path: "/services/amenagement-salle/salle-professionnelle",
-          },
-        ],
-      },
-      {
-        name:
-          language === "fr"
-            ? "Personnalisation d'accessoires"
-            : "Accessory Customization",
-        path: "/services/personnalisation-accessoires",
-      },
-      {
-        name: language === "fr" ? "Espace enfance" : "Kids Area",
-        path: "/services/espace-enfance",
-      },
-      {
-        name:
-          language === "fr"
-            ? "Revêtement sol & mur"
-            : "Floor & Wall Covering",
-        path: "/services/revetement-sol-mur",
-      },
-    ],
+    () => getServiceNavigationItems(language),
     [language]
   );
 
@@ -528,7 +493,7 @@ const Navbar = React.memo(function Navbar({
       <div
         role="banner"
         aria-label="Promotion"
-        className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs sm:text-sm font-display uppercase tracking-widest py-2 px-4 text-center"
+        className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-xs sm:text-sm font-display uppercase tracking-widest py-2 px-4 text-center"
       >
         <p className="container mx-auto">
           {language === "fr"
@@ -670,7 +635,7 @@ const Navbar = React.memo(function Navbar({
                                 role="menuitem"
                                 className="flex items-center px-3 py-1.5 text-xs text-gray-400 rounded-xl hover:bg-white/5 hover:text-white transition-colors"
                               >
-                                <ChevronRight className="h-3 w-3 mr-1 text-orange-400" />
+                                <ChevronRight className="h-3 w-3 mr-1 text-yellow-400" />
                                 {sub.name}
                               </Link>
                             ))}
@@ -921,7 +886,7 @@ const Navbar = React.memo(function Navbar({
                                   role="menuitem"
                                    className="w-full flex items-center px-4 py-3 text-sm text-left rounded-xl hover:bg-white/5 transition-colors"
                                 >
-                                  <User className="h-4 w-4 mr-3 text-orange-500" />
+                                  <User className="h-4 w-4 mr-3 text-yellow-500" />
                                   {language === "fr"
                                     ? "S'inscrire"
                                     : "Sign Up"}
@@ -1164,7 +1129,7 @@ const Navbar = React.memo(function Navbar({
                       className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <Package className="h-5 w-5 text-orange-500 flex-shrink-0" />
+                        <Package className="h-5 w-5 text-yellow-500 flex-shrink-0" />
                         <span className="font-display uppercase text-white text-sm tracking-widest">
                           {language === "fr" ? "Services" : "Services"}
                         </span>
@@ -1192,7 +1157,7 @@ const Navbar = React.memo(function Navbar({
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
                               >
-                                <ChevronRight className="h-4 w-4 text-orange-400 flex-shrink-0" />
+                                <ChevronRight className="h-4 w-4 text-yellow-400 flex-shrink-0" />
                                 {link.name}
                               </Link>
                               {link.subLinks && (
@@ -1215,7 +1180,7 @@ const Navbar = React.memo(function Navbar({
                           <Link
                             href="/services"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-display uppercase tracking-widest text-orange-400 hover:bg-orange-500/10 transition-colors mt-1"
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-display uppercase tracking-widest text-yellow-400 hover:bg-yellow-500/10 transition-colors mt-1"
                           >
                             {language === "fr"
                               ? "Tous nos services →"

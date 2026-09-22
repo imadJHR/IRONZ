@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
 import {
@@ -22,6 +22,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { IoLogoWhatsapp } from "react-icons/io";
+import { getCanonicalServiceCards, ServiceHubIconName } from "../../lib/services";
 
 // --- Interfaces ---
 
@@ -31,7 +32,7 @@ interface Stat {
   icon: ReactNode;
 }
 
-interface Service {
+interface SupportService {
   id: number;
   title: string;
   description: string;
@@ -55,143 +56,175 @@ interface FAQ {
   answer: string;
 }
 
-export default function ServicesPage() {
-  const [hoveredService, setHoveredService] = useState<number | null>(null);
+function ServiceHubIcon({ name }: { name: ServiceHubIconName }) {
+  const common = {
+    className: "h-10 w-10",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    viewBox: "0 0 24 24",
+    "aria-hidden": true,
+    focusable: false,
+  };
 
-  const services: Service[] = [
+  switch (name) {
+    case "home":
+      return <svg {...common}><path d="m3 10 9-7 9 7" /><path d="M5 9v11h14V9" /><path d="M9 20v-6h6v6" /></svg>;
+    case "building":
+      return <svg {...common}><path d="M4 21V5l8-2 8 2v16" /><path d="M8 8h1M15 8h1M8 12h1M15 12h1M8 16h1M15 16h1" /><path d="M10 21v-3h4v3" /></svg>;
+    case "palette":
+      return <svg {...common}><path d="M12 3a9 9 0 0 0 0 18h1.5a2 2 0 0 0 0-4H12a2 2 0 0 1 0-4h2a7 7 0 0 0 0-10Z" /><path d="M7.5 10h.01M9 6.5h.01M14 6.5h.01M17 10h.01" /></svg>;
+    case "activity":
+      return <svg {...common}><circle cx="12" cy="5" r="2" /><path d="m9 21 1.5-7L7 11l2-3 3 2 3-2 2 3-3.5 3 1.5 7" /><path d="M10.5 14h3" /></svg>;
+    case "layers":
+      return <svg {...common}><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3 12 9 5 9-5M3 16l9 5 9-5" /></svg>;
+    case "outdoor":
+      return <svg {...common}><path d="M4 20h16M6 20V9h12v11M9 9V5h6v4M8 13h8M9 17h6" /></svg>;
+    case "layout":
+    default:
+      return <svg {...common}><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M4 10h16M10 10v10" /></svg>;
+  }
+}
+
+export default function ServicesPage() {
+  const canonicalServiceCards = getCanonicalServiceCards();
+
+  const supportServices: SupportService[] = [
     {
       id: 1,
       title: "Installation d'équipement",
       description:
-        "Notre équipe de techniciens certifiés installe votre équipement de fitness premium à domicile ou en salle, garantissant une mise en place sécurisée et optimale pour la performance.",
+        "Accompagnement pour mettre en place vos équipements de fitness IRONZ dans de bonnes conditions d'usage.",
       icon: <Tool className="h-10 w-10" />,
       features: [
-        "Installation professionnelle certifiée",
-        "Vérification complète de sécurité",
-        "Conseils d'utilisation avancés",
-        "Garantie sur l'installation 1 an",
-        "Formation à l'équipement inclus",
+        "Préparation de l'espace",
+        "Montage et mise en place",
+        "Vérification d'usage",
+        "Conseils de prise en main",
+        "Orientation vers le bon interlocuteur IRONZ",
       ],
-      price: "À partir de 999 MAD",
+      price: "Sur devis",
       cta: "Demander un devis",
-      color: "from-yellow-500 to-orange-500",
-      highlights: ["Installation rapide", "Expert certifié", "Garantie incluse"],
+      color: "from-yellow-500 to-yellow-600",
+      highlights: ["Projet cadré", "Mise en place", "Conseils"],
     },
     {
       id: 2,
       title: "Maintenance et réparation",
       description:
-        "Service premium de maintenance et réparation pour optimiser la durée de vie de vos équipements IRONZ et assurer des performances optimales.",
+        "Demande d'assistance pour diagnostiquer un équipement et organiser la solution adaptée selon le cas.",
       icon: <Tool className="h-10 w-10" />,
       features: [
-        "Diagnostic expert complet",
-        "Réparation rapide en 24h",
-        "Pièces d'origine IRONZ",
-        "Contrats de maintenance premium",
-        "Service d'urgence disponible",
+        "Analyse de la demande",
+        "Orientation technique",
+        "Pièces selon disponibilité",
+        "Intervention selon le projet",
+        "Suivi avec l'équipe IRONZ",
       ],
-      price: "À partir de 799 MAD",
-      cta: "Prendre rendez-vous",
-      color: "from-blue-500 to-purple-500",
-      highlights: ["Urgence 24h", "Pièces originales", "Experts IRONZ"],
+      price: "Sur devis",
+      cta: "Prendre contact",
+      color: "from-gray-700 to-gray-950",
+      highlights: ["Diagnostic", "Assistance", "Suivi"],
     },
     {
       id: 3,
-      title: "Coaching personnalisé",
+      title: "Conseil & accompagnement",
       description:
-        "Accompagnement sur mesure par nos coachs élites pour maximiser vos performances avec votre équipement IRONZ et atteindre vos objectifs.",
+        "Aide au choix des équipements ou des services adaptés à votre espace, votre usage et votre budget.",
       icon: <Users className="h-10 w-10" />,
       features: [
-        "Programmes élites sur mesure",
-        "Suivi nutritionnel premium",
-        "Coaching VIP à domicile",
-        "Séances en visio HD",
-        "Accès à la communauté IRONZ",
+        "Analyse du besoin",
+        "Choix des équipements",
+        "Conseils d'aménagement",
+        "Orientation vers les services liés",
+        "Accompagnement avant devis",
       ],
-      price: "À partir de 490 MAD/h",
-      cta: "Réserver une séance",
-      color: "from-green-500 to-emerald-500",
-      highlights: ["Coach élite", "Nutrition", "Communauté"],
+      price: "Selon projet",
+      cta: "Parler du projet",
+      color: "from-gray-600 to-gray-900",
+      highlights: ["Conseil", "Choix matériel", "Projet"],
     },
     {
       id: 4,
-      title: "Livraison express premium",
+      title: "Livraison & montage",
       description:
-        "Service de livraison premium avec manipulation soignée et installation rapide de votre équipement IRONZ, selon votre planning.",
+        "Organisation de la livraison et du montage selon la nature des produits, l'adresse et les contraintes d'accès.",
       icon: <Truck className="h-10 w-10" />,
       features: [
-        "Livraison express 24-48h",
-        "Créneaux horaires VIP",
-        "Suivi GPS en temps réel",
-        "Installation basic incluse",
-        "Reprise emballages éco",
+        "Coordination de la livraison",
+        "Montage selon produit",
+        "Gestion des contraintes d'accès",
+        "Informations de suivi",
+        "Support client IRONZ",
       ],
-      price: "À partir de 199 MAD",
-      cta: "En savoir plus",
-      color: "from-red-500 to-pink-500",
-      highlights: ["Express 24h", "Suivi GPS", "Installation incluse"],
+      price: "Selon commande",
+      cta: "Demander les détails",
+      color: "from-gray-700 to-gray-950",
+      highlights: ["Livraison", "Montage", "Coordination"],
     },
     {
       id: 5,
-      title: "Extension de garantie VIP",
+      title: "Suivi après achat",
       description:
-        "Programme d'extension de garantie exclusive pour une tranquillité d'esprit totale et un service prioritaire sur vos équipements.",
+        "Point de contact pour les questions après achat, l'utilisation des équipements et les demandes de support.",
       icon: <Shield className="h-10 w-10" />,
       features: [
-        "Couverture complète premium",
-        "Remplacement express 48h",
-        "Assistance prioritaire 24/7",
-        "Transfert de garantie possible",
-        "Couverture mondiale disponible",
+        "Questions d'utilisation",
+        "Orientation support",
+        "Suivi de demande",
+        "Informations produit",
+        "Accompagnement client",
       ],
-      price: "À partir de 599 MAD/an",
-      cta: "Souscrire",
-      color: "from-indigo-500 to-blue-500",
-      highlights: ["Garantie étendue", "Assistance 24/7", "Remplacement rapide"],
+      price: "Selon demande",
+      cta: "Contacter IRONZ",
+      color: "from-gray-600 to-gray-900",
+      highlights: ["Support", "Suivi", "Conseil"],
     },
     {
       id: 6,
-      title: "Conception de salle premium",
+      title: "Étude de projet fitness",
       description:
-        "Service d'architecture et design premium pour créer votre espace fitness élite, optimisé pour la performance et l'esthétique.",
+        "Cadrage d'un projet d'espace fitness avant devis : usage, surface, équipements et priorités du client.",
       icon: <Award className="h-10 w-10" />,
       features: [
-        "Étude personnalisée expert",
-        "Plans 3D et réalité virtuelle",
-        "Sélection équipements élites",
-        "Suivi de projet dédié",
-        "Gestion complète des travaux",
+        "Cadrage du besoin",
+        "Analyse de l'espace",
+        "Sélection d'équipements",
+        "Priorisation du budget",
+        "Préparation du devis",
       ],
-      price: "À partir de 1999 MAD",
+      price: "Sur devis",
       cta: "Demander une étude",
-      color: "from-purple-500 to-pink-500",
-      highlights: ["Design 3D", "Gestion complète", "Solutions sur mesure"],
+      color: "from-gray-700 to-gray-950",
+      highlights: ["Étude", "Équipement", "Devis"],
     },
   ];
 
   const processSteps: ProcessStep[] = [
     {
       number: "01",
-      title: "Consultation exclusive",
+      title: "Consultation du projet",
       description: "Analyse approfondie de vos besoins avec nos experts IRONZ",
       icon: <Target className="w-8 h-8" />,
     },
     {
       number: "02",
       title: "Devis personnalisé",
-      description: "Proposition sur mesure avec solutions premium adaptées",
+      description: "Proposition adaptée au besoin, à l'espace et aux équipements envisagés",
       icon: <Award className="w-8 h-8" />,
     },
     {
       number: "03",
-      title: "Planification élite",
-      description: "Organisation détaillée avec planning VIP selon vos attentes",
+      title: "Planification du projet",
+      description: "Organisation des étapes selon les contraintes et les priorités du projet",
       icon: <Calendar className="w-8 h-8" />,
     },
     {
       number: "04",
-      title: "Exécution expert",
-      description: "Réalisation professionnelle par notre équipe certifiée",
+      title: "Mise en œuvre du projet",
+      description: "Réalisation ou accompagnement selon le service validé avec IRONZ",
       icon: <CheckCircle className="w-8 h-8" />,
     },
   ];
@@ -200,30 +233,30 @@ export default function ServicesPage() {
     {
       question: "Quels sont les délais d'intervention pour une installation ?",
       answer:
-        "Nos services premium sont exécutés sous 24-48h après validation du devis, avec des créneaux horaires VIP disponibles selon vos préférences.",
+        "Le délai dépend du type de demande, de l'adresse et de la disponibilité des équipements ou pièces nécessaires. L'équipe IRONZ vous confirme les étapes après étude.",
     },
     {
       question: "Les services sont-ils disponibles partout au Maroc ?",
       answer:
-        "Oui, nos services élites couvrent l'ensemble du Maroc avec une équipe dédiée dans chaque région, garantissant le même niveau d'excellence partout.",
+        "Les demandes sont étudiées selon la ville, le type de service et les contraintes du projet. IRONZ vous confirme la faisabilité avant devis.",
     },
     {
       question: "Comment se déroule une séance de coaching personnalisé ?",
       answer:
-        "Le coaching IRONZ commence par un bilan complet de performance, suivi de la création d'un programme sur mesure et d'un suivi constant par votre coach élite.",
+        "L'accompagnement commence par la compréhension de votre besoin, puis l'équipe vous oriente vers les équipements ou services adaptés.",
     },
     {
-      question: "Que couvre l'extension de garantie VIP ?",
+      question: "Quelles conditions de suivi sont prévues ?",
       answer:
-        "Notre garantie VIP couvre l'intégralité des pièces, main d'œuvre et déplacements, avec service prioritaire 24/7 et remplacement temporaire inclus.",
+        "Les conditions de suivi dépendent du produit et de la demande. Contactez IRONZ avec la référence concernée pour une réponse adaptée.",
     },
   ];
 
   const stats: Stat[] = [
-    { value: "100%", label: "Satisfaction client", icon: <Star className="w-5 h-5" /> },
-    { value: "24h", label: "Délai intervention", icon: <Clock className="w-5 h-5" /> },
-    { value: "500+", label: "Installations réalisées", icon: <UsersRound className="w-5 h-5" /> },
-    { value: "Élite", label: "Certification équipe", icon: <Medal className="w-5 h-5" /> },
+    { value: "Devis", label: "Personnalisé", icon: <Star className="w-5 h-5" /> },
+    { value: "Projet", label: "Étudié", icon: <Clock className="w-5 h-5" /> },
+    { value: "IRONZ", label: "Accompagnement", icon: <UsersRound className="w-5 h-5" /> },
+    { value: "Maroc", label: "Services", icon: <Medal className="w-5 h-5" /> },
   ];
 
   // Animation variants
@@ -253,9 +286,9 @@ export default function ServicesPage() {
     <main className="min-h-screen bg-white dark:bg-gray-950">
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-gray-900 via-gray-900 to-black overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-orange-500/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-yellow-600/10" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-yellow-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
         <div className="relative container mx-auto px-4">
           <nav className="mb-8">
@@ -276,7 +309,7 @@ export default function ServicesPage() {
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
               <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
-                Services élites
+                Services IRONZ
               </span>
             </div>
 
@@ -285,9 +318,7 @@ export default function ServicesPage() {
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl leading-relaxed">
-              Découvrez notre gamme complète de services premium pour vous 
-              accompagner vers l&apos;excellence, de l&apos;installation à l&apos;optimisation 
-              de votre performance.
+              Découvrez notre gamme de services adaptés pour vous accompagner dans vos projets fitness, de l&apos;installation à l&apos;aménagement.
             </p>
 
             <motion.div
@@ -321,24 +352,22 @@ export default function ServicesPage() {
               animate="visible"
               className="flex flex-col sm:flex-row gap-4"
             >
-              <motion.button
-                variants={scaleIn}
-                onClick={() => window.location.href = "/demande-devis"}
+              <Link
+                href="/demande-devis"
                 className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all shadow-lg"
               >
-                Demander un devis VIP
+                Demander un devis
                 <ArrowRight className="w-5 h-5" />
-              </motion.button>
+              </Link>
               
-              <motion.button
-                variants={scaleIn}
-                onClick={() => window.location.href = "/contact"}
+              <Link
+                href="/contact"
                 className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-display uppercase tracking-widest px-8 py-6 rounded-xl transition-all border border-white/10"
               >
                 <Phone className="w-5 h-5" />
                 Nous contacter
                 <ArrowRight className="w-5 h-5" />
-              </motion.button>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
@@ -346,7 +375,7 @@ export default function ServicesPage() {
 
       {/* Services Grid */}
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-yellow-600/5" />
         
         <div className="relative container mx-auto px-4">
           <motion.div
@@ -358,25 +387,23 @@ export default function ServicesPage() {
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
               <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
-                Services premium
+                Services pratiques
               </span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Nos <span className="text-yellow-500">Services</span> Élites
+              Nos <span className="text-yellow-500">Services</span>
             </h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
+            {supportServices.map((service, index) => (
               <motion.div
                 key={service.id}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                onMouseEnter={() => setHoveredService(service.id)}
-                onMouseLeave={() => setHoveredService(null)}
                 className="group relative h-full"
               >
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full flex flex-col">
@@ -419,11 +446,8 @@ export default function ServicesPage() {
                   </ul>
 
                   <div className="mt-auto pt-6 border-t border-gray-100 dark:border-gray-700">
-                    <Link href="/demande-devis" className="block w-full">
-                      <button className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-all text-sm flex items-center justify-center gap-2">
-                        Demander un devis
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
+                    <Link href="/demande-devis" className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-all text-sm flex items-center justify-center gap-2">
+                        Demander un devis <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                 </div>
@@ -435,7 +459,7 @@ export default function ServicesPage() {
 
       {/* ── Service Routes ───────────────────────────────────────────── */}
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-yellow-600/5" />
 
         <div className="relative container mx-auto px-4">
           <motion.div
@@ -459,15 +483,7 @@ export default function ServicesPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              { href: "/services/amenagement-salle", title: "Aménagement de salle", desc: "Home gym, salles pro, hôtels et centres sportifs", icon: "🏋️" },
-              { href: "/services/amenagement-salle/home-gym", title: "Home Gym", desc: "Salle de sport privée sur mesure à domicile", icon: "🏠" },
-              { href: "/services/amenagement-salle/salle-professionnelle", title: "Salle professionnelle", desc: "Équipement complet pour salles commerciales", icon: "🏢" },
-              { href: "/services/espace-enfance", title: "Espace Enfance", desc: "Aires de jeux et fitness adaptés aux enfants", icon: "🧒" },
-              { href: "/services/revetement-sol-mur", title: "Revêtements", desc: "Sol et mur sportifs : caoutchouc, PVC, résine", icon: "🛡️" },
-              { href: "/services/personnalisation-accessoires", title: "Personnalisation", desc: "Accessoires sur mesure : couleurs et logo", icon: "🎨" },
-              { href: "/services/amenagement-terrains-sport", title: "Terrains de sport", desc: "Surface sportive, clôture périphérique et équipement", icon: "🏟️" },
-            ].map((service, index) => (
+            {canonicalServiceCards.map((service, index) => (
               <motion.div
                 key={service.href}
                 initial={{ opacity: 0, y: 50 }}
@@ -477,8 +493,8 @@ export default function ServicesPage() {
               >
                 <Link href={service.href}>
                   <div className="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 cursor-pointer h-full flex flex-col">
-                    <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
-                      {service.icon}
+                  <div className="text-yellow-500 mb-4 group-hover:scale-110 transition-transform">
+                      <ServiceHubIcon name={service.icon} />
                     </div>
                     <h3 className="text-xl font-display uppercase tracking-wide mb-2 text-gray-900 dark:text-white group-hover:text-yellow-500 transition-colors">
                       {service.title}
@@ -548,7 +564,7 @@ export default function ServicesPage() {
                 </div>
                 
                 {index < processSteps.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-yellow-500 to-orange-500 transform -translate-y-1/2 -translate-x-4 z-0 opacity-30"></div>
+                  <div className="hidden lg:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-yellow-500 to-yellow-600 transform -translate-y-1/2 -translate-x-4 z-0 opacity-30"></div>
                 )}
               </motion.div>
             ))}
@@ -558,7 +574,7 @@ export default function ServicesPage() {
 
       {/* FAQ Section */}
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-yellow-600/5" />
         
         <div className="relative container mx-auto px-4">
           <motion.div
@@ -569,12 +585,12 @@ export default function ServicesPage() {
           >
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
               <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
-                FAQ Premium
+                FAQ services
               </span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Questions <span className="text-yellow-500">Fréquentes</span>
+              Questions <span className="text-yellow-500">fréquentes</span>
             </h2>
           </motion.div>
 
@@ -606,7 +622,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-yellow-500 to-orange-500">
+      <section className="py-20 bg-gradient-to-r from-yellow-500 to-yellow-600">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -615,21 +631,17 @@ export default function ServicesPage() {
             className="max-w-4xl mx-auto text-center"
           >
             <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">
-              Prêt à accéder à l&apos;excellence ?
+              Prêt à parler de votre projet ?
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/demande-devis">
-                <button className="px-8 py-6 bg-black hover:bg-zinc-800 text-white font-display uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-3">
-                  Demander un devis VIP
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+              <Link href="/demande-devis" className="px-8 py-6 bg-black hover:bg-zinc-800 text-white font-display uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-3">
+                Demander un devis
+                <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link href="/contact">
-                <button className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-3">
-                  <Phone className="w-5 h-5" />
-                  Nous contacter
-                  <ChevronRight className="w-5 h-5" />
-                </button>
+              <Link href="/contact" className="px-8 py-6 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-xl transition-all shadow-lg flex items-center justify-center gap-3">
+                <Phone className="w-5 h-5" />
+                Nous contacter
+                <ChevronRight className="w-5 h-5" />
               </Link>
             </div>
           </motion.div>
@@ -643,12 +655,15 @@ export default function ServicesPage() {
         transition={{ delay: 0.5 }}
         className="fixed bottom-6 right-6 z-50"
       >
-        <button
-          onClick={() => window.open(`https://wa.me/212674114446`, '_blank')}
-          className="w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-2xl transition-all flex items-center justify-center"
+        <a
+          href="https://wa.me/212674114446"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Discuter avec IRONZ sur WhatsApp"
+          className="w-14 h-14 rounded-full bg-yellow-500 hover:bg-yellow-400 text-black shadow-lg hover:shadow-2xl transition-all flex items-center justify-center"
         >
           <IoLogoWhatsapp className="w-7 h-7" />
-        </button>
+        </a>
       </motion.div>
     </main>
   );

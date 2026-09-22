@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
+import { getQuoteServices, mapServiceQueryParam, type CanonicalServiceId } from "../../lib/services";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
   ArrowLeft,
@@ -21,19 +22,13 @@ import {
   DollarSign,
   Package,
   Building,
+  Home,
   User,
   MessageCircle,
   Fence,
 } from "lucide-react";
 
-type ServiceId =
-  | "amenagement-salle"
-  | "personnalisation-accessoires"
-  | "espace-enfance"
-  | "revetement-sol-mur"
-  | "terrain-sport"
-  | "conception-produits"
-  | "autre";
+type ServiceId = CanonicalServiceId | "autre";
 
 type BudgetValue =
   | "8000-25000"
@@ -84,12 +79,14 @@ interface HeroStat {
 
 const WHATSAPP_NUMBER = "212674114446";
 
-const SERVICE_CONTEXT_MAP: Record<string, { service: ServiceId; context: string }> = {
-  "amenagement-salle": { service: "amenagement-salle", context: "Aménagement de salle" },
-  "home-gym": { service: "amenagement-salle", context: "Home Gym" },
-  "salle-professionnelle": { service: "amenagement-salle", context: "Salle Professionnelle" },
-  "revetement-sol-mur": { service: "revetement-sol-mur", context: "Revêtement sol & mur" },
-  "terrain-sport": { service: "terrain-sport", context: "Terrain de sport" },
+const SERVICE_CONTEXT_LABELS: Record<CanonicalServiceId, string> = {
+  "amenagement-salle": "Aménagement de salle",
+  "home-gym": "Home Gym",
+  "salle-professionnelle": "Salle Professionnelle",
+  "personnalisation-accessoires": "Personnalisation d'accessoires",
+  "espace-enfance": "Espace enfance",
+  "revetement-sol-mur": "Revêtement sol & mur",
+  "amenagement-terrains-sport": "Aménagement de terrains de sport",
 };
 
 export default function DemandeDevisPage() {
@@ -119,68 +116,66 @@ export default function DemandeDevisPage() {
   const formRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const serviceParam = new URLSearchParams(window.location.search).get("service") || "";
-    const mappedContext = SERVICE_CONTEXT_MAP[serviceParam];
+    const serviceParam = new URLSearchParams(window.location.search).get("service");
+    const mappedServiceId = mapServiceQueryParam(serviceParam);
 
-    if (!mappedContext) return;
+    if (!mappedServiceId) return;
+
+    const context = SERVICE_CONTEXT_LABELS[mappedServiceId];
 
     setFormData((prev) => ({
       ...prev,
-      service: prev.service || mappedContext.service,
-      projectContext: prev.projectContext || mappedContext.context,
-      spaceType: prev.spaceType || mappedContext.context,
+      service: prev.service || mappedServiceId,
+      projectContext: prev.projectContext || context,
+      spaceType: prev.spaceType || context,
     }));
   }, []);
 
-  const services: ServiceItem[] = [
-    {
-      id: "amenagement-salle",
-      name: "Aménagement de salle",
+  const servicePresentation: Record<CanonicalServiceId, Omit<ServiceItem, "id" | "name" | "description">> = {
+    "amenagement-salle": {
       icon: <Building className="w-6 h-6" />,
-      color: "from-yellow-500 to-orange-500",
-      description: "Conception d'espaces fitness professionnels ou personnels",
-      features: ["Plan 3D", "Installation complète", "Formation incluse"],
+      color: "from-yellow-500 to-yellow-600",
+      features: ["Étude sur mesure", "Équipements adaptés", "Devis personnalisé"],
     },
-    {
-      id: "personnalisation-accessoires",
-      name: "Personnalisation d'accessoires",
+    "home-gym": {
+      icon: <Home className="w-6 h-6" />,
+      color: "from-yellow-500 to-yellow-600",
+      features: ["Espace privé", "Choix matériel", "Configuration maison"],
+    },
+    "salle-professionnelle": {
+      icon: <Building className="w-6 h-6" />,
+      color: "from-zinc-600 to-zinc-900",
+      features: ["Projet commercial", "Équipement pro", "Organisation espace"],
+    },
+    "personnalisation-accessoires": {
       icon: <Package className="w-6 h-6" />,
       color: "from-blue-500 to-purple-500",
-      description: "Création d'accessoires fitness sur mesure",
-      features: ["Logo gravé", "Couleurs personnalisées", "Matériaux premium"],
+      features: ["Identité visuelle", "Couleurs", "Logo"],
     },
-    {
-      id: "espace-enfance",
-      name: "Espace enfance",
+    "espace-enfance": {
       icon: <User className="w-6 h-6" />,
       color: "from-green-500 to-emerald-500",
-      description: "Aménagement d'espaces adaptés aux enfants",
-      features: ["Sécurité certifiée", "Design ludique", "Équipement adapté"],
+      features: ["Usage enfant", "Sécurité", "Projet adapté"],
     },
-    {
-      id: "revetement-sol-mur",
-      name: "Revêtement sol & mur",
+    "revetement-sol-mur": {
       icon: <Target className="w-6 h-6" />,
       color: "from-red-500 to-pink-500",
-      description: "Solutions de revêtement spécialisées sportives",
-      features: ["Antidérapant", "Facile à nettoyer", "Résistance aux chocs"],
+      features: ["Sol sportif", "Mur", "Protection"],
     },
-    {
-      id: "terrain-sport",
-      name: "Aménagement de terrain de sport",
+    "amenagement-terrains-sport": {
       icon: <Fence className="w-6 h-6" />,
       color: "from-green-500 to-emerald-600",
-      description: "Terrain de sport sur mesure : surface, clôture et équipement",
-      features: ["Étude de projet", "Devis personnalisé", "Sur mesure"],
+      features: ["Surface sportive", "Clôture", "Équipement"],
     },
-    {
-      id: "conception-produits",
-      name: "Conception de produits",
-      icon: <Sparkles className="w-6 h-6" />,
-      color: "from-purple-500 to-indigo-500",
-      description: "Développement de produits fitness innovants",
-      features: ["Prototypage", "Test qualité", "Production sur mesure"],
-    },
+  };
+
+  const services: ServiceItem[] = [
+    ...getQuoteServices().map((service) => ({
+      id: service.id,
+      name: service.title,
+      description: service.description,
+      ...servicePresentation[service.id],
+    })),
     {
       id: "autre",
       name: "Autre service",
@@ -511,9 +506,9 @@ ${formData.message}
     <main className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       {/* Header Section */}
       <section className="relative pt-28 pb-20 md:pt-36 md:pb-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-yellow-600/5" />
         <div className="absolute top-0 right-0 w-72 h-72 bg-yellow-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-yellow-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
         <div className="relative container mx-auto px-4">
           <nav className="mb-8">
@@ -646,7 +641,7 @@ ${formData.message}
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 dark:from-yellow-500/5 dark:to-orange-500/5 border border-yellow-500/20 dark:border-yellow-500/10 rounded-3xl p-8">
+                  <div className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 dark:from-yellow-500/5 dark:to-yellow-600/5 border border-yellow-500/20 dark:border-yellow-500/10 rounded-3xl p-8">
                     <h4 className="font-display uppercase tracking-wide text-yellow-600 dark:text-yellow-400 mb-6">
                       <MessageCircle className="inline w-5 h-5 mr-2" />
                       Besoin d&apos;aide ?
@@ -1328,7 +1323,7 @@ ${formData.message}
                                 className={`px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-yellow-500/20 flex items-center gap-3 ${
                                   isSubmitting
                                     ? "opacity-70 cursor-not-allowed"
-                                    : "hover:from-yellow-600 hover:to-orange-600"
+                                    : "hover:from-yellow-600 hover:to-yellow-600"
                                 }`}
                               >
                                 {isSubmitting ? (
@@ -1357,7 +1352,7 @@ ${formData.message}
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-yellow-500 to-orange-500">
+      <section className="py-20 bg-gradient-to-r from-yellow-500 to-yellow-600">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

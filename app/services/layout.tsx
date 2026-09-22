@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Services : Aménagement, Équipement & Personnalisation au Maroc | IRONZ",
+  title: "Services IRONZ au Maroc : aménagement, revêtement et personnalisation | IRONZ",
   description:
-    "IRONZ offre des services complets au Maroc : aménagement de salles de sport, home gym, rénovation, revêtements et personnalisation d'accessoires. Devis gratuit.",
+    "Découvrez les services IRONZ au Maroc : aménagement de salle, home gym, salle professionnelle, revêtement sportif, espace enfance, personnalisation et terrains de sport.",
   alternates: { canonical: "/services" },
 };
 

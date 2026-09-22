@@ -12,6 +12,7 @@ import { motion, Variants } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { Button } from "../components/ui/button";
+import { getHomepageServices, type CanonicalServiceId } from "../lib/services";
 import img1 from "../public/salle1-optimized.webp";
 import img2 from "../public/salle2-optimized.webp";
 import img3 from "../public/salle3-optimized.webp";
@@ -38,69 +39,56 @@ export interface ServicesSectionProps {
   ctaText?: string;
 }
 
-// Default services data
-const defaultServices: ServiceItem[] = [
-  {
-    id: "amenagement-salle",
-    title: "Aménagement de Salles",
-    description:
-      "Conception et réalisation clé en main de vos espaces fitness, du home gym au complexe sportif professionnel.",
-    href: "/services/amenagement-salle",
+const homepageServiceAssets = {
+  "amenagement-salle": {
     image: img1,
     icon: Home,
     features: ["Étude sur mesure", "Équipements adaptés", "Installation pro"],
-    delay: 0,
     isWide: false,
   },
-  {
-    id: "personnalisation",
-    title: "Personnalisation",
-    description:
-      "Marquez votre identité avec des équipements uniques aux couleurs et logos de votre marque.",
-    href: "/services/personnalisation-accessoires",
+  "personnalisation-accessoires": {
     image: img2,
     icon: Palette,
-    features: ["Design unique", "Impression HD", "Matériaux premium"],
-    delay: 0.1,
+    features: ["Design adapté", "Impression HD", "Finitions selon le projet"],
     isWide: false,
   },
-  {
-    id: "espace-enfance",
-    title: "Espace Enfance",
-    description:
-      "Création de zones d'activités sportives ludiques, sécurisées et adaptées aux plus jeunes.",
-    href: "/services/espace-enfance",
+  "espace-enfance": {
     image: img3,
     icon: ToyBrick,
-    features: ["Sécurité certifiée", "Design ludique", "Pour écoles & centres"],
-    delay: 0.2,
+    features: ["Sécurité adaptée", "Design ludique", "Pour écoles & centres"],
     isWide: false,
   },
-  {
-    id: "revetement",
-    title: "Revêtement Sol & Mur",
-    description:
-      "Solutions techniques haute performance pour sols et murs, alliant esthétique, sécurité et durabilité pour toutes pratiques sportives.",
-    href: "/services/revetement-sol-mur",
+  "revetement-sol-mur": {
     image: img4,
     icon: SquareStack,
-    features: ["Sols amortissants", "Murs d'escalade", "Isolation acoustique", "Installation rapide"],
-    delay: 0.3,
+    features: ["Sols amortissants", "Protections murales", "Confort d'usage", "Installation étudiée"],
     isWide: true,
   },
-  {
-    id: "terrain-sport",
-    title: "Terrains de Sport",
-    description:
-      "Aménagement de terrains de sport sur mesure : étude du projet, surface sportive, clôture périphérique et équipement. Sur devis.",
-    href: "/services/amenagement-terrains-sport",
+  "amenagement-terrains-sport": {
     image: img5,
     icon: Fence,
     features: ["Étude de projet", "Surface sportive", "Clôture périphérique", "Devis personnalisé"],
-    delay: 0.4,
     isWide: false,
   },
-];
+} satisfies Partial<Record<CanonicalServiceId, Pick<ServiceItem, "image" | "icon" | "features" | "isWide">>>;
+
+// Default services data
+const defaultServices: ServiceItem[] = getHomepageServices().map((service, index) => {
+  const assets = homepageServiceAssets[service.id];
+
+  if (!assets) {
+    throw new Error(`Missing homepage service assets for ${service.id}`);
+  }
+
+  return {
+    id: service.id,
+    title: service.homepageTitle ?? service.title,
+    description: service.homepageDescription ?? service.description,
+    href: service.href,
+    ...assets,
+    delay: index * 0.1,
+  };
+});
 
 // Animation variants with proper typing
 const itemVariants: Variants = {
@@ -138,7 +126,7 @@ const ServicesSection = ({
             </span>
           </h2>
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-light leading-relaxed">
-            Des solutions personnalisées et innovantes pour transformer vos espaces sportifs en lieux d'exception.
+            Des solutions adaptées à la configuration, à l&apos;usage et aux priorités de votre espace sportif.
           </p>
         </div>
 

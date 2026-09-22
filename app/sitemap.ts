@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 import { categories } from "../data/product";
 import { productSlug, productUpdatedAt, type ProductRecord } from "../lib/products";
 import { buildCategoryTaxonomy } from "../lib/category-taxonomy";
+import { getSitemapServices } from "../lib/services";
 
 const baseUrl = "https://www.ironz.ma";
 const API_URL =
@@ -143,16 +144,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  const serviceRoutes: MetadataRoute.Sitemap = [
-    "/services/personnalisation-accessoires",
-    "/services/amenagement-salle",
-    "/services/amenagement-salle/home-gym",
-    "/services/amenagement-salle/salle-professionnelle",
-    "/services/revetement-sol-mur",
-    "/services/espace-enfance",
-    "/services/amenagement-terrains-sport",
-  ].map((path) => ({
-    url: `${baseUrl}${path}`,
+  const serviceRoutes: MetadataRoute.Sitemap = getSitemapServices().map((service) => ({
+    url: `${baseUrl}${service.href}`,
     changeFrequency: "monthly",
     priority: 0.8,
   }));
