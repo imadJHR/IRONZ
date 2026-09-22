@@ -39,7 +39,7 @@ import { useFavorites } from "../context/favorites-context";
 import { useTheme } from "next-themes";
 import { cn } from "../lib/utils";
 import { categories } from "../data/product";
-import { getServiceNavigationItems } from "../lib/services";
+import { getServiceNavigationItems, SERVICES } from "../lib/services";
 import {
   ClerkProvider,
   SignInButton,
@@ -1277,9 +1277,6 @@ function NavLink({ href, children, active }: NavLinkProps) {
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 const Footer = React.memo(function Footer({ language }: FooterProps) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
   const currentYear = new Date().getFullYear();
 
   const socialLinks = useMemo<SocialLink[]>(
@@ -1335,6 +1332,28 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
     [language]
   );
 
+  const footerServices = useMemo<CategoryLink[]>(
+    () => [
+      ...[
+        "amenagement-salle",
+        "home-gym",
+        "salle-professionnelle",
+        "personnalisation-accessoires",
+        "espace-enfance",
+        "revetement-sol-mur",
+        "amenagement-terrains-sport",
+      ].map((serviceId) => {
+        const service = SERVICES.find((item) => item.id === serviceId);
+        return {
+          name: service?.title ?? serviceId,
+          href: service?.href ?? "/services",
+        };
+      }),
+      { name: "Tous nos services", href: "/services" },
+    ],
+    []
+  );
+
   const infoLinks = useMemo<CategoryLink[]>(
     () => [
       { name: language === "fr" ? "À propos" : "About", href: "/a-propos" },
@@ -1388,8 +1407,6 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
     },
   };
 
-  if (!mounted) return null;
-
   return (
     <footer
       className="bg-zinc-950 text-white relative overflow-hidden"
@@ -1406,7 +1423,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8 sm:pb-12">
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 mb-12 sm:mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-6 mb-12 sm:mb-16"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -1469,6 +1486,29 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 </span>
               ))}
             </div>
+          </motion.div>
+
+          {/* Services */}
+          <motion.div variants={itemVariants}>
+            <h2 className="font-display uppercase tracking-widest text-lg mb-5 flex items-center gap-3">
+              <span
+                className="w-6 h-1 bg-yellow-500 -skew-x-12"
+                aria-hidden="true"
+              />
+              Services
+            </h2>
+            <ul className="space-y-3" role="list">
+              {footerServices.map((service) => (
+                <li key={service.href}>
+                  <Link
+                    href={service.href}
+                    className="inline-block text-gray-400 hover:text-yellow-400 hover:translate-x-1 transition-all text-sm"
+                  >
+                    {service.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </motion.div>
 
           {/* Catalog */}
