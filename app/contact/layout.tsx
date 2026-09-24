@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact et showroom à Agadir | IRONZ",
-  description: "Contactez IRONZ pour vos équipements sportifs, commandes et projets de salle au Maroc. Showroom au Sahara Mall à Agadir.",
-  alternates: { canonical: "/contact" },
+  title: "Contact IRONZ à Agadir | IRONZ",
+  description:
+    "Contactez IRONZ à Agadir pour une question sur les équipements fitness, les produits ou un projet, par téléphone, WhatsApp ou email.",
+  alternates: { canonical: "https://www.ironz.ma/contact" },
+  robots: { index: true, follow: true },
 };
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {

@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../lib/og-image";
 
 export const metadata: Metadata = {
-  title: "Demande de devis pour votre salle de sport",
-  description: "Demandez un devis IRONZ pour l’équipement, la conception et l’installation de votre salle de sport ou home gym au Maroc.",
-  alternates: { canonical: "/demande-devis" },
+  title: "Demande de devis | IRONZ",
+  description: "Partagez votre projet fitness avec IRONZ et préparez une demande de devis adaptée à votre besoin au Maroc.",
+  alternates: { canonical: "https://www.ironz.ma/demande-devis" },
+  robots: { index: false, follow: true },
   openGraph: {
     title: "Demande de devis pour votre salle de sport | IRONZ",
     description: "Demandez un devis IRONZ pour l’équipement, la conception et l’installation de votre salle de sport ou home gym au Maroc.",

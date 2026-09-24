@@ -1,818 +1,298 @@
-"use client";
-
-import React, { useEffect, useRef, ReactNode } from "react";
 import Link from "next/link";
-import { motion, useInView, useAnimation, Variants } from "framer-motion";
+import type { ReactNode } from "react";
 import {
-  Users,
-  Target,
-  Award,
-  Clock,
-  MapPin,
-  Phone,
-  Mail,
-  Facebook,
-  Instagram,
-  Youtube,
-  ArrowLeft,
-  Sparkles,
-  Zap,
-  ShieldCheck,
-  Star,
-  TrendingUp,
-  Heart,
-  Building,
-  UsersRound,
-  Globe,
-  TargetIcon,
-  CheckCircle,
   ArrowRight,
-  MailCheck,
-  Calendar,
-  ChevronRight,
+  Building2,
   Dumbbell,
-  Medal,
-  Crown,
+  Mail,
+  MapPin,
+  Package,
+  Phone,
+  Target,
+  Users,
 } from "lucide-react";
+import {
+  getCanonicalServiceCards,
+  type ServiceHubIconName,
+} from "../../lib/services";
 
-// ─── Interfaces ───────────────────────────────────────────────
+const PAGE_URL = "https://www.ironz.ma/a-propos";
 
-interface ValueItem {
-  title: string;
-  description: string;
-  icon: ReactNode;
-  color: string;
-}
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Accueil", item: "https://www.ironz.ma/" },
+    { "@type": "ListItem", position: 2, name: "À propos", item: PAGE_URL },
+  ],
+};
 
-interface AchievementItem {
-  value: string;
-  label: string;
-  icon: ReactNode;
-}
+const aboutPageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: "À propos d'IRONZ",
+  description:
+    "Découvrez IRONZ, son univers fitness au Maroc, ses produits et ses services d'aménagement sportif.",
+  url: PAGE_URL,
+  isPartOf: { "@type": "WebSite", name: "IRONZ", url: "https://www.ironz.ma/" },
+  about: { "@type": "Organization", name: "IRONZ", url: "https://www.ironz.ma/" },
+  inLanguage: "fr-MA",
+};
 
-interface TimelineItem {
-  year: string;
-  title: string;
-  description: string;
-  icon: ReactNode;
-}
+const focusPoints = [
+  {
+    icon: <Package className="h-6 w-6" aria-hidden="true" />,
+    title: "Produits fitness",
+    text: "Machines, matériel de musculation, accessoires et suppléments pour différents objectifs et usages.",
+    href: "/produit",
+    label: "Explorer le catalogue",
+  },
+  {
+    icon: <Building2 className="h-6 w-6" aria-hidden="true" />,
+    title: "Projets sportifs",
+    text: "Des services pour cadrer un Home Gym, une salle professionnelle ou un espace sportif.",
+    href: "/services",
+    label: "Découvrir les services",
+  },
+  {
+    icon: <Users className="h-6 w-6" aria-hidden="true" />,
+    title: "Accompagnement",
+    text: "Une première orientation pour relier le besoin, l’espace, les équipements et le projet.",
+    href: "/contact",
+    label: "Parler à IRONZ",
+  },
+];
 
-interface TeamFeatureItem {
-  icon: ReactNode;
-  title: string;
-  description: string;
-}
+const steps = [
+  {
+    number: "01",
+    title: "Comprendre le besoin",
+    text: "Identifier le type d’usage, l’espace concerné, les objectifs et les priorités du projet.",
+  },
+  {
+    number: "02",
+    title: "Orienter les choix",
+    text: "Relier les équipements, accessoires, surfaces et services aux contraintes réelles du lieu.",
+  },
+  {
+    number: "03",
+    title: "Construire la suite",
+    text: "Explorer le catalogue, consulter un service ou demander un échange selon le niveau de précision nécessaire.",
+  },
+];
 
-// ─── Composant Principal ──────────────────────────────────────
-
-export default function AboutPage(): React.JSX.Element {
-  const controls = useAnimation();
-  const storyRef = useRef<HTMLElement>(null);
-  const storyInView = useInView(storyRef, { once: true, amount: 0.3 });
-
-  useEffect(() => {
-    if (storyInView) {
-      controls.start("visible");
-    }
-  }, [controls, storyInView]);
-
-  useEffect(() => {
-    const script: HTMLScriptElement = document.createElement("script");
-    script.type = "application/ld+json";
-    script.innerHTML = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      name: "IRONZ",
-      url: "https://www.ironz.ma",
-      logo: "https://www.ironz.ma/logo-optimized.png",
-      foundingDate: "2019",
-      founders: [
-        {
-          "@type": "Person",
-          name: "RIDA MAGHRABI",
-        },
-      ],
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "SAHARA MALL 1 ÈRE ÉTAGE C169 & C120",
-        addressLocality: "Agadir",
-        addressCountry: "MAR",
-      },
-      contactPoint: {
-        "@type": "ContactPoint",
-        telephone: "+212 674-114446",
-        contactType: "customer service",
-      },
-      sameAs: [
-        "https://www.instagram.com/ironz_official/",
-        "https://www.instagram.com/ironz_equipements/",
-        "https://www.youtube.com/@muscleironz21",
-      ],
-    });
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
-
-  // ─── Données ──────────────────────────────────────────────
-
-  const values: ValueItem[] = [
-    {
-      title: "EXCELLENCE",
-      description:
-        "Des équipements de qualité professionnelle testés et approuvés par des athlètes.",
-      icon: <Award className="h-8 w-8" />,
-      color: "from-yellow-500 to-orange-500",
-    },
-    {
-      title: "INNOVATION",
-      description:
-        "Nous repoussons les limites avec des technologies de pointe et des designs innovants.",
-      icon: <Zap className="h-8 w-8" />,
-      color: "from-blue-500 to-purple-500",
-    },
-    {
-      title: "EXPERTISE",
-      description:
-        "Notre équipe d'experts vous guide vers les solutions les plus adaptées à vos objectifs.",
-      icon: <Target className="h-8 w-8" />,
-      color: "from-green-500 to-emerald-500",
-    },
-    {
-      title: "ENGAGEMENT",
-      description:
-        "Un service client premium et un accompagnement personnalisé à chaque étape.",
-      icon: <ShieldCheck className="h-8 w-8" />,
-      color: "from-red-500 to-pink-500",
-    },
-  ];
-
-  const achievements: AchievementItem[] = [
-    {
-      value: "2019",
-      label: "Année de création",
-      icon: <Calendar className="w-5 h-5" />,
-    },
-    {
-      value: "5000+",
-      label: "Clients satisfaits",
-      icon: <UsersRound className="w-5 h-5" />,
-    },
-    {
-      value: "500+",
-      label: "Produits premium",
-      icon: <Dumbbell className="w-5 h-5" />,
-    },
-    {
-      value: "Maroc",
-      label: "Présence nationale",
-      icon: <Globe className="w-5 h-5" />,
-    },
-  ];
-
-  const timeline: TimelineItem[] = [
-    {
-      year: "2019",
-      title: "Fondation",
-      description: "Création d'IRONZ par RIDA MAGHRABI à Agadir",
-      icon: <Sparkles className="w-5 h-5" />,
-    },
-    {
-      year: "2020",
-      title: "Expansion",
-      description: "Ouverture du premier showroom premium",
-      icon: <Building className="w-5 h-5" />,
-    },
-    {
-      year: "2021",
-      title: "Innovation",
-      description: "Lancement de notre ligne d'équipements exclusifs",
-      icon: <Zap className="w-5 h-5" />,
-    },
-    {
-      year: "2023",
-      title: "Leadership",
-      description: "Devenu leader du fitness premium au Maroc",
-      icon: <Crown className="w-5 h-5" />,
-    },
-    {
-      year: "2024",
-      title: "Vision",
-      description:
-        "Expansion internationale et développement de nouvelles technologies",
-      icon: <TargetIcon className="w-5 h-5" />,
-    },
-  ];
-
-  const teamFeatures: TeamFeatureItem[] = [
-    {
-      icon: <Medal className="w-6 h-6" />,
-      title: "Athlètes professionnels",
-      description: "Notre équipe comprend des champions reconnus",
-    },
-    {
-      icon: <Heart className="w-6 h-6" />,
-      title: "Passion commune",
-      description: "Une équipe unie par l'amour du sport",
-    },
-    {
-      icon: <TrendingUp className="w-6 h-6" />,
-      title: "Performance",
-      description: "Nous repoussons les limites chaque jour",
-    },
-    {
-      icon: <Star className="w-6 h-6" />,
-      title: "Élite",
-      description: "Excellence dans chaque détail",
-    },
-  ];
-
-  // ─── Animation Variants ───────────────────────────────────
-
-  const fadeInUp: Variants = {
-    hidden: { opacity: 0, y: 60 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
+function ServiceIcon({ name }: { name: ServiceHubIconName }) {
+  const common = {
+    className: "h-8 w-8",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    viewBox: "0 0 24 24",
+    "aria-hidden": true,
+    focusable: false,
   };
 
-  const staggerContainer: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
+  switch (name) {
+    case "home":
+      return <svg {...common}><path d="m3 10 9-7 9 7" /><path d="M5 9v11h14V9" /><path d="M9 20v-6h6v6" /></svg>;
+    case "building":
+      return <svg {...common}><path d="M4 21V5l8-2 8 2v16" /><path d="M8 8h1M15 8h1M8 12h1M15 12h1M8 16h1M15 16h1" /><path d="M10 21v-3h4v3" /></svg>;
+    case "palette":
+      return <svg {...common}><path d="M12 3a9 9 0 0 0 0 18h1.5a2 2 0 0 0 0-4H12a2 2 0 0 1 0-4h2a7 7 0 0 0 0-10Z" /><path d="M7.5 10h.01M9 6.5h.01M14 6.5h.01M17 10h.01" /></svg>;
+    case "activity":
+      return <svg {...common}><circle cx="12" cy="5" r="2" /><path d="m9 21 1.5-7L7 11l2-3 3 2 3-2 2 3-3.5 3 1.5 7" /><path d="M10.5 14h3" /></svg>;
+    case "layers":
+      return <svg {...common}><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3 12 9 5 9-5M3 16l9 5 9-5" /></svg>;
+    case "outdoor":
+      return <svg {...common}><path d="M4 20h16M6 20V9h12v11M9 9V5h6v4M8 13h8M9 17h6" /></svg>;
+    case "layout":
+    default:
+      return <svg {...common}><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M4 10h16M10 10v10" /></svg>;
+  }
+}
 
-  const scaleIn: Variants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
+function SectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center rounded-full border border-yellow-500/30 bg-yellow-500/10 px-4 py-2 text-xs font-display uppercase tracking-[0.25em] text-yellow-600 dark:text-yellow-400">
+      {children}
+    </span>
+  );
+}
 
-  // ─── Rendu ────────────────────────────────────────────────
+export default function AboutPage() {
+  const serviceCards = getCanonicalServiceCards();
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
-      {/* Hero Section */}
-      <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-gray-900 via-gray-900 to-black overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-orange-500/10" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageJsonLd) }}
+      />
 
-        <div className="relative container mx-auto px-4">
-          {/* Breadcrumb */}
-          <nav className="mb-8">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-yellow-500 transition-colors group"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              Retour à l&apos;accueil
-            </Link>
+      <div className="border-b border-gray-100 bg-gray-50/70 dark:border-gray-800 dark:bg-gray-900/40">
+        <div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8">
+          <nav aria-label="Fil d&apos;Ariane" className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <Link href="/" className="hover:text-yellow-600">Accueil</Link>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page" className="font-medium text-gray-900 dark:text-white">À propos</span>
           </nav>
+        </div>
+      </div>
 
-          {/* Hero Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-5xl"
-          >
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
-                Notre histoire
-              </span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display uppercase tracking-wide mb-6 text-white leading-[0.95]">
-              À propos <span className="text-yellow-500">IRONZ</span>
+      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-900 to-black py-20 md:py-28">
+        <div className="absolute inset-0 bg-yellow-500/5" aria-hidden="true" />
+        <div className="absolute right-0 top-0 h-full w-1/3 -skew-x-12 bg-yellow-500/5" aria-hidden="true" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl">
+            <SectionLabel>À propos d&apos;IRONZ</SectionLabel>
+            <h1 className="mb-6 mt-6 text-4xl font-display uppercase leading-[0.95] tracking-wide text-white sm:text-5xl md:text-7xl">
+              IRONZ, votre univers fitness <span className="text-yellow-500">au Maroc</span>
             </h1>
-
-            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl leading-relaxed">
-              D&apos;une passion pour le fitness vers une ambition nationale.
-              Découvrez l&apos;histoire, les valeurs et la vision qui font
-              d&apos;IRONZ le leader du fitness premium au Maroc.
+            <p className="mb-8 max-w-3xl text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
+              IRONZ rassemble un catalogue de produits fitness et un ensemble de services pour accompagner les usages individuels, les espaces privés et les projets sportifs professionnels.
             </p>
-
-            {/* Achievements Stats */}
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl"
-            >
-              {achievements.map((achievement: AchievementItem, index: number) => (
-                <motion.div
-                  key={index}
-                  variants={scaleIn}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 md:p-6 text-center"
-                >
-                  <div className="flex items-center justify-center gap-2 mb-2 text-yellow-500">
-                    {achievement.icon}
-                    <span className="text-3xl md:text-4xl font-display tracking-wide text-yellow-500">
-                      {achievement.value}
-                    </span>
-                  </div>
-                  <span className="text-xs md:text-sm font-display uppercase tracking-widest text-gray-400">
-                    {achievement.label}
-                  </span>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Our Story Section */}
-      <section ref={storyRef} className="py-16 md:py-24 relative">
-        <div className="container mx-auto px-4">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate={controls}
-            className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center"
-          >
-            <motion.div variants={fadeInUp}>
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
-                Notre parcours
-                </span>
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-                L&apos;histoire derrière la{" "}
-                <span className="text-yellow-500">performance</span>
-              </h2>
-
-              <div className="space-y-6 mb-10">
-                <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Fondée en 2019 par{" "}
-                  <span className="font-bold text-yellow-500">
-                    RIDA MAGHRABI
-                  </span>
-                  , ingénieur, ex-champion en bodybuilding et athlète
-                  professionnel, IRONZ est née d&apos;une passion intense pour
-                  le fitness et d&apos;une vision ambitieuse : rendre accessible
-                  des équipements de qualité professionnelle à tous.
-                </p>
-                <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Ce qui a commencé comme une boutique à Agadir s&apos;est
-                  rapidement transformé en un empire du fitness, devenant parmi
-                  les leaders marocains de l&apos;équipement sportif premium,
-                  avec une présence en ligne forte et plusieurs showrooms
-                  d&apos;excellence à travers le pays.
-                </p>
-              </div>
-
-              {/* Team Features */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                {teamFeatures.map(
-                  (feature: TeamFeatureItem, index: number) => (
-                    <motion.div
-                      key={index}
-                      variants={scaleIn}
-                      className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-4 border border-gray-100 dark:border-gray-800"
-                    >
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center">
-                          {feature.icon}
-                        </div>
-                        <h4 className="font-display uppercase tracking-wide text-gray-900 dark:text-white">
-                          {feature.title}
-                        </h4>
-                      </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {feature.description}
-                      </p>
-                    </motion.div>
-                  )
-                )}
-              </div>
-
-              <Link href="/contact">
-                <button className="bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-2xl">
-                  Rencontrer notre équipe
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </button>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link href="/produit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 px-7 py-4 font-display uppercase tracking-wide text-black shadow-lg hover:bg-yellow-400">
+                Découvrir nos produits <ArrowRight className="h-5 w-5" aria-hidden="true" />
               </Link>
-            </motion.div>
-
-            {/* Timeline */}
-            <motion.div variants={fadeInUp} className="space-y-6">
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6 sm:p-8">
-                <h3 className="text-2xl font-display uppercase tracking-wide mb-8 text-gray-900 dark:text-white">
-                  Notre{" "}
-                  <span className="text-yellow-500">Évolution</span>
-                </h3>
-
-                <div className="space-y-6">
-                  {timeline.map((item: TimelineItem, index: number) => (
-                    <div key={index} className="relative pl-12">
-                      <div className="absolute left-0 top-0">
-                        <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center">
-                          <span className="text-sm font-display text-black">
-                            {item.year}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="border-l-2 border-gray-200 dark:border-gray-800 pl-8 pb-6">
-                        <div className="flex items-center gap-3 mb-2">
-                          {item.icon}
-                          <h4 className="font-bold text-lg text-gray-900 dark:text-white">
-                            {item.title}
-                          </h4>
-                        </div>
-                        <p className="text-gray-600 dark:text-gray-400">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+              <Link href="/services" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-7 py-4 font-display uppercase tracking-wide text-white hover:border-yellow-500/60 hover:text-yellow-400">
+                Découvrir nos services <ArrowRight className="h-5 w-5" aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Our Values Section */}
-      <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-orange-500/5" />
-
-        <div className="relative container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
-                Ce qui nous définit
-              </span>
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+            <div>
+              <SectionLabel>Qui est IRONZ&nbsp;?</SectionLabel>
+              <h2 className="mb-6 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">
+                Plus qu&apos;une boutique <span className="text-yellow-500">fitness</span>
+              </h2>
+              <div className="space-y-5 leading-relaxed text-gray-600 dark:text-gray-400">
+                <p>IRONZ propose du matériel de fitness, de musculation, des accessoires et des suppléments sportifs à travers un catalogue accessible en ligne.</p>
+                <p>L&apos;entreprise accompagne également des projets d&apos;aménagement et de personnalisation d&apos;espaces sportifs. Le besoin peut concerner un produit précis, une pièce à équiper ou un projet plus global.</p>
+                <p>Cette page présente l&apos;identité et le rôle d&apos;IRONZ. Les pages produits, catégories et services détaillent ensuite les solutions correspondantes.</p>
+              </div>
             </div>
+            <div className="rounded-3xl border border-yellow-500/20 bg-gray-50 p-6 dark:bg-gray-900/60 sm:p-8">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black">
+                <Target className="h-6 w-6" aria-hidden="true" />
+              </div>
+              <h3 className="mb-4 text-2xl font-display uppercase tracking-wide text-gray-900 dark:text-white">Notre rôle</h3>
+              <p className="leading-relaxed text-gray-600 dark:text-gray-300">Mettre en relation un objectif fitness, un espace et des solutions adaptées, avec une orientation claire vers le catalogue, les services ou un échange avec IRONZ.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Nos <span className="text-yellow-500">Valeurs</span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Les principes fondamentaux qui guident chaque décision et action
-              chez IRONZ
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value: ValueItem, index: number) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative"
-              >
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:border-yellow-500/50 h-full">
-                  <div
-                    className="w-16 h-16 rounded-2xl bg-yellow-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-                  >
-                    <div className="text-black">{value.icon}</div>
-                  </div>
-
-                  <h3 className="text-2xl font-display uppercase tracking-wide mb-4 text-gray-900 dark:text-white">
-                    {value.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {value.description}
-                  </p>
-                </div>
-              </motion.div>
+      <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 max-w-3xl">
+            <SectionLabel>Ce que propose IRONZ</SectionLabel>
+            <h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Des solutions selon votre <span className="text-yellow-500">projet</span></h2>
+            <p className="leading-relaxed text-gray-600 dark:text-gray-400">Commencez par le besoin qui vous concerne. Chaque parcours renvoie vers une page dédiée pour éviter de mélanger catalogue, conseil et aménagement.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {focusPoints.map((point) => (
+              <article key={point.title} className="flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-950">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black">{point.icon}</div>
+                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">{point.title}</h3>
+                <p className="mb-6 flex-1 leading-relaxed text-gray-600 dark:text-gray-400">{point.text}</p>
+                <Link href={point.href} className="inline-flex items-center gap-2 font-display uppercase tracking-wide text-yellow-600 hover:text-yellow-500 dark:text-yellow-400">{point.label} <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Mission */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-yellow-500/5 dark:bg-yellow-500/5 rounded-2xl p-8 md:p-12 border border-yellow-500/20"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
-                  <Target className="w-6 h-6 text-black" />
-                </div>
-                <h3 className="text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white">
-                  Notre <span className="text-yellow-500">Mission</span>
-                </h3>
-              </div>
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                Fournir des équipements de fitness premium qui permettent à
-                chacun, du débutant à l&apos;athlète professionnel,
-                d&apos;atteindre ses objectifs de performance dans un
-                environnement sécurisé et inspirant.
-              </p>
-            </motion.div>
-
-            {/* Vision */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-yellow-500/5 dark:bg-yellow-500/5 rounded-2xl p-8 md:p-12 border border-yellow-500/20"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
-                  <Globe className="w-6 h-6 text-black" />
-                </div>
-                <h3 className="text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white">
-                  Notre <span className="text-yellow-500">Vision</span>
-                </h3>
-              </div>
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                Devenir la référence mondiale en équipements de fitness
-                innovants, en créant une communauté internationale
-                d&apos;athlètes unis par la passion de la performance et
-                l&apos;excellence.
-              </p>
-            </motion.div>
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 max-w-3xl">
+            <SectionLabel>Nos services fitness</SectionLabel>
+            <h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Du Home Gym aux <span className="text-yellow-500">projets sportifs</span></h2>
+            <p className="leading-relaxed text-gray-600 dark:text-gray-400">Les services IRONZ couvrent l&apos;aménagement, les surfaces, la personnalisation et différents contextes d&apos;usage. Consultez la page qui correspond à votre projet.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {serviceCards.map((service) => (
+              <article key={service.id} className="rounded-2xl border border-gray-100 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-900/60">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black"><ServiceIcon name={service.icon} /></div>
+                <h3 className="mb-3 text-xl font-bold text-gray-900 dark:text-white">{service.title}</h3>
+                <p className="mb-5 leading-relaxed text-gray-600 dark:text-gray-400">{service.desc}</p>
+                <Link href={service.href} className="inline-flex items-center gap-2 font-display uppercase tracking-wide text-yellow-600 hover:text-yellow-500 dark:text-yellow-400">Voir le service <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Video Section */}
-      <section className="py-16 md:py-24 bg-gray-900 relative overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-orange-500/10" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
-
-        <div className="relative container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-              <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
-                En images
-              </span>
-            </div>
-
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-white">
-              IRONZ <span className="text-yellow-500">en Action</span>
-            </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Découvrez notre univers et notre passion pour l&apos;excellence
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 to-orange-500/20" />
-            <iframe
-              className="w-full h-full"
-              src="https://www.youtube.com/embed/LED1s8Ecpbw"
-              title="IRONZ - L'excellence du fitness"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8 }}
-            className="grid lg:grid-cols-2 gap-12 lg:gap-20"
-          >
-            {/* Contact Info */}
+      <section className="bg-gray-50 py-16 dark:bg-gray-900 md:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid items-start gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
             <div>
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-500/10 border border-yellow-500/20 mb-6">
-                <span className="text-sm font-display uppercase tracking-widest text-yellow-500">
-                  Restons connectés
-                </span>
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-                Contactez-<span className="text-yellow-500">nous</span>
-              </h2>
-
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 leading-relaxed">
-                Une question, un projet, ou simplement envie de discuter
-                fitness ? Notre équipe d&apos;experts est à votre disposition.
-              </p>
-
-              <div className="space-y-6">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
-                    <MapPin className="w-6 h-6 text-black" />
-                  </div>
-                  <div>
-                    <h4 className="font-display uppercase tracking-wide text-lg mb-1 text-gray-900 dark:text-white">
-                      Showroom principal
-                    </h4>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      SAHARA MALL 1 ÈRE ÉTAGE C169 & C120, Agadir
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
-                    <Phone className="w-6 h-6 text-black" />
-                  </div>
-                  <div>
-                    <h4 className="font-display uppercase tracking-wide text-lg mb-1 text-gray-900 dark:text-white">
-                      Téléphone
-                    </h4>
-                    <p className="text-lg font-display tracking-wide text-gray-900 dark:text-white break-all">
-                      +212 674-114446
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="flex items-center gap-4 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 group hover:border-yellow-500 transition-colors"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
-                    <Mail className="w-6 h-6 text-black" />
-                  </div>
-                  <div>
-                    <h4 className="font-display uppercase tracking-wide text-lg mb-1 text-gray-900 dark:text-white">
-                      Email
-                    </h4>
-                    <p className="text-lg font-display tracking-wide text-gray-900 dark:text-white break-all">
-                      muscleironz2019@gmail.com
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
-
-              <div className="mt-10">
-                <Link href="/contact">
-                    <button className="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest px-8 py-6 rounded-xl">
-                    Nous contacter
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </button>
-                </Link>
-              </div>
+              <SectionLabel>Une démarche lisible</SectionLabel>
+              <h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Avancer étape par <span className="text-yellow-500">étape</span></h2>
+              <p className="leading-relaxed text-gray-600 dark:text-gray-400">Le parcours dépend du projet. Les étapes ci-dessous donnent un cadre simple pour passer d&apos;une intention à une prochaine action utile.</p>
             </div>
-
-            {/* Social Media */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="bg-zinc-950 rounded-2xl p-8 md:p-12"
-            >
-              <h3 className="text-3xl font-display uppercase tracking-wide mb-8 text-white">
-                Rejoignez notre{" "}
-                <span className="text-yellow-500">communauté</span>
-              </h3>
-
-              <p className="text-gray-300 mb-10 leading-relaxed">
-                Suivez-nous sur les réseaux sociaux pour découvrir nos dernières
-                innovations, conseils d&apos;experts et rejoindre une communauté
-                passionnée par l&apos;excellence.
-              </p>
-
-              <div className="space-y-4">
-                <a
-                  href="https://www.instagram.com/ironz_official/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-6 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 transition-all group"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
-                    <Instagram className="w-6 h-6 text-black" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-lg text-white">Instagram</h4>
-                    <p className="text-gray-400">@ironz_official</p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-yellow-500 group-hover:translate-x-1 transition-all" />
-                </a>
-
-                <a
-                  href="https://www.facebook.com/muscle.ironz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-6 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 transition-all group"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
-                    <Facebook className="w-6 h-6 text-black" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-lg text-white">Facebook</h4>
-                    <p className="text-gray-400">@muscle.ironz</p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-yellow-500 group-hover:translate-x-1 transition-all" />
-                </a>
-
-                <a
-                  href="https://www.youtube.com/@muscleironz8921"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-6 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/10 transition-all group"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
-                    <Youtube className="w-6 h-6 text-black" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-lg text-white">YouTube</h4>
-                    <p className="text-gray-400">@muscleironz8921</p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-yellow-500 group-hover:translate-x-1 transition-all" />
-                </a>
-              </div>
-            </motion.div>
-          </motion.div>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+              {steps.map((step) => (
+                <article key={step.number} className="rounded-2xl border border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-950">
+                  <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-500 font-display text-black">{step.number}</div>
+                  <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">{step.title}</h3>
+                  <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{step.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-yellow-500 to-orange-500">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-black">
-              Prêt à repousser vos limites ?
-            </h2>
-            <p className="text-xl text-black/90 mb-10 max-w-2xl mx-auto">
-              Rejoignez la communauté IRONZ et transformez votre passion en
-              performance.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/produit">
-                <button className="w-full sm:w-auto px-8 py-4 bg-black hover:bg-zinc-800 text-white font-display uppercase tracking-widest rounded-xl transition-all shadow-lg">
-                  Découvrir nos produits
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </button>
-              </Link>
-              <Link href="/demande-devis">
-                <button className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-100 text-black font-display uppercase tracking-widest rounded-xl transition-all shadow-lg">
-                  Demander un devis
-                  <ChevronRight className="ml-2 w-5 h-5" />
-                </button>
-              </Link>
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <SectionLabel>IRONZ au Maroc</SectionLabel>
+              <h2 className="mb-5 mt-5 text-3xl font-display uppercase tracking-wide text-gray-900 dark:text-white sm:text-4xl md:text-5xl">Une présence accessible à <span className="text-yellow-500">Agadir</span></h2>
+              <p className="mb-8 leading-relaxed text-gray-600 dark:text-gray-400">Pour une question sur un produit, un projet d&apos;équipement ou un service, vous pouvez consulter les pages dédiées ou contacter directement IRONZ.</p>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-5 dark:border-gray-800 dark:bg-gray-900">
+                  <MapPin className="mt-1 h-5 w-5 shrink-0 text-yellow-500" aria-hidden="true" />
+                  <p className="text-gray-700 dark:text-gray-300">SAHARA MALL 1ÈRE ÉTAGE C169 &amp; C120, Agadir</p>
+                </div>
+                <a href="tel:+212674114446" className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-5 text-gray-700 hover:border-yellow-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
+                  <Phone className="h-5 w-5 shrink-0 text-yellow-500" aria-hidden="true" />+212 674-114446
+                </a>
+                <a href="mailto:muscleironz2019@gmail.com" className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-5 text-gray-700 hover:border-yellow-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
+                  <Mail className="h-5 w-5 shrink-0 text-yellow-500" aria-hidden="true" />muscleironz2019@gmail.com
+                </a>
+              </div>
             </div>
-          </motion.div>
+            <div className="rounded-3xl bg-gray-950 p-7 text-white sm:p-9">
+              <Dumbbell className="mb-6 h-9 w-9 text-yellow-500" aria-hidden="true" />
+              <h3 className="mb-4 text-2xl font-display uppercase tracking-wide">Besoin d&apos;une orientation&nbsp;?</h3>
+              <p className="mb-8 leading-relaxed text-gray-300">Décrivez votre besoin et IRONZ pourra vous orienter vers le catalogue, le service ou la page la plus pertinente.</p>
+              <Link href="/contact" className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 px-7 py-4 font-display uppercase tracking-wide text-black hover:bg-yellow-400">Nous contacter <ArrowRight className="h-5 w-5" aria-hidden="true" /></Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-yellow-500 py-16">
+        <div className="container mx-auto px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="mb-5 text-3xl font-display uppercase tracking-wide text-black sm:text-4xl md:text-5xl">Construisons la suite de votre projet</h2>
+          <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-black/75">Explorez les produits disponibles ou demandez un échange pour un projet fitness plus spécifique.</p>
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
+            <Link href="/produit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-7 py-4 font-display uppercase tracking-wide text-white hover:bg-gray-900">Voir le catalogue <ArrowRight className="h-5 w-5" aria-hidden="true" /></Link>
+            <Link href="/demande-devis" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-7 py-4 font-display uppercase tracking-wide text-black hover:bg-gray-100">Demander un devis <ArrowRight className="h-5 w-5" aria-hidden="true" /></Link>
+          </div>
         </div>
       </section>
     </main>

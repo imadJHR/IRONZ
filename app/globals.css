@@ -158,12 +158,42 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
-.bg-stripes-yellow {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    #eab308 0 14px,
-    #09090b 14px 28px
-  );
+.premium-divider {
+  position: relative;
+  height: 3px;
+  background: transparent;
+}
+
+.premium-divider::before {
+  position: absolute;
+  inset: 1px 0 auto;
+  height: 1px;
+  background: rgb(63 63 70 / 0.9);
+  content: "";
+}
+
+.premium-divider::after {
+  position: absolute;
+  inset: 0 auto auto 1rem;
+  width: 56px;
+  height: 3px;
+  border-radius: 1px;
+  background: #eab308;
+  content: "";
+}
+
+@media (min-width: 640px) {
+  .premium-divider::after {
+    inset-inline-start: max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem));
+    width: 72px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .premium-divider::after {
+    inset-inline-start: max(2rem, calc((100vw - 1280px) / 2 + 2rem));
+    width: 88px;
+  }
 }
 
 .text-outline {

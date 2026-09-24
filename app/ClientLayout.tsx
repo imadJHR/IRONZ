@@ -501,7 +501,7 @@ const Navbar = React.memo(function Navbar({
             : "EXPRESS DELIVERY ACROSS MOROCCO"}
         </p>
       </div>
-      <div className="bg-stripes-yellow h-1" aria-hidden="true" />
+      <div className="premium-divider" aria-hidden="true" />
 
       {/* ── Main Navbar ── */}
       <header role="banner">
@@ -1412,8 +1412,8 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
       className="bg-zinc-950 text-white relative overflow-hidden"
       aria-label="Pied de page IRONZ"
     >
-      {/* Stripes divider */}
-      <div className="bg-stripes-yellow h-2" aria-hidden="true" />
+      {/* Premium divider */}
+      <div className="premium-divider" aria-hidden="true" />
       <div
         className="absolute inset-0 overflow-hidden pointer-events-none"
         aria-hidden="true"
