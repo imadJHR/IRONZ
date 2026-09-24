@@ -636,7 +636,7 @@ export default function ProductDetailClient({
       : []),
     {
       id: "reviews",
-      label: `Avis (${product.reviewCount || product.reviews?.length || 0})`,
+      label: `Avis (${product.reviews?.length || 0})`,
       icon: MessageSquare,
     },
   ];
@@ -1117,13 +1117,12 @@ export default function ProductDetailClient({
           {(() => {
             const reviewRows = reviews || [];
             const detailedCount = reviewRows.length;
-            const declaredCount = product.reviewCount || 0;
-            const summaryCount = Math.max(declaredCount, detailedCount);
+            const summaryCount = detailedCount;
             const summaryAverage =
               detailedCount > 0
                 ? reviewRows.reduce((s, r) => s + (Number(r.rating) || 0), 0) /
                   detailedCount
-                : Number(product.rating || 0);
+                : 0;
             if (!(summaryAverage > 0) && !(summaryCount > 0)) return null;
 
             return (

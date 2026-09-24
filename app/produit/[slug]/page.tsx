@@ -161,8 +161,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const images = [product.image, ...(product.gallery || []), ...(product.images || [])].filter(
     (image): image is string => Boolean(image),
   );
-  const reviewCount = product.reviewCount || product.reviews?.length || 0;
-  const rating = Number(product.rating || 0);
+  // Real review records are the only source of truth for aggregate rating.
+  // The backend `reviewCount` / `rating` fields can stay out of sync with
+  // `reviews[]`, which would emit ratings that are not backed by any review.
+  const realReviews = product.reviews ?? [];
+  const reviewCount = realReviews.length;
+  const ratingValue =
+    realReviews.length > 0
+      ? realReviews.reduce(
+          (sum, review) => sum + (Number(review.rating) || 0),
+          0,
+        ) / realReviews.length
+      : 0;
   const inStock = product.inStock !== false && product.stockQuantity !== 0;
 
   const productSchema: Record<string, unknown> = {
@@ -186,10 +196,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
     },
   };
 
-  if (reviewCount > 0 && rating > 0) {
+  if (reviewCount > 0 && ratingValue > 0) {
     productSchema.aggregateRating = {
       "@type": "AggregateRating",
-      ratingValue: rating,
+      ratingValue: Number(ratingValue.toFixed(1)),
       reviewCount,
     };
   }

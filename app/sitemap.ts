@@ -114,7 +114,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: baseUrl, changeFrequency: "daily", priority: 1 },
     { url: `${baseUrl}/produit`, changeFrequency: "daily", priority: 0.9 },
     { url: `${baseUrl}/contact`, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/demande-devis`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/a-propos`, changeFrequency: "monthly", priority: 0.6 },
     { url: `${baseUrl}/services`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/guides`, changeFrequency: "monthly", priority: 0.6 },
@@ -134,8 +133,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     { url: `${baseUrl}/faq`, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${baseUrl}/confidentialite`, changeFrequency: "yearly", priority: 0.2 },
-    { url: `${baseUrl}/conditions`, changeFrequency: "yearly", priority: 0.2 },
   ];
 
   const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({

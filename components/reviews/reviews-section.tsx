@@ -62,8 +62,6 @@ function cn(...classes: (string | boolean | undefined | null)[]) {
 export function ReviewsSection({
   productId,
   initialReviews,
-  declaredRating,
-  declaredReviewCount,
 }: ReviewsSectionProps) {
   const { isSignedIn, user, isLoaded } = useUser();
   const [reviews, setReviews] = useState<ReviewRecord[]>(initialReviews);
@@ -202,15 +200,9 @@ export function ReviewsSection({
     }
   }, [myReview, productId, state, resetForm]);
 
-  const average = useMemo(() => {
-    if (reviews.length) return averageRating(reviews);
-    return Number(declaredRating || 0);
-  }, [reviews, declaredRating]);
+  const average = useMemo(() => averageRating(reviews), [reviews]);
 
-  const displayCount = useMemo(
-    () => Math.max(reviews.length, declaredReviewCount || 0),
-    [reviews, declaredReviewCount],
-  );
+  const displayCount = useMemo(() => reviews.length, [reviews]);
 
   const distribution = useMemo(() => ratingDistribution(reviews), [reviews]);
   const roundedAverage = Number(average.toFixed(1));
