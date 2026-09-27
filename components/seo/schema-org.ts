@@ -55,31 +55,3 @@ export const generateOrganizationSchema = () => {
       },
     }
   }
-  
-  export const generateArticleSchema = (article) => {
-    return {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      headline: article.title,
-      image: article.image,
-      datePublished: article.date,
-      dateModified: article.updatedAt || article.date,
-      author: {
-        "@type": "Person",
-        name: article.author,
-      },
-      publisher: {
-        "@type": "Organization",
-        name: "IRONZ",
-        logo: {
-          "@type": "ImageObject",
-          url: "https://www.ironz.ma/logo-optimized.png",
-        },
-      },
-      description: article.excerpt,
-      mainEntityOfPage: {
-        "@type": "WebPage",
-        "@id": `https://www.ironz.ma/blog/${article.slug}`,
-      },
-    }
-  }

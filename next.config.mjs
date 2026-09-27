@@ -21,6 +21,8 @@ const nextConfig = {
             { source: '/product/disque-de-Poids-10kg', destination: '/produit/2-disque-de-poids-10-kg', permanent: true },
             { source: '/produits', destination: '/produit', permanent: true },
             { source: '/produits/:slug', destination: '/produit/:slug', permanent: true },
+            // Blog removed: hub -> successor guides hub. Article slugs stay 404 (no 1:1 replacements).
+            { source: '/blog', destination: '/guides', permanent: true },
             { source: '/services/amenagement-salle/professionnelle', destination: '/services/amenagement-salle/salle-professionnelle', permanent: true },
             { source: '/services/amenagement-salle/hotelier', destination: '/services/amenagement-salle/salle-professionnelle', permanent: true },
             { source: '/services/amenagement-salle/reeducation', destination: '/services/amenagement-salle/salle-professionnelle', permanent: true },
