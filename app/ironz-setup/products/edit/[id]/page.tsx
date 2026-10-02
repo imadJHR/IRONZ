@@ -291,7 +291,7 @@ export default function EditProductPage() {
           isNewProduct: product.isNewProduct || false,
           isFeatured: product.isFeatured || false,
           inStock: product.inStock ?? true,
-          stockQuantity: String(product.stockQuantity || ''),
+          stockQuantity: String(product.stockQuantity ?? ''),
           sku: product.sku || '',
           warranty: product.warranty || '',
           width: String(product.dimensions?.width || ''),
@@ -501,6 +501,14 @@ export default function EditProductPage() {
       showNotification('Prix valide requis', 'error');
       return false;
     }
+    if (
+      formData.stockQuantity !== '' &&
+      (!Number.isSafeInteger(Number(formData.stockQuantity)) ||
+        Number(formData.stockQuantity) < 0)
+    ) {
+      showNotification('La quantité doit être un nombre entier supérieur ou égal à 0', 'error');
+      return false;
+    }
     return true;
   };
 
@@ -633,8 +641,8 @@ export default function EditProductPage() {
       if (formData.reviewCount) {
         formDataToSend.append('reviewCount', String(formData.reviewCount));
       }
-      if (formData.stockQuantity) {
-        formDataToSend.append('stockQuantity', formData.stockQuantity);
+      if (formData.stockQuantity !== '') {
+        formDataToSend.append('stockQuantity', String(Number(formData.stockQuantity)));
       }
       if (formData.sku) formDataToSend.append('sku', formData.sku.trim());
       if (formData.warranty) {
@@ -1028,6 +1036,32 @@ export default function EditProductPage() {
 
               <div className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-8">
+                  <div className="space-y-3 rounded-xl border border-yellow-200 bg-yellow-50 p-4">
+                    <label
+                      htmlFor="stockQuantity"
+                      className="flex items-center gap-2 text-sm font-bold text-gray-900"
+                    >
+                      <Package2 className="w-5 h-5 text-yellow-600" />
+                      Quantité en stock
+                    </label>
+                    <input
+                      id="stockQuantity"
+                      name="stockQuantity"
+                      type="number"
+                      min="0"
+                      step="1"
+                      inputMode="numeric"
+                      value={formData.stockQuantity}
+                      onChange={handleInputChange}
+                      disabled={isSubmitting}
+                      aria-describedby="stockQuantity-help"
+                      className="w-full px-4 py-3 text-base text-gray-900 bg-white rounded-xl border border-gray-300 focus:border-yellow-500 outline-none disabled:opacity-50"
+                    />
+                    <p id="stockQuantity-help" className="text-sm text-gray-600">
+                      Modifiez le nombre d’unités disponibles, puis cliquez sur « Mettre à jour ». Saisissez 0 si le stock est épuisé.
+                    </p>
+                  </div>
+
                   {/* Product Images */}
                   <div className="space-y-6">
                     <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -1392,25 +1426,7 @@ export default function EditProductPage() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-3">
-                        <label
-                          htmlFor="stockQuantity"
-                          className="flex items-center gap-2 text-sm font-bold text-gray-900"
-                        >
-                          <Package2 className="w-4 h-4 text-gray-500" />
-                          Quantité en Stock
-                        </label>
-                        <input
-                          id="stockQuantity"
-                          name="stockQuantity"
-                          type="number"
-                          value={formData.stockQuantity}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-yellow-500 outline-none"
-                        />
-                      </div>
-
+                    <div>
                       {/* Toggles */}
                       <div className="flex flex-wrap gap-6 p-4 rounded-xl bg-gray-50 border border-gray-200 mt-6 items-center">
                         <label className="flex items-center gap-3 cursor-pointer">
