@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -132,6 +132,8 @@ export default function CheckoutPage() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const submissionInProgress = useRef(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
   const [orderComplete, setOrderComplete] = useState<boolean>(false);
   const [orderNumber, setOrderNumber] = useState<string>("");
@@ -244,8 +246,11 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (submissionInProgress.current) return;
     if (!validateForm()) return;
 
+    submissionInProgress.current = true;
+    setSubmitError(null);
     setIsSubmitting(true);
     const generatedOrderNumber = `CMD-${Math.floor(Math.random() * 1000000)
       .toString()
@@ -272,11 +277,14 @@ export default function CheckoutPage() {
         body: JSON.stringify(orderData),
       });
 
-      if (response.ok) {
-        setOrderNumber(generatedOrderNumber);
+      const result = await response.json().catch(() => null);
+      if (response.ok && result?.success === true) {
+        setOrderNumber(result.orderNumber || generatedOrderNumber);
+        setOrderComplete(true);
+        clearCart();
 
-        // Pixel Purchase
-        if (typeof window !== "undefined" && (window as any).fbq) {
+        // A tracking failure must not turn an accepted order into a retry.
+        try {
           trackFBEvent("Purchase", {
             value: total,
             currency: "MAD",
@@ -284,16 +292,26 @@ export default function CheckoutPage() {
             content_type: "product",
             order_id: generatedOrderNumber,
           });
+        } catch {
+          console.warn("Le suivi de la commande n’a pas pu être envoyé.");
         }
-
-        setOrderComplete(true);
-        clearCart();
       } else {
-        throw new Error("Erreur serveur");
+        throw new Error(
+          typeof result?.message === "string"
+            ? result.message
+            : "Nous n’avons pas pu transmettre votre commande. Votre panier est conservé. Réessayez plus tard ou contactez-nous au 0669 51 00 42.",
+        );
       }
     } catch (error) {
-      alert("Erreur lors de la commande. Veuillez réessayer.");
+      setSubmitError(
+        error instanceof TypeError
+          ? "La connexion a été interrompue. Vérifiez votre connexion avant de réessayer. Votre panier est conservé."
+          : error instanceof Error
+            ? error.message
+            : "Votre commande n’a pas pu être transmise. Votre panier est conservé.",
+      );
     } finally {
+      submissionInProgress.current = false;
       setIsSubmitting(false);
     }
   };
@@ -605,6 +623,12 @@ export default function CheckoutPage() {
                       </div>
                     </div>
                   </div>
+
+                  {submitError && (
+                    <div role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300">
+                      {submitError}
+                    </div>
+                  )}
 
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button

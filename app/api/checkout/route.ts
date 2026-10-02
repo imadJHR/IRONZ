@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { getCheckoutMailConfig } from "../../../lib/checkout-mail";
+
+export const runtime = "nodejs";
 
 // 1. Définition des interfaces pour les données reçues
 interface OrderItem {
-  id: string | number;
   name: string;
   price: number;
   quantity: number;
@@ -31,16 +33,46 @@ interface OrderRequestBody {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  let body: OrderRequestBody;
   try {
-    const body: OrderRequestBody = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json(
+      { success: false, message: "Les informations de commande sont invalides." },
+      { status: 400 },
+    );
+  }
 
-    // Vérification des variables d'environnement
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      return NextResponse.json(
-        { success: false, message: "Configuration serveur incomplète" },
-        { status: 500 }
-      );
-    }
+  const requiredFields = [
+    "orderNumber", "firstName", "lastName", "phone", "address", "city", "subtotal", "total",
+  ] as const;
+  if (
+    !body ||
+    requiredFields.some((field) => typeof body[field] !== "string" || !body[field].trim()) ||
+    (body.email != null && (
+      typeof body.email !== "string" ||
+      (body.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email.trim()))
+    )) ||
+    !Array.isArray(body.items) ||
+    body.items.length === 0 ||
+    body.items.some((item) =>
+      !item ||
+      typeof item.name !== "string" ||
+      !item.name.trim() ||
+      !Number.isFinite(item.price) ||
+      item.price < 0 ||
+      !Number.isInteger(item.quantity) ||
+      item.quantity < 1,
+    )
+  ) {
+    return NextResponse.json(
+      { success: false, message: "Vérifiez vos coordonnées et les articles de votre panier." },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const mailConfig = getCheckoutMailConfig(process.env);
 
     const {
       firstName,
@@ -59,13 +91,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     } = body;
 
     // Configuration du transporteur Mail
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    const transporter = nodemailer.createTransport(mailConfig.transport);
 
     // --- PRÉPARATION DES DONNÉES ---
 
@@ -188,22 +214,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     </html>`;
 
     const mailOptions = {
-      from: `"Notification Commande" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_TO,
-      cc: email,
-      replyTo: email,
-      subject: `🔔 NOUVELLE COMMANDE: ${total} - ${firstName} ${lastName}`,
+      from: { name: "Notification Commande", address: mailConfig.user },
+      to: mailConfig.recipient,
+      ...(email?.trim() ? { cc: email.trim(), replyTo: email.trim() } : {}),
+      subject: `🔔 ${body.orderNumber}: ${total} - ${firstName} ${lastName}`,
       html: htmlTemplate,
     };
 
     await transporter.sendMail(mailOptions);
 
-    return NextResponse.json({ success: true, message: "Email sent" });
+    return NextResponse.json({ success: true, orderNumber: body.orderNumber });
   } catch (error) {
-    console.error("ERREUR DANS L'API:", error);
+    const mailError = error as { name?: string; code?: string; responseCode?: number; command?: string };
+    console.error("[checkout] Email delivery failed", {
+      name: mailError?.name,
+      code: mailError?.code,
+      responseCode: mailError?.responseCode,
+      command: mailError?.command,
+    });
     return NextResponse.json(
-      { success: false, message: "Failed to send email" },
-      { status: 500 }
+      {
+        success: false,
+        message: "Nous n’avons pas pu transmettre votre commande. Votre panier est conservé. Réessayez plus tard ou contactez-nous au 0669 51 00 42.",
+      },
+      { status: 503 },
     );
   }
 }
