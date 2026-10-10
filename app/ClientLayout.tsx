@@ -53,6 +53,7 @@ import {
   clerkLocalization,
   userButtonAppearance,
 } from "../lib/clerk-appearance";
+import { SITE_PHONE, SOCIAL_URLS } from "../lib/site";
 
 const SITE_URL = "https://www.ironz.ma";
 
@@ -129,8 +130,11 @@ interface ClientLayoutProps {
 // ─── Clerk Guard Helpers ───────────────────────────────────────────────────────
 
 const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+// Clerk dev publishable keys only ever render the dev auth components: they
+// break sign-in on a production domain. Only live keys enable Clerk here.
 const hasClerkKeys =
-  CLERK_PUBLISHABLE_KEY && CLERK_PUBLISHABLE_KEY !== "pk_test_placeholder";
+  !!CLERK_PUBLISHABLE_KEY &&
+  CLERK_PUBLISHABLE_KEY.startsWith("pk_live_");
 
 const ConditionalSignedOut: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -196,7 +200,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               url: SITE_URL,
               logo: `${SITE_URL}/logo-optimized.png`,
               image: `${SITE_URL}/og-image.jpg`,
-              telephone: "+212669510042",
+              telephone: SITE_PHONE,
               email: "info@ironz.ma",
               address: {
                 "@type": "PostalAddress",
@@ -204,10 +208,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                 addressLocality: "Agadir",
                 addressCountry: "MA",
               },
-              sameAs: [
-                "https://www.instagram.com/ironz_official/",
-                "https://www.youtube.com/@ironzofficial",
-              ],
+              sameAs: SOCIAL_URLS,
               openingHoursSpecification: {
                 "@type": "OpeningHoursSpecification",
                 dayOfWeek: [
@@ -248,13 +249,12 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
                   <Navbar language={language} toggleLanguage={toggleLanguage} />
                 )}
 
-                <main
+                <div
                   id="main-content"
                   className={isAdminPath ? "" : "flex-grow"}
-                  role="main"
                 >
                   {children}
-                </main>
+                </div>
 
                 {!isAdminPath && <Footer language={language} />}
                 <ScrollToTop />
@@ -536,7 +536,6 @@ const Navbar = React.memo(function Navbar({
                     height={54}
                     className="h-12 sm:h-14 lg:h-16 w-auto object-contain"
                     priority
-                    unoptimized
                   />
                 </Link>
               </motion.div>
@@ -964,7 +963,6 @@ const Navbar = React.memo(function Navbar({
                     width={130}
                     height={44}
                     className="h-11 sm:h-14 w-auto object-contain"
-                    unoptimized
                   />
                 </Link>
                 <button
@@ -1441,7 +1439,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
                 width={160}
                 height={60}
                 className="h-14 sm:h-16 w-auto object-contain"
-                unoptimized
+                loading="lazy"
               />
             </Link>
             <p className="text-gray-400 leading-relaxed text-sm max-w-xs">

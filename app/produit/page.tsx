@@ -5,6 +5,7 @@ import ProductsPage from "../../app/produit/page-client";
 import type { Product as CatalogProduct } from "../../app/produit/page-client";
 import { getAllProducts, productSlug } from "../../lib/products";
 import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../lib/og-image";
+import { SOCIAL_URLS } from "../../lib/site";
 
 type ProductsPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -157,10 +158,7 @@ function JsonLd({ products }: { products: CatalogProduct[] }) {
           addressCountry: "MA",
           addressLocality: "Maroc",
         },
-        sameAs: [
-          "https://www.instagram.com/ironzmaroc",
-          "https://www.facebook.com/ironzmaroc",
-        ],
+        sameAs: SOCIAL_URLS,
       },
     ],
   };
@@ -241,9 +239,6 @@ export default async function Page() {
   return (
     <>
       <JsonLd products={products} />
-      <h1 className="sr-only">
-        Catalogue complet des produits IRONZ
-      </h1>
       <Suspense fallback={<LoadingSkeleton />}>
         <ProductsPage initialProducts={products} />
       </Suspense>

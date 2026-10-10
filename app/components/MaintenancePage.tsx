@@ -101,7 +101,6 @@ export default function MaintenancePage() {
             height={60}
             className="h-16 sm:h-20 w-auto object-contain mx-auto mb-8"
             priority
-            unoptimized
           />
         </motion.div>
 
@@ -177,7 +176,7 @@ export default function MaintenancePage() {
           className="flex flex-col sm:flex-row items-center gap-4 mb-14"
         >
           <a
-            href="https://wa.me/212600000000"
+            href="https://wa.me/212674114446"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-black uppercase italic tracking-widest shadow-lg shadow-yellow-500/25 hover:from-yellow-600 hover:to-orange-600 transition-all hover:scale-105 active:scale-95"

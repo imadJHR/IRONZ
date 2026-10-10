@@ -1,0 +1,23 @@
+{
+  "name": "IRONZ - Équipement fitness et musculation au Maroc",
+  "short_name": "IRONZ",
+  "description": "Équipements de fitness, matériel de musculation et accessoires avec livraison partout au Maroc.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#eab308",
+  "lang": "fr-MA",
+  "icons": [
+    {
+      "src": "/logo-optimized.png",
+      "sizes": "540x675",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}

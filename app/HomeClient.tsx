@@ -1,6 +1,7 @@
 "use client";
 
 import { getDiscount } from "../lib/product-pricing";
+import { SITE_PHONE, SOCIAL_URLS } from "../lib/site";
 
 import {
   useState,
@@ -192,13 +193,10 @@ function buildOrganizationJsonLd() {
     name: SITE_NAME,
     url: SITE_URL,
     logo: `${SITE_URL}/logo-optimized.png`,
-    sameAs: [
-      "https://www.facebook.com/ironzpro",
-      "https://www.instagram.com/ironzpro",
-    ],
+    sameAs: SOCIAL_URLS,
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+212-600-000000",
+      telephone: SITE_PHONE,
       contactType: "customer service",
       areaServed: "MA",
       availableLanguage: ["French", "Arabic"],
@@ -1384,9 +1382,12 @@ export default function HomeClient({
   return (
     <>
       <main className="min-h-screen bg-white dark:bg-gray-950 overflow-x-hidden">
-        <h1 className="sr-only">
-          Équipement fitness et matériel de musculation au Maroc
-        </h1>
+        {/* H1 visible : signal thématique principal, intégré au bandeau hero */}
+        <div className="bg-zinc-950 border-b border-white/5">
+          <h1 className="container mx-auto px-4 sm:px-6 py-2 text-center text-[11px] sm:text-xs font-display uppercase tracking-[0.22em] text-zinc-400">
+            Équipement fitness et matériel de musculation au Maroc
+          </h1>
+        </div>
 
         {/* ═══ 1. HERO BANNER ═══════════════════════════════════════════════ */}
         <section

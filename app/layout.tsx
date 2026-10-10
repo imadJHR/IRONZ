@@ -18,15 +18,6 @@ export const metadata: Metadata = {
   title: "IRONZ | Équipement fitness et musculation au Maroc",
   description:
     "Équipements de fitness, matériel de musculation, accessoires et suppléments sportifs avec livraison partout au Maroc.",
-  keywords: [
-    "équipements professionnels",
-    "matériaux de construction",
-    "fitness",
-    "musculation",
-    "arts martiaux",
-    "Maroc",
-    "ironz",
-  ],
   authors: [{ name: "IRONZ", url: "https://www.ironz.ma" }],
   creator: "IRONZ",
   publisher: "IRONZ",
@@ -37,13 +28,9 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://www.ironz.ma"),
   icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-    ],
+    icon: [{ url: "/logo-optimized.png", type: "image/png" }],
     apple: [{ url: "/logo-optimized.png", sizes: "180x180", type: "image/png" }],
-    shortcut: "/favicon.ico",
+    shortcut: "/logo-optimized.png",
   },
   openGraph: {
     title: "IRONZ | Équipement fitness et musculation au Maroc",

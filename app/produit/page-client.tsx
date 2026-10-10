@@ -1007,10 +1007,10 @@ export default function ProductsPage({
         <div className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
           <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 md:py-10 lg:py-12">
             <header className="text-center">
-              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-2 sm:mb-3 md:mb-4">
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-2 sm:mb-3 md:mb-4">
                 Tous nos{" "}
                 <span className="text-yellow-500">Produits</span>
-              </h2>
+              </h1>
 
               {/* Sync indicator */}
               <div className="flex items-center justify-center gap-2 mt-1 mb-2 min-h-[20px] sm:min-h-[24px]">

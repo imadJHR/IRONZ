@@ -34,10 +34,21 @@ const nextConfig = {
     images: {
         deviceSizes: [320, 480, 640, 750, 828, 1080, 1200, 1600, 1920],
         qualities: [45, 60],
+        // Restricted to the hosts actually used (local + Cloudinary).
+        // If a new image CDN is introduced, add its hostname here —
+        // otherwise next/image returns 400 for that host.
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: '**',
+                hostname: 'www.ironz.ma',
+            },
+            {
+                protocol: 'https',
+                hostname: 'ironz.ma',
+            },
+            {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com',
             },
         ],
     },
