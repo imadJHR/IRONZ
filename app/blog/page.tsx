@@ -1,4 +1,4 @@
-import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../lib/og-image";
+import { OG_BLOG_IMAGES, TWITTER_BLOG_IMAGES, OG_BLOG_URL } from "../../lib/og-image";
 import { articles } from "../../lib/blog";
 import type { BlogArticle } from "../../lib/blog";
 import BlogHubClient from "./BlogHubClient";
@@ -19,14 +19,14 @@ export const metadata = {
     siteName: "IRONZ",
     locale: "fr_MA",
     type: "website",
-    images: OG_LOGO_IMAGES,
+    images: OG_BLOG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",
     title: "Blog fitness, musculation et aménagement au Maroc | IRONZ",
     description:
       "Articles et guides IRONZ pour s'équiper au Maroc : musculation, cardio, nutrition et aménagement de salle.",
-    images: TWITTER_LOGO_IMAGES,
+    images: TWITTER_BLOG_IMAGES,
     creator: "@ironz_official",
   },
 };
@@ -50,7 +50,7 @@ const structuredData = [
     publisher: {
       "@type": "Organization",
       name: "IRONZ",
-      logo: { "@type": "ImageObject", url: "https://www.ironz.ma/logo-optimized.png" },
+      logo: { "@type": "ImageObject", url: OG_BLOG_URL },
     },
   },
   {

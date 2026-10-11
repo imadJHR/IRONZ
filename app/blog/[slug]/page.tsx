@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../lib/og-image";
+import { OG_BLOG_IMAGES, TWITTER_BLOG_IMAGES, OG_BLOG_URL } from "../../../lib/og-image";
 import {
   articles,
   getArticleBySlug,
@@ -39,13 +39,13 @@ export function generateMetadata({
         locale: "fr_MA",
         type: "article",
         publishedTime: article.date,
-        images: OG_LOGO_IMAGES,
+        images: OG_BLOG_IMAGES,
       },
       twitter: {
         card: "summary_large_image",
         title: article.metaTitle,
         description: article.metaDescription,
-        images: TWITTER_LOGO_IMAGES,
+        images: TWITTER_BLOG_IMAGES,
         creator: "@ironz_official",
       },
     };
@@ -87,12 +87,13 @@ function buildStructuredData(article: BlogArticle) {
       dateModified: datePublished,
       keywords: article.keyword,
       articleSection: article.category,
+      image: OG_BLOG_URL,
       publisher: {
         "@type": "Organization",
         name: "IRONZ",
         logo: {
           "@type": "ImageObject",
-          url: `${SITE_URL}/logo-optimized.png`,
+          url: OG_BLOG_URL,
         },
       },
       mainEntityOfPage: { "@type": "WebPage", "@id": url },

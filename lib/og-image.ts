@@ -13,6 +13,28 @@ import type { Metadata } from "next";
 export const OG_LOGO_URL = "https://www.ironz.ma/logo-optimized.png";
 export const OG_DEFAULT_URL = "https://www.ironz.ma/og-image.jpg";
 
+/**
+ * Blog social preview image (1200x630) — branding IRONZ shown when a blog page
+ * is shared. Square source image cropped to landscape, OG-required format.
+ */
+export const OG_BLOG_URL = "https://www.ironz.ma/ironz-blog-og.jpg";
+
+export const OG_BLOG_IMAGES: NonNullable<
+  NonNullable<Metadata["openGraph"]>["images"]
+> = [
+  {
+    url: OG_BLOG_URL,
+    width: 1200,
+    height: 630,
+    alt: "Blog IRONZ — équipement fitness, musculation et aménagement au Maroc",
+    type: "image/jpeg",
+  },
+];
+
+export const TWITTER_BLOG_IMAGES: NonNullable<Metadata["twitter"]>["images"] = [
+  OG_BLOG_URL,
+];
+
 export const OG_LOGO_IMAGES: NonNullable<
   NonNullable<Metadata["openGraph"]>["images"]
 > = [
