@@ -4,6 +4,7 @@ import { categories } from "../data/product";
 import { productSlug, productUpdatedAt, type ProductRecord } from "../lib/products";
 import { buildCategoryTaxonomy } from "../lib/category-taxonomy";
 import { getSitemapServices } from "../lib/services";
+import { articles } from "../lib/blog";
 
 const baseUrl = "https://www.ironz.ma";
 const API_URL =
@@ -132,6 +133,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    { url: `${baseUrl}/blog`, changeFrequency: "weekly", priority: 0.7 },
+    // Blog articles are sourced from lib/blog so the sitemap can never drift
+    // from the published slugs (generateStaticParams uses the same list).
+    ...articles.map((article) => ({
+      url: `${baseUrl}/blog/${article.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     { url: `${baseUrl}/faq`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/categories`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/demande-devis`, changeFrequency: "monthly", priority: 0.7 },

@@ -33,6 +33,34 @@ export const metadata = {
 const PAGE_URL =
   "https://www.ironz.ma/guides/choisir-machine-cardio-tapis-velo-rameur-maroc";
 
+const GUIDE_FAQ: { question: string; answer: string }[] = [
+  {
+    question: "Tapis roulant, vélo ou rameur : quelle machine cardio choisir ?",
+    answer:
+      "Cela dépend de l'usage et de l'espace. Le tapis roulant couvre marche, footing et course selon la vitesse maximale, mais reste déployé ou se replie si le modèle est pliable. Le vélo d'appartement demande peu de place et convient à un usage régulier assis. Le rameur sollicite bras, dos et jambes tout en restant compact, souvent repliable lui aussi.",
+  },
+  {
+    question: "Quelle machine cardio pour un appartement au Maroc ?",
+    answer:
+      "Mesurez d'abord la pièce, la hauteur sous plafond et les passages (portes, couloirs) pour la livraison. Un modèle pliable se range contre un mur entre deux séances. En appartement, comparez aussi le bruit et l'amorti, car la transmission du bruit à l'étage inférieur est un critère réel.",
+  },
+  {
+    question: "Quelles caractéristiques comparer avant d'acheter une machine cardio ?",
+    answer:
+      "La vitesse maximale pour un tapis, la résistance et les programmes pour un vélo ou un rameur, le poids maximal utilisateur, l'amorti, la taille de la zone de marche ou de la glissière, et l'encombrement replié. Vérifiez toujours la fiche produit avant de valider le modèle.",
+  },
+  {
+    question: "Faut-il payer cher pour une bonne machine cardio ?",
+    answer:
+      "Le bon critère est l'usage réel. Pour la marche quotidienne, une plage de 1 à 13 km/h suffit largement et il n'est pas utile d'investir dans une machine haut de gamme. Payez pour les caractéristiques que vous utilisez réellement, pas pour une vitesse que vous n'atteindrez jamais.",
+  },
+  {
+    question: "Peut-on acheter une machine cardio livrée au Maroc ?",
+    answer:
+      "Oui. IRONZ référence des tapis de course, vélos d'appartement et rameurs avec livraison partout au Maroc. Comparez les modèles disponibles dans la catégorie machine de fitness du catalogue.",
+  },
+];
+
 const structuredData = [
   {
     "@context": "https://schema.org",
@@ -55,12 +83,26 @@ const structuredData = [
       "Tapis roulant, vélo ou rameur : quelle machine cardio choisir au Maroc ?",
     description:
       "Tapis roulant, vélo ou rameur : quelles différences, quelles caractéristiques comparer et comment choisir selon votre espace avant d'acheter au Maroc.",
+    datePublished: "2026-09-20",
+    dateModified: "2026-10-11",
+    inLanguage: "fr-MA",
+    author: { "@type": "Organization", name: "IRONZ" },
+    image: "https://www.ironz.ma/og-image.jpg",
     publisher: {
       "@type": "Organization",
       name: "IRONZ",
       logo: { "@type": "ImageObject", url: "https://www.ironz.ma/logo-optimized.png" },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: GUIDE_FAQ.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
   },
 ];
 
@@ -394,6 +436,76 @@ export default function GuideChoixMachineCardio() {
         >
           Voir les machines cardio disponibles chez IRONZ
         </Link>
+      </section>
+
+      {/* ── Questions fréquentes ─────────────────────────────── */ }
+      <section className="mb-12">
+        <h2 className="mb-6 font-display text-2xl uppercase tracking-wide">
+          Questions fréquentes
+        </h2>
+        <div className="space-y-6">
+          {GUIDE_FAQ.map((item) => (
+            <div
+              key={item.question}
+              className="rounded-2xl border border-gray-200 bg-white p-6 transition-colors hover:border-yellow-500/40 dark:border-gray-800 dark:bg-gray-900"
+            >
+              <h3 className="mb-3 text-lg font-bold leading-snug text-gray-900 dark:text-white">
+                {item.question}
+              </h3>
+              <p className="leading-relaxed text-gray-600 dark:text-gray-400">
+                {item.answer}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── À lire aussi ─────────────────────────────────────── */ }
+      <section className="mb-4 border-t border-gray-200 pt-12 dark:border-gray-800">
+        <h2 className="mb-6 font-display text-2xl uppercase tracking-wide">
+          À lire aussi
+        </h2>
+        <ul className="space-y-4">
+          <li>
+            <Link
+              href="/guides/choisir-halteres-kettlebells-disques-maroc"
+              className="group flex flex-col gap-1 rounded-xl border border-gray-200 p-4 transition-colors hover:border-yellow-400 dark:border-gray-800 dark:hover:border-yellow-400"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+                Poids libres
+              </span>
+              <span className="font-display text-lg uppercase leading-tight tracking-wide text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">
+                Comment choisir ses haltères, kettlebells et disques au Maroc ?
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/blog/tapis-de-course-maroc"
+              className="group flex flex-col gap-1 rounded-xl border border-gray-200 p-4 transition-colors hover:border-yellow-400 dark:border-gray-800 dark:hover:border-yellow-400"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+                Cardio
+              </span>
+              <span className="font-display text-lg uppercase leading-tight tracking-wide text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">
+                Comment choisir un tapis de course au Maroc
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/blog/velo-appartement-maroc"
+              className="group flex flex-col gap-1 rounded-xl border border-gray-200 p-4 transition-colors hover:border-yellow-400 dark:border-gray-800 dark:hover:border-yellow-400"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+                Cardio
+              </span>
+              <span className="font-display text-lg uppercase leading-tight tracking-wide text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">
+                Vélo d’appartement au Maroc : quel format choisir
+              </span>
+            </Link>
+          </li>
+        </ul>
       </section>
     </article>
   );

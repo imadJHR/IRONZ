@@ -27,6 +27,34 @@ export const metadata = {
 
 const PAGE_URL = "https://www.ironz.ma/guides/choisir-halteres-kettlebells-disques-maroc";
 
+const GUIDE_FAQ: { question: string; answer: string }[] = [
+  {
+    question: "Haltères, kettlebells ou disques : que faut-il acheter en premier ?",
+    answer:
+      "Pour débuter, une paire d'haltères couvre l'essentiel : elle se range au sol, ne demande pas de rack et reste utile quel que soit le programme suivi ensuite. La kettlebell s'ajoute pour le travail fonctionnel, le gainage et les mouvements balistiques. Une barre avec disques devient pertinente quand l'objectif est la force avec des charges importantes.",
+  },
+  {
+    question: "Comment choisir le poids de ses haltères au Maroc ?",
+    answer:
+      "Le bon poids est celui que vous maîtrisez sur toute l'amplitude du mouvement. Commencer trop lourd n'accélère pas la progression et s'use en coin. Pour un premier achat, une paire modeste bien choisie suffit avant d'investir dans un palier supérieur.",
+  },
+  {
+    question: "Faut-il un accessoire de fixation pour utiliser des disques ?",
+    answer:
+      "Oui. Les disques s'utilisent sur une barre ou avec des pinces (lock-jaw) sur des haltères ajustables. Avant tout achat de disques, vérifiez le diamètre de la barre : c'est la cause la plus fréquente d'achat inutilisable.",
+  },
+  {
+    question: "Comment éviter une erreur d'achat sur les poids libres ?",
+    answer:
+      "Mesurez l'espace disponible avant de choisir, vérifiez le diamètre de la barre avant d'acheter des disques, et testez la prise de la kettlebell pour éviter qu'elle cogne l'avant-bras. Une seule kettlebell bien choisie suffit avant d'en acheter une seconde.",
+  },
+  {
+    question: "Peut-on trouver des poids libres de qualité au Maroc ?",
+    answer:
+      "Oui. IRONZ référence des haltères, kettlebells et disques disponibles au Maroc avec livraison. Comparez les charges et familles disponibles dans la catégorie poids libres du catalogue.",
+  },
+];
+
 const structuredData = [
   {
     "@context": "https://schema.org",
@@ -48,12 +76,26 @@ const structuredData = [
     headline: "Comment choisir ses haltères, kettlebells et disques au Maroc ?",
     description:
       "Haltères, kettlebells ou disques : quelles différences, comment choisir le poids adapté à votre entraînement et éviter les mauvais achats.",
+    datePublished: "2026-09-20",
+    dateModified: "2026-10-11",
+    inLanguage: "fr-MA",
+    author: { "@type": "Organization", name: "IRONZ" },
+    image: "https://www.ironz.ma/og-image.jpg",
     publisher: {
       "@type": "Organization",
       name: "IRONZ",
       logo: { "@type": "ImageObject", url: "https://www.ironz.ma/logo-optimized.png" },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: GUIDE_FAQ.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
   },
 ];
 
@@ -100,7 +142,43 @@ export default function GuideChoixPoidsLibres() {
         <h2 className="mb-6 font-display text-2xl uppercase tracking-wide">
           Haltères, kettlebells et disques : quelles différences ?
         </h2>
-        <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
+
+        <div className="overflow-x-auto rounded-2xl border border-gray-200 dark:border-gray-800">
+          <table className="w-full min-w-[560px] border-collapse text-left text-sm">
+            <thead>
+              <tr className="bg-gray-50 dark:bg-gray-900">
+                <th scope="col" className="px-5 py-3 font-display uppercase tracking-wide text-gray-900 dark:text-white">
+                  Famille
+                </th>
+                <th scope="col" className="px-5 py-3 font-display uppercase tracking-wide text-gray-900 dark:text-white">
+                  Usage principal
+                </th>
+                <th scope="col" className="px-5 py-3 font-display uppercase tracking-wide text-gray-900 dark:text-white">
+                  Espace requis
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t border-gray-200 dark:border-gray-800">
+                <td className="px-5 py-3 font-medium text-gray-900 dark:text-white">Haltères</td>
+                <td className="px-5 py-3 text-gray-600 dark:text-gray-400">Renforcement général, travail unilatéral, gammes complètes</td>
+                <td className="px-5 py-3 text-gray-600 dark:text-gray-400">Réduit, se range au sol, pas de rack obligatoire</td>
+              </tr>
+              <tr className="border-t border-gray-200 dark:border-gray-800">
+                <td className="px-5 py-3 font-medium text-gray-900 dark:text-white">Kettlebells</td>
+                <td className="px-5 py-3 text-gray-600 dark:text-gray-400">Fonctionnel, gainage, mouvements balistiques</td>
+                <td className="px-5 py-3 text-gray-600 dark:text-gray-400">Réduit, une seule suffit au début</td>
+              </tr>
+              <tr className="border-t border-gray-200 dark:border-gray-800">
+                <td className="px-5 py-3 font-medium text-gray-900 dark:text-white">Disques</td>
+                <td className="px-5 py-3 text-gray-600 dark:text-gray-400">Force avec charges importantes, exercices à deux mains</td>
+                <td className="px-5 py-3 text-gray-600 dark:text-gray-400">Important pour manipuler une barre chargée en sécurité</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mb-4 mt-6 leading-relaxed text-gray-700 dark:text-gray-300">
           La différence ne se joue pas sur le poids, mais sur la <strong>prise</strong> et
           la <strong>répartition de la charge</strong> — deux choses qui changent les
           exercices possibles.
@@ -323,6 +401,76 @@ export default function GuideChoixPoidsLibres() {
             Voir les accessoires de musculation
           </Link>
         </div>
+      </section>
+
+      {/* ── Questions fréquentes ─────────────────────────────── */ }
+      <section className="mb-12">
+        <h2 className="mb-6 font-display text-2xl uppercase tracking-wide">
+          Questions fréquentes
+        </h2>
+        <div className="space-y-6">
+          {GUIDE_FAQ.map((item) => (
+            <div
+              key={item.question}
+              className="rounded-2xl border border-gray-200 bg-white p-6 transition-colors hover:border-yellow-500/40 dark:border-gray-800 dark:bg-gray-900"
+            >
+              <h3 className="mb-3 text-lg font-bold leading-snug text-gray-900 dark:text-white">
+                {item.question}
+              </h3>
+              <p className="leading-relaxed text-gray-600 dark:text-gray-400">
+                {item.answer}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── À lire aussi ─────────────────────────────────────── */ }
+      <section className="mb-4 border-t border-gray-200 pt-12 dark:border-gray-800">
+        <h2 className="mb-6 font-display text-2xl uppercase tracking-wide">
+          À lire aussi
+        </h2>
+        <ul className="space-y-4">
+          <li>
+            <Link
+              href="/guides/choisir-machine-cardio-tapis-velo-rameur-maroc"
+              className="group flex flex-col gap-1 rounded-xl border border-gray-200 p-4 transition-colors hover:border-yellow-400 dark:border-gray-800 dark:hover:border-yellow-400"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+                Cardio
+              </span>
+              <span className="font-display text-lg uppercase leading-tight tracking-wide text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">
+                Tapis roulant, vélo ou rameur : quelle machine cardio choisir au Maroc ?
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/blog/kettlebell-maroc"
+              className="group flex flex-col gap-1 rounded-xl border border-gray-200 p-4 transition-colors hover:border-yellow-400 dark:border-gray-800 dark:hover:border-yellow-400"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+                Musculation
+              </span>
+              <span className="font-display text-lg uppercase leading-tight tracking-wide text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">
+                Kettlebell au Maroc : choisir son poids et débuter le swing
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/blog/equipement-musculation-maroc"
+              className="group flex flex-col gap-1 rounded-xl border border-gray-200 p-4 transition-colors hover:border-yellow-400 dark:border-gray-800 dark:hover:border-yellow-400"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+                Musculation
+              </span>
+              <span className="font-display text-lg uppercase leading-tight tracking-wide text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">
+                Équipement de musculation au Maroc : liste d’achat
+              </span>
+            </Link>
+          </li>
+        </ul>
       </section>
     </article>
   );

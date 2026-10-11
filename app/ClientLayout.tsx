@@ -1356,6 +1356,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
     () => [
       { name: language === "fr" ? "À propos" : "About", href: "/a-propos" },
       { name: language === "fr" ? "Guides" : "Guides", href: "/guides" },
+      { name: "Blog", href: "/blog" },
       { name: "Contact", href: "/contact" },
       {
         name: language === "fr" ? "Demande de devis" : "Quote Request",

@@ -27,6 +27,34 @@ export const metadata = {
 
 const PAGE_URL = "https://www.ironz.ma/guides/choisir-equipement-boxe-debutant-maroc";
 
+const GUIDE_FAQ: { question: string; answer: string }[] = [
+  {
+    question: "Quel matériel de boxe acheter en premier ?",
+    answer:
+      "Les protections communes à toutes les séances : gants, bandes de protection des mains et protège-dents. Avant de frapper un sac, les bandes protègent les articulations et les gants protègent les mains et les poignets. Vient ensuite le sac pour frapper seul, ou les paos, pads et plastron pour le travail à deux.",
+  },
+  {
+    question: "Faut-il un sac de frappe pour débuter la boxe ?",
+    answer:
+      "Pas obligatoirement. On peut débuter avec un travail à deux (paos, pads, cibles) ou de la technique sans sac. Mais pour s'entraîner seul, le sac devient vite indispensable. Comparez alors les dimensions et le poids du sac avec l'espace et la fixation disponibles.",
+  },
+  {
+    question: "Quelle taille de gants de boxe choisir ?",
+    answer:
+      "La taille dépend de la pratique et de l'usage. Les gants de 10 à 12 oz sont courants pour le travail sur sac, de 14 à 16 oz pour le sparring. Vérifiez le tour de main et le maintien du poignet sur la fiche produit avant de commander.",
+  },
+  {
+    question: "Peut-on se blesser en débutant la boxe sans protection ?",
+    answer:
+      "Oui, les blessures aux mains et aux poignets sont les plus fréquentes chez les débutants qui frappent sans bandes ni gants adaptés. Les bandes de protection des mains sont le premier achat, avant même les gants pour certains, car elles protègent directement les articulations.",
+  },
+  {
+    question: "Où acheter du matériel de boxe au Maroc ?",
+    answer:
+      "IRONZ référence des gants, bandes, sacs de frappe, paos, pads, plastrons, protège-tibias et protections avec livraison partout au Maroc. Comparez les produits disponibles dans la catégorie accessoires de boxe du catalogue.",
+  },
+];
+
 const structuredData = [
   {
     "@context": "https://schema.org",
@@ -48,12 +76,26 @@ const structuredData = [
     headline: "Équipement de boxe débutant au Maroc : par quoi commencer ?",
     description:
       "Débuter la boxe au Maroc : quel matériel acheter en premier, ce qui peut attendre, et comment comparer gants, bandes, sacs et protections avant l'achat.",
+    datePublished: "2026-09-20",
+    dateModified: "2026-10-11",
+    inLanguage: "fr-MA",
+    author: { "@type": "Organization", name: "IRONZ" },
+    image: "https://www.ironz.ma/og-image.jpg",
     publisher: {
       "@type": "Organization",
       name: "IRONZ",
       logo: { "@type": "ImageObject", url: "https://www.ironz.ma/logo-optimized.png" },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: GUIDE_FAQ.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
   },
 ];
 
@@ -356,6 +398,76 @@ export default function GuideEquipementBoxeDebutant() {
         >
           Voir les accessoires de boxe chez IRONZ
         </Link>
+      </section>
+
+      {/* ── Questions fréquentes ─────────────────────────────── */ }
+      <section className="mb-12">
+        <h2 className="mb-6 font-display text-2xl uppercase tracking-wide">
+          Questions fréquentes
+        </h2>
+        <div className="space-y-6">
+          {GUIDE_FAQ.map((item) => (
+            <div
+              key={item.question}
+              className="rounded-2xl border border-gray-200 bg-white p-6 transition-colors hover:border-yellow-500/40 dark:border-gray-800 dark:bg-gray-900"
+            >
+              <h3 className="mb-3 text-lg font-bold leading-snug text-gray-900 dark:text-white">
+                {item.question}
+              </h3>
+              <p className="leading-relaxed text-gray-600 dark:text-gray-400">
+                {item.answer}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── À lire aussi ─────────────────────────────────────── */ }
+      <section className="mb-4 border-t border-gray-200 pt-12 dark:border-gray-800">
+        <h2 className="mb-6 font-display text-2xl uppercase tracking-wide">
+          À lire aussi
+        </h2>
+        <ul className="space-y-4">
+          <li>
+            <Link
+              href="/guides/choisir-halteres-kettlebells-disques-maroc"
+              className="group flex flex-col gap-1 rounded-xl border border-gray-200 p-4 transition-colors hover:border-yellow-400 dark:border-gray-800 dark:hover:border-yellow-400"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+                Poids libres
+              </span>
+              <span className="font-display text-lg uppercase leading-tight tracking-wide text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">
+                Comment choisir ses haltères, kettlebells et disques au Maroc ?
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/blog/sac-frappe-boxe-maroc"
+              className="group flex flex-col gap-1 rounded-xl border border-gray-200 p-4 transition-colors hover:border-yellow-400 dark:border-gray-800 dark:hover:border-yellow-400"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+                Boxe
+              </span>
+              <span className="font-display text-lg uppercase leading-tight tracking-wide text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">
+                Sac de frappe au Maroc : suspendu, sur pied ou boxe enfant
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/blog/home-gym-maroc"
+              className="group flex flex-col gap-1 rounded-xl border border-gray-200 p-4 transition-colors hover:border-yellow-400 dark:border-gray-800 dark:hover:border-yellow-400"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-yellow-600 dark:text-yellow-400">
+                Home Gym
+              </span>
+              <span className="font-display text-lg uppercase leading-tight tracking-wide text-gray-900 group-hover:text-yellow-600 dark:text-white dark:group-hover:text-yellow-400">
+                Home gym au Maroc : comment équiper sa pièce
+              </span>
+            </Link>
+          </li>
+        </ul>
       </section>
     </article>
   );
