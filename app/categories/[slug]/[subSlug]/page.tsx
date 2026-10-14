@@ -749,12 +749,18 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
       {
         "@type": "ListItem",
         position: 2,
+        name: "Catégories",
+        item: `${SITE_URL}/categories`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
         name: data.category.name,
         item: `${SITE_URL}/categories/${data.category.slug}`,
       },
       {
         "@type": "ListItem",
-        position: 3,
+        position: 4,
         name: data.subcategory.name,
         item: canonicalUrl,
       },
@@ -790,6 +796,15 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
           <li>
             <Link href="/" className="hover:text-yellow-600 dark:hover:text-yellow-400">
               Accueil
+            </Link>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li>
+            <Link
+              href="/categories"
+              className="hover:text-yellow-600 dark:hover:text-yellow-400"
+            >
+              Catégories
             </Link>
           </li>
           <li aria-hidden="true">/</li>

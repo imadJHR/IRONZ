@@ -45,6 +45,12 @@ export default async function CategoryPage({
       {
         "@type": "ListItem",
         position: 2,
+        name: "Catégories",
+        item: "https://www.ironz.ma/categories",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
         name: category.name,
         item: canonicalUrl,
       },
@@ -85,6 +91,17 @@ export default async function CategoryPage({
               className="hover:text-yellow-600 transition-colors"
             >
               Accueil
+            </Link>
+          </li>
+          <li aria-hidden="true" className="text-gray-300">
+            /
+          </li>
+          <li>
+            <Link
+              href="/categories"
+              className="hover:text-yellow-600 transition-colors"
+            >
+              Catégories
             </Link>
           </li>
           <li aria-hidden="true" className="text-gray-300">

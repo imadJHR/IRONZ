@@ -582,6 +582,15 @@ const Navbar = React.memo(function Navbar({
                     ))}
                     <div className="h-px bg-white/10 my-2" />
                     <Link
+                      href="/categories"
+                      role="menuitem"
+                      className="flex items-center justify-center px-3 py-2.5 text-sm font-display uppercase tracking-widest text-yellow-400 rounded-xl hover:bg-yellow-500/10 transition-colors"
+                    >
+                      {language === "fr"
+                        ? "Toutes les catégories"
+                        : "All Categories"}
+                    </Link>
+                    <Link
                       href="/produit"
                       role="menuitem"
                       className="flex items-center justify-center px-3 py-2.5 text-sm font-display uppercase tracking-widest text-yellow-400 rounded-xl hover:bg-yellow-500/10 transition-colors"
@@ -1105,6 +1114,15 @@ const Navbar = React.memo(function Navbar({
                               {cat.name}
                             </Link>
                           ))}
+                          <Link
+                            href="/categories"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-display uppercase tracking-widest text-yellow-400 hover:bg-yellow-500/10 transition-colors mt-1"
+                          >
+                            {language === "fr"
+                              ? "Toutes les catégories →"
+                              : "All Categories →"}
+                          </Link>
                           <Link
                             href="/produit"
                             onClick={() => setMobileMenuOpen(false)}
