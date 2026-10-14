@@ -10,7 +10,7 @@ import {
   productSlug,
 } from "../../../lib/products";
 import { categoryUrl, subcategoryUrl } from "../../../lib/category-taxonomy";
-import { productMetaDescription } from "../../../lib/product-meta";
+import { productMetaDescription, productMetaTitle } from "../../../lib/product-meta";
 import { OG_LOGO_URL } from "../../../lib/og-image";
 
 const SITE_URL = "https://www.ironz.ma";
@@ -114,16 +114,17 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   const canonical = `/produit/${productSlug(product)}`;
   const description = productMetaDescription(product, productDescription(product));
+  const title = productMetaTitle(product);
   const images = [product.image, ...(product.gallery || []), ...(product.images || [])]
     .filter((image): image is string => Boolean(image))
     .slice(0, 4);
 
   return {
-    title: `${product.name} | Prix au Maroc | IRONZ`,
+    title,
     description,
     alternates: { canonical },
     openGraph: {
-      title: `${product.name} | Prix au Maroc | IRONZ`,
+      title,
       description,
       url: canonical,
       type: "website",
@@ -132,7 +133,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     },
     twitter: {
       card: "summary_large_image",
-      title: `${product.name} | Prix au Maroc | IRONZ`,
+      title,
       description,
       // A Twitter Card renders a single image; the primary product photo is
       // the same one Open Graph leads with. Logo fallback when none exists.

@@ -11,7 +11,10 @@ import type { Metadata } from "next";
  * Keyed by product slug, matching the URL segment used by
  * `productSlug()` in `lib/products.ts`.
  */
-export const PRODUCT_META_OVERRIDES: Record<string, { description: string }> = {
+export const PRODUCT_META_OVERRIDES: Record<string, {
+  description?: string;
+  title?: string;
+}> = {
   "packs-sauces-healthy": {
     description:
       "Pack sauces healthy : barbecue ServiVita sans sucre ni matières grasses, vinaigre de cidre offert. Assaisonnez vos plats, livraison partout au Maroc.",
@@ -95,7 +98,52 @@ export const PRODUCT_META_OVERRIDES: Record<string, { description: string }> = {
     description:
       "Disques de musculation 20 kg à 2350 MAD : robustes et durables, revêtement résistant, trou central standard pour barres olympiques.",
   },
+
+  // 9 produits dont le nom API dépasse 48 caractères : le titre template
+  // `${name} | Prix au Maroc | IRONZ` atteignait 72 à 97 caractères, tronqué
+  // par Google. La version courte conserve le mot-clé principal (type de
+  // produit + attribut clé) et la marque quand elle tient.
+  "total-upper-body-workout-bar-barre-de-traction-multifonction-pour-porte": {
+    title: "Barre de Traction Multifonction",
+  },
+  "ensemble-sport-homme-3-pieces-tenue-fitness-running": {
+    title: "Ensemble Sport Homme 3 Pièces",
+  },
+  "now-foods-chromium-picolinate-200-mcg-100-veg-capsules": {
+    title: "Chromium Picolinate 200 mcg NOW",
+  },
+  "sports-fitness-suit-homme-ensemble-compression-sport": {
+    title: "Ensemble Compression Sport Homme",
+  },
+  "now-certified-organic-spirulina-500-mg-100-tablets": {
+    title: "Spiruline 500 mg NOW Certified",
+  },
+  "beverly-hydrolyzed-professional-whey-protein-isolate": {
+    title: "Whey Protein Isolate Beverly",
+  },
+  "now-milk-thistle-extract-150-mg-60-veg-capsules": {
+    title: "Milk Thistle 150 mg NOW",
+  },
+  "bandeau-de-sport-headband-fitness-running": {
+    title: "Bandeau de Sport Headband",
+  },
+  "corde-a-sauter-fafa-sport-skipping-rope-fitnes": {
+    title: "Corde à Sauter FAFA Sport",
+  },
 };
+
+/**
+ * Returns the SEO title for a product, preferring a curated override over the
+ * raw product name. The template `| Prix au Maroc | IRONZ` is always appended.
+ */
+export function productMetaTitle(product: {
+  slug?: string;
+  name: string;
+}): string {
+  const override = PRODUCT_META_OVERRIDES[product.slug ?? ""];
+  const name = override?.title ?? product.name;
+  return `${name} | Prix au Maroc | IRONZ`;
+}
 
 /**
  * Returns the SEO description for a product, preferring a curated override
