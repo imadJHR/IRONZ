@@ -414,6 +414,8 @@ export default function AmenagementSallePage() {
               <Link href="/services/amenagement-salle/home-gym" className="text-yellow-400 underline underline-offset-4 hover:text-yellow-300">service Home Gym</Link>.
               Pour un espace collectif ou commercial, consultez la{" "}
               <Link href="/services/amenagement-salle/salle-professionnelle" className="text-yellow-400 underline underline-offset-4 hover:text-yellow-300">salle professionnelle</Link>.
+              Pour un projet à Casablanca, consultez la{" "}
+              <Link href="/services/amenagement-salle/casablanca" className="text-yellow-400 underline underline-offset-4 hover:text-yellow-300">page dédiée à Casablanca</Link>.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
