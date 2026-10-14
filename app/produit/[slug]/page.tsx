@@ -10,6 +10,7 @@ import {
   productSlug,
 } from "../../../lib/products";
 import { categoryUrl, subcategoryUrl } from "../../../lib/category-taxonomy";
+import { productMetaDescription } from "../../../lib/product-meta";
 import { OG_LOGO_URL } from "../../../lib/og-image";
 
 const SITE_URL = "https://www.ironz.ma";
@@ -112,7 +113,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 
   const canonical = `/produit/${productSlug(product)}`;
-  const description = productDescription(product);
+  const description = productMetaDescription(product, productDescription(product));
   const images = [product.image, ...(product.gallery || []), ...(product.images || [])]
     .filter((image): image is string => Boolean(image))
     .slice(0, 4);
