@@ -4,7 +4,7 @@ import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../lib/og-image";
 const PAGE_URL = "https://www.ironz.ma/services/personnalisation-accessoires";
 const TITLE = "Personnalisation d'accessoires sportifs au Maroc | IRONZ";
 const DESCRIPTION =
-  "Personnalisation d'accessoires sportifs au Maroc : couleurs, logo, finitions et configuration visuelle selon le produit et la faisabilité du projet. Demandez un devis IRONZ.";
+  "Personnalisation d'accessoires sportifs au Maroc : couleurs, logo et finitions selon le produit et la faisabilité. Devis IRONZ.";
 
 export const metadata: Metadata = {
   title: TITLE,

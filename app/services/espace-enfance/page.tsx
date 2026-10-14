@@ -8,7 +8,7 @@ import childSpaceImage from "../../../public/enfant1-optimized.webp";
 const PAGE_URL = "https://www.ironz.ma/services/espace-enfance";
 const PAGE_TITLE = "Aménagement d'espace enfant au Maroc | IRONZ";
 const PAGE_DESCRIPTION =
-  "Aménagement d'espace enfant au Maroc : zones d'activité physique, organisation, équipements et surfaces selon l'usage du projet. Demandez un devis IRONZ.";
+  "Espace enfant sportif au Maroc : zones d'activité, organisation, équipements et surfaces selon l'usage. Devis personnalisé IRONZ.";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,

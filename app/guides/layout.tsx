@@ -4,7 +4,7 @@ import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../lib/og-image";
 export const metadata: Metadata = {
   title: "Guides fitness et musculation au Maroc | IRONZ",
   description:
-    "Guides d’achat IRONZ pour choisir son matériel de fitness et de musculation au Maroc : comparer les équipements, comprendre les différences et éviter les erreurs avant d’acheter.",
+    "Guides d'achat IRONZ : comparez haltères, kettlebells, disques, machines cardio et matériel de boxe avant d'acheter au Maroc.",
   alternates: { canonical: "/guides" },
   robots: { index: true, follow: true },
   openGraph: {
