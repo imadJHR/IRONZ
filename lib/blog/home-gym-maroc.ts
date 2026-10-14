@@ -125,5 +125,5 @@ export const article: BlogArticle = {
     label: 'Demander une étude de home gym sur mesure',
     href: '/services/amenagement-salle/home-gym',
   },
-  related: ['amenagement-salle-sport-maroc', 'equipement-musculation-maroc'],
+  related: ["amenagement-salle-sport-maroc", "espace-enfant-sportif-maroc"],
 };

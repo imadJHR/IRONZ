@@ -127,5 +127,5 @@ export const article: BlogArticle = {
     label: 'Demander un devis d’aménagement de salle',
     href: '/demande-devis',
   },
-  related: ['home-gym-maroc', 'tapis-de-course-maroc'],
+  related: ["home-gym-maroc", "salle-sport-professionnelle-maroc"],
 };

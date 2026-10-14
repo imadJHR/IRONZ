@@ -125,5 +125,5 @@ export const article: BlogArticle = {
     label: 'Voir le matériel de musculation disponible chez IRONZ',
     href: '/categories/equipements/poids-libres',
   },
-  related: ['whey-proteine-maroc', 'home-gym-maroc'],
+  related: ["whey-proteine-maroc", "personnalisation-accessoires-sport-maroc"],
 };

@@ -114,5 +114,5 @@ export const article: BlogArticle = {
     label: 'Voir les kettlebells et poids libres IRONZ',
     href: '/categories/equipements/poids-libres',
   },
-  related: ['equipement-musculation-maroc', 'barre-traction-maroc'],
+  related: ["equipement-musculation-maroc", "banc-musculation-maroc"],
 };
