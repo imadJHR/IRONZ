@@ -77,7 +77,7 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
       },
       {
         title: "Usage à domicile ou projet professionnel",
-        text: "Pour un usage à domicile, les vélos, le rameur, le banc et la station Home Gym couvrent l'essentiel. Pour un projet de salle professionnelle, la presse à jambes, le leg curl et le rack Panatta sont conçus pour un usage intensif ; la page aménagement de salle professionnelle vous accompagne sur l'implantation.",
+        text: "Pour un usage à domicile, les vélos, le rameur, le banc et la station Home Gym couvrent l'essentiel. Pour un projet de salle professionnelle, la presse à jambes, le leg curl et le rack multifonction sont conçus pour un usage intensif ; la page aménagement de salle professionnelle vous accompagne sur l'implantation.",
       },
       {
         title: "Comparer les fiches avant de décider",

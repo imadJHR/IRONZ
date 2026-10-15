@@ -45,13 +45,13 @@ export const article: BlogArticle = {
       h2: 'Le mix d’équipements d’une salle pro',
       paragraphs: [
         'Le mix type d’une salle généraliste combine cardio (un tiers du parc machines), musculation guidée (un tiers) et poids libres avec racks (un tiers), plus un espace fonctionnel. Les proportions varient selon le positionnement : une salle orientée force met l’accent sur racks et disques, une salle fitness sur cardio et cours.',
-        'Pour les marques professionnelles — Matrix, Life Fitness, Panatta, Topgym — l’enjeu est triple : fiabilité en usage intensif, image auprès des adhérents, et disponibilité des pièces. C’est aussi un argument commercial : les adhérents reconnaissent ces marques.',
+        'Pour les marques professionnelles — Matrix, Life Fitness, Topgym — l’enjeu est triple : fiabilité en usage intensif, image auprès des adhérents, et disponibilité des pièces. C’est aussi un argument commercial : les adhérents reconnaissent ces marques.',
       ],
       list: [
         '<strong>Cardio</strong> — tapis, vélos, elliptiques en nombre suffisant pour les pics.',
         '<strong>Machines guidées</strong> — Smith, charges guidées, poulies : un mouvement par machine.',
         '<strong>Poids libres et racks</strong> — haltères, barres, disques, racks avec sécurités.',
-        '<strong>Marques pro reconnues</strong> — Matrix, Life Fitness, Panatta, Topgym selon le budget.',
+        '<strong>Marques pro reconnues</strong> — Matrix, Life Fitness, Topgym selon le budget.',
       ],
     },
     {
@@ -99,7 +99,7 @@ export const article: BlogArticle = {
     },
     {
       q: 'Quelles marques pour une salle pro au Maroc ?',
-      a: 'Matrix, Life Fitness, Panatta et Topgym sont des références professionnelles : fiabilité en usage intensif, image auprès des adhérents et pièces disponibles.',
+      a: 'Matrix, Life Fitness et Topgym sont des références professionnelles : fiabilité en usage intensif, image auprès des adhérents et pièces disponibles.',
     },
     {
       q: 'Quel budget prévoir ?',

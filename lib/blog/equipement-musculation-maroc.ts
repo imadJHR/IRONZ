@@ -61,14 +61,14 @@ export const article: BlogArticle = {
       h2: 'Les machines guidées et à poulie',
       paragraphs: [
         'Les machines guidées (Smith machine, machines à charge guidée) isolent les muscles et guident le mouvement, ce qui aide le débutant et permet le travail à l’échec sans assistance. Les machines à poulie (lat pulldown, tirage, extension) couvrent les mouvements que les poids libres ne permettent pas.',
-        'IRONZ référence des machines des marques Matrix, Life Fitness, Panatta et Topgym. Pour une salle commerciale, ces machines sont attendues par les adhérents. Pour un domicile, elles viennent en complément des poids libres, pas en remplacement.',
+        'IRONZ référence des machines des marques Matrix, Life Fitness et Topgym. Pour une salle commerciale, ces machines sont attendues par les adhérents. Pour un domicile, elles viennent en complément des poids libres, pas en remplacement.',
       ],
       list: [
         '<strong>Smith machine</strong> — barre guidée verticalement, travail lourd sans sécurité humaine.',
         '<strong>Machines à charge guidée</strong> — un mouvement par machine, idéal pour l’isolation.',
         '<strong>Lat pulldown et tirage</strong> — pour le dos, complément indispensable des tractions.',
         '<strong>Poulie basse</strong> — pour les tirages, les extensions et le travail des jambes.',
-        '<strong>Marques</strong> — Matrix, Life Fitness, Panatta, Topgym sont des marques professionnelles référencées.',
+        '<strong>Marques</strong> — Matrix, Life Fitness, Topgym sont des marques professionnelles référencées.',
       ],
     },
     {

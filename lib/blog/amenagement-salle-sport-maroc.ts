@@ -62,12 +62,12 @@ export const article: BlogArticle = {
     {
       h2: 'Quel budget pour équiper une salle au Maroc ?',
       paragraphs: [
-        'L’équipement complet d’une petite salle commerciale démarre souvent autour de 150 000 à 400 000 DH selon la surface, le nombre de machines et les marques choisies. Une salle plus grande, avec des marques professionnelles comme Matrix, Life Fitness, Panatta ou Topgym, représente un investissement plus important.',
+        'L’équipement complet d’une petite salle commerciale démarre souvent autour de 150 000 à 400 000 DH selon la surface, le nombre de machines et les marques choisies. Une salle plus grande, avec des marques professionnelles comme Matrix, Life Fitness ou Topgym, représente un investissement plus important.',
         'Le budget se construit en trois postes : le revêtement et l’aménagement, l’équipement, et les coûts annexes comme la livraison et l’installation. La méthode la plus sûre est de définir le plan et la liste d’équipements, puis de demander un devis complet qui couvre l’ensemble. Pour une salle au Maroc, demandez un devis avant de valider quoi que ce soit.',
       ],
       list: [
         '<strong>150 000 à 400 000 DH</strong> — fourchette de départ pour une petite salle commerciale complète.',
-        '<strong>Marques professionnelles</strong> — Matrix, Life Fitness, Panatta, Topgym, référencées chez IRONZ.',
+        '<strong>Marques professionnelles</strong> — Matrix, Life Fitness, Topgym, référencées chez IRONZ.',
         '<strong>Revêtement</strong> — un poste à part entière, à ne pas négliger dans le budget global.',
         '<strong>Installation et formation</strong> — prévoyez la livraison, le montage et la prise en main du matériel.',
         '<strong>Devis</strong> — indispensable, le budget dépend de la surface, des zones et des marques.',

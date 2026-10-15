@@ -7,7 +7,6 @@ import img3 from "../public/complement.jpg";
 import img4 from "../public/accessoire-optimized.webp";
 import img5 from "../public/matrix.png";
 import img6 from "../public/lifefitness.png";
-import img66 from "../public/panatta.png";
 import topgym from "../public/topgym.png";
 import teslaa from "../public/teslaa.png";
 import sup from "../public/14-optimized.webp";
@@ -117,7 +116,6 @@ export const colorMap: Record<string, string> = {
 export const brands: Brand[] = [
   { id: "1", name: "MATRIX", logo: img5, description: "" },
   { id: "2", name: "LIFE FITNESS", logo: img6, description: "" },
-  { id: "3", name: "Panatta", logo: img66, description: "" },
   { id: "4", name: "Topgym", logo: topgym, description: "" },
   { id: "5", name: "Tesla Nutrition", logo: teslaa, description: "" },
   { id: "6", name: "Superior14", logo: sup, description: "" },
