@@ -193,6 +193,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   } catch (error) {
     console.error("[sitemap] Unable to load product URLs for sitemap.", error);
+    // Reject failed generation instead of publishing a successful partial inventory.
+    throw error;
   }
 
   return uniqueRoutes([

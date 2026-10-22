@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Produits à exclure du slider hero (bandeau d'accueil)
+const HERO_EXCLUDED_SLUGS = new Set(["2-disque-de-poids-10-kg"]);
+
 // Type for API response structure
 interface ApiListResponse<T = Product> {
   data: T[];

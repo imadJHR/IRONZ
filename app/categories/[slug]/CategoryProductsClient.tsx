@@ -1,6 +1,7 @@
 "use client";
 
 import { getDiscount } from "../../../lib/product-pricing";
+import { taxonomySlug } from "../../../lib/category-taxonomy";
 
 import React, {
   useState,
@@ -587,7 +588,16 @@ export default function ProductsPage({
     const base = selectedCategories.length > 0
       ? products.filter((p) => selectedCategories.includes(p.category || ""))
       : products;
-    return ([...new Set(base.map((p) => p.subCategory).filter(Boolean))] as string[]).sort();
+    // Use the same subcategory identity as server routes and ItemList data.
+    const bySlug = new Map<string, string>();
+    for (const product of base) {
+      const subcategory = product.subCategory;
+      const subcategorySlug = taxonomySlug(subcategory);
+      if (subcategory && subcategorySlug && !bySlug.has(subcategorySlug)) {
+        bySlug.set(subcategorySlug, subcategory);
+      }
+    }
+    return [...bySlug.values()].sort();
   }, [products, selectedCategories]);
 
   const filteredProducts: Product[] = useMemo(() => {
@@ -608,7 +618,9 @@ export default function ProductsPage({
       result = result.filter((p) => selectedCategories.includes(p.category || ""));
 
     if (selectedSubCategories.length > 0)
-      result = result.filter((p) => p.subCategory && selectedSubCategories.includes(p.subCategory));
+      result = result.filter((p) => p.subCategory && selectedSubCategories.some(
+        (subcategory) => taxonomySlug(subcategory) === taxonomySlug(p.subCategory),
+      ));
 
     result = result.filter(
       (p) =>
@@ -660,7 +672,9 @@ export default function ProductsPage({
 
   const handleSubCategoryToggle = useCallback((sub: string) => {
     if (lockedSubCategoryName) return;
-    setSelectedSubCategories((prev) => prev.includes(sub) ? prev.filter((s) => s !== sub) : [...prev, sub]);
+    setSelectedSubCategories((prev) => prev.some((s) => taxonomySlug(s) === taxonomySlug(sub))
+      ? prev.filter((s) => taxonomySlug(s) !== taxonomySlug(sub))
+      : [...prev, sub]);
   }, [lockedSubCategoryName]);
 
   const clearFilters = useCallback(() => {
@@ -718,7 +732,7 @@ export default function ProductsPage({
               <div key={sub} className="flex items-center space-x-3 group cursor-pointer" onClick={() => handleSubCategoryToggle(sub)}>
                 <Checkbox
                   id={`sub-${sub}`}
-                  checked={selectedSubCategories.includes(sub)}
+                  checked={selectedSubCategories.some((selected) => taxonomySlug(selected) === taxonomySlug(sub))}
                   disabled={Boolean(lockedSubCategoryName)}
                 />
                 <label htmlFor={`sub-${sub}`} className="text-sm font-medium text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors cursor-pointer flex-1">

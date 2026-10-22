@@ -1,3 +1,7 @@
+import { productAggregateRatingSchema } from "../../lib/product-review-summary";
+import { productOfferSchema } from "../../lib/product-offer";
+import { productIdentifierSchema } from "../../lib/product-identifiers";
+
 export const generateOrganizationSchema = () => {
     return {
       "@context": "https://schema.org",
@@ -25,33 +29,25 @@ export const generateOrganizationSchema = () => {
     }
   }
   export const generateProductSchema = (product) => {
+    const { offers } = productOfferSchema(product, `https://www.ironz.ma/produit/${product.slug}`);
     return {
       "@context": "https://schema.org",
       "@type": "Product",
       name: product.name,
       image: product.image,
       description: product.description,
-      sku: product.id,
+      ...productIdentifierSchema(product),
       brand: {
         "@type": "Brand",
         name: product.brand,
       },
-      offers: {
-        "@type": "Offer",
-        url: `https://www.ironz.ma/produit/${product.slug}`,
-        priceCurrency: "MAD",
-        price: product.price,
-        priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(),
-        availability: product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      ...(offers && { offers: {
+        ...offers,
         seller: {
           "@type": "Organization",
           name: "IRONZ",
         },
-      },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: product.rating,
-        reviewCount: product.reviewCount,
-      },
+      } }),
+      ...productAggregateRatingSchema(product),
     }
   }

@@ -38,10 +38,10 @@ export const CATEGORY_DEFINITIONS: Record<CategorySlug, CategoryDefinition> = {
     aliases: ["equipements", "équipements"],
     heading: "Équipements pour cardio et musculation",
     intro:
-      "Un espace d'entraînement se construit autour du matériel adapté à vos exercices. Cette catégorie réunit les équipements IRONZ pour le cardio et la musculation : vélos, rameur, tapis roulant, machines de travail des jambes, rack et banc. Vous y trouverez aussi un Reformer Pilates, une barre de traction et des haltères, ainsi que des home gyms complets. La marque Adidas complète la sélection, avec des références allant de 249 à 65 000 DH selon le type de machine. Parcourez les sous-catégories pour choisir une famille de matériel, puis consultez les dimensions et caractéristiques indiquées sur chaque fiche avant d'équiper votre espace au Maroc.",
+      "Un espace d'entraînement se construit autour du matériel adapté à vos exercices. Cette catégorie réunit le matériel proposé par IRONZ pour le cardio et la musculation : vélos, rameur, tapis roulant, presse à jambes et banc. Vous y trouverez aussi un Reformer Pilates, une barre de traction, des haltères et des équipements Home Gym, notamment des références Adidas. Parcourez les sous-catégories pour choisir une famille de matériel, puis consultez les dimensions et caractéristiques indiquées sur chaque fiche avant d'équiper votre espace au Maroc.",
     title: "Équipements cardio et musculation au Maroc | IRONZ",
     description:
-      "Comparez tapis roulant, vélo d'appartement, rameur, home gym et machines de musculation Adidas. Prix de 249 à 65 000 DH, livraison au Maroc.",
+      "Équipements de fitness au Maroc : tapis roulant, vélos, rameur, presse à jambes, banc et Home Gym. Comparez les caractéristiques sur les fiches IRONZ.",
   },
   supplement: {
     slug: "supplement",
@@ -60,7 +60,7 @@ export const CATEGORY_DEFINITIONS: Record<CategorySlug, CategoryDefinition> = {
     aliases: ["accessoires"],
     heading: "Accessoires de sport, fitness et entraînement",
     intro:
-      "Le rayon Accessoires IRONZ regroupe 85 produits pour compléter vos séances de sport, fitness et musculation au Maroc. Il sert de point d'entrée vers le petit matériel d'entraînement, les poids libres, les accessoires de boxe, les poignées et barres de travail, ainsi que les vêtements, sacs et packs. Parcourez les sous-catégories pour rejoindre le bon univers avant de comparer les formats, charges et détails de chaque référence.",
+      "Le rayon Accessoires IRONZ réunit le petit matériel pour compléter vos séances de sport, fitness et musculation au Maroc. Il sert de point d'entrée vers les accessoires d'entraînement, les poids libres, les accessoires de boxe, les poignées et barres de travail, ainsi que les vêtements, sacs et packs. Parcourez les sous-catégories pour rejoindre le bon univers avant de comparer les formats, charges et détails de chaque référence.",
     title: "Accessoires de sport, fitness et musculation au Maroc | IRONZ",
     description:
       "Explorez les accessoires de sport IRONZ au Maroc : fitness, musculation, boxe, poids libres, vêtements et packs, avec accès aux bons rayons.",

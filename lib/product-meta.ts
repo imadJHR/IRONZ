@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-
 /**
  * Meta descriptions for products whose API `description` field is too short or
  * too thin to serve as a search snippet.
@@ -17,7 +15,7 @@ export const PRODUCT_META_OVERRIDES: Record<string, {
 }> = {
   "packs-sauces-healthy": {
     description:
-      "Pack sauces healthy : barbecue ServiVita sans sucre ni matières grasses, vinaigre de cidre offert. Assaisonnez vos plats, livraison partout au Maroc.",
+      "Pack sauces régimes associant une sauce barbecue et du vinaigre de cidre. Consultez le contenu et le prix du pack sur la fiche IRONZ au Maroc.",
   },
 
   // 10 haltères IRONBULL : la fiche API est identique pour les 10 poids. La
@@ -99,36 +97,52 @@ export const PRODUCT_META_OVERRIDES: Record<string, {
       "Disques de musculation 20 kg à 2350 MAD : robustes et durables, revêtement résistant, trou central standard pour barres olympiques.",
   },
 
-  // 9 produits dont le nom API dépasse 48 caractères : le titre template
-  // `${name} | Prix au Maroc | IRONZ` atteignait 72 à 97 caractères, tronqué
-  // par Google. La version courte conserve le mot-clé principal (type de
-  // produit + attribut clé) et la marque quand elle tient.
+  // Editorial titles retain identifying attributes without clipping names to
+  // an arbitrary character limit. Length alone does not predict Google's display.
   "total-upper-body-workout-bar-barre-de-traction-multifonction-pour-porte": {
-    title: "Barre de Traction Multifonction",
+    title: "Barre de traction multifonction pour porte",
+    description:
+      "Barre de traction multifonction pour porte, également utilisable au sol pour les pompes et les dips. Retrouvez ses caractéristiques chez IRONZ au Maroc.",
   },
   "ensemble-sport-homme-3-pieces-tenue-fitness-running": {
     title: "Ensemble Sport Homme 3 Pièces",
+    description:
+      "Ensemble sport homme 3 pièces pour le fitness et le running, avec coupe près du corps et détails réfléchissants. Consultez sa fiche chez IRONZ au Maroc.",
   },
   "now-foods-chromium-picolinate-200-mcg-100-veg-capsules": {
-    title: "Chromium Picolinate 200 mcg NOW",
+    title: "NOW Picolinate de chrome 200 mcg, 100 capsules",
+    description:
+      "NOW Foods Chromium Picolinate 200 mcg, flacon de 100 capsules végétales. Consultez la composition et les informations du complément chez IRONZ au Maroc.",
   },
   "sports-fitness-suit-homme-ensemble-compression-sport": {
     title: "Ensemble Compression Sport Homme",
+    description:
+      "Ensemble compression sport homme avec haut à manches longues et pantalon. Tissu extensible et respirant décrit sur la fiche produit IRONZ au Maroc.",
   },
   "now-certified-organic-spirulina-500-mg-100-tablets": {
-    title: "Spiruline 500 mg NOW Certified",
+    title: "Spiruline NOW 500 mg, 100 comprimés",
+    description:
+      "Spiruline NOW 500 mg en flacon de 100 comprimés. Retrouvez les informations de composition et de format de ce complément alimentaire chez IRONZ au Maroc.",
   },
   "beverly-hydrolyzed-professional-whey-protein-isolate": {
-    title: "Whey Protein Isolate Beverly",
+    title: "Beverly Hydrolyzed Professional Whey Isolate",
+    description:
+      "Beverly Hydrolyzed Professional, whey isolate hydrolysée à base de lactosérum. Consultez les saveurs et la composition sur la fiche IRONZ au Maroc.",
   },
   "now-milk-thistle-extract-150-mg-60-veg-capsules": {
-    title: "Milk Thistle 150 mg NOW",
+    title: "NOW Chardon-Marie 150 mg, 60 capsules",
+    description:
+      "NOW Milk Thistle Extract 150 mg : extrait de chardon-Marie en flacon de 60 capsules. Retrouvez sa composition et les détails du produit chez IRONZ au Maroc.",
   },
   "bandeau-de-sport-headband-fitness-running": {
     title: "Bandeau de Sport Headband",
+    description:
+      "Bandeau de sport Headband en textile doux et extensible, pour maintenir les cheveux pendant le fitness et le running. Retrouvez sa fiche IRONZ au Maroc.",
   },
   "corde-a-sauter-fafa-sport-skipping-rope-fitnes": {
     title: "Corde à Sauter FAFA Sport",
+    description:
+      "Corde à sauter FAFA Sport à poignées légères, pour les séances de cardio, d'échauffement et de coordination. Consultez sa fiche chez IRONZ au Maroc.",
   },
 };
 
@@ -147,14 +161,32 @@ export function productMetaTitle(product: {
 
 /**
  * Returns the SEO description for a product, preferring a curated override
- * over the raw API description. Falls back to the product's own description,
- * truncated to the snippet length, then to a brand-name sentence.
+ * over the supplied API snippet. A title-only override must not suppress that
+ * snippet. Without source copy, use an identity-based fallback without claims
+ * about availability, delivery or technical attributes.
  */
 export function productMetaDescription(
   product: { slug?: string; name: string; description?: string; longDescription?: string },
   apiDescription: string,
 ): string {
   const override = PRODUCT_META_OVERRIDES[product.slug ?? ""];
-  if (override) return override.description;
-  return apiDescription;
+  if (override?.description?.trim()) return override.description;
+  const sourceCopy = [product.description, product.longDescription]
+    .map((value) => value?.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim())
+    .find(Boolean);
+  const snippet = apiDescription.trim();
+  if (sourceCopy && snippet) {
+    // The page supplies a length-limited excerpt. Only repair a demonstrably
+    // clipped token; leave complete words and editorial overrides unchanged.
+    if (
+      sourceCopy.startsWith(snippet) &&
+      /[\p{L}\p{N}]$/u.test(snippet) &&
+      /^[\p{L}\p{N}]/u.test(sourceCopy.slice(snippet.length))
+    ) {
+      const boundary = snippet.lastIndexOf(" ");
+      if (boundary > 0) return `${snippet.slice(0, boundary).trimEnd()}…`;
+    }
+    return apiDescription;
+  }
+  return `${product.name} : retrouvez les informations de cette référence et son prix chez IRONZ au Maroc.`;
 }

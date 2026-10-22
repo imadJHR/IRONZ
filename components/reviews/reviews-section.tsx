@@ -24,17 +24,18 @@ import {
 } from "../../components/reviews/icons";
 import { StarInput } from "../../components/reviews/star-input";
 import {
-  averageRating,
   formatReviewDate,
   ratingDistribution,
   type ReviewRecord,
 } from "../../lib/reviews";
+import { productReviewSummary } from "../../lib/product-review-summary";
 
 interface ReviewsSectionProps {
   productId: string;
   productSlug: string;
   /** Reviews already shipped from the server (legacy + new). */
   initialReviews: ReviewRecord[];
+  onReviewsChange?: (reviews: ReviewRecord[]) => void;
   /** Public field from the product record (legacy aggregate). */
   declaredRating?: number;
   declaredReviewCount?: number;
@@ -62,6 +63,7 @@ function cn(...classes: (string | boolean | undefined | null)[]) {
 export function ReviewsSection({
   productId,
   initialReviews,
+  onReviewsChange,
 }: ReviewsSectionProps) {
   const { isSignedIn, user, isLoaded } = useUser();
   const [reviews, setReviews] = useState<ReviewRecord[]>(initialReviews);
@@ -72,6 +74,10 @@ export function ReviewsSection({
   const [state, setState] = useState<SubmissionState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    onReviewsChange?.(reviews);
+  }, [reviews, onReviewsChange]);
 
   const myReview = useMemo(
     () => reviews.find((review) => (review as ReviewRecord & { isOwner?: boolean }).isOwner),
@@ -200,14 +206,13 @@ export function ReviewsSection({
     }
   }, [myReview, productId, state, resetForm]);
 
-  const average = useMemo(() => averageRating(reviews), [reviews]);
-
-  const displayCount = useMemo(() => reviews.length, [reviews]);
+  const summary = useMemo(() => productReviewSummary({ reviews }), [reviews]);
+  const displayCount = summary.count;
 
   const distribution = useMemo(() => ratingDistribution(reviews), [reviews]);
-  const roundedAverage = Number(average.toFixed(1));
+  const roundedAverage = summary.average ?? 0;
 
-  const showSummary = roundedAverage > 0 || displayCount > 0;
+  const showSummary = summary.average !== undefined;
 
   return (
     <section
@@ -225,7 +230,7 @@ export function ReviewsSection({
           </h2>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {displayCount > 0
-              ? `${displayCount} avis vérifié${displayCount > 1 ? "s" : ""} sur ce produit`
+              ? `${displayCount} avis client${displayCount > 1 ? "s" : ""} sur ce produit`
               : "Partagez votre expérience avec la communauté IRONZ"}
           </p>
         </div>

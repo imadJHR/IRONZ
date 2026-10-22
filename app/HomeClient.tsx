@@ -2,6 +2,9 @@
 
 import { getDiscount } from "../lib/product-pricing";
 import { SITE_PHONE, SOCIAL_URLS } from "../lib/site";
+import { productBrandSchema } from "../lib/product-brand";
+import { productAggregateRatingSchema, productReviewSummary } from "../lib/product-review-summary";
+import { productOfferAvailability, productOfferSchema } from "../lib/product-offer";
 
 import {
   useState,
@@ -92,6 +95,9 @@ export interface Product {
   description?: string;
   shortDescription?: string;
   rating?: number;
+  inStock?: boolean;
+  stockQuantity?: number;
+  reviews?: Array<{ rating: number }>;
   isNewProduct?: boolean;
   isFeatured?: boolean;
   features?: string[];
@@ -230,25 +236,9 @@ function buildProductJsonLd(product: Product) {
     description: product.description || product.shortDescription || "",
     image: normalizeImage(product.image),
     url: `${SITE_URL}/produit/${product.slug || id}`,
-    brand: {
-      "@type": "Brand",
-      name: product.brand || SITE_NAME,
-    },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "MAD",
-      price: product.price,
-      availability: "https://schema.org/InStock",
-      url: `${SITE_URL}/produit/${product.slug || id}`,
-    },
-    ...(product.rating != null && {
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: product.rating,
-        bestRating: 5,
-        ratingCount: 42,
-      },
-    }),
+    ...productBrandSchema(product),
+    ...productOfferSchema(product, `${SITE_URL}/produit/${product.slug || id}`),
+    ...productAggregateRatingSchema(product),
   };
 }
 
@@ -320,9 +310,10 @@ function Badge({ className, children }: BadgeProps) {
 }
 
 // ─── STAR RATING ─────────────────────────────────────────────────────────────
-function renderRating(rating: number | string | null | undefined) {
-  const r =
-    typeof rating === "string" ? parseFloat(rating) : rating || 0;
+function renderRating(product: Product) {
+  const summary = productReviewSummary(product);
+  if (summary.average === undefined) return null;
+  const r = summary.average;
   const full = Math.floor(r);
   const half = r % 1 >= 0.5;
 
@@ -336,6 +327,7 @@ function renderRating(rating: number | string | null | undefined) {
     >
       <meta itemProp="ratingValue" content={String(r)} />
       <meta itemProp="bestRating" content="5" />
+      <meta itemProp="reviewCount" content={String(summary.count)} />
       {[...Array(full)].map((_, i) => (
         <Star
           key={`f${i}`}
@@ -456,14 +448,13 @@ function ProductCard({
         >
           <meta itemProp="priceCurrency" content="MAD" />
           <meta itemProp="price" content={String(product.price)} />
-          <meta
+          {productOfferAvailability(product) && <meta
             itemProp="availability"
-            content="https://schema.org/InStock"
-          />
+            content={productOfferAvailability(product)}
+          />}
           <div className="flex flex-col xs:flex-row xs:items-center gap-1">
             <span
               className="text-sm xs:text-base font-display tracking-wide text-gray-900 dark:text-white"
-              itemProp="price"
             >
               {formatPrice(product.price)}
             </span>
@@ -1294,6 +1285,7 @@ export default function HomeClient({
     () => products.find((p) => p.isFeatured && getDiscount(p) > 0) || products[0],
     [products]
   );
+  const featuredReviewSummary = productReviewSummary(featuredVedette ?? {});
   const newArrivals = useMemo(
     () => products.filter((p) => p.isNewProduct).slice(0, 12),
     [products]
@@ -1812,11 +1804,13 @@ export default function HomeClient({
                     )}
 
                     {/* Inline rating */}
-                    <div className="flex items-center gap-2 mb-8 text-sm">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" aria-hidden />
-                      <span className="text-white font-bold">4.9/5</span>
-                      <span className="text-gray-500">· Avis clients</span>
-                    </div>
+                    {featuredReviewSummary.average !== undefined && (
+                      <div className="flex items-center gap-2 mb-8 text-sm">
+                        <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" aria-hidden />
+                        <span className="text-white font-bold">{featuredReviewSummary.average.toFixed(1)}/5</span>
+                        <span className="text-gray-500">· {featuredReviewSummary.count} avis clients</span>
+                      </div>
+                    )}
 
                     {/* Price — simple inline row */}
                     <div
@@ -1830,10 +1824,10 @@ export default function HomeClient({
                         itemProp="price"
                         content={String(featuredVedette.price)}
                       />
-                      <meta
+                      {productOfferAvailability(featuredVedette) && <meta
                         itemProp="availability"
-                        content="https://schema.org/InStock"
-                      />
+                        content={productOfferAvailability(featuredVedette)}
+                      />}
                       <div className="flex flex-col">
                         <span className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
                           Prix Exclusif

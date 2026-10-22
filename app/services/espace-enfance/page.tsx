@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../lib/og-image";
 
 import childSpaceImage from "../../../public/enfant1-optimized.webp";
 
@@ -15,6 +16,22 @@ export const metadata: Metadata = {
   description: PAGE_DESCRIPTION,
   alternates: { canonical: "/services/espace-enfance" },
   robots: { index: true, follow: true },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    url: PAGE_URL,
+    siteName: "IRONZ",
+    locale: "fr_MA",
+    type: "website",
+    images: OG_LOGO_IMAGES,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: TWITTER_LOGO_IMAGES,
+    creator: "@ironz_official",
+  },
 };
 
 const DEVIS_URL = "/demande-devis?service=espace-enfance";

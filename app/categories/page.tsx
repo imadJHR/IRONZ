@@ -2,25 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
+import { getCategoryHub } from "../../lib/category-hub";
 
-// 1. Définition des types
-interface Product {
-  id: string | number;
-  name: string;
-  category?: string;
-  image?: string;
-  slug: string;
-  [key: string]: any; // Pour les autres champs facultatifs
-}
-
-interface Category {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-  productCount: number;
-  slug: string;
-}
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Catégories de produits fitness | IRONZ",
@@ -29,93 +13,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/categories" },
 };
 
-// 2. Fonction de récupération des données typée
-async function getProducts(): Promise<any> {
-  try {
-    const res = await fetch(
-      "https://cts4hw2cbnwl4ur7zp6acy6cyy0jnxeo.lambda-url.eu-north-1.on.aws/api/products",
-      { next: { revalidate: 3600 } } // ISR: Revalidation toutes les heures
-    );
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch products");
-    }
-
-    return await res.json();
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
-}
-
-// 3. Utilitaire slugify typé
-function slugify(text: string): string {
-  if (!text) return "";
-  return text
-    .toString()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w\-]+/g, "")
-    .replace(/\-\-+/g, "-");
-}
-
 export default async function CategoriesPage() {
-  const data = await getProducts();
-
-  // Extraction sécurisée des produits selon le format de l'API
-  let products: Product[] = [];
-  if (Array.isArray(data)) {
-    products = data;
-  } else if (data && Array.isArray(data.products)) {
-    products = data.products;
-  } else if (data && Array.isArray(data.data)) {
-    products = data.data;
-  }
-
-  // Utilisation d'une Map typée pour regrouper les catégories
-  const categoriesMap = new Map<string, Category>();
-
-  if (products.length > 0) {
-    products.forEach((product: Product) => {
-      if (!product.category) return;
-
-      const catName = product.category;
-
-      // Vérification de l'URL de l'image
-      let imageUrl = "/placeholder.svg";
-      if (
-        product.image &&
-        typeof product.image === "string" &&
-        product.image.startsWith("http")
-      ) {
-        imageUrl = product.image;
-      }
-
-      const existingCat = categoriesMap.get(catName);
-
-      if (!existingCat) {
-        categoriesMap.set(catName, {
-          id: catName,
-          name: catName,
-          image: imageUrl,
-          description: `Découvrez notre gamme de ${catName}`,
-          productCount: 1,
-          slug: slugify(catName),
-        });
-      } else {
-        existingCat.productCount += 1;
-        // Met à jour l'image si c'était un placeholder mais que ce produit a une vraie image
-        if (existingCat.image === "/placeholder.svg" && imageUrl !== "/placeholder.svg") {
-          existingCat.image = imageUrl;
-        }
-      }
-    });
-  }
-
-  const categories = Array.from(categoriesMap.values());
+  const categories = await getCategoryHub();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -132,18 +31,18 @@ export default async function CategoriesPage() {
           Catégories de produits IRONZ
         </h1>
 
-        {categories.length === 0 ? (
+        {categories.every((category) => category.productCount === 0) && (
           <div className="text-center py-20 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800">
              <div className="flex flex-col items-center justify-center space-y-3">
                <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                 Aucune catégorie trouvée
+                 Aucun produit disponible pour le moment.
                </p>
                <p className="text-gray-500 dark:text-gray-400">
-                 Impossible de charger les produits pour le moment.
+                 Les catégories du catalogue sont présentées ci-dessous.
                </p>
              </div>
           </div>
-        ) : (
+        )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {categories.map((category) => (
               <Link
@@ -173,7 +72,7 @@ export default async function CategoriesPage() {
                 <div className="p-4 bg-gray-50 dark:bg-gray-800">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                      {category.productCount} produits
+                      {category.productCount} produit{category.productCount === 1 ? "" : "s"}
                     </span>
                     <span className="text-yellow-600 dark:text-yellow-400 text-sm font-medium group-hover:underline flex items-center">
                       Découvrir
@@ -196,7 +95,6 @@ export default async function CategoriesPage() {
               </Link>
             ))}
           </div>
-        )}
       </div>
     </div>
   );

@@ -179,7 +179,7 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-5 leading-relaxed text-gray-600 dark:text-gray-400">
                 <p>IRONZ propose du matériel de fitness, de musculation, des accessoires et des suppléments sportifs à travers un catalogue accessible en ligne.</p>
-                <p>L&apos;entreprise accompagne également des projets d&apos;aménagement et de personnalisation d&apos;espaces sportifs. Le besoin peut concerner un produit précis, une pièce à équiper ou un projet plus global.</p>
+                <p>Nous accompagnons également des projets d&apos;aménagement et de personnalisation d&apos;espaces sportifs. Le besoin peut concerner un produit précis, une pièce à équiper ou un projet plus global.</p>
                 <p>Cette page présente l&apos;identité et le rôle d&apos;IRONZ. Les pages produits, catégories et services détaillent ensuite les solutions correspondantes.</p>
               </div>
             </div>

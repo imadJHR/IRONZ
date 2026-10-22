@@ -12,6 +12,10 @@ import {
 import { categoryUrl, subcategoryUrl } from "../../../lib/category-taxonomy";
 import { productMetaDescription, productMetaTitle } from "../../../lib/product-meta";
 import { OG_LOGO_URL } from "../../../lib/og-image";
+import { productBrandSchema } from "../../../lib/product-brand";
+import { productAggregateRatingSchema } from "../../../lib/product-review-summary";
+import { productOfferSchema } from "../../../lib/product-offer";
+import { productIdentifierSchema } from "../../../lib/product-identifiers";
 
 const SITE_URL = "https://www.ironz.ma";
 export const revalidate = 600;
@@ -163,19 +167,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const images = [product.image, ...(product.gallery || []), ...(product.images || [])].filter(
     (image): image is string => Boolean(image),
   );
-  // Real review records are the only source of truth for aggregate rating.
-  // The backend `reviewCount` / `rating` fields can stay out of sync with
-  // `reviews[]`, which would emit ratings that are not backed by any review.
-  const realReviews = product.reviews ?? [];
-  const reviewCount = realReviews.length;
-  const ratingValue =
-    realReviews.length > 0
-      ? realReviews.reduce(
-          (sum, review) => sum + (Number(review.rating) || 0),
-          0,
-        ) / realReviews.length
-      : 0;
-  const inStock = product.inStock !== false && product.stockQuantity !== 0;
+  const { offers } = productOfferSchema(product, canonicalUrl);
 
   const productSchema: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -184,27 +176,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
     description: productDescription(product),
     image: images,
     url: canonicalUrl,
-    sku: product.sku || product._id || product.id,
-    brand: { "@type": "Brand", name: product.brand || "IRONZ" },
-    offers: {
-      "@type": "Offer",
-      url: canonicalUrl,
-      priceCurrency: "MAD",
-      price: Number(product.price).toFixed(2),
-      availability: inStock
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
+    ...productIdentifierSchema(product),
+    ...productBrandSchema(product),
+    ...productAggregateRatingSchema(product),
+    ...(offers && { offers: {
+      ...offers,
       itemCondition: "https://schema.org/NewCondition",
-    },
+    } }),
   };
-
-  if (reviewCount > 0 && ratingValue > 0) {
-    productSchema.aggregateRating = {
-      "@type": "AggregateRating",
-      ratingValue: Number(ratingValue.toFixed(1)),
-      reviewCount,
-    };
-  }
 
   const categoryPath = categoryUrl(product.category);
   const subcategoryPath = subcategoryUrl(product.category, product.subCategory);

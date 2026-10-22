@@ -35,10 +35,10 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
   "equipements/machine-de-fitness": {
     title: "Machines de fitness et musculation au Maroc | IRONZ",
     description:
-      "Machines de fitness et musculation au Maroc : tapis roulant, vélos, rameur, presse à jambes, rack et home gym, avec des références de 1 999 à 65 000 MAD.",
+      "Machines de fitness et musculation au Maroc : tapis roulant, vélos, rameur, presse à jambes, banc, Home Gym et Reformer Pilates chez IRONZ.",
     heading: "Machines de fitness et musculation au Maroc",
     intro:
-      "Ce rayon réunit les machines de fitness et de musculation IRONZ : tapis roulant, vélos d'appartement, spinning, semi-allongé et rameur pour le cardio, presse à jambes, leg curl, rack et banc pour la musculation, ainsi qu'une station Home Gym, un pack fitness maison et un Reformer Pilates. Pour comparer, partez de vos exercices et de l'espace disponible, puis vérifiez dimensions et caractéristiques sur chaque fiche produit.",
+      "Ce rayon réunit les machines de fitness et de musculation proposées par IRONZ : tapis roulant, vélos d'appartement, spinning, semi-allongé et rameur pour le cardio, presse à jambes et banc pour la musculation, ainsi qu'une station Home Gym, un pack fitness maison et un Reformer Pilates. Pour comparer, partez de vos exercices et de l'espace disponible, puis vérifiez dimensions et caractéristiques sur chaque fiche produit.",
     families: [
       {
         name: "Cardio",
@@ -48,7 +48,7 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
       {
         name: "Musculation",
         detail:
-          "Presse à jambes, leg curl et rack multifonction pour les exercices de renforcement à charge guidée.",
+          "Presse à jambes, banc et station Home Gym pour compléter vos exercices de musculation.",
       },
       {
         name: "Home Gym",
@@ -56,9 +56,9 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
           "Station multifonction et pack fitness complet pour s'entraîner à la maison sur un espace réduit.",
       },
       {
-        name: "Bancs & racks",
+        name: "Banc de musculation",
         detail:
-          "Banc Adidas et structures d'accueil pour compléter vos exercices avec poids libres ou guidés.",
+          "Banc Adidas pour compléter votre installation ; vérifiez les réglages et les usages indiqués sur sa fiche.",
       },
       {
         name: "Pilates",
@@ -69,15 +69,15 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
     guidance: [
       {
         title: "Votre objectif d'entraînement",
-        text: "Le cardio (tapis roulant, vélos, rameur) vise l'endurance et la dépense calorique ; la musculation (presse, leg curl, rack, banc) vise le renforcement et la prise de muscle. Plusieurs appareils, comme le rack multifonction et la station Home Gym, combinent les deux.",
+        text: "Pour le cardio, comparez tapis roulant, vélos et rameur. Pour la musculation, consultez la presse à jambes, le banc et la station Home Gym. Choisissez selon les exercices que vous souhaitez pratiquer.",
       },
       {
         title: "L'espace dont vous disposez",
-        text: "Mesurez l'emplacement prévu avant de choisir : un rameur ou un banc reste compact, tandis qu'une presse à jambes, un rack ou un tapis roulant demandent plus de profondeur. Chaque fiche indique les dimensions de l'appareil, vérifiables avant l'achat.",
+        text: "Mesurez l'emplacement prévu avant de choisir. Comparez l'encombrement de la presse à jambes, du tapis roulant, du rameur ou du banc à partir des dimensions disponibles sur chaque fiche.",
       },
       {
         title: "Usage à domicile ou projet professionnel",
-        text: "Pour un usage à domicile, les vélos, le rameur, le banc et la station Home Gym couvrent l'essentiel. Pour un projet de salle professionnelle, la presse à jambes, le leg curl et le rack multifonction sont conçus pour un usage intensif ; la page aménagement de salle professionnelle vous accompagne sur l'implantation.",
+        text: "Pour un usage à domicile ou un projet de salle professionnelle, vérifiez l'usage prévu, les dimensions et les caractéristiques de chaque appareil. La page aménagement de salle professionnelle vous accompagne sur l'implantation.",
       },
       {
         title: "Comparer les fiches avant de décider",
@@ -113,10 +113,10 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
   "accessoires/accessoires-de-fitness": {
     title: "Accessoires de fitness au Maroc : bandes, tapis et steps | IRONZ",
     description:
-      "Accessoires de fitness au Maroc : bandes de résistance, tapis de yoga, steps, cordes à sauter, ballons et maintiens. 22 références de 75 à 489 MAD.",
+      "Accessoires de fitness au Maroc : bandes de résistance, tapis de yoga, steps, cordes à sauter, ballons, roue abdominale et maintiens chez IRONZ.",
     heading: "Accessoires de fitness au Maroc",
     intro:
-      "Ce rayon rassemble le petit matériel pour vos séances de fitness : bandes de résistance, tapis de yoga, steps, cordes à sauter, ballon et foam roller, ainsi que des poignées de pompes, un hand grip et du matériel de maintien comme des bandes, un bandage de genou ou un support de poignet. Vous y trouverez aussi un sac de sport, un shaker et une goupille de sécurité pour machine. Comparez les formats, résistances et dimensions de chaque fiche pour choisir l'accessoire adapté à vos exercices.",
+      "Ce rayon rassemble le petit matériel pour vos séances de fitness : bandes de résistance, tapis de yoga, steps, cordes à sauter, ballon, roue abdominale et foam roller, ainsi que des poignées de pompes, un hand grip et du matériel de maintien comme des bandes, un bandage de genou ou un support de poignet. Vous y trouverez aussi des bandeaux, un sac de sport et une goupille de sécurité pour machine. Comparez les formats, résistances et dimensions de chaque fiche pour choisir l'accessoire adapté à vos exercices.",
     familiesTitle: "Types d'accessoires",
     familiesAriaLabel: "Types d'accessoires de fitness",
     families: [
@@ -241,7 +241,7 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
   "accessoires/poids-libres": {
     title: "Poids libres : haltères, kettlebells et disques au Maroc | IRONZ",
     description:
-      "Poids libres au Maroc : haltères IRONBULL, haltères PVC, kettlebells et disques de musculation. Comparez 19 références de 99 à 2 350 MAD.",
+      "Poids libres au Maroc : haltères IRONBULL, haltères PVC, kettlebells et disques de musculation. Comparez les charges et les formats chez IRONZ.",
     heading: "Poids libres, haltères et kettlebells au Maroc",
     intro:
       "Ce rayon rassemble les poids libres IRONZ pour la musculation et l'entraînement à domicile ou en salle : haltères IRONBULL dans plusieurs charges, haltères PVC, kettlebells et disques de musculation, dont des disques olympiques. Pour choisir, partez des exercices prévus et de la progression recherchée, puis vérifiez le poids annoncé et les caractéristiques de chaque fiche. Pour les disques, contrôlez aussi la compatibilité avec votre barre.",
@@ -364,21 +364,21 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
     ],
   },
   "supplement/healthy-products": {
-    title: "Crème de riz, sauces et sirops | IRONZ",
+    title: "Healthy Products : compléments et alimentation | IRONZ",
     description:
-      "Crème de riz Applied Nutrition, sauces ServiVita et sirop Vitadulce : retrouvez les produits du rayon Healthy Products chez IRONZ au Maroc.",
-    heading: "Crème de riz, sauces et sirops",
+      "Healthy Products chez IRONZ au Maroc : compléments NOW, crème de riz Applied Nutrition, sauces et sirops ServiVita et Vitadulce. Consultez les compositions.",
+    heading: "Healthy Products : compléments, crème de riz et sauces",
     intro:
-      "Le rayon Healthy Products rassemble ici de la crème de riz Applied Nutrition, une sauce barbecue, une sauce chocolat et un sirop pour pancakes ServiVita, ainsi qu'un sirop de chocolat Vitadulce. Ces références permettent de choisir une préparation à base de riz ou un accompagnement pour vos recettes. Consultez la composition, les valeurs nutritionnelles et les indications disponibles sur chaque fiche avant votre achat. Le nom du rayon ne remplace pas la lecture des informations propres à chaque produit, notamment en cas de besoin alimentaire particulier.",
+      "Le rayon Healthy Products réunit des compléments NOW, notamment de la biotine, des vitamines D3 et K2, de la spiruline et de la maca, ainsi que de la crème de riz Applied Nutrition, des sauces et sirops ServiVita et un sirop de chocolat Vitadulce. Pour comparer ces produits chez IRONZ au Maroc, consultez leur composition, leur format et les indications de chaque fiche. Le nom du rayon ne constitue pas une garantie nutritionnelle ou médicale.",
   },
   /* STEP 5.2C — medium-priority subcategory pages */
   "accessoires/packs-promo": {
-    title: "Packs Promo : bundles musculation, boxe, fitness | IRONZ Maroc",
+    title: "Packs de fitness et musculation : accessoires | IRONZ Maroc",
     description:
-      "Packs d'accessoires complémentaires chez IRONZ : sets musculation (haltères, gants, sangle), packs boxe (gants, protège-dents) et kits fitness (tapis, ballon, kettlebell).",
-    heading: "Packs Promo d'accessoires",
+      "Packs d'accessoires de fitness et musculation chez IRONZ : ceinture, sangles, gants, tapis, ballon, haltères ou kettlebell selon la référence.",
+    heading: "Packs de fitness et musculation",
     intro:
-      "Ces packs regroupent des accessoires complémentaires pour démarrer ou enrichir votre routine : sets de musculation avec haltères et sangle de poignet, packs de boxe avec gants et protège-dents, et kits fitness avec tapis de yoga, ballon et kettlebell. Parcourez chaque référence pour vérifier le contenu et les écarts de prix du moment.",
+      "Ces packs regroupent des accessoires complémentaires : ceinture, sangles et gants pour la musculation, ou tapis de yoga, ballon, haltères et kettlebell selon le pack fitness choisi. Consultez chaque référence pour vérifier le contenu exact et comparer les équipements proposés chez IRONZ au Maroc.",
   },
   "accessoires/vetements": {
     title: "Vêtements de sport et boxe : shorts, débardeurs | IRONZ Maroc",
@@ -389,7 +389,7 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
       "Ce rayon rassemble les vêtements d'entraînement : shorts de boxe en tissu respirant, ensembles compétition avec débardeur et short, shorts de bodybuilding et débardeurs thermiques. Parcourez les références pour choisir l'équipement de sport qui respecte vos mouvements et votre pratique, du fitness à la compétition.",
   },
   "accessoires/accessoires-des-machines": {
-    title: "Accessoires machines musculation : poignées, triangles, poupies | IRONZ",
+    title: "Accessoires machines musculation : poignées, triangles, poulies | IRONZ",
     description:
       "Poignées MAG GRIP, triangle de tirage dos et poulie 120 mm pour machine multiposte : accessoires haut du corps chez IRONZ au Maroc.",
     heading: "Accessoires pour machines de musculation",
@@ -397,12 +397,28 @@ const SUBCATEGORY_SEO: Record<string, SubcategorySeo> = {
       "Ce rayon propose des accessoires conçus pour les machines de musculation et les câbles : les poignées MAG GRIP pour des prises multiples, un triangle de tirage pour cibler le dos, et une poulie de 120 mm compatible avec les multipostes. Ouvrez chaque fiche pour vérifier les dimensions et la compatibilité avec votre installation.",
   },
   "supplement/sauces-healthy": {
-    title: "Sauces Healthy ServiVita : 0% sucre, barbecue et sirop | IRONZ Maroc",
+    title: "Sauces healthy : sauces et packs pour vos recettes | IRONZ Maroc",
     description:
-      "Sauces ServiVita sans sucre ni matières grasses (barbecue, chocolat, sirop pour pancakes) et packs de sauces healthy chez IRONZ.",
-    heading: "Sauces Healthy et sirops ServiVita",
+      "Sauces ServiVita et pack sauce barbecue avec vinaigre de cidre : consultez les compositions et les formats du rayon Sauces healthy chez IRONZ au Maroc.",
+    heading: "Sauces et packs de sauces healthy",
     intro:
-      "Ce rayon propose des sauces ServiVita sans sucre ni matières grasses : une sauce barbecue fumée, une sauce chocolat, un sirop pour pancakes, ainsi qu'un pack combinant sauce barbecue et vinaigre de cidre. Idéales pour adoucir vos préparations culinaires tout en limitant les sucres ajoutés. Consultez la composition de chaque référence avant usage.",
+      "Retrouvez ici les sauces ServiVita et un pack associant sauce barbecue et vinaigre de cidre. Pour choisir un accompagnement pour vos recettes, consultez les variantes, la composition et le contenu de chaque référence. Les sauces chocolat et sirops proposés individuellement se trouvent dans le rayon Healthy Products.",
+  },
+  "supplement/creatine": {
+    title: "Créatine monohydrate au Maroc | IRONZ",
+    description:
+      "Créatine monohydrate BioTechUSA chez IRONZ au Maroc. Consultez le format, la composition et les indications du produit avant de choisir.",
+    heading: "Créatine monohydrate au Maroc",
+    intro:
+      "Ce rayon présente la créatine monohydrate BioTechUSA proposée par IRONZ au Maroc. Consultez sa composition, son format et les indications d'utilisation sur la fiche produit pour comparer cette référence à vos besoins.",
+  },
+  "supplement/magnesium": {
+    title: "Magnésium glycinate au Maroc | IRONZ",
+    description:
+      "Magnésium glycinate NOW chez IRONZ au Maroc. Retrouvez le format en comprimés, la composition et les indications sur la fiche produit.",
+    heading: "Magnésium glycinate au Maroc",
+    intro:
+      "Ce rayon présente le magnésium glycinate NOW au format comprimés. Consultez la composition, le conditionnement et les indications de sa fiche avant votre achat chez IRONZ au Maroc.",
   },
   "supplement/whey-protein": {
     title: "Whey Protein Instant : protéine lactosérum 21 g | IRONZ Maroc",

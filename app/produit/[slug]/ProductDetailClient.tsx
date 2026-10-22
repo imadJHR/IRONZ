@@ -19,6 +19,8 @@ import { optimizeImageUrl } from "../../../lib/image-url";
 import { categoryUrl, subcategoryUrl } from "../../../lib/category-taxonomy";
 import { ReviewsSection } from "../../../components/reviews/reviews-section";
 import { ChevronRightIcon, StarSolid, StarOutline } from "../../../components/reviews/icons";
+import type { ReviewRecord as Review } from "../../../lib/reviews";
+import { productReviewSummary } from "../../../lib/product-review-summary";
 
 // ─── CONSTANTS ───────────────────────────────────────────
 const API_URL =
@@ -27,17 +29,6 @@ const API_URL =
 const PLACEHOLDER = "/placeholder.svg";
 
 // ─── TYPES ───────────────────────────────────────────────
-interface Review {
-  _id?: string;
-  username: string;
-  title: string;
-  body: string;
-  rating: number;
-  verified: boolean;
-  date?: { $date: string } | string;
-  createdAt?: { $date: string } | string;
-}
-
 export interface Product {
   _id?: string;
   id?: string;
@@ -636,7 +627,7 @@ export default function ProductDetailClient({
       : []),
     {
       id: "reviews",
-      label: `Avis (${product.reviews?.length || 0})`,
+      label: `Avis (${reviews?.length || 0})`,
       icon: MessageSquare,
     },
   ];
@@ -923,7 +914,7 @@ export default function ProductDetailClient({
               <div
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-xl border",
-                  product.inStock
+                  !isOutOfStock
                     ? "bg-emerald-50 dark:bg-emerald-900/10 border-emerald-200 dark:border-emerald-900/30"
                     : "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30"
                 )}
@@ -931,18 +922,18 @@ export default function ProductDetailClient({
                 <div
                   className={cn(
                     "w-2.5 h-2.5 rounded-full shrink-0",
-                    product.inStock ? "bg-emerald-500" : "bg-red-500"
+                    !isOutOfStock ? "bg-emerald-500" : "bg-red-500"
                   )}
                 />
                 <span
                   className={cn(
                     "text-sm font-bold",
-                    product.inStock
+                    !isOutOfStock
                       ? "text-emerald-700 dark:text-emerald-400"
                       : "text-red-700 dark:text-red-400"
                   )}
                 >
-                  {product.inStock ? "En stock" : "Rupture de stock"}
+                  {isOutOfStock ? "Indisponible" : "En stock"}
                 </span>
               </div>
 
@@ -1115,15 +1106,8 @@ export default function ProductDetailClient({
 
           {/* ── RATING SUMMARY (above tabs) ───────────── */}
           {(() => {
-            const reviewRows = reviews || [];
-            const detailedCount = reviewRows.length;
-            const summaryCount = detailedCount;
-            const summaryAverage =
-              detailedCount > 0
-                ? reviewRows.reduce((s, r) => s + (Number(r.rating) || 0), 0) /
-                  detailedCount
-                : 0;
-            if (!(summaryAverage > 0) && !(summaryCount > 0)) return null;
+            const { count: summaryCount, average: summaryAverage } = productReviewSummary({ reviews });
+            if (summaryAverage === undefined) return null;
 
             return (
               <button
@@ -1336,6 +1320,7 @@ export default function ProductDetailClient({
                       productId={getProductId(product)}
                       productSlug={String(product.slug || "")}
                       initialReviews={reviews || []}
+                      onReviewsChange={setReviews}
                       declaredRating={product.rating}
                       declaredReviewCount={product.reviewCount}
                     />
@@ -1369,6 +1354,7 @@ export default function ProductDetailClient({
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 {related.map((prod) => {
                   const pDiscount = getDiscount(prod);
+                  const reviewSummary = productReviewSummary(prod);
                   return (
                     <Link
                       key={getProductId(prod)}
@@ -1398,9 +1384,9 @@ export default function ProductDetailClient({
                         <h3 className="font-display uppercase tracking-wide text-xs sm:text-sm text-gray-900 dark:text-white line-clamp-2 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors mb-2 leading-tight">
                           {prod.name}
                         </h3>
-                        {Number(prod.rating) > 0 && (
+                        {reviewSummary.average !== undefined && (
                           <div className="mb-2">
-                            <StarRating rating={prod.rating} size="xs" />
+                            <StarRating rating={reviewSummary.average} size="xs" />
                           </div>
                         )}
                         <div className="flex items-center gap-1.5">
