@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, ChangeEvent, KeyboardEvent, FormEvent } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { appendProductGallery, type ProductGalleryImage } from '../../../../../lib/product-gallery';
 
 import {
   ArrowLeft,
@@ -189,14 +190,13 @@ export default function EditProductPage() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [retryCounter, setRetryCounter] = useState(0);
-  const [activeTab, setActiveTab] = useState<string>('equipements');
   const [autoDiscount, setAutoDiscount] = useState<boolean>(false);
 
   // Images
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [mainImagePreview, setMainImagePreview] = useState<string>('');
-  const [galleryImages, setGalleryImages] = useState<File[]>([]);
-  const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
+  const [galleryImages, setGalleryImages] = useState<ProductGalleryImage[]>([]);
+  const galleryPreviews = galleryImages.map((image) => image.preview);
 
   // Arrays
   const [features, setFeatures] = useState<string[]>([]);
@@ -266,7 +266,16 @@ export default function EditProductPage() {
     const fetchProduct = async (): Promise<void> => {
       try {
         const res = await fetch(`${API_URL}/products/id/${id}`);
-        const result: ProductApiResponse = await res.json();
+        const result: ProductApiResponse | null = await res.json().catch(() => null);
+
+        if (!res.ok || !result || result.success === false) {
+          throw new Error(
+            result?.message ||
+              (res.status === 404
+                ? 'Produit introuvable.'
+                : `Impossible de charger le produit (HTTP ${res.status}). Veuillez réessayer.`)
+          );
+        }
 
         if (!result.success && !result.data) {
           if (result._id) {
@@ -281,9 +290,9 @@ export default function EditProductPage() {
         setFormData({
           name: product.name || '',
           description: product.description || '',
-          price: String(product.price || ''),
-          oldPrice: String(product.oldPrice || ''),
-          discount: String(product.discount || ''),
+          price: String(product.price ?? ''),
+          oldPrice: String(product.oldPrice ?? ''),
+          discount: String(product.discount ?? ''),
           category: product.category || 'Equipements',
           subCategory: product.subCategory || '',
           rating: product.rating || 0,
@@ -311,17 +320,17 @@ export default function EditProductPage() {
         setMaterials(product.materials || []);
 
         if (product.image) setMainImagePreview(product.image);
-        if (product.gallery && product.gallery.length > 0) {
-          setGalleryPreviews(product.gallery);
-        }
+        setGalleryImages((product.gallery || []).map((preview) => ({ preview })));
 
-        const catObj = categories.find(
-          (c) =>
-            c.dbValue.toLowerCase() === (product.category || '').toLowerCase()
-        );
       } catch (error) {
           console.error("Error fetching product:", error);
-          setFetchError("Produit introuvable");
+          setFetchError(
+            error instanceof TypeError
+              ? 'Connexion au serveur impossible. Vérifiez votre connexion puis réessayez.'
+              : error instanceof Error
+                ? error.message
+                : 'Erreur lors du chargement du produit. Veuillez réessayer.'
+          );
           showNotification("Erreur lors du chargement du produit", "error");
         } finally {
           setIsLoading(false);
@@ -406,17 +415,33 @@ export default function EditProductPage() {
 
   const handleGalleryUpload = (e: ChangeEvent<HTMLInputElement>): void => {
     const files = Array.from(e.target.files || []);
+    e.target.value = '';
     if (!files.length) return;
-    const validFiles = files.filter((file) => file.size <= 5 * 1024 * 1024);
-    setGalleryImages((prev) => [...prev, ...validFiles]);
-    const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
-    setGalleryPreviews((prev) => [...prev, ...newPreviews]);
-    showNotification(`${validFiles.length} image(s) ajoutée(s)`);
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (files.some((file) => !allowedTypes.includes(file.type))) {
+      showNotification('Formats acceptés : JPEG, PNG, WebP et GIF.', 'error');
+      return;
+    }
+    if (files.some((file) => file.size > 5 * 1024 * 1024)) {
+      showNotification('Chaque image doit faire moins de 5 Mo.', 'error');
+      return;
+    }
+    if (galleryImages.length + files.length > 10) {
+      showNotification('La galerie peut contenir au maximum 10 images.', 'error');
+      return;
+    }
+    setGalleryImages((prev) => [
+      ...prev,
+      ...files.map((file) => ({ file, preview: URL.createObjectURL(file) })),
+    ]);
+    showNotification(`${files.length} image(s) ajoutée(s). Enregistrez pour confirmer.`);
   };
 
   const removeGalleryImage = (index: number): void => {
-    setGalleryPreviews((prev) => prev.filter((_, i) => i !== index));
-    showNotification('Image retirée de la vue');
+    const image = galleryImages[index];
+    if (image?.file) URL.revokeObjectURL(image.preview);
+    setGalleryImages((prev) => prev.filter((_, i) => i !== index));
+    showNotification('Image retirée. Enregistrez pour confirmer la suppression.');
   };
 
   // ─── Form handlers ────────────────────────────────────────────────────────────
@@ -676,19 +701,20 @@ export default function EditProductPage() {
       formDataToSend.append('shipping', JSON.stringify(shipping));
 
       if (mainImage) formDataToSend.append('image', mainImage);
-      galleryImages.forEach((file) => {
-        formDataToSend.append('gallery', file);
-      });
+      appendProductGallery(formDataToSend, galleryImages);
 
       const response = await fetch(`${API_URL}/products/${id}`, {
         method: 'PUT',
         body: formDataToSend,
       });
 
-      const data: { message?: string } = await response.json();
+      const data: { success?: boolean; message?: string } | null =
+        await response.json().catch(() => null);
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to update product');
+      if (!response.ok || data?.success === false) {
+        throw new Error(
+          data?.message || `Impossible de sauvegarder le produit (HTTP ${response.status}). Veuillez réessayer.`
+        );
       }
 
       showNotification('Produit mis à jour avec succès !');
@@ -707,7 +733,9 @@ export default function EditProductPage() {
 
   // ─── Derived values ───────────────────────────────────────────────────────────
 
-  const selectedCategory = categories.find((c) => c.id === activeTab);
+  const selectedCategory = categories.find(
+    (category) => category.dbValue.toLowerCase() === formData.category.toLowerCase()
+  );
   const completion =
     formData.name && formData.description && formData.price ? '100%' : '50%';
 
@@ -733,7 +761,7 @@ export default function EditProductPage() {
           </div>
           <h1 className="text-2xl font-black text-gray-900 mb-2">Impossible de charger</h1>
           <p className="text-gray-500 text-sm mb-6">
-            Le serveur met du temps à répondre. Essayez de rafraîchir.
+            {fetchError}
           </p>
           <div className="flex items-center justify-center gap-3">
             <button
@@ -875,13 +903,12 @@ export default function EditProductPage() {
               <div className="space-y-4">
                 {categories.map((category) => {
                   const Icon = category.icon;
-                  const isActive = activeTab === category.id;
+                  const isActive = selectedCategory?.id === category.id;
 
                   return (
                     <button
                       key={category.id}
                       onClick={() => {
-                        setActiveTab(category.id);
                         setFormData((prev) => ({
                           ...prev,
                           category: category.dbValue,
@@ -1085,7 +1112,7 @@ export default function EditProductPage() {
                           <input
                             ref={fileInputRef}
                             type="file"
-                            accept="image/*"
+                            accept="image/jpeg,image/png,image/webp,image/gif"
                             onChange={handleMainImageUpload}
                             className="hidden"
                           />
@@ -1137,8 +1164,9 @@ export default function EditProductPage() {
                           <input
                             ref={galleryInputRef}
                             type="file"
-                            accept="image/*"
+                            accept="image/jpeg,image/png,image/webp,image/gif"
                             multiple
+                            disabled={isSubmitting}
                             onChange={handleGalleryUpload}
                             className="hidden"
                           />
@@ -1169,8 +1197,9 @@ export default function EditProductPage() {
                                   <button
                                     type="button"
                                     onClick={() => removeGalleryImage(index)}
+                                    disabled={isSubmitting}
                                     className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-                                    title="Retirer de la vue"
+                                    title="Supprimer de la galerie"
                                   >
                                     <X className="w-3 h-3" />
                                   </button>
