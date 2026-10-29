@@ -151,6 +151,8 @@ const CloudImg = memo(
     return (
       <Image
         src={imgSrc}
+        // Cloudinary already optimizes these images; avoid Vercel's image quota.
+        unoptimized={imgSrc.startsWith("https://res.cloudinary.com/")}
         alt={alt}
         width={fill ? undefined : 800}
         height={fill ? undefined : 800}

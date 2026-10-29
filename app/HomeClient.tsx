@@ -266,6 +266,8 @@ function CloudImg({
   return (
     <Image
       src={source}
+      // Cloudinary already optimizes these images; avoid Vercel's image quota.
+      unoptimized={source.startsWith("https://res.cloudinary.com/")}
       alt={alt}
       loading={priority ? undefined : "lazy"}
       priority={priority}
