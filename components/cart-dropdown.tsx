@@ -176,6 +176,11 @@ const handleRemoveItem = (item: CartItem, e: MouseEvent<HTMLButtonElement>): voi
                                 <span className="text-xs text-gray-500 dark:text-gray-400">{item.selectedColor}</span>
                               </div>
                             )}
+                            {item.selectedTaille && (
+                              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                Taille : {item.selectedTaille}
+                              </p>
+                            )}
                             <div className="flex items-center mt-2">
                               <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded" role="group" aria-label="Contrôle de quantité">
                                 <QuantityButton

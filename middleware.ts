@@ -16,7 +16,7 @@ import { clerkMiddleware } from '@clerk/nextjs/server';
  * `https://<instance>.clerk.accounts.dev/v1/client/handshake`. The handshake
  * response carries `X-Robots-Tag: noindex, nofollow`, which removes every
  * public page from Google's index (BLOCKED_BY_HTTP_HEADER). Narrowing the
- * matcher to /api is the source-side fix; /robots.txt and /sitemap.xml are
+ * matcher to /api/reviews is the source-side fix; /robots.txt and /sitemap.xml are
  * therefore never touched by Clerk either.
  *
  * /ironz-setup is not Clerk-protected: it uses its own client-side password
@@ -25,5 +25,5 @@ import { clerkMiddleware } from '@clerk/nextjs/server';
 export default clerkMiddleware();
 
 export const config = {
-  matcher: ['/api/(.*)'],
+  matcher: ['/api/reviews/:path*'],
 };

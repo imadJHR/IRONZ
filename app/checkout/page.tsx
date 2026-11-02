@@ -674,7 +674,7 @@ export default function CheckoutPage() {
               <div className="space-y-4 md:space-y-6 max-h-[300px] md:max-h-[350px] overflow-y-auto mb-6 md:mb-8 pr-2 custom-scrollbar">
                 {cart.map((item: CartItem) => (
                   <div
-                    key={`${item.id}-${item.selectedColor || "default"}`}
+                    key={`${item.id}-${item.selectedColor || "default"}-${item.selectedTaille || "default"}`}
                     className="flex gap-3 md:gap-4 items-center p-3 rounded-xl bg-zinc-900/50 hover:bg-zinc-900 transition-colors"
                   >
                     <div className="w-14 h-14 md:w-16 md:h-16 bg-zinc-800 rounded-xl flex-shrink-0 overflow-hidden border border-zinc-700">

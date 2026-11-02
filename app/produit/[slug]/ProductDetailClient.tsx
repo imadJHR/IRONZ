@@ -2,6 +2,7 @@
 "use client";
 
 import { getDiscount } from "../../../lib/product-pricing";
+import { productSizes } from "../../../lib/product-sizes";
 
 import { useState, useEffect, useCallback, memo } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -66,6 +67,7 @@ export interface Product {
     estimatedDelivery?: string;
   };
   colors?: unknown;
+  taille?: unknown;
   sku?: string;
   warranty?: string;
   materials?: string[];
@@ -407,6 +409,7 @@ export default function ProductDetailClient({
     const firstColor = normalizeColorOptions(initialProduct.colors)[0];
     return firstColor?.value || null;
   });
+  const [selectedTaille, setSelectedTaille] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastState>({
     show: false,
     message: "",
@@ -421,6 +424,11 @@ export default function ProductDetailClient({
   const { addToCart } = useCart();
 
   const colorOptions = product ? normalizeColorOptions(product.colors) : [];
+  const sizeOptions = productSizes(product?.taille);
+
+  useEffect(() => {
+    setSelectedTaille(null);
+  }, [product]);
 
   useEffect(() => {
     const nextColors = product ? normalizeColorOptions(product.colors) : [];
@@ -458,6 +466,12 @@ export default function ProductDetailClient({
       return false;
     }
 
+    const sizes = productSizes(product.taille);
+    if (sizes.length > 0 && (!selectedTaille || !sizes.includes(selectedTaille))) {
+      showToast("Sélectionnez une taille", "error");
+      return false;
+    }
+
     addToCart({
       id: getProductId(product),
       name: product.name,
@@ -465,11 +479,12 @@ export default function ProductDetailClient({
       image: product.image,
       slug: product.slug,
       selectedColor: colorForCart,
+      selectedTaille: sizes.length > 0 ? selectedTaille : null,
       quantity,
     });
     showToast("Ajouté au panier ✓", "success");
     return true;
-  }, [product, quantity, selectedColor, isOutOfStockDerived, addToCart, showToast]);
+  }, [product, quantity, selectedColor, selectedTaille, isOutOfStockDerived, addToCart, showToast]);
 
   const handleBuyNow = useCallback(() => {
     if (handleAddToCart()) router.push("/panier");
@@ -949,6 +964,32 @@ export default function ProductDetailClient({
               )}
 
               {/* Colors */}
+              {sizeOptions.length > 0 && (
+                <fieldset>
+                  <legend className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                    Taille
+                  </legend>
+                  <div className="flex gap-2 flex-wrap">
+                    {sizeOptions.map((size) => (
+                      <button
+                        key={size}
+                        type="button"
+                        aria-pressed={selectedTaille === size}
+                        onClick={() => setSelectedTaille(size)}
+                        className={cn(
+                          "px-3 py-2 rounded-lg border text-xs font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500",
+                          selectedTaille === size
+                            ? "border-yellow-500 bg-yellow-500 text-black shadow-sm"
+                            : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-yellow-500"
+                        )}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+
               {colorOptions.length > 0 && (
                 <div>
                   <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
