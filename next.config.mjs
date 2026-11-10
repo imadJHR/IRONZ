@@ -29,6 +29,12 @@ const nextConfig = {
             { source: '/services/conception-produits', destination: '/services/personnalisation-accessoires', permanent: true },
         ];
     },
+    async headers() {
+        return [{
+            source: '/black-friday/responsive/:path*',
+            headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+        }];
+    },
     images: {
         deviceSizes: [320, 480, 640, 750, 828, 1080, 1200, 1600, 1920],
         qualities: [45, 60],

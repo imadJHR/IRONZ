@@ -2,7 +2,9 @@
 
 Tool: built-in `image_gen`, image edit mode. The six original posters remain in `public/black-friday/`. The supplied white and pale-yellow IRONZ background is preserved as `public/black-friday/ironz-background.png`.
 
-The edited product photos are 1254 × 1254 pixels. The selected outputs were encoded as WebP at quality 85 with Sharp; no further creative edits were made during encoding. Next/Image serves responsive sizes at configured quality 60.
+The edited product photos are 1254 × 1254 pixels. Full-resolution delivery files use WebP quality 70. The responsive files use quality 55 at 240/384 pixels and quality 65 at 640/960 pixels. Only resizing and encoding are applied; the product composition remains unchanged.
+
+Run `node scripts/prepare-black-friday-images.mjs` to rebuild the responsive variants and their manifest. Filenames include content hashes for long-term browser caching. Native responsive HTML serves these static files without request-time resizing. The hero and first product row load eagerly; smaller inline previews appear while the full images download.
 
 ## Prompt template used for each image
 

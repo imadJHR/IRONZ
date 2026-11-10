@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import BlackFridayImage from "./black-friday-image";
 import Link from "next/link";
 import { PackIcon } from "./black-friday-icons";
 import { BLACK_FRIDAY_PACKS, getBlackFridaySavings } from "../lib/black-friday";
@@ -51,7 +51,7 @@ export default function BlackFridaySection({ standalone = false }: { standalone?
             return (
               <article key={pack.id} className={`${styles.card} group flex min-w-0 flex-col overflow-hidden rounded-lg border border-white/10 bg-[#1b1b1b] hover:border-yellow-400/50`}>
                 <Link href={href} aria-label={`Découvrir ${pack.name}`} className="block overflow-hidden bg-white focus-visible:outline-2 focus-visible:outline-yellow-400 focus-visible:-outline-offset-4">
-                  <Image src={pack.image} alt={pack.imageAlt} width={1000} height={1000} quality={60} preload={standalone && index === 0} sizes="(max-width: 639px) calc(50vw - 22px), (max-width: 1023px) 50vw, (max-width: 1399px) 33vw, 430px" className={`${styles.photo} aspect-square w-full object-contain`} />
+                  <BlackFridayImage src={pack.image} alt={pack.imageAlt} eager={standalone && index < 3} priority={standalone && index === 0} sizes="(max-width: 639px) calc(50vw - 22px), (max-width: 1023px) 50vw, (max-width: 1399px) 33vw, 430px" className={`${styles.photo} aspect-square w-full object-contain`} />
                 </Link>
                 <div className="flex flex-1 flex-col px-3 pb-3 pt-4 sm:px-6 sm:pb-4 sm:pt-6">
                   <p className="mb-2 min-h-8 text-[10px] font-medium leading-4 text-yellow-400 sm:min-h-0 sm:text-xs">{pack.subtitle}</p>

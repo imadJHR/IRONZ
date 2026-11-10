@@ -1,4 +1,4 @@
-import Image from "next/image";
+import BlackFridayImage from "./black-friday-image";
 import Link from "next/link";
 import { PackIcon } from "./black-friday-icons";
 import { BLACK_FRIDAY_PACKS, getBlackFridaySavings, type BlackFridayPack } from "../lib/black-friday";
@@ -24,7 +24,7 @@ export default function BlackFridayProduct({ pack }: { pack: BlackFridayPack }) 
         </nav>
         <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-14">
           <div className="overflow-hidden rounded-xl bg-white">
-            <Image src={pack.image} alt={pack.imageAlt} width={1254} height={1254} preload quality={60} sizes="(max-width: 1023px) 100vw, 650px" className="aspect-square h-auto w-full object-contain" />
+            <BlackFridayImage src={pack.image} alt={pack.imageAlt} eager priority sizes="(max-width: 1023px) calc(100vw - 32px), 650px" className="aspect-square h-auto w-full object-contain" />
           </div>
           <div className="lg:py-4">
             <Link href="/black-friday" className="inline-flex min-h-11 items-center text-xs font-semibold uppercase tracking-widest text-yellow-400">Tous les packs Black Friday</Link>
@@ -55,7 +55,7 @@ export default function BlackFridayProduct({ pack }: { pack: BlackFridayPack }) 
         <section aria-labelledby="other-packs" className="mt-12 border-t border-white/15 pt-8 sm:mt-16">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4"><h2 id="other-packs" className="font-display text-3xl uppercase">Comparez les autres packs</h2><Link href="/black-friday" className="text-sm text-yellow-400 underline underline-offset-4">Voir les 6 offres</Link></div>
           <div className="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">{related.map((item) => <Link key={item.id} href={`/produit/${item.slug}`} className="overflow-hidden rounded-xl border border-white/10 bg-zinc-900 focus-visible:outline-2 focus-visible:outline-yellow-400">
-            <Image src={item.image} alt={item.imageAlt} width={600} height={600} quality={60} sizes="(max-width: 1279px) 50vw, 25vw" className="aspect-square w-full object-contain" />
+            <BlackFridayImage src={item.image} alt={item.imageAlt} sizes="(max-width: 1279px) 50vw, 25vw" className="aspect-square w-full object-contain" />
             <div className="p-3 sm:p-5"><h3 className="font-display text-lg uppercase sm:text-xl">{item.name}</h3><p className="mt-2 text-sm font-semibold text-yellow-400">{price(item.price)}</p></div>
           </Link>)}</div>
         </section>
