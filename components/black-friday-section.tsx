@@ -29,8 +29,8 @@ export default function BlackFridaySection({ standalone = false }: { standalone?
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
         <div className={styles.header}>
           <div>
-            <Heading id="black-friday-title" className={styles.heading}>Black <span className="text-yellow-400">Friday.</span>{standalone && <span className="sr-only"> Packs de nutrition sportive au Maroc</span>}</Heading>
-            <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-300 sm:text-base">Whey, créatine, crème de riz : 6 packs à prix réduit.</p>
+            <Heading id="black-friday-title" className={styles.heading}>Black <span className="text-yellow-400">Friday.</span>{standalone && <span className="mt-3 block font-sans text-base font-semibold normal-case leading-snug tracking-normal text-zinc-200 sm:text-xl">Packs de nutrition sportive au Maroc</span>}</Heading>
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-zinc-300 sm:text-base">{standalone ? "Comparez nos 6 packs de whey, créatine, crème de riz, gainer et vitamines. Livraison offerte au Maroc." : "Whey, créatine, crème de riz : 6 packs à prix réduit."}</p>
           </div>
           <div className={styles.offer}>
             <div className={styles.ticket}><p className={styles.ticketLabel}>À partir de</p><p className={styles.ticketPrice}>875 <small>DH</small></p></div>

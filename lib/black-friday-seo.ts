@@ -46,7 +46,7 @@ export function blackFridayCollectionSchema() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "@id": `${SITE_URL}/black-friday#collection`,
-    name: "Packs Black Friday IRONZ au Maroc",
+    name: "Packs Black Friday de nutrition sportive au Maroc",
     description: "Six packs de nutrition sportive avec whey, créatine, crème de riz, gainer ou vitamines. Livraison gratuite au Maroc.",
     url: `${SITE_URL}/black-friday`,
     inLanguage: "fr-MA",
