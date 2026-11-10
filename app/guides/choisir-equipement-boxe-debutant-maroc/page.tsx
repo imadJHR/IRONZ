@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../lib/og-image";
+import { EDITORIAL_AUTHOR, EditorialCredit } from "../../../components/seo/editorial-identity";
 
 export const metadata = {
   title: "Équipement de boxe débutant au Maroc : par quoi commencer ? | IRONZ",
@@ -79,7 +80,7 @@ const structuredData = [
     datePublished: "2026-09-20",
     dateModified: "2026-10-11",
     inLanguage: "fr-MA",
-    author: { "@type": "Organization", name: "IRONZ" },
+    author: EDITORIAL_AUTHOR,
     image: "https://www.ironz.ma/og-image.jpg",
     publisher: {
       "@type": "Organization",
@@ -128,6 +129,7 @@ export default function GuideEquipementBoxeDebutant() {
       <h1 className="mb-8 font-display text-4xl uppercase leading-tight tracking-wide sm:text-5xl">
         Équipement de boxe débutant au Maroc : par quoi commencer ?
       </h1>
+      <EditorialCredit />
 
       <p className="mb-12 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
         Il n'existe pas de liste universelle pour commencer la boxe. Le premier achat

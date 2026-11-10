@@ -11,14 +11,14 @@ export const article: BlogArticle = {
   date: '2026-10-11',
   readTime: '10 min',
   intro: [
-    'Ouvrir une salle de sport professionnelle au Maroc n’est pas un home gym en plus grand : plusieurs dizaines d’adhérents simultanés, des usages intensifs quotidiens, des attentes de confort et de diversité qui n’existent pas à domicile. L’investissement se chiffre en centaines de milliers de dirhams, et chaque erreur de dimensionnement se paie pendant des années.',
+    "Un projet de salle de sport professionnelle au Maroc se prépare selon les utilisateurs, la fréquentation et les activités prévues. L’équipement, les dégagements et les espaces annexes se discutent à partir du lieu et des usages, puis se chiffrent sur les besoins retenus.",
     'Ce guide donne la méthode : définir le positionnement, découper les zones, choisir le mix d’équipements et les marques professionnelles, puis chiffrer. Les références et les prix évoluent, demandez un devis complet avant de valider quoi que ce soit.',
   ],
   sections: [
     {
       h2: 'Home gym et salle pro : deux projets différents',
       paragraphs: [
-        'Un home gym sert une personne ou une famille, avec des horaires libres et un usage modéré. Une salle professionnelle sert des dizaines de personnes en simultané, douze heures par jour, avec des pics le matin et le soir. Les équipements doivent supporter un usage intensif, les circulations doivent absorber les flux, et l’offre doit couvrir tous les profils : débutants, confirmés, cours collectifs.',
+        "Un Home Gym répond à un usage privé ; une salle professionnelle peut accueillir plusieurs utilisateurs avec des activités et des horaires différents. Décrivez l’affluence attendue et la fréquence d’utilisation pour vérifier l’adéquation des équipements et prévoir les circulations.",
         'La différence se voit aussi dans les attentes : un adhérent qui paie un abonnement compare votre salle aux standards qu’il connaît — diversité des machines, espace fonctionnel, vestiaires, propreté. Le positionnement (premium, généraliste, low-cost, spécialisé) décide de tout le reste.',
       ],
       list: [
@@ -32,11 +32,11 @@ export const article: BlogArticle = {
       h2: 'Découper la salle en zones avant d’acheter',
       paragraphs: [
         'Comme pour tout projet, on dessine les zones avant d’acheter la première machine : accueil, cardio-training, musculation libre, musculation guidée, espace fonctionnel, cours collectifs, vestiaires. Chaque zone a sa surface, son sol et son ambiance.',
-        'La règle couramment retenue est de compter 4 à 6 m² par adhérent présent en simultané pour les zones d’entraînement, hors accueil et vestiaires. Une salle qui reçoit 30 personnes au pic a besoin de 120 à 180 m² dédiés à l’entraînement, plus les annexes.',
+        "Déterminez la surface utile à partir des activités, des équipements et de l’affluence attendue. Distinguez entraînement, passages, rangement et espaces annexes, puis vérifiez les dimensions en utilisation et les dégagements propres à chaque référence.",
       ],
       list: [
         '<strong>Cardio-training</strong> — tapis, vélos, elliptiques près des ouvertures et de la ventilation.',
-        '<strong>Musculation libre</strong> — au centre, sur dalles épaisses, avec dégagements de sécurité.',
+        "<strong>Musculation libre</strong> — prévoir les mouvements, les dégagements et les caractéristiques du sol à vérifier.",
         '<strong>Musculation guidée</strong> — contre les murs, machines et poulies en enfilade.',
         '<strong>Fonctionnel et cours</strong> — à l’écart, sur gazon ou sol adapté, sans conflit d’usage.',
       ],
@@ -44,20 +44,20 @@ export const article: BlogArticle = {
     {
       h2: 'Le mix d’équipements d’une salle pro',
       paragraphs: [
-        'Le mix type d’une salle généraliste combine cardio (un tiers du parc machines), musculation guidée (un tiers) et poids libres avec racks (un tiers), plus un espace fonctionnel. Les proportions varient selon le positionnement : une salle orientée force met l’accent sur racks et disques, une salle fitness sur cardio et cours.',
-        'Pour les marques professionnelles — Matrix, Life Fitness, Topgym — l’enjeu est triple : fiabilité en usage intensif, image auprès des adhérents, et disponibilité des pièces. C’est aussi un argument commercial : les adhérents reconnaissent ces marques.',
+        "Le choix entre cardio, machines guidées, poids libres et espace fonctionnel dépend des activités proposées et des utilisateurs attendus. Définissez les priorités et les postes sollicités en même temps, sans appliquer une proportion fixe à toutes les salles.",
+        'Pour comparer des marques professionnelles comme Matrix, Life Fitness ou Topgym, examinez l’usage prévu, le suivi du matériel et les conditions de disponibilité des pièces. Ces noms sont des exemples de marché ; toute marque ou référence envisagée pour un projet IRONZ reste à confirmer lors du devis.',
       ],
       list: [
         '<strong>Cardio</strong> — tapis, vélos, elliptiques en nombre suffisant pour les pics.',
         '<strong>Machines guidées</strong> — Smith, charges guidées, poulies : un mouvement par machine.',
         '<strong>Poids libres et racks</strong> — haltères, barres, disques, racks avec sécurités.',
-        '<strong>Marques pro reconnues</strong> — Matrix, Life Fitness, Topgym selon le budget.',
+        '<strong>Exemples de marques</strong> — Matrix, Life Fitness et Topgym, à comparer selon le projet ; fourniture à confirmer.',
       ],
     },
     {
       h2: 'Sol, ventilation et annexes : l’invisible qui compte',
       paragraphs: [
-        'Le sol se choisit par zone : dalles épaisses en muscu libre, rouleaux en cardio, gazon en fonctionnel. La ventilation se dimensionne pour les pics : une salle pleine en été au Maroc sans renouvellement d’air fait fuir les adhérents.',
+        "Décrivez les sollicitations de chaque zone avant de choisir le revêtement. Vérifiez les caractéristiques des références pour le support, les équipements et les usages prévus. Faites également préciser les besoins de renouvellement d’air selon le lieu et sa fréquentation.",
         'Les vestiaires, les douches et l’accueil pèsent dans la décision d’abonnement autant que les machines. Prévoyez-les dès le plan avec leurs surfaces, leur plomberie et leur ventilation propres.',
       ],
       list: [
@@ -69,11 +69,11 @@ export const article: BlogArticle = {
     {
       h2: 'Budget et méthode de chiffrage',
       paragraphs: [
-        'L’équipement complet d’une petite salle commerciale démarre souvent autour de 150 000 à 400 000 DH, et beaucoup plus avec des marques professionnelles haut de gamme ou une grande surface. À cela s’ajoutent le revêtement, l’aménagement, la livraison et l’installation.',
+        "Le budget dépend du matériel à conserver, des références et quantités souhaitées, des surfaces et des prestations retenues. Distinguez les équipements, le revêtement et les prestations éventuelles pour demander un chiffrage détaillé, sans fourchette universelle.",
         'La méthode la plus sûre est de définir le plan et la liste d’équipements, puis de demander un devis complet qui couvre l’ensemble. Ne validez jamais un investissement de ce niveau sans chiffrage détaillé poste par poste.',
       ],
       list: [
-        '<strong>Trois postes</strong> — aménagement et sol, équipements, livraison et installation.',
+        "<strong>Postes à chiffrer</strong> — équipements, surfaces et prestations éventuelles à confirmer, dont livraison ou installation.",
         '<strong>Devis détaillé</strong> — poste par poste, sur plan, avant toute commande.',
         '<strong>Marge de démarrage</strong> — gardez une réserve pour les ajustements des premiers mois.',
       ],
@@ -85,7 +85,7 @@ export const article: BlogArticle = {
       ],
       list: [
         '<strong>Acheter avant le plan</strong> — machines qui ne passent pas les portes ou zones surchargées.',
-        '<strong>Matériel domestique en salle pro</strong> — fiabilité insuffisante en usage intensif.',
+        "<strong>Usage non vérifié</strong> — faire confirmer l’adéquation des références à l’usage collectif ou intensif envisagé.",
         '<strong>Ventilation oubliée</strong> — la salle pleine d’été sans air neuf fait fuir.',
         '<strong>Pas de devis global</strong> — valider un tel investissement sans chiffrage complet.',
         '<strong>Ne pas vérifier la fiche au moment de la commande</strong> — références et stocks évoluent, confirmez avant l’achat.',
@@ -95,15 +95,15 @@ export const article: BlogArticle = {
   faq: [
     {
       q: 'Quelle surface pour une salle professionnelle ?',
-      a: 'Comptez 4 à 6 m² par adhérent simultané pour l’entraînement, plus accueil et vestiaires. Une salle de 30 personnes au pic demande 120 à 180 m² d’entraînement.',
+      a: "La surface dépend des activités, de l’affluence et des équipements. Relevez les dimensions utiles et les espaces annexes, puis vérifiez les dimensions en utilisation et les dégagements des références. Un ratio par personne ne suffit pas à définir l’implantation.",
     },
     {
       q: 'Quelles marques pour une salle pro au Maroc ?',
-      a: 'Matrix, Life Fitness et Topgym sont des références professionnelles : fiabilité en usage intensif, image auprès des adhérents et pièces disponibles.',
+      a: 'Matrix, Life Fitness et Topgym peuvent servir d’exemples pour comparer les gammes professionnelles. Pour un projet IRONZ, faites confirmer la marque, le modèle, la fourniture et le suivi des pièces lors du devis.',
     },
     {
       q: 'Quel budget prévoir ?',
-      a: 'Souvent 150 000 à 400 000 DH pour une petite salle, plus avec marques premium ou grande surface, hors aménagement et installation. Un devis détaillé est indispensable.',
+      a: "Listez le matériel existant, les références recherchées et les surfaces concernées. Demandez un devis par poste avec les prestations comprises et leurs conditions ; le budget se définit pour votre demande plutôt que par une fourchette générale.",
     },
     {
       q: 'Home gym ou salle pro : que choisir ?',

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { SITE_EMAIL } from "../../lib/site";
 import {
   ArrowRight,
   Building2,
@@ -270,8 +271,11 @@ export default function AboutPage() {
                 <a href="tel:+212674114446" className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-5 text-gray-700 hover:border-yellow-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
                   <Phone className="h-5 w-5 shrink-0 text-yellow-500" aria-hidden="true" />+212 674-114446
                 </a>
+                <a href={`mailto:${SITE_EMAIL}`} className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-5 text-gray-700 hover:border-yellow-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
+                  <Mail className="h-5 w-5 shrink-0 text-yellow-500" aria-hidden="true" />{SITE_EMAIL}
+                </a>
                 <a href="mailto:muscleironz2019@gmail.com" className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-5 text-gray-700 hover:border-yellow-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
-                  <Mail className="h-5 w-5 shrink-0 text-yellow-500" aria-hidden="true" />muscleironz2019@gmail.com
+                  <Mail className="h-5 w-5 shrink-0 text-yellow-500" aria-hidden="true" />Autre email : muscleironz2019@gmail.com
                 </a>
               </div>
             </div>

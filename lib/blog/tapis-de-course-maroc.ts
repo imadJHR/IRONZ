@@ -12,7 +12,10 @@ export const article: BlogArticle = {
   readTime: '8 min',
   intro: [
     'Acheter un tapis de course au Maroc est souvent décidé pour une raison simple : marcher ou courir sans dépendre des horaires d’une salle, de la circulation ou de la météo. Mais entre le modèle pliable que l’on range entre deux séances et la machine lourde qui reste au milieu de la pièce, l’écart est grand. Ce guide passe en revue les critères qui comptent réellement avant de commander.',
-    'L’approche est la même que pour tout équipement fitness : on mesure d’abord l’espace, on définit l’usage, puis on compare les caractéristiques. Les références et les stocks évoluent, les informations données ici sont donc à confirmer sur la fiche produit au moment de l’achat.',
+    'L’approche est la même que pour tout équipement fitness : on mesure d’abord l’espace, on définit l’usage, puis on compare les caractéristiques. Les références et les stocks évoluent, les informations données ici sont donc à confirmer sur la fiche produit au moment de l’achat. Avant de vous décider, vous pouvez comparer tapis roulant, vélo et rameur.',
+  ],
+  contextualLinks: [
+    { anchor: "comparer tapis roulant, vélo et rameur", href: "/guides/choisir-machine-cardio-tapis-velo-rameur-maroc" },
   ],
   sections: [
     {

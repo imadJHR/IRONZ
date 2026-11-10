@@ -1,10 +1,11 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { SITE_CONTACTS, SITE_EMAIL } from "../../lib/site";
 
-const PHONE_HREF = "tel:+212674114446";
-const PHONE_LABEL = "+212 674-114446";
+const PHONE_HREF = SITE_CONTACTS[0].href;
+const PHONE_LABEL = SITE_CONTACTS[0].label;
 const WHATSAPP_URL = "https://wa.me/212674114446";
-const CONTACT_EMAIL = "info@ironz.ma";
+const CONTACT_EMAIL = SITE_EMAIL;
 const ADDRESS = "SAHARA MALL 1ÈRE ÉTAGE C169 & C120, Agadir";
 
 type ContactIconName =
@@ -26,10 +27,10 @@ type ContactIconName =
 const contactCards = [
   {
     icon: "phone" as const,
-    title: "Téléphone",
+    title: "Téléphones",
     value: PHONE_LABEL,
     description: "Pour une question directe sur un produit, un service ou votre passage à Agadir.",
-    href: PHONE_HREF,
+    href: null,
     external: false,
   },
   {
@@ -339,9 +340,19 @@ export default function ContactPage() {
                   <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
                     {card.description}
                   </p>
-                  <p className={`mt-5 font-semibold text-gray-950 dark:text-white ${card.title === "Email" ? "break-all" : ""}`}>
-                    {card.value}
-                  </p>
+                  {card.icon === "phone" ? (
+                    <div className="mt-5 space-y-2 font-semibold text-gray-950 dark:text-white">
+                      {SITE_CONTACTS.map((contact) => (
+                        <a key={contact.telephone} href={contact.href} className="block underline decoration-yellow-500 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-500">
+                          {contact.label}
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className={`mt-5 font-semibold text-gray-950 dark:text-white ${card.title === "Email" ? "break-all" : ""}`}>
+                      {card.value}
+                    </p>
+                  )}
                 </>
               );
 
@@ -405,7 +416,7 @@ export default function ContactPage() {
                 <ContactIcon name="location" className="h-7 w-7" />
               </span>
               <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-yellow-400">
-                Adresse vérifiée
+                Point de contact
               </p>
               <address className="mt-3 not-italic text-2xl font-display uppercase leading-tight tracking-wide text-white">
                 SAHARA MALL

@@ -31,7 +31,7 @@ const introChecklist = [
   "nombre d'utilisateurs et niveaux de pratique",
   "priorité entre cardio, musculation et travail au sol",
   "protection du sol, bruit et contraintes de l'habitation",
-  "budget et volonté de faire évoluer l'espace progressivement",
+  "budget indicatif si connu et priorités pour faire évoluer l'espace",
 ];
 
 const spaceTypes = [
@@ -39,7 +39,7 @@ const spaceTypes = [
     icon: "home" as const,
     title: "Pièce dédiée",
     description:
-      "Une chambre inutilisée ou un espace entièrement consacré à l'entraînement, avec plusieurs postes possibles.",
+      "Une chambre inutilisée ou un espace consacré à l'entraînement : relevez la surface libre après déduction des meubles et des passages.",
   },
   {
     icon: "layers" as const,
@@ -72,7 +72,7 @@ const objectives = [
     icon: "cardio" as const,
     title: "Cardio et endurance",
     description:
-      "Le choix se porte sur tapis, vélo ou elliptique selon la place, le bruit accepté et le confort souhaité.",
+      "Comparez les appareils cardio envisagés selon leurs dimensions, les dégagements indiqués et les conditions d'utilisation dans la pièce.",
   },
   {
     icon: "route" as const,
@@ -108,7 +108,7 @@ const balanceZones = [
     icon: "strength" as const,
     title: "Force et poids libres",
     description:
-      "Haltères, barres, banc ou rack : un socle compact qui demande surtout de la protection de sol et du rangement.",
+      "Haltères, barres, banc ou rack : vérifiez les dimensions, l'espace nécessaire aux mouvements et les possibilités de rangement.",
   },
   {
     icon: "cardio" as const,
@@ -135,19 +135,19 @@ const homeConstraints = [
     icon: "dimensions" as const,
     title: "Emplacement des appareils",
     description:
-      "Chaque machine a un débordement utile : porte, tiroir coulissant, passage de barre et accès pour l'entretien.",
+      "Vérifiez les dimensions en utilisation, les éléments mobiles, la place pour les mouvements et les dégagements indiqués par le fabricant.",
   },
   {
     icon: "sound" as const,
     title: "Bruit et vibrations",
     description:
-      "Les chutes de charges et certains cardio transmettent du bruit. Le sol et l'emplacement limitent les nuisances sans les supprimer.",
+      "Repérez les pièces voisines et les usages susceptibles de transmettre du bruit ou des vibrations. L'effet d'un revêtement dépend du support et du matériel ; faites préciser ses caractéristiques.",
   },
   {
     icon: "surface" as const,
     title: "Protection du support",
     description:
-      "Le revêtement protège le sol d'origine des chocs, des éraflures et de la transpiration, surtout en appartement.",
+      "Notez la nature et l'état du sol. Si la capacité du plancher ou l'état du support est incertain, faites-les vérifier par un professionnel compétent avant d'y placer du matériel lourd.",
   },
   {
     icon: "storage" as const,
@@ -200,7 +200,7 @@ const evolutionSteps = [
     icon: "check" as const,
     title: "Budget et priorités",
     description:
-      "L'évolution se planifie selon le budget global : aucun pack imposé, juste des priorités dans le temps.",
+      "Distinguez les équipements prioritaires des ajouts envisagés plus tard, selon votre pratique et le budget disponible.",
   },
 ];
 
@@ -213,9 +213,9 @@ const processSteps = [
   },
   {
     icon: "dimensions" as const,
-    title: "Étudier l'espace disponible",
+    title: "Décrire l'espace disponible",
     description:
-      "Dimensions, hauteur, accès, sol, prises et usage partagé de la pièce sont relevés avant toute proposition.",
+      "Indiquez les dimensions connues, la hauteur, les accès, le sol, les prises et les autres usages de la pièce.",
   },
   {
     icon: "target" as const,
@@ -227,29 +227,30 @@ const processSteps = [
     icon: "dumbbell" as const,
     title: "Sélectionner les équipements",
     description:
-      "Les familles de matériel sont choisies selon la place, le bruit acceptable et la cohérence de l'ensemble.",
+      "Comparez les références envisagées selon leurs dimensions, les réglages et les conditions d'utilisation indiquées ; notez les informations à confirmer.",
   },
   {
     icon: "surface" as const,
     title: "Prévoir le sol",
     description:
-      "Le revêtement est adapté aux charges, à la pièce et au support existant pour protéger l'habitation.",
+      "Décrivez le support existant et les exercices prévus pour préciser les points à vérifier sur le revêtement.",
   },
   {
     icon: "check" as const,
     title: "Préparer le devis",
     description:
-      "Le devis reprend le périmètre validé, sans prix standard : chaque home gym a son propre périmètre.",
+      "Listez les besoins à discuter avec IRONZ, le matériel à conserver et les achats prioritaires pour préciser la demande.",
   },
 ];
 
 const quotePreparation = [
   "ville et type de logement (maison, appartement, garage, pièce dédiée)",
-  "dimensions, photos, hauteur sous plafond et accès à la pièce",
+  "surface approximative, dimensions connues, hauteur et accès à la pièce",
   "objectifs d'entraînement et fréquence prévue",
   "nombre d'utilisateurs et niveaux de pratique",
-  "matériel déjà disponible et familles d'équipements souhaitées",
-  "état du sol, contraintes de bruit et budget indicatif si connu",
+  "matériel à conserver, références et dimensions si connues",
+  "équipements souhaités, état du sol et contraintes de bruit",
+  "budget indicatif et délai souhaité, s'ils sont connus",
 ];
 
 const siblingLinks = [
@@ -263,7 +264,7 @@ const siblingLinks = [
     href: "/services/amenagement-salle/salle-professionnelle",
     title: "Salle professionnelle",
     description:
-      "À consulter si l'espace est destiné à plusieurs utilisateurs : club, hôtel, entreprise ou centre sportif. Les contraintes n'y sont pas les mêmes.",
+      "À consulter pour un usage collectif ou commercial : club, hôtel, entreprise ou centre sportif, au-delà de l'usage personnel du foyer.",
   },
 ];
 
@@ -298,17 +299,17 @@ const faqItems = [
   {
     question: "Quel équipement choisir pour un Home Gym ?",
     answer:
-      "Tout dépend de vos objectifs et de la place disponible. On part généralement d'un socle (poids libres et accessoires), on ajoute une machine cardio si l'endurance est prioritaire, et on n'ajoute du matériel volumineux que si la pièce le permet réellement.",
+      "Partez des activités que vous souhaitez pratiquer, du matériel déjà présent et de la place réellement libre. Comparez ensuite les dimensions en utilisation, les réglages et les conditions d'usage indiquées pour les références envisagées. La présence d'un appareil au catalogue ne confirme pas à elle seule son adéquation à votre pièce.",
   },
   {
     question: "Peut-on aménager un Home Gym dans une petite pièce ?",
     answer:
-      "Oui, si l'on privilégie le matériel polyvalent, les poids libres, le rangement et la conservation d'un espace de circulation. Certaines machines sont incompatibles avec de petits volumes : c'est l'occasion de concentrer le projet sur l'essentiel.",
+      "Cela dépend des exercices et des équipements envisagés. Mesurez la surface libre, la hauteur et les passages, puis comparez-les aux dimensions et dégagements indiqués pour chaque appareil. Prévoyez aussi le rangement et les autres usages de la pièce. Aucun minimum de surface ne suffit à confirmer la faisabilité de tous les projets.",
   },
   {
     question: "Comment protéger le sol d'une salle de sport maison ?",
     answer:
-      "Le revêtement est choisi selon les charges, les mouvements, le support existant et le niveau sonore accepté. Une zone poids libres demande une protection plus épaisse qu'un simple coin mobilité.",
+      "Décrivez le support, les charges et les exercices prévus pour discuter du revêtement. Ses caractéristiques doivent être vérifiées pour l'usage envisagé ; un revêtement ne confirme pas la capacité du plancher et ne garantit pas l'absence de bruit chez les voisins. Si le support ou sa capacité est incertain, demandez une vérification par un professionnel compétent.",
   },
   {
     question: "Comment choisir entre cardio et musculation ?",
@@ -318,12 +319,22 @@ const faqItems = [
   {
     question: "Que faut-il prévoir avant d'acheter les équipements ?",
     answer:
-      "Relevez les dimensions, la hauteur, l'accès, l'usage partagé de la pièce et vos priorités d'entraînement. Un appareil qui ne passe pas la porte ou qui bloque la circulation sert rarement longtemps.",
+      "Relevez les dimensions utiles, la hauteur, les portes, les escaliers et les passages jusqu'à la pièce. Vérifiez aussi le sol, les dégagements nécessaires aux mouvements et le rangement. Notez les caractéristiques manquantes sur les fiches produits pour les faire préciser avant votre sélection.",
   },
   {
     question: "Peut-on faire évoluer son Home Gym progressivement ?",
     answer:
       "Oui, c'est même l'approche la plus simple : un premier aménagement cohérent, un espace réservé pour les ajouts futurs, et du matériel supplémentaire selon la pratique réelle et le budget.",
+  },
+  {
+    question: "Puis-je conserver du matériel que je possède déjà ?",
+    answer:
+      "Mentionnez les appareils et accessoires que vous souhaitez conserver, avec leurs références, dimensions et état connu. Précisez leur place actuelle et les exercices que vous pratiquez avec eux. Ces informations aident à expliquer les besoins complémentaires dans la demande, sans présumer de la compatibilité du matériel.",
+  },
+  {
+    question: "Comment préparer et envoyer ma demande de devis Home Gym ?",
+    answer:
+      "Les boutons de cette page ouvrent la demande de devis avec le service Home Gym présélectionné. Indiquez la ville, la pièce, la surface estimée, vos activités, le matériel existant et les contraintes. Le budget et le délai souhaité sont facultatifs. Le formulaire prépare un message à relire et à envoyer dans WhatsApp ; vous pourrez ensuite y partager des photos ou un plan existant.",
   },
 ];
 
@@ -352,7 +363,7 @@ const serviceJsonLd = {
   areaServed: "Maroc",
   url: PAGE_URL,
   description:
-    "Service d'aménagement de Home Gym au Maroc : étude de l'espace disponible, objectifs d'entraînement, sélection d'équipements, protection du sol et devis personnalisé pour une salle de sport à domicile.",
+    "Aménagement Home Gym au Maroc : objectifs d'entraînement à domicile, espace disponible, équipements et revêtement à préciser pour préparer la demande de devis IRONZ.",
 };
 
 const faqJsonLd = {
@@ -590,8 +601,8 @@ export default function HomeGymPage() {
             <div>
               <SectionLabel>Projet home gym</SectionLabel>
               <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-6">
-                Un home gym utile, pas une accumulation de{" "}
-                <span className="text-yellow-500">machines</span>
+                Un home gym adapté à votre{" "}
+                <span className="text-yellow-500">pratique</span>
               </h2>
               <div className="space-y-5 text-gray-600 dark:text-gray-400 leading-relaxed">
                 <p>
@@ -607,8 +618,8 @@ export default function HomeGymPage() {
                   encombrer la pièce.
                 </p>
                 <p>
-                  IRONZ vous aide à cadrer le projet avant d'acheter, pour que
-                  chaque appareil ait sa place et reste utilisé.
+                  IRONZ vous aide à préciser vos besoins, le matériel envisagé
+                  et les contraintes de la pièce pour préparer votre demande de devis.
                 </p>
               </div>
             </div>
@@ -640,6 +651,13 @@ export default function HomeGymPage() {
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               Le point de départ reste la pièce. La configuration guide l'implantation, le choix du matériel et la part réservée à la circulation. Aucune règle de surface minimale ne s'applique à tous les projets : ce qui compte, c'est la cohérence entre dimensions, équipements et dégagements.
+            </p>
+            <p className="mt-5 text-gray-600 dark:text-gray-400 leading-relaxed">
+              Mesurez la surface libre après déduction des meubles et du rangement,
+              puis la hauteur au point le plus bas. Repérez les portes, les fenêtres
+              et les obstacles qui réduisent la place pour les mouvements. Comparez
+              ces mesures aux dimensions en utilisation et aux dégagements indiqués
+              pour les appareils envisagés.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -694,7 +712,15 @@ export default function HomeGymPage() {
                   L'équipement d'un home gym combine souvent machines de fitness, poids libres et accessoires. Le bon choix dépend plus de l'usage et de la place que de la liste produit.
                 </p>
                 <p>
-                  Un appareil volumineux dans une pièce trop petite finit par être contourné. IRONZ relie chaque sélection aux dimensions, au bruit accepté et au reste de la pièce.
+                  Relevez les dimensions en utilisation et, si le matériel se replie,
+                  ses dimensions de rangement. Vérifiez les réglages et les conditions
+                  d&apos;usage dans la fiche ou la documentation disponible. Faites
+                  préciser les informations manquantes avant de retenir une référence.
+                </p>
+                <p>
+                  Pour comparer les activités et les contraintes des appareils cardio,
+                  consultez le{" "}
+                  <Link href="/guides/choisir-machine-cardio-tapis-velo-rameur-maroc" className="text-yellow-600 dark:text-yellow-400 underline underline-offset-4">guide pour choisir entre tapis, vélo et rameur</Link>.
                 </p>
               </div>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -753,10 +779,16 @@ export default function HomeGymPage() {
               </h2>
               <div className="space-y-5 text-gray-600 dark:text-gray-400 leading-relaxed">
                 <p>
-                  Dans une habitation, le sol sert à autre chose qu'à s'entraîner. Le revêtement sportif protège le support des charges, des chocs, des éraflures et de l'humidité de la transpiration.
+                  Décrivez la nature et l&apos;état du sol, les équipements prévus
+                  et les exercices avec charges. Les caractéristiques du revêtement
+                  sont à vérifier selon le support, les mouvements et les indications
+                  du fabricant.
                 </p>
                 <p>
-                  Il participe aussi au confort d'usage et, selon les cas, au bruit perçu dans le reste du logement. C'est un point à intégrer avant l'installation, pas après.
+                  Repérez les pièces voisines, y compris à l&apos;étage inférieur,
+                  et les moments où le bruit pourrait gêner. La protection de surface,
+                  la capacité du plancher et la transmission des vibrations sont des
+                  points distincts à vérifier selon le logement et le matériel.
                 </p>
               </div>
               <div className="mt-8">
@@ -772,13 +804,13 @@ export default function HomeGymPage() {
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 flex items-center justify-center mt-0.5">
                     <ServiceIcon name="strength" className="h-3.5 w-3.5 text-yellow-400" />
                   </span>
-                  <span>Zone poids libres : protection renforcée contre les chutes de charges et les frottements.</span>
+                  <span>Zone poids libres : vérifier le support, les charges prévues et les caractéristiques du revêtement.</span>
                 </li>
                 <li className="flex items-start gap-3 text-gray-300">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 flex items-center justify-center mt-0.5">
                     <ServiceIcon name="cardio" className="h-3.5 w-3.5 text-yellow-400" />
                   </span>
-                  <span>Zone cardio : stabilité de l'appareil et amorti des répétitions.</span>
+                  <span>Zone cardio : vérifier les conditions de pose, la stabilité et les indications sur les vibrations.</span>
                 </li>
                 <li className="flex items-start gap-3 text-gray-300">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 flex items-center justify-center mt-0.5">
@@ -832,7 +864,9 @@ export default function HomeGymPage() {
                 Un home gym dans un espace réduit
               </h2>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-                L'espace limité n'empêche pas le projet. Il impose de choisir des équipements qui servent souvent, plutôt que plusieurs appareils qui se ressemblent.
+                Dans un espace réduit, partez des exercices prioritaires et de
+                la place réellement libre. Vérifiez aussi où ranger le matériel
+                entre les séances avant de décider quels équipements envisager.
               </p>
               <Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 px-7 py-4 font-display uppercase tracking-wide text-black hover:bg-yellow-600 transition-colors shadow-lg">
                 <ServiceIcon name="quote" />
@@ -873,7 +907,7 @@ export default function HomeGymPage() {
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-12">
-            <SectionLabel>Notre méthode</SectionLabel>
+            <SectionLabel>Préparer le projet</SectionLabel>
             <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-5">Comment préparer un projet Home Gym ?</h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">La démarche commence par vos usages et la lecture de la pièce. Elle permet de passer d'une envie générale à un périmètre clair, sans imposer une configuration identique à chaque habitation.</p>
           </div>
@@ -895,7 +929,8 @@ export default function HomeGymPage() {
             <div>
               <SectionLabel>Préparer le devis</SectionLabel>
               <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-6">Que préparer pour votre projet Home Gym ?</h2>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">Ces informations aident à comprendre votre espace et à distinguer l'équipement souhaité du périmètre d'aménagement réellement utile.</p>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">Indiquez votre ville au Maroc, la pièce, les activités et le matériel à conserver. La surface peut être approximative ; le budget et le délai souhaité sont facultatifs dans le formulaire.</p>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">Le bouton ouvre la demande de devis avec le service Home Gym présélectionné. Le formulaire prépare un message à relire et à envoyer dans WhatsApp. Vous pourrez ensuite y partager des photos ou un plan existant.</p>
               <Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 px-7 py-4 font-display uppercase tracking-wide text-black hover:bg-yellow-600 transition-colors shadow-lg"><ServiceIcon name="quote" />Demander un devis</Link>
             </div>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -940,7 +975,7 @@ export default function HomeGymPage() {
       <section className="py-20 bg-gradient-to-r from-yellow-500 to-yellow-600">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-black mb-6">Un Home Gym à aménager ?</h2>
-          <p className="text-black/80 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">Partagez votre espace, vos objectifs et vos priorités. IRONZ vous aide à cadrer une salle de sport maison cohérente avec votre habitation.</p>
+          <p className="text-black/80 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">Décrivez votre espace, vos activités et vos priorités. Préparez votre demande de devis Home Gym, puis validez son envoi dans WhatsApp pour la transmettre à IRONZ.</p>
           <Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 px-8 py-5 bg-black text-white font-display uppercase tracking-wide rounded-xl hover:bg-gray-900 transition-colors shadow-2xl"><ServiceIcon name="quote" />Demander un devis</Link>
         </div>
       </section>

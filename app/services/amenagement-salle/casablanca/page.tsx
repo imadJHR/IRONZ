@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import ServiceContactForm from "../../../../components/service-contact-form";
 
 const PAGE_URL = "https://www.ironz.ma/services/amenagement-salle/casablanca";
-const DEVIS_URL = "/demande-devis?service=amenagement-salle";
+const DEVIS_URL = "/demande-devis?service=amenagement-salle&ville=Casablanca";
 const WHATSAPP_URL =
   "https://wa.me/212674114446?text=Bonjour%2C%20je%20souhaite%20discuter%20d%27un%20projet%20d%27am%C3%A9nagement%20de%20salle%20de%20sport%20%C3%A0%20Casablanca%20avec%20IRONZ.";
 
@@ -54,45 +54,45 @@ const equipmentFactors = [
 
 const processSteps = [
   { title: "Comprendre le projet", text: "Clarifier le type de salle, les utilisateurs, les objectifs d'entraînement et le contexte du lieu." },
-  { title: "Étudier l'espace", text: "Lire la surface, les accès, la hauteur et les contraintes visibles pour juger ce qui est réellement exploitable." },
+  { title: "Décrire le lieu", text: "Préciser la localisation à Casablanca, l’étage, les passages et la hauteur disponible, avec les mesures ou photos dont vous disposez." },
   { title: "Définir zones et équipements", text: "Organiser cardio, machines, poids libres, mobilité et circulation, puis discuter les familles de matériel." },
-  { title: "Préparer le périmètre du devis", text: "Transformer les informations utiles en demande claire, sans prix standard ni périmètre inventé." },
-  { title: "Échanger sur la mise en œuvre", text: "Avancer selon le périmètre validé ensemble, sans calendrier annoncé avant d'avoir étudié le projet." },
+  { title: "Préparer le périmètre du devis", text: "Distinguer le matériel conservé, les équipements recherchés et les questions sur le sol pour préciser les besoins à chiffrer." },
+  { title: "Confirmer les prestations", text: "Vérifier avec IRONZ ce qui peut être proposé pour ce lieu, les conditions et le calendrier avant de retenir une proposition." },
 ];
 
 const quotePreparation = [
   "type de salle envisagée",
-  "surface approximative ou dimensions connues",
-  "photos ou plan de l'espace si disponibles",
+  "localisation à Casablanca, étage et accès au lieu",
+  "surface, dimensions et photos ou plan existant à partager ensuite",
   "activités et objectifs d'entraînement prévus",
-  "familles d'équipements souhaitées",
-  "budget et timing si vous en avez une idée",
+  "matériel à conserver, équipements recherchés et état du sol",
+  "budget indicatif et calendrier souhaité, si connus",
 ];
 
 const faqs = [
   {
     question: "Peut-on demander un devis pour une salle de sport à Casablanca ?",
-    answer: "Oui. Une demande de devis peut être préparée pour un projet de salle à Casablanca en passant par le formulaire dédié, avec le service aménagement de salle présélectionné. La proposition dépend des informations transmises et du périmètre discuté.",
+    answer: "Oui. IRONZ propose l’aménagement de salles de sport à Casablanca. Les boutons de devis conservent le service aménagement de salle présélectionné. Précisez le lieu, les accès et les prestations souhaitées ; le périmètre, les conditions et le calendrier sont définis pour votre projet.",
   },
   {
     question: "Quelles informations préparer pour un projet ?",
-    answer: "Le type de salle, la surface approximative, quelques photos ou un plan, les activités prévues, les utilisateurs concernés et les familles d'équipements souhaitées. Le budget et le timing sont utiles seulement si vous les connaissez.",
+    answer: "Précisez le type de lieu à Casablanca, l’étage, les accès, la surface estimée, les utilisateurs et les activités prévues. Indiquez aussi le matériel à conserver et l’état du sol. Le budget et le calendrier souhaité sont facultatifs ; photos ou plan existant peuvent être partagés ensuite sur WhatsApp.",
   },
   {
     question: "Faut-il connaître la surface exacte ?",
-    answer: "Non. Une estimation suffit pour démarrer la discussion. Les mesures précises interviennent plus tard, lorsque le projet avance et que l'implantation doit être vérifiée.",
+    answer: "Non. Vous pouvez commencer avec une estimation. Si vous les connaissez, ajoutez les dimensions de la pièce, la hauteur disponible, les portes, escaliers ou ascenseurs et les obstacles fixes. Les dégagements nécessaires se vérifient ensuite pour les références envisagées.",
   },
   {
     question: "Peut-on inclure les équipements dans le projet ?",
-    answer: "Oui. La sélection d'équipements fait partie de la discussion : cardio, machines de musculation, poids libres et accessoires. Le choix reste lié à l'espace, aux utilisateurs et au budget, pas à une liste standard.",
+    answer: "Oui. Précisez les besoins cardio, musculation, poids libres et accessoires, en distinguant les équipements déjà présents des achats envisagés. Pour chaque référence, dimensions, caractéristiques, disponibilité et adéquation à l’usage privé ou collectif restent à vérifier.",
   },
   {
     question: "Le revêtement peut-il faire partie de l'aménagement ?",
-    answer: "Oui. Le sol peut être intégré à la réflexion, surtout pour les zones de charges. Le choix dépend de l'activité, de l'équipement et des impacts prévus, et peut être approfondi sur la page revêtement sol et mur.",
+    answer: "Oui. Décrivez le support existant, les zones sous les charges, les passages et les contraintes de bruit ou d’entretien. Le choix du revêtement se discute selon les usages ; il ne suffit pas à confirmer la capacité portante du sol ni une performance acoustique.",
   },
   {
     question: "Comment démarrer une demande de devis ?",
-    answer: "Le formulaire prépare un message avec le service aménagement de salle présélectionné. Il est ensuite possible d'envoyer les premières informations et d'ajouter photos ou plan au cours de l'échange.",
+    answer: "Les boutons de devis conservent le service aménagement de salle présélectionné. Le formulaire dédié et celui de cette page préparent un message pour WhatsApp. Relisez-le, précisez Casablanca et validez l’envoi dans WhatsApp pour transmettre votre demande. Vous pouvez ensuite ajouter des photos ou un plan.",
   },
 ];
 
@@ -101,6 +101,7 @@ const usefulLinks = [
   { href: "/services/amenagement-salle/home-gym", title: "Home Gym", text: "Pour un projet privé et résidentiel avec un usage personnel de la salle." },
   { href: "/services/amenagement-salle/salle-professionnelle", title: "Salle professionnelle", text: "Pour un projet collectif, commercial, hôtelier ou d'entreprise." },
   { href: "/services/revetement-sol-mur", title: "Revêtement sol & mur", text: "Pour approfondir le choix de surface selon les zones et l'intensité d'usage." },
+  { href: "/services/amenagement-salle/agadir", title: "Projet à Agadir", text: "Le showroom IRONZ à Agadir et le service d'aménagement de salles de sport dans la ville." },
   { href: "/produit", title: "Catalogue IRONZ", text: "Pour explorer les machines, poids libres et accessoires disponibles." },
 ];
 
@@ -140,7 +141,7 @@ function ServiceIcon({ name, className = "h-7 w-7" }: { name: IconName; classNam
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-yellow-500/30 bg-yellow-500/10 px-4 py-2 text-xs font-display uppercase tracking-[0.25em] text-yellow-600 dark:text-yellow-400">
+    <span className="inline-flex items-center rounded-full border border-yellow-500/30 bg-yellow-500/10 px-4 py-2 text-xs font-display uppercase tracking-[0.25em] text-yellow-800 dark:text-yellow-400">
       {children}
     </span>
   );
@@ -179,10 +180,10 @@ const serviceJsonLd = {
   name: "Aménagement de salle de sport à Casablanca",
   serviceType: "Aménagement de salle de sport",
   provider: { "@type": "Organization", name: "IRONZ", url: "https://www.ironz.ma/" },
-  areaServed: "Casablanca, Maroc",
+  areaServed: { "@type": "City", name: "Casablanca" },
   url: PAGE_URL,
   description:
-    "Service d'aménagement de salle de sport à Casablanca : cadrage du projet, organisation des zones, choix d'équipements, revêtement et préparation d'un devis adapté à l'espace et aux objectifs.",
+    "Aménagement de salle de sport à Casablanca par IRONZ : études, équipements et installation selon le projet. Le périmètre, les prestations et les conditions sont précisés dans le devis.",
 };
 
 const faqJsonLd = {
@@ -204,7 +205,7 @@ export default function CasablancaPage() {
 
       <div className="border-b border-gray-100 bg-gray-50/70 dark:border-gray-800 dark:bg-gray-900/40">
         <div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <nav aria-label="Fil d'Ariane" className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <nav aria-label="Fil d'Ariane" className="flex flex-wrap items-center gap-2 text-sm text-gray-700 dark:text-gray-400">
             <Link href="/" className="transition-colors hover:text-yellow-600 dark:hover:text-yellow-400">Accueil</Link>
             <span aria-hidden="true">/</span>
             <Link href="/services" className="transition-colors hover:text-yellow-600 dark:hover:text-yellow-400">Services</Link>
@@ -228,10 +229,10 @@ export default function CasablancaPage() {
               Aménagement de salle de sport <span className="text-yellow-500">à Casablanca</span>
             </h1>
             <p className="mb-6 max-w-3xl text-base leading-relaxed text-gray-300 sm:text-lg md:text-xl">
-              IRONZ aide les particuliers et les professionnels à structurer un projet de fitness ou de musculation à Casablanca : lecture de l'espace, organisation des zones, choix du matériel et préparation du revêtement.
+              IRONZ propose l’aménagement de salles de fitness et de musculation à Casablanca. Décrivez le lieu, les utilisateurs et le matériel recherché pour préparer votre demande de devis.
             </p>
             <p className="mb-8 max-w-3xl leading-relaxed text-gray-400">
-              Le projet commence par l'usage, la surface et les objectifs. Les équipements, l'implantation et le sol se discutent ensuite, selon le périmètre que vous souhaitez étudier.
+              Les études, l’installation et la maintenance font partie des services proposés par IRONZ. Leur périmètre, les conditions et le calendrier sont précisés selon votre projet et le devis.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row">
               <Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 px-7 py-4 font-display uppercase tracking-wide text-black shadow-lg transition-colors hover:bg-yellow-600">
@@ -260,10 +261,10 @@ export default function CasablancaPage() {
                   Une salle de sport se pense d'abord comme un espace où des utilisateurs vont s'entraîner, circuler et progresser. La surface disponible, le profil des utilisateurs et les objectifs d'entraînement précèdent le choix des appareils.
                 </p>
                 <p>
-                  À Casablanca, les projets peuvent concerner une salle privée, un espace professionnel, un coin fitness d'entreprise ou un projet collectif. Chaque contexte appelle une organisation différente, même avec des équipements similaires.
+                  Pour votre lieu à Casablanca, indiquez s’il s’agit d’un logement, d’un club, d’une entreprise ou d’un espace collectif. Précisez l’étage, les escaliers ou l’ascenseur et les passages disponibles : ces informations comptent pour les équipements envisagés.
                 </p>
                 <p>
-                  IRONZ vous aide à transformer une intention en demande structurée : zones à prévoir, familles d'équipements, points à protéger et informations utiles pour un devis adapté à votre projet.
+                  Distinguez le matériel déjà sur place des achats souhaités. Ajoutez les références et dimensions connues, l’emplacement des prises et les obstacles fixes pour expliquer vos priorités sans devoir disposer d’une étude technique préalable.
                 </p>
               </div>
             </div>
@@ -282,7 +283,7 @@ export default function CasablancaPage() {
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
                     <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-900/30">
-                      <ServiceIcon name="check" className="h-3.5 w-3.5 text-yellow-600 dark:text-yellow-400" />
+                      <ServiceIcon name="check" className="h-3.5 w-3.5 text-yellow-700 dark:text-yellow-400" />
                     </span>
                     <span>{item}</span>
                   </li>
@@ -336,7 +337,7 @@ export default function CasablancaPage() {
                   L'équipement d'une salle peut intégrer cardio, machines de musculation, poids libres, bancs, racks et accessoires. Une salle privée n'a pas les mêmes priorités qu'un espace collectif.
                 </p>
                 <p>
-                  Un appareil pertinent sur le catalogue peut devenir peu pratique si l'implantation, les dégagements ou le sol ne suivent pas. La sélection du matériel reste liée à l'usage réel de l'espace.
+                  Relevez les dimensions des accès et des zones disponibles avant de retenir une référence. Pour comparer les formats cardio, consultez le{" "}<Link href="/guides/choisir-machine-cardio-tapis-velo-rameur-maroc" className="font-medium text-yellow-700 underline underline-offset-4 dark:text-yellow-400">guide tapis, vélo et rameur</Link>. Vérifiez les caractéristiques et l’usage prévu de chaque appareil.
                 </p>
               </div>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -393,7 +394,7 @@ export default function CasablancaPage() {
               Comment avance un projet de salle ?
             </h2>
             <p className="leading-relaxed text-gray-600 dark:text-gray-400">
-              La démarche est progressive : comprendre, étudier, organiser, chiffrer, puis échanger sur la mise en œuvre. Aucune étape ne se substitue à l'étude réelle de votre espace.
+              Commencez par les informations que vous connaissez. L’échange permet de préciser les équipements, les zones et le sol, puis de vérifier les prestations pouvant être proposées pour votre lieu.
             </p>
           </div>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
@@ -419,7 +420,7 @@ export default function CasablancaPage() {
                 Pour préparer votre demande
               </h2>
               <p className="mb-8 leading-relaxed text-gray-600 dark:text-gray-400">
-                Une demande claire évite des échanges inutiles et permet de cadrer plus vite une proposition pertinente. Les éléments ci-dessous suffisent souvent pour démarrer la discussion.
+                Indiquez où se situe le projet à Casablanca et ce qui existe déjà sur place. Une surface approximative suffit pour commencer ; budget et calendrier sont facultatifs. Les photos ou le plan existant se partagent ensuite sur WhatsApp.
               </p>
               <Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 px-7 py-4 font-display uppercase tracking-wide text-black shadow-lg transition-colors hover:bg-yellow-600">
                 <ServiceIcon name="quote" className="h-5 w-5" />
@@ -450,11 +451,10 @@ export default function CasablancaPage() {
                 Le service aide à structurer la demande avant de choisir les machines : lecture de l'espace, hiérarchisation des zones, cohérence des équipements et intégration du revêtement dans le projet.
               </p>
               <p className="mt-5 leading-relaxed text-gray-600 dark:text-gray-400">
-                Cette page concerne les projets de salle à Casablanca. Le service est présenté pour l'ensemble du Maroc sur la{" "}
-                <Link href="/services/amenagement-salle" className="font-medium text-yellow-600 underline underline-offset-4 dark:text-yellow-400">
-                  page nationale
-                </Link>{" "}
-                du service d'aménagement de salle.
+                Cette page vous aide à préciser le lieu et les accès pour une demande à Casablanca. Retrouvez les principes généraux et les types de projets dans la{" "}
+                <Link href="/services/amenagement-salle" className="font-medium text-yellow-700 underline underline-offset-4 dark:text-yellow-400">
+                  présentation de l’aménagement de salle au Maroc
+                </Link>.
               </p>
             </div>
             <div className="space-y-4">
@@ -530,7 +530,7 @@ export default function CasablancaPage() {
               Décrivez votre salle à Casablanca
             </h2>
             <p className="mb-8 leading-relaxed text-gray-600 dark:text-gray-400">
-              Le formulaire prépare votre message pour WhatsApp avec le contexte du service aménagement de salle. Vous pouvez aussi écrire directement avec les premières informations du projet.
+              Le formulaire prépare un message pour WhatsApp avec le contexte de votre projet à Casablanca. Relisez-le et validez son envoi dans WhatsApp pour transmettre la demande. Vous pouvez aussi utiliser le lien direct ci-dessous.
             </p>
             <div className="space-y-4">
               <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-5 transition-colors hover:border-yellow-500/40 dark:border-gray-800 dark:bg-gray-900">
@@ -573,7 +573,7 @@ export default function CasablancaPage() {
             Un projet de salle à Casablanca ?
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-black/80">
-            Envoyez les dimensions, photos, objectifs et priorités. IRONZ vous aide à cadrer l'aménagement, les équipements et le revêtement selon votre projet.
+            Précisez la localisation, les accès, la surface et les équipements souhaités. Échangez avec IRONZ pour confirmer le périmètre et les conditions possibles pour votre projet.
           </p>
           <div className="flex flex-col gap-4 justify-center sm:flex-row">
             <Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-black px-8 py-5 font-display uppercase tracking-wide text-white shadow-2xl transition-colors hover:bg-gray-900">

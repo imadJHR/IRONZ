@@ -61,8 +61,8 @@ const needs: Need[] = [
   {
     title: "Équipement de musculation",
     description: "Haltères, disques, bancs et machines pour le renforcement.",
-    href: "/categories/equipements/poids-libres",
-    label: "Voir la catégorie",
+    href: "/produit",
+    label: "Voir le catalogue",
     icon: "strength",
   },
   {

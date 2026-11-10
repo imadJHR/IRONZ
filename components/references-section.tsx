@@ -66,7 +66,7 @@ export default function ReferencesSection({
   };
 
   const defaultPortfolioItems: PortfolioItem[] = [
-    { id: 1, type: "image", src: ref1, category: "Projet Pro" },
+    { id: 1, type: "image", src: ref1, category: "Espace professionnel" },
     { id: 3, type: "video", src: "/refV-optimized.mp4", category: "Installation" },
     { id: 4, type: "image", src: ref3, category: "Home Gym" },
     { id: 5, type: "image", src: ref4, category: "Fitness Club" },
@@ -79,13 +79,6 @@ export default function ReferencesSection({
   const getImageSource = (src: string | StaticImageData): string => {
     if (typeof src === "string") return src;
     return src.src;
-  };
-
-  const handleViewAll = (e: MouseEvent<HTMLButtonElement>): void => {
-    e.preventDefault();
-    onViewAll?.();
-    // Optional: navigate to portfolio page
-    // window.location.href = "/portfolio";
   };
 
   return (
@@ -106,11 +99,11 @@ export default function ReferencesSection({
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="max-w-2xl">
             <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mt-2 text-gray-900 dark:text-white leading-tight">
-              Nos <span className="text-yellow-500">Références</span>
+              Espaces <span className="text-yellow-500">sportifs</span>
             </h2>
           </div>
           <p className="text-gray-500 dark:text-gray-400 text-lg max-w-sm">
-            Aperçu de nos réalisations majeures pour les professionnels et particuliers.
+            Quelques visuels d’espaces sportifs pour illustrer les usages et les configurations possibles.
           </p>
         </div>
 
@@ -135,7 +128,7 @@ export default function ReferencesSection({
                   {!isVideo ? (
                     <img
                       src={getImageSource(item.src)}
-                      alt={`Reference ${item.id} - ${item.category}`}
+                      alt={`Espace sportif — ${item.category}`}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                       loading="lazy"
                       decoding="async"
@@ -152,7 +145,7 @@ export default function ReferencesSection({
                         playsInline
                         preload="none"
                         poster="/refV-poster.webp"
-                        aria-label={`Vidéo de référence ${item.category}`}
+                        aria-label={`Vidéo d’un espace sportif — ${item.category}`}
                       >
                         <source src={item.src as string} type="video/mp4" />
                         Votre navigateur ne supporte pas la lecture de vidéos.
@@ -187,7 +180,7 @@ export default function ReferencesSection({
                       {item.category}
                     </span>
                     <h3 className="text-2xl font-display text-white uppercase tracking-wide leading-tight mb-4">
-                      {item.title || "Réalisation Ironz"}
+                      {item.title || "Espace sportif"}
                     </h3>
                     {item.description && (
                       <p className="text-gray-300 text-sm mb-4 line-clamp-2">
@@ -202,10 +195,11 @@ export default function ReferencesSection({
           })}
         </div>
 
-        {/* Footer Button */}
+        {/* Only show this action when a caller supplies a destination or behavior. */}
+        {onViewAll && (
         <div className="mt-16 text-center">
           <button 
-            onClick={handleViewAll}
+            onClick={onViewAll}
             className="inline-flex items-center gap-3 px-10 py-5 bg-black dark:bg-white text-white dark:text-black rounded-xl font-display uppercase tracking-widest hover:bg-yellow-500 hover:text-black dark:hover:bg-yellow-400 dark:hover:text-black transition-all shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
             type="button"
           >
@@ -214,6 +208,7 @@ export default function ReferencesSection({
             <span className="sr-only">Voir toutes nos réalisations</span>
           </button>
         </div>
+        )}
       </div>
     </section>
   );

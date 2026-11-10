@@ -365,6 +365,7 @@ const ProductCard = memo(function ProductCard({
               <Link
                 href={`/produit/${product.slug || productId}`}
                 className="h-8 sm:h-9 px-2.5 sm:px-4 rounded-xl flex items-center gap-1.5 sm:gap-2 font-display text-[10px] sm:text-xs uppercase tracking-widest border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-yellow-500 hover:text-yellow-600 dark:hover:text-yellow-400 transition-all"
+                aria-label={`Voir le produit ${product.name}`}
               >
                 <span className="hidden sm:inline">Voir</span>
                 <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
@@ -525,6 +526,7 @@ const ProductCard = memo(function ProductCard({
             <Link
               href={`/produit/${product.slug || productId}`}
               className="h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-yellow-500 hover:border-yellow-500 hover:text-black transition-all shrink-0"
+              aria-label={`Voir le produit ${product.name}`}
             >
               <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             </Link>

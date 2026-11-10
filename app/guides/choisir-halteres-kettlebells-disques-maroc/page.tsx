@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../lib/og-image";
+import { EDITORIAL_AUTHOR, EditorialCredit } from "../../../components/seo/editorial-identity";
 
 export const metadata = {
   title: "Comment choisir ses haltères, kettlebells et disques au Maroc ? | IRONZ",
@@ -79,7 +80,7 @@ const structuredData = [
     datePublished: "2026-09-20",
     dateModified: "2026-10-11",
     inLanguage: "fr-MA",
-    author: { "@type": "Organization", name: "IRONZ" },
+    author: EDITORIAL_AUTHOR,
     image: "https://www.ironz.ma/og-image.jpg",
     publisher: {
       "@type": "Organization",
@@ -128,6 +129,7 @@ export default function GuideChoixPoidsLibres() {
       <h1 className="mb-8 font-display text-4xl uppercase leading-tight tracking-wide sm:text-5xl">
         Comment choisir ses haltères, kettlebells et disques au Maroc ?
       </h1>
+      <EditorialCredit />
 
       <p className="mb-12 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
         Avant d’acheter du matériel de musculation, mieux vaut savoir ce que l’on peut
@@ -277,7 +279,7 @@ export default function GuideChoixPoidsLibres() {
         </ul>
         <p className="mt-4 leading-relaxed text-gray-700 dark:text-gray-300">
           Concrètement, IRONZ liste aujourd’hui des kettlebells à{" "}
-          <strong>10 kg, 12 kg, 14 kg et 16 kg</strong>. Ce sont des paliers à choisir
+          <strong>8 kg, 10 kg, 12 kg, 14 kg et 16 kg</strong>. Ce sont des paliers à choisir
           selon l’exercice et votre niveau — aucun n’est un « bon poids pour tout le
           monde ».
         </p>
@@ -307,10 +309,10 @@ export default function GuideChoixPoidsLibres() {
           </li>
         </ul>
         <p className="mt-4 leading-relaxed text-gray-700 dark:text-gray-300">
-          Côté catalogue IRONZ : disques à <strong>10 kg et 20 kg</strong> et{" "}
-          <strong>disques olympiques 50 mm</strong>. Les disques olympiques 50 mm
-          existent aussi en 10 kg : un disque de faible charge reste utile, car
-          c’est lui qui permet d’augmenter peu à peu.
+          Les fiches des disques de <strong>10 kg et 20 kg</strong> mentionnent une
+          compatibilité avec des barres olympiques. Cette mention ne confirme pas
+          à elle seule un alésage de <strong>50 mm</strong> : faites vérifier le
+          diamètre du trou central et celui de votre barre avant la commande.
         </p>
       </section>
 
@@ -333,8 +335,8 @@ export default function GuideChoixPoidsLibres() {
           En pratique : commencez par la charge que vous contrôlez sur l’intégralité de
           vos répétitions, puis progressez. C’est pour cette raison qu’il est plus
           utile d’avoir plusieurs paliers disponibles que d’acheter une seule charge
-          lourde. À titre d’exemple, les haltères IRONZ actuels couvrent{" "}
-          <strong>12,5 kg à 40 kg</strong> — une plage pensée pour cette progression,
+          lourde. À titre d’exemple, les haltères IRONBULL du catalogue consulté couvrent{" "}
+          <strong>10 kg à 40 kg</strong> — une plage pensée pour cette progression,
           avec aussi des haltères PVC légers pour le travail unilatéral.
         </p>
       </section>

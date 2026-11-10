@@ -4,13 +4,13 @@ import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../../lib/og-image";
 export const metadata: Metadata = {
   title: "Aménagement de salle de sport professionnelle au Maroc | IRONZ",
   description:
-    "Salle de sport professionnelle au Maroc : organisation de l'espace, équipements, installation et revêtement. Devis personnalisé IRONZ.",
+    "Salle de sport professionnelle au Maroc : précisez la surface, les utilisateurs, les équipements et le sol pour préparer votre devis IRONZ.",
   alternates: { canonical: "/services/amenagement-salle/salle-professionnelle" },
   robots: { index: true, follow: true },
   openGraph: {
     title: "Aménagement de salle de sport professionnelle au Maroc | IRONZ",
     description:
-      "Salle de sport professionnelle au Maroc : organisation de l'espace, équipements, installation et revêtement. Devis personnalisé IRONZ.",
+      "Salle de sport professionnelle au Maroc : précisez la surface, les utilisateurs, les équipements et le sol pour préparer votre devis IRONZ.",
     url: "https://www.ironz.ma/services/amenagement-salle/salle-professionnelle",
     siteName: "IRONZ",
     locale: "fr_MA",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Aménagement de salle de sport professionnelle au Maroc | IRONZ",
     description:
-      "Salle de sport professionnelle au Maroc : organisation de l'espace, équipements, installation et revêtement. Devis personnalisé IRONZ.",
+      "Salle de sport professionnelle au Maroc : précisez la surface, les utilisateurs, les équipements et le sol pour préparer votre devis IRONZ.",
     images: TWITTER_LOGO_IMAGES,
     creator: "@ironz_official",
   },

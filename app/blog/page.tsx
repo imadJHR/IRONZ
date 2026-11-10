@@ -1,7 +1,8 @@
-import { OG_BLOG_IMAGES, TWITTER_BLOG_IMAGES, OG_BLOG_URL } from "../../lib/og-image";
+import { OG_BLOG_IMAGES, TWITTER_BLOG_IMAGES } from "../../lib/og-image";
 import { articles } from "../../lib/blog";
 import type { BlogArticle } from "../../lib/blog";
 import BlogHubClient from "./BlogHubClient";
+import { EDITORIAL_PUBLISHER } from "../../components/seo/editorial-identity";
 
 const PAGE_URL = "https://www.ironz.ma/blog";
 
@@ -47,11 +48,7 @@ const structuredData = [
     description:
       "Articles et guides IRONZ pour s'équiper en matériel de fitness et musculation au Maroc.",
     url: PAGE_URL,
-    publisher: {
-      "@type": "Organization",
-      name: "IRONZ",
-      logo: { "@type": "ImageObject", url: OG_BLOG_URL },
-    },
+    publisher: EDITORIAL_PUBLISHER,
   },
   {
     "@context": "https://schema.org",

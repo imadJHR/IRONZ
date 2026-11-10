@@ -11,8 +11,11 @@ export const article: BlogArticle = {
   date: '2026-10-10',
   readTime: '9 min',
   intro: [
-    'L’aménagement d’une salle de sport au Maroc ne se résume pas à acheter des machines. Une salle bien pensée limite l’attente aux heures de pointe, sécurise les circulations, espace les zones et influence directement la satisfaction des adhérents. L’erreur la plus coûteuse est de commander l’équipement avant d’avoir défini le plan.',
-    'Ce guide détaille les décisions à prendre avant d’équiper une salle commerciale, un hôtel, une résidence ou un espace entreprise au Maroc. IRONZ réalise des projets d’aménagement complets, de l’étude à l’installation. Pour un projet précis, demandez un devis.',
+    "L’aménagement d’une salle de sport au Maroc se prépare à partir des usages, des utilisateurs et du lieu. Avant de commander les équipements, relevez les dimensions, les accès et les zones à prévoir pour expliquer votre projet.",
+    "Ce guide détaille les décisions à prendre avant d’équiper une salle commerciale, un hôtel, une résidence ou un espace entreprise au Maroc. Pour un projet IRONZ, faites préciser les prestations proposées, les postes compris et leurs conditions dans le devis. Consultez notre service d’aménagement de salle de sport pour découvrir le périmètre d’un projet.",
+  ],
+  contextualLinks: [
+    { anchor: "service d’aménagement de salle de sport", href: "/services/amenagement-salle" },
   ],
   sections: [
     {
@@ -34,11 +37,11 @@ export const article: BlogArticle = {
     {
       h2: 'Quelle surface prévoir par adhérent ?',
       paragraphs: [
-        'La règle communément retenue est de compter entre 4 et 6 m² par adhérent présent en simultané. Une salle qui reçoit 20 personnes en même temps au pic nécessite donc entre 80 et 120 m² dédiés à l’entraînement. Cette surface n’inclut pas l’accueil, les vestiaires ni les circulations.',
+        "La surface à prévoir dépend des activités, des équipements et du nombre de personnes présentes en même temps. Distinguez les zones d’entraînement, les passages, le rangement, l’accueil et les vestiaires, puis vérifiez les dimensions et dégagements nécessaires pour les références envisagées.",
         'La densité d’équipement est l’autre facteur. Trop de machines dans un petit espace donne une impression de foule, trop peu donne une impression de vide. L’étude préalable permet de positionner chaque machine en laissant les dégagements de sécurité nécessaires à son utilisation.',
       ],
       list: [
-        '<strong>4 à 6 m² par adhérent</strong> — la règle pour la zone d’entraînement, hors accueil et vestiaires.',
+        "<strong>Surface utile</strong> — relever les dimensions disponibles et les besoins de chaque zone, sans ratio unique par adhérent.",
         '<strong>Pic d’affluence</strong> — calculez à partir du nombre d’adhérents simultanés au maximum de la journée.',
         '<strong>Dégagements</strong> — laissez l’espace nécessaire au mouvement de chaque machine, pas seulement son empreinte.',
         '<strong>Circulations</strong> — des allées larges évitent les croisements dangereux entre zones.',
@@ -48,13 +51,13 @@ export const article: BlogArticle = {
     {
       h2: 'Le revêtement de sol : différent selon la zone',
       paragraphs: [
-        'Le sol est le premier poste d’usure d’une salle de sport. Le choix du revêtement dépend de l’activité de chaque zone : une zone cardio n’a pas besoin du même sol qu’une zone de musculation libre où tombent les disques.',
-        'Le vinyle sportif convient au cardio et aux espaces de cours, le caoutchouc en dalles ou en rouleau à la musculation, et le gazon synthétique aux espaces fonctionnels. IRONZ installe des revêtements de sol et de mur adaptés à chaque activité.',
+        "Le choix du revêtement dépend des sollicitations de chaque zone. Décrivez les exercices, les appareils et les mouvements avec charges pour comparer les caractéristiques des solutions envisagées.",
+        "Comparez les familles de revêtements selon les sollicitations de chaque zone et leurs caractéristiques documentées. Dans votre demande IRONZ, indiquez le support et les surfaces concernées ; les solutions, une éventuelle pose et les autres prestations restent à confirmer.",
       ],
       list: [
         '<strong>Vinyle sportif</strong> — pour le cardio et les salles de cours, facile à entretenir.',
-        '<strong>Caoutchouc en dalles</strong> — pour la musculation libre, résiste aux chutes de disques.',
-        '<strong>Caoutchouc en rouleau</strong> — pour les grandes surfaces, sans joint, entretien facile.',
+        "<strong>Caoutchouc en dalles</strong> — vérifier les caractéristiques de la référence pour les charges et exercices prévus.",
+        "<strong>Caoutchouc en rouleau</strong> — examiner les raccords, les conditions de pose et d’entretien.",
         '<strong>Gazon synthétique</strong> — pour les espaces fonctionnels et le travail au sol.',
         '<strong>Revêtement mural</strong> — protection des murs dans les zones de circulation et de stockage.',
       ],
@@ -62,65 +65,65 @@ export const article: BlogArticle = {
     {
       h2: 'Quel budget pour équiper une salle au Maroc ?',
       paragraphs: [
-        'L’équipement complet d’une petite salle commerciale démarre souvent autour de 150 000 à 400 000 DH selon la surface, le nombre de machines et les marques choisies. Une salle plus grande, avec des marques professionnelles comme Matrix, Life Fitness ou Topgym, représente un investissement plus important.',
-        'Le budget se construit en trois postes : le revêtement et l’aménagement, l’équipement, et les coûts annexes comme la livraison et l’installation. La méthode la plus sûre est de définir le plan et la liste d’équipements, puis de demander un devis complet qui couvre l’ensemble. Pour une salle au Maroc, demandez un devis avant de valider quoi que ce soit.',
+        "Le budget se chiffre à partir des références, des quantités et des prestations retenues, en distinguant les achats prioritaires des ajouts possibles. Matrix, Life Fitness et Topgym sont ici des exemples de comparaison ; toute fourniture envisagée pour un projet IRONZ reste à confirmer lors du devis.",
+        "Distinguez l’aménagement et le revêtement, les équipements et les prestations éventuelles comme la livraison ou la pose. Demandez un devis détaillé qui précise les postes réellement compris, les conditions et les points restant à confirmer.",
       ],
       list: [
-        '<strong>150 000 à 400 000 DH</strong> — fourchette de départ pour une petite salle commerciale complète.',
-        '<strong>Marques professionnelles</strong> — Matrix, Life Fitness, Topgym, référencées chez IRONZ.',
+        "<strong>Budget du projet</strong> — chiffrer les références, quantités et prestations retenues, sans fourchette universelle.",
+        '<strong>Exemples de marques professionnelles</strong> — Matrix, Life Fitness et Topgym ; choix des références et fourniture à confirmer lors du devis.',
         '<strong>Revêtement</strong> — un poste à part entière, à ne pas négliger dans le budget global.',
-        '<strong>Installation et formation</strong> — prévoyez la livraison, le montage et la prise en main du matériel.',
+        "<strong>Prestations complémentaires</strong> — faire confirmer la livraison, le montage ou la prise en main souhaités et leurs conditions.",
         '<strong>Devis</strong> — indispensable, le budget dépend de la surface, des zones et des marques.',
       ],
     },
     {
       h2: 'Pourquoi demander une étude avant d’acheter',
       paragraphs: [
-        'Commander un équipement sans étude préalable est la cause numéro un des projets qui dérapent : machines qui ne passent pas les portes, zones surchargées, arrivées électriques manquantes, sols à reprendre. L’étude permet de visualiser l’espace avant l’achat et de valider chaque emplacement.',
-        'IRONZ réalise des projets d’aménagement complets : étude de l’espace, choix des zones, sélection des équipements, revêtement de sol et de mur, livraison et installation. Pour un projet de salle professionnelle, demandez un devis.',
+        "Avant de commander, relevez les portes, les passages, la hauteur, les prises et les équipements à conserver. Comparez ces informations aux dimensions et conditions d’usage des références ; si un point technique reste incertain, faites-le vérifier par un professionnel compétent.",
+        "Présentez à IRONZ le lieu, les activités, le matériel et les surfaces concernés. Si vous demandez une étude, une livraison ou une installation, faites préciser ce qui peut être proposé et ce qui est compris dans le devis, avec les conditions correspondantes.",
       ],
       list: [
         '<strong>Visualisation</strong> — validez l’implantation de chaque machine avant de commander.',
         '<strong>Contraintes techniques</strong> — portes, plafonds, arrivées électriques, issues de secours.',
         '<strong>Optimisation</strong> — le bon nombre de machines dans le bon espace, sans surcharge.',
         '<strong>Devis global</strong> — un budget complet et coordonné, sans oubli de poste.',
-        '<strong>Installation</strong> — livraison, montage et mise en service par des équipes spécialisées.',
+        "<strong>Installation envisagée</strong> — confirmer les prestations proposées, leur périmètre et les conditions applicables.",
       ],
     },
     {
       h2: 'Les erreurs à éviter dans un projet de salle',
       paragraphs: [
-        'Quelques erreurs reviennent souvent dans les projets de salle de sport au Maroc. Les éviter avant l’achat permet d’ouvrir dans les délais et d’éviter les reprises coûteuses.',
+        "Avant l’achat, vérifiez les dimensions du lieu et des équipements, les accès et les postes à chiffrer. Ces informations permettent de préciser les contraintes et les questions à résoudre pendant la préparation du projet.",
       ],
       list: [
-        '<strong>Acheter avant de planifier</strong> — l’erreur numéro un : le plan précède toujours la commande.',
+        "<strong>Acheter avant de planifier</strong> — vérifier la place et les accès avant de retenir une référence.",
         '<strong>Sous-estimer les vestiaires</strong> — ils participent autant que les machines à la satisfaction.',
         '<strong>Négliger le sol</strong> — un revêtement inadapté s’use vite et coûte plus cher à reprendre.',
         '<strong>Oublier les issues de secours</strong> — elles doivent rester libres et accessibles.',
-        '<strong>Ne pas demander de devis</strong> — un projet de salle sans budget global coordonné dérape toujours.',
+        "<strong>Ne pas demander de devis</strong> — préciser les postes et prestations avant de valider le budget.",
       ],
     },
   ],
   faq: [
     {
       q: 'Quelle surface pour ouvrir une salle de sport au Maroc ?',
-      a: 'Comptez 4 à 6 m² par adhérent présent en simultané, plus l’accueil, les vestiaires et les circulations. Pour 20 personnes au pic d’affluence, prévoyez 80 à 120 m² de zone d’entraînement, hors espaces annexes.',
+      a: "Relevez la surface utile et indiquez les activités, les équipements et l’affluence attendue. Prévoyez les passages et espaces annexes dans votre demande, puis vérifiez les dégagements documentés des références plutôt que d’appliquer un ratio unique.",
     },
     {
       q: 'Quel revêtement de sol pour une salle de musculation ?',
-      a: 'Le caoutchouc en dalles ou en rouleau pour la musculation libre, car il résiste aux chutes de disques. Le vinyle sportif convient au cardio et aux cours. Le choix se fait zone par zone, pas pour toute la salle.',
+      a: "Décrivez le support et les exercices prévus dans chaque zone. Comparez les solutions à partir de leurs performances documentées ; la capacité à supporter des chutes de charges ou à réduire le bruit ne se déduit pas du seul matériau.",
     },
     {
       q: 'Combien coûte l’équipement d’une salle de sport au Maroc ?',
-      a: 'L’équipement complet d’une petite salle commerciale démarre souvent autour de 150 000 à 400 000 DH selon la surface et les marques. Une étude préalable et un devis donnent le budget réel de votre projet.',
+      a: "Le budget dépend des références, des quantités, du revêtement et des prestations retenues. Préparez vos priorités et demandez un devis détaillant les postes compris et leurs conditions, sans vous appuyer sur une fourchette générale.",
     },
     {
       q: 'Faut-il une étude avant d’acheter le matériel ?',
-      a: 'Oui, c’est indispensable. L’étude valide les emplacements, les contraintes techniques comme les portes et les arrivées électriques, et évite les erreurs coûteuses. Commander sans plan est la première cause de projets qui dérapent.',
+      a: "Relevez les dimensions, les accès et les contraintes visibles avant de choisir les équipements. Si une étude technique est nécessaire, faites préciser son périmètre et qui la réalisera ; elle ne doit pas être présumée incluse dans une demande de devis.",
     },
     {
       q: 'IRONZ réalise-t-elle des projets d’aménagement complets ?',
-      a: 'Oui. IRONZ prend en charge l’étude de l’espace, le choix des équipements, le revêtement de sol et de mur, jusqu’à la livraison et l’installation. Demandez un devis pour votre projet.',
+      a: "IRONZ présente un service d’aménagement de salle. Décrivez votre projet et faites confirmer les prestations proposées, les postes compris et les conditions. Une étude, une livraison ou une installation éventuelle doit être précisée dans le devis.",
     },
   ],
   cta: {

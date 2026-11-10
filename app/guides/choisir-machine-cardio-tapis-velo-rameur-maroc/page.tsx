@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../../lib/og-image";
+import { EDITORIAL_AUTHOR, EditorialCredit } from "../../../components/seo/editorial-identity";
 
 export const metadata = {
   title:
@@ -86,7 +87,7 @@ const structuredData = [
     datePublished: "2026-09-20",
     dateModified: "2026-10-11",
     inLanguage: "fr-MA",
-    author: { "@type": "Organization", name: "IRONZ" },
+    author: EDITORIAL_AUTHOR,
     image: "https://www.ironz.ma/og-image.jpg",
     publisher: {
       "@type": "Organization",
@@ -135,6 +136,7 @@ export default function GuideChoixMachineCardio() {
       <h1 className="mb-8 font-display text-4xl uppercase leading-tight tracking-wide sm:text-5xl">
         Tapis roulant, vélo ou rameur : quelle machine cardio choisir au Maroc ?
       </h1>
+      <EditorialCredit />
 
       <p className="mb-12 text-lg leading-relaxed text-gray-700 dark:text-gray-300">
         Avant de comparer des modèles, il faut choisir une famille. Un tapis
@@ -163,10 +165,11 @@ export default function GuideChoixMachineCardio() {
           </li>
           <li>
             <strong>Le vélo</strong> — on pédale en position assise. IRONZ
-            référence aujourd'hui quatre formats clairement différents : le vélo
+            présente dans le catalogue consulté le vélo
             droit, le vélo de spinning (position penchée vers l'avant, guidon
-            rapproché), le vélo semi-allongé et le vélo horizontal, tous deux
-            avec siège et dossier. Le mouvement de pédalage est commun, mais la
+            rapproché) et le vélo semi-allongé avec siège et dossier. Le vélo
+            horizontal est un format de comparaison générale dont la disponibilité
+            reste à confirmer. Le mouvement de pédalage est commun, mais la
             position, le maintien et l'encombrement changent selon le format.
           </li>
           <li>
@@ -425,8 +428,9 @@ export default function GuideChoixMachineCardio() {
           Voir les machines cardio disponibles chez IRONZ
         </h2>
         <p className="mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-          IRONZ référence actuellement un tapis roulant, quatre formats de vélos
-          et un rameur. Les fiches détaillent dimensions, poids maximal, résistance
+          Le catalogue consulté comprend un tapis roulant, des vélos droits, de
+          spinning et semi-allongés, ainsi qu'un rameur. Les fiches détaillent
+          dimensions, poids maximal, résistance
           et console selon les modèles : comparez-les à votre espace avant de
           décider.
         </p>

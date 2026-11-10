@@ -280,10 +280,14 @@ export default function DemandeDevisPage() {
   const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const requestedService = new URLSearchParams(window.location.search).get("service");
-    const mappedService = mapServiceQueryParam(requestedService);
-    if (!mappedService) return;
-    setFormData((previous) => ({ ...previous, service: previous.service || mappedService }));
+    const params = new URLSearchParams(window.location.search);
+    const mappedService = mapServiceQueryParam(params.get("service"));
+    const requestedCity = params.get("ville") ?? params.get("city");
+    setFormData((previous) => ({
+      ...previous,
+      ...(mappedService ? { service: mappedService } : {}),
+      ...(requestedCity ? { city: requestedCity } : {}),
+    }));
   }, []);
 
   const selectedService = QUOTE_SERVICES.find((service) => service.id === formData.service);
@@ -339,9 +343,10 @@ export default function DemandeDevisPage() {
     scrollToForm();
   };
   const resetForm = () => {
-    const requestedService = new URLSearchParams(window.location.search).get("service");
-    const mappedService = mapServiceQueryParam(requestedService);
-    setFormData({ ...INITIAL_FORM, service: mappedService ?? "" });
+    const params = new URLSearchParams(window.location.search);
+    const mappedService = mapServiceQueryParam(params.get("service"));
+    const requestedCity = params.get("ville") ?? params.get("city");
+    setFormData({ ...INITIAL_FORM, ...(mappedService ? { service: mappedService } : {}), ...(requestedCity ? { city: requestedCity } : {}) });
     setErrors({});
     setCurrentStep(1);
     setIsSubmitted(false);
@@ -432,7 +437,7 @@ Source: Site web IRONZ`;
 
       <section className="py-16 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mb-10 max-w-3xl sm:mb-12"><SectionLabel>Que préparer ?</SectionLabel><h2 className="mt-5 text-3xl font-display uppercase leading-tight tracking-wide text-gray-950 dark:text-white sm:text-4xl md:text-5xl">Les informations qui améliorent la qualité du devis</h2><p className="mt-5 leading-relaxed text-gray-600 dark:text-gray-400">Ajoutez seulement ce que vous connaissez. Aucun de ces éléments optionnels ne doit vous empêcher de commencer la demande.</p></div><div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{PREPARATION_CARDS.map((card) => <article key={card.title} className="rounded-2xl border border-gray-100 bg-gray-50 p-6 transition-colors hover:border-yellow-500/40 dark:border-gray-800 dark:bg-gray-900/60 sm:p-7"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-yellow-700 shadow-sm dark:bg-gray-800 dark:text-yellow-400"><QuoteIcon name={card.icon} /></span><h3 className="mt-5 text-lg font-bold text-gray-950 dark:text-white">{card.title}</h3><p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-400 sm:text-base">{card.text}</p></article>)}</div></div></section>
 
-      <section className="bg-black py-16 text-white md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mb-10 max-w-3xl sm:mb-12"><span className="inline-flex rounded-full border border-yellow-500/40 bg-yellow-500/10 px-4 py-2 text-xs font-display uppercase tracking-[0.22em] text-yellow-400">Processus de demande</span><h2 className="mt-5 text-3xl font-display uppercase leading-tight tracking-wide text-white sm:text-4xl md:text-5xl">Comment fonctionne la demande de devis ?</h2><p className="mt-5 leading-relaxed text-gray-400">Le formulaire prépare un message lisible pour poursuivre l&apos;échange directement sur WhatsApp.</p></div><ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">{PROCESS_STEPS.map((step, index) => <li key={step.title} className="rounded-2xl border border-white/10 bg-white/[0.05] p-6"><div className="flex items-center justify-between gap-4"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black"><QuoteIcon name={step.icon} /></span><span className="font-display text-3xl text-white/20">{String(index + 1).padStart(2, "0")}</span></div><h3 className="mt-6 text-lg font-bold text-white">{step.title}</h3><p className="mt-3 text-sm leading-relaxed text-gray-400">{step.text}</p></li>)}</ol></div></section>
+      <section className="bg-black py-16 text-white md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mb-10 max-w-3xl sm:mb-12"><span className="inline-flex rounded-full border border-yellow-500/40 bg-yellow-500/10 px-4 py-2 text-xs font-display uppercase tracking-[0.22em] text-yellow-400">Processus de demande</span><h2 className="mt-5 text-3xl font-display uppercase leading-tight tracking-wide text-white sm:text-4xl md:text-5xl">Comment fonctionne la demande de devis ?</h2><p className="mt-5 leading-relaxed text-gray-400">Le formulaire prépare un message lisible pour poursuivre l&apos;échange directement sur WhatsApp.</p></div><ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">{PROCESS_STEPS.map((step, index) => <li key={step.title} className="rounded-2xl border border-white/10 bg-white/[0.05] p-6"><div className="flex items-center justify-between gap-4"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black"><QuoteIcon name={step.icon} /></span><span className="font-display text-3xl text-white/40">{String(index + 1).padStart(2, "0")}</span></div><h3 className="mt-6 text-lg font-bold text-white">{step.title}</h3><p className="mt-3 text-sm leading-relaxed text-gray-400">{step.text}</p></li>)}</ol></div></section>
 
       <section id="quote-form" className="scroll-mt-24 bg-gray-50 py-16 dark:bg-gray-900 md:py-24"><div className="container mx-auto px-4 sm:px-6 lg:px-8"><div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12"><SectionLabel>Votre demande</SectionLabel><h2 className="mt-5 text-3xl font-display uppercase leading-tight tracking-wide text-gray-950 dark:text-white sm:text-4xl md:text-5xl">Parlez-nous de votre projet</h2><p className="mt-5 leading-relaxed text-gray-600 dark:text-gray-400">Trois étapes courtes pour préparer les informations utiles avant l&apos;ouverture de WhatsApp.</p></div>
         <div ref={formRef} className="mx-auto grid max-w-7xl scroll-mt-24 gap-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-8">

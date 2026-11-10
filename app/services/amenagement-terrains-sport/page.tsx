@@ -54,7 +54,7 @@ const serviceJsonLd = {
   areaServed: "Maroc",
   url: CANONICAL_URL,
   description:
-    "Service d'aménagement de terrains de sport au Maroc : étude du projet, surface sportive, clôture périphérique et équipement adapté sur devis.",
+    "Aménagement de terrains de sport au Maroc : cadrage des usages, des dimensions, de la surface existante et des besoins d'équipement pour préparer une demande de devis IRONZ.",
 };
 
 const projectTypes = [
@@ -104,9 +104,9 @@ const projectElements = [
   {
     title: "Équipements sportifs",
     description:
-      "Paniers, buts, zones d'entraînement ou matériel complémentaire doivent être choisis selon la discipline, l'âge des utilisateurs et la configuration du terrain.",
+      "Indiquez le matériel déjà présent et les équipements souhaités selon la pratique. Faites confirmer les références, les caractéristiques et la fourniture proposées pour votre projet.",
     href: "/categories/equipements",
-    label: "Explorer les équipements sportifs",
+    label: "Consulter les fiches du catalogue",
   },
   {
     title: "Protection périphérique",
@@ -129,21 +129,21 @@ const projectSteps = [
   },
   {
     icon: Compass,
-    title: "Étude du terrain",
+    title: "Description du site",
     description:
-      "La configuration, les accès, le contexte intérieur ou extérieur et les éléments existants sont pris en compte avant la proposition.",
+      "Décrivez les dimensions connues, le sol existant, les accès, les obstacles et le contexte intérieur, extérieur ou couvert.",
   },
   {
     icon: Ruler,
     title: "Choix des solutions",
     description:
-      "Surface, revêtement, clôture éventuelle, équipements et organisation de l'espace sont ajustés selon le projet.",
+      "Précisez les besoins de surface, de revêtement, de protection éventuelle et d'équipements, puis les caractéristiques restant à vérifier pour le lieu.",
   },
   {
     icon: Sparkles,
-    title: "Devis & mise en place",
+    title: "Préparation du devis",
     description:
-      "Le devis est préparé après étude. La mise en place suit le périmètre validé ensemble, sans promesse de délai standardisée.",
+      "Distinguez les besoins prioritaires, les éléments à conserver et les postes à discuter. Faites préciser les prestations effectivement comprises dans la proposition.",
   },
 ];
 
@@ -157,29 +157,31 @@ const surfaceFactors = [
 ];
 
 const quoteTopics = [
+  "la ville et le type de lieu concerné",
   "l'usage prévu du terrain et les sports à pratiquer",
-  "la surface disponible et sa configuration",
-  "le type de surface sportive envisagé",
-  "les besoins en clôture ou protection périphérique",
-  "le matériel et les équipements à prévoir",
-  "le budget indicatif ou le niveau de finition attendu",
+  "les dimensions connues, les limites de la zone et les accès",
+  "la nature et l'état du sol existant, les obstacles visibles",
+  "les utilisateurs, la fréquence d'usage et les besoins d'entretien",
+  "les équipements et protections à conserver ou souhaités",
+  "le contexte intérieur, extérieur ou couvert et ses contraintes",
+  "le budget indicatif et le délai souhaité, s'ils sont connus",
 ];
 
 const faqItems = [
   {
-    question: "Quels types de terrains de sport IRONZ peut-il étudier ?",
+    question: "Quels types de projets peut-on présenter à IRONZ ?",
     answer:
-      "IRONZ peut étudier des projets de terrains multisport, espaces d'entraînement, terrains privés, espaces scolaires ou projets professionnels, selon la surface disponible et l'usage prévu.",
+      "Précisez s'il s'agit d'un espace multisport, d'une zone d'entraînement ou d'un projet privé, scolaire ou collectif. Indiquez les activités, les utilisateurs et le contexte du lieu. Ces informations servent à discuter du besoin et du périmètre envisagé ; les prestations proposées doivent être confirmées pour votre projet.",
   },
   {
     question: "Comment choisir le revêtement d'un terrain sportif ?",
     answer:
-      "Le revêtement se choisit selon le sport, le contexte intérieur ou extérieur, l'intensité d'utilisation, le confort souhaité, l'entretien et le budget du projet.",
+      "Décrivez les pratiques, les équipements, la fréquence d'utilisation et le contexte intérieur, extérieur ou couvert. Précisez la nature et l'état du sol existant et les besoins d'entretien. Les caractéristiques de la solution et les conditions du site doivent être vérifiées pour le projet ; le nom d'un matériau ne suffit pas à confirmer son adéquation.",
   },
   {
-    question: "Quels éléments faut-il prévoir dans un projet de terrain ?",
+    question: "Quelles dimensions et contraintes du site faut-il indiquer ?",
     answer:
-      "Il faut préciser l'usage, la surface disponible, le type de terrain, le revêtement, les équipements sportifs, la circulation et, si nécessaire, les protections périphériques.",
+      "Indiquez la longueur et la largeur disponibles, les limites de la zone, les accès et les obstacles visibles. Ajoutez la nature et l'état de la surface ainsi que les équipements déjà présents. Une estimation permet de commencer l'échange ; elle ne confirme pas la faisabilité technique ni la conformité à une discipline.",
   },
   {
     question: "Le prix d'un terrain de sport est-il standard ?",
@@ -192,9 +194,14 @@ const faqItems = [
       "Un terrain multisport doit concilier plusieurs usages dans le même espace. Un espace dédié peut être optimisé autour d'une seule discipline ou d'un besoin d'entraînement précis.",
   },
   {
-    question: "IRONZ peut-il fournir les équipements liés au projet ?",
+    question: "Comment préciser les équipements souhaités ?",
     answer:
-      "Oui, le projet peut intégrer le choix d'équipements sportifs adaptés lorsque cela correspond au besoin : matériel, zones d'entraînement ou accessoires complémentaires.",
+      "Listez séparément le matériel à conserver et les équipements souhaités, avec leurs références ou dimensions si vous les connaissez. Le catalogue peut aider à consulter des fiches, mais la fourniture et l'adéquation des équipements au terrain doivent être confirmées pendant l'échange et dans le devis.",
+  },
+  {
+    question: "Quelles informations préparer pour demander un devis ?",
+    answer:
+      "Indiquez la ville au Maroc, les activités, les utilisateurs, les dimensions estimées, l'état du site, les accès et les équipements existants ou souhaités. Le budget et le délai souhaité sont facultatifs. Les boutons ouvrent le formulaire avec le service Aménagement de terrains de sport présélectionné. Relisez le message préparé puis envoyez-le dans WhatsApp ; vous pourrez ensuite partager des photos générales, des vues des accès et du sol ou un plan existant.",
   },
 ];
 
@@ -257,10 +264,10 @@ export default function TerrainSportPage() {
               au Maroc
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mb-8">
-              IRONZ accompagne les projets de terrain sportif au Maroc : étude
-              de l&apos;usage, choix de la surface, revêtement, clôture périphérique
-              si nécessaire et équipements adaptés. Chaque projet est étudié
-              avant devis.
+              Vous préparez un projet de terrain sportif au Maroc ? Décrivez
+              les activités, les utilisateurs, les dimensions disponibles et
+              l&apos;état du site pour préciser avec IRONZ les besoins de surface,
+              de revêtement, de protection et d&apos;équipement à discuter dans le devis.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
@@ -307,9 +314,10 @@ export default function TerrainSportPage() {
                   est utile, équipements et organisation de l&apos;espace.
                 </p>
                 <p>
-                  L&apos;objectif est de construire une proposition cohérente avec
-                  votre réalité au Maroc, sans pack standard imposé ni promesse
-                  technique non vérifiée.
+                  Indiquez s&apos;il s&apos;agit d&apos;un nouvel espace, d&apos;une
+                  réorganisation ou d&apos;un complément d&apos;équipement.
+                  Signalez les installations à conserver et les accès au site,
+                  puis distinguez les besoins prioritaires des ajouts envisagés.
                 </p>
               </div>
             </div>
@@ -332,17 +340,16 @@ export default function TerrainSportPage() {
         </div>
       </section>
 
-      {/* Video proof */}
+      {/* Vidéo de présentation */}
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-14">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-5">
-              Un de nos{" "}
-              <span className="text-yellow-500">chantiers</span>
+              Un aperçu en{" "}
+              <span className="text-yellow-500">vidéo</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Découvrez en images un projet de terrain de sport réalisé par
-              IRONZ.
+              Illustration vidéo d&apos;un espace sportif.
             </p>
           </div>
           <div className="max-w-sm sm:max-w-md mx-auto">
@@ -355,7 +362,7 @@ export default function TerrainSportPage() {
                 preload="none"
                 poster="/terrain-poster.webp"
                 controls
-                aria-label="Projet de terrain de sport réalisé par IRONZ"
+                aria-label="Vidéo de présentation d'un terrain de sport"
               >
                 <source src="/terrain-optimized.mp4" type="video/mp4" />
                 Votre navigateur ne supporte pas la lecture de vidéos.
@@ -423,7 +430,7 @@ export default function TerrainSportPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-12">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-5">
-              Ce que comprend un projet de{" "}
+              Les points à préciser pour un projet de{" "}
               <span className="text-yellow-500">terrain</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
@@ -460,10 +467,11 @@ export default function TerrainSportPage() {
               <span className="text-yellow-500">surface sportive</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-              Le choix d&apos;une surface doit rester lié au projet réel : sport
-              pratiqué, contexte du site, fréquence d&apos;utilisation, entretien,
-              confort et budget. IRONZ évite les réponses génériques et oriente
-              la discussion vers une solution adaptée à votre terrain.
+              Décrivez le sol existant, les irrégularités ou traces d&apos;eau
+              visibles, le contexte intérieur ou extérieur et la fréquence
+              d&apos;utilisation. Précisez aussi les besoins d&apos;entretien.
+              Les caractéristiques de la solution et les conditions du site
+              sont à vérifier selon les activités envisagées.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
               {surfaceFactors.map((factor) => (
@@ -489,8 +497,10 @@ export default function TerrainSportPage() {
               <span className="text-yellow-500">projet ?</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Le processus reste simple : comprendre, étudier, choisir, chiffrer
-              puis avancer selon le périmètre validé.
+              Rassemblez les informations disponibles et les points encore à
+              préciser. Les étapes ci-dessous aident à organiser votre demande ;
+              le périmètre technique et les prestations proposées restent à
+              confirmer pour votre projet.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -526,9 +536,16 @@ export default function TerrainSportPage() {
               <span className="text-yellow-500">sur devis</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-              Nous ne publions pas de barème tarifaire. Le prix dépend de la
-              surface, du revêtement, des équipements, de la configuration et du
-              niveau de finition. La demande de devis sert à cadrer ces éléments.
+              Le chiffrage dépend des dimensions, du site, des équipements et
+              du périmètre retenu. Indiquez une surface estimée et vos priorités ;
+              le budget indicatif et le délai souhaité sont facultatifs dans le
+              formulaire. Vous pourrez partager des photos des accès, du sol et
+              des installations existantes pendant l&apos;échange sur WhatsApp.
+            </p>
+            <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
+              Le bouton présélectionne le service Aménagement de terrains de sport.
+              Le formulaire prépare un message à relire et à envoyer dans WhatsApp
+              pour transmettre votre demande à IRONZ.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
@@ -559,9 +576,10 @@ export default function TerrainSportPage() {
               <span className="text-yellow-500">terrain</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Un projet extérieur peut aussi s&apos;inscrire dans une réflexion plus
-              large : salle intérieure, revêtement, équipement ou parcours de
-              demande de devis.
+              Si votre projet comprend aussi un espace intérieur, consultez
+              l&apos;<Link href="/services/amenagement-salle" className="text-yellow-600 dark:text-yellow-400 underline underline-offset-4">aménagement de salle de sport</Link>.
+              Les besoins de revêtement et les équipements souhaités peuvent
+              être précisés séparément dans votre demande.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -651,8 +669,9 @@ export default function TerrainSportPage() {
             Un projet de terrain en tête ?
           </h2>
           <p className="text-black/80 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-            Parlez-nous de votre surface, des sports visés, des équipements et
-            de vos contraintes. IRONZ vous répond avec un devis personnalisé.
+            Précisez votre ville, les activités, les dimensions estimées et les
+            contraintes du site. Préparez votre demande de devis, puis validez
+            son envoi dans WhatsApp pour la transmettre à IRONZ.
           </p>
           <Link
             href={DEVIS_URL}

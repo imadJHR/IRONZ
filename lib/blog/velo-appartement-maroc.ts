@@ -5,20 +5,23 @@ export const article: BlogArticle = {
   category: 'Cardio',
   keyword: 'vélo appartement maroc',
   title: 'Vélo d’appartement au Maroc : quel format choisir',
-  metaTitle: 'Vélo appartement Maroc : droit, spinning ou elliptique | IRONZ',
-  metaDescription: 'Vélo d’appartement au Maroc : droit, spinning, semi-allongé ou elliptique. Comparatif encombrement, bruit, résistance et budget avant d’acheter.',
-  excerpt: 'Vélo droit, spinning, semi-allongé ou elliptique : quel format choisir pour un appartement au Maroc ? Encombrement, bruit, résistance et budget comparés.',
+  metaTitle: 'Vélo appartement Maroc : droit, spinning ou semi-allongé | IRONZ',
+  metaDescription: 'Vélo droit, spinning ou semi-allongé au Maroc : comparez encombrement, résistance et confort. L’elliptique est abordé comme format de comparaison générale.',
+  excerpt: 'Comparez les vélos droit, de spinning et semi-allongé du catalogue IRONZ. L’elliptique est présenté à titre de comparaison générale.',
   date: '2026-10-08',
   readTime: '8 min',
   intro: [
     'Le vélo d’appartement est souvent la première machine cardio choisie au Maroc : il est compact, silencieux et il reste la solution la plus simple pour s’entraîner chez soi. Mais sous le terme vélo se cachent des formats très différents, et l’erreur classique est d’acheter le premier modèle venu sans savoir s’il correspond à votre dos, votre espace et vos habitudes.',
-    'Ce guide compare les quatre familles : le vélo droit, le vélo de spinning, le vélo semi-allongé et l’elliptique. Les références et les stocks évoluent, les caractéristiques citées sont à confirmer sur la fiche produit au moment de l’achat.',
+    'Ce guide compare les vélos droit, de spinning et semi-allongé du catalogue consulté. Il présente aussi l’elliptique comme format de comparaison générale, dont la disponibilité chez IRONZ reste à confirmer. Les références et les stocks évoluent : vérifiez les caractéristiques et la disponibilité sur chaque fiche avant l’achat. Notre guide permet aussi de choisir entre vélo, tapis roulant et rameur.',
+  ],
+  contextualLinks: [
+    { anchor: "choisir entre vélo, tapis roulant et rameur", href: "/guides/choisir-machine-cardio-tapis-velo-rameur-maroc" },
   ],
   sections: [
     {
-      h2: 'Les quatre formats de vélo et d’elliptique au Maroc',
+      h2: 'Formats de vélos : catalogue actuel et comparaison générale',
       paragraphs: [
-        'IRONZ référence quatre formats clairement différents. Le mouvement de pédalage est commun, mais la position du corps, le maintien et l’encombrement changent selon la famille.',
+        'Les références du catalogue consulté couvrent le vélo droit, le spinning et le semi-allongé. Le mouvement de pédalage est commun, mais la position du corps, le maintien et l’encombrement changent selon la famille. L’elliptique ci-dessous sert de comparaison générale ; sa disponibilité chez IRONZ reste à confirmer.',
       ],
       list: [
         '<strong>Le vélo droit</strong> — position assise, dos droit, pédalage classique. Le plus simple et le plus répandu pour un usage régulier à domicile.',
@@ -112,7 +115,7 @@ export const article: BlogArticle = {
     },
   ],
   cta: {
-    label: 'Voir les vélos et elliptiques disponibles chez IRONZ',
+    label: 'Voir les vélos et machines cardio du catalogue IRONZ',
     href: '/categories/equipements/machine-de-fitness',
   },
   related: ['tapis-de-course-maroc', 'equipement-musculation-maroc'],

@@ -11,14 +11,17 @@ export const article: BlogArticle = {
   date: '2026-10-11',
   readTime: '6 min',
   intro: [
-    'Le sac de frappe est le meilleur exutoire cardio-boxe à domicile : frappes, coups de pied, enchaînements, sans partenaire. Au Maroc, la boxe et les sports de combat progressent vite, et le sac reste l’équipement le plus demandé après les gants.',
+    'Le sac de frappe est un support d’entraînement complet à domicile : frappes, coups de pied, enchaînements, sans partenaire. Au Maroc, la boxe et les sports de combat progressent vite, et le sac complète souvent l’équipement de boxe, après les gants.',
     'Mais un sac mal choisi arrache son support ou blesse les poignets : poids, remplissage et fixation se décident avant l’achat. Ce guide donne les repères.',
+  ],
+  contextualLinks: [
+    { anchor: "choisir son équipement de boxe pour débuter", href: "/guides/choisir-equipement-boxe-debutant-maroc" },
   ],
   sections: [
     {
       h2: 'Pourquoi s’entraîner au sac',
       paragraphs: [
-        'Le sac développe la puissance, l’endurance et la technique en même temps : dix rounds de trois minutes valent une séance cardio complète. Il soulage aussi le stress, ce qui explique son succès en home gym.',
+        'Le sac développe la puissance, l’endurance et la technique en même temps : dix rounds de trois minutes constituent une séance cardio intense. Il soulage aussi le stress, ce qui explique son succès en home gym.',
         'Pour les enfants, un sac léger adapté apprend la coordination et la discipline des sports de combat en sécurité, avec des gants adaptés.',
       ],
       list: [
@@ -30,11 +33,11 @@ export const article: BlogArticle = {
     {
       h2: 'Suspendu ou sur pied',
       paragraphs: [
-        'Le sac suspendu (chaînes + support plafond ou portique) offre le meilleur ressenti et absorbe les frappes lourdes : c’est le choix des boxeurs. Il exige un support solide — dalle béton ou portique dédié, jamais une simple cheville dans du placo.',
+        'Le sac suspendu (chaînes + support plafond ou portique) offre un ressenti apprécié des boxeurs et absorbe les frappes lourdes. Il exige un support solide — dalle béton ou portique dédié, jamais une simple cheville dans du placo.',
         'Le sac sur pied (base lestée à remplir d’eau ou de sable) se pose partout sans perçage : idéal en appartement ou en location au Maroc. Moins stable sur les frappes très lourdes, parfait pour l’entretien et la technique.',
       ],
       list: [
-        '<strong>Suspendu</strong> — meilleur ressenti, exige un support béton ou portique.',
+        '<strong>Suspendu</strong> — ressenti apprécié des boxeurs, exige un support béton ou portique.',
         '<strong>Sur pied lesté</strong> — sans perçage, idéal appartement et location.',
         '<strong>Enfant</strong> — plus léger et plus court, avec gants adaptés.',
       ],
@@ -47,7 +50,7 @@ export const article: BlogArticle = {
       ],
       list: [
         '<strong>Moitié du poids du corps</strong> — le repère standard pour un usage régulier.',
-        '<strong>Textile tassé</strong> — ferme et durable, le meilleur compromis.',
+        '<strong>Textile tassé</strong> — ferme et durable, un compromis équilibré.',
         '<strong>Gants obligatoires</strong> — coqués dès les frappes appuyées.',
       ],
     },
@@ -66,7 +69,7 @@ export const article: BlogArticle = {
     {
       h2: 'Prix et choix au Maroc',
       paragraphs: [
-        'Les sacs sur pied et enfants restent les plus accessibles, les suspendus lourds avec portique coûtent davantage. Ajoutez les gants au budget : frapper sans gants abîme les mains en quelques séances.',
+        'Les sacs sur pied et enfants restent les plus accessibles, les suspendus lourds avec portique coûtent davantage. Ajoutez les gants au budget : frapper sans gants abîme les mains en quelques séances. Notre guide aide à choisir son équipement de boxe pour débuter.',
         'Vérifiez le poids, le remplissage et les fixations incluses avant de commander.',
       ],
       list: [

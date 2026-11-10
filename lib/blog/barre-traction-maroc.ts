@@ -14,6 +14,9 @@ export const article: BlogArticle = {
     'La barre de traction est l’exercice le plus complet pour le dos et les bras au poids du corps — encore faut-il une barre adaptée à son logement. Au Maroc, entre les portes étroites, les murs en brique creuse et les plafonds bas, le choix du modèle décide de la sécurité autant que du confort.',
     'Ce guide compare les trois formats — porte, murale et station sur pied — avec leurs fixations et leurs limites. Les références évoluent, vérifiez la fiche produit avant de commander.',
   ],
+  contextualLinks: [
+    { anchor: "un élastique en aide", href: "/produit/livepro-super-band-small" },
+  ],
   sections: [
     {
       h2: 'Pourquoi la traction est indispensable',

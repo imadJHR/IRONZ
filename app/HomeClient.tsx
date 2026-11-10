@@ -1,7 +1,7 @@
 "use client";
 
 import { getDiscount } from "../lib/product-pricing";
-import { SITE_PHONE, SOCIAL_URLS } from "../lib/site";
+import { SITE_ADDRESS, SITE_EMAIL, SITE_PHONES, SOCIAL_URLS } from "../lib/site";
 import { productBrandSchema } from "../lib/product-brand";
 import { productAggregateRatingSchema, productReviewSummary } from "../lib/product-review-summary";
 import { productOfferAvailability, productOfferSchema } from "../lib/product-offer";
@@ -77,7 +77,7 @@ const PLACEHOLDER = "/placeholder.svg";
 const SITE_NAME = "IRONZ";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ironz.ma";
 const SITE_DESCRIPTION =
-  "IRONZ – Équipements de fitness et musculation professionnels au Maroc. Livraison rapide, qualité garantie, meilleur prix.";
+  "IRONZ – Équipements de fitness, musculation, accessoires et suppléments au Maroc. IRONZ propose aussi des services d'aménagement d'espaces sportifs.";
 const SITE_OG_IMAGE = `${SITE_URL}/og-image.jpg`; // 1200×630 recommended
 
 // ─── TYPES ───────────────────────────────────────────────────────────────────
@@ -201,13 +201,15 @@ function buildOrganizationJsonLd() {
     url: SITE_URL,
     logo: `${SITE_URL}/logo-optimized.png`,
     sameAs: SOCIAL_URLS,
-    contactPoint: {
+    email: SITE_EMAIL,
+    address: SITE_ADDRESS,
+    contactPoint: SITE_PHONES.map((telephone) => ({
       "@type": "ContactPoint",
-      telephone: SITE_PHONE,
+      telephone,
       contactType: "customer service",
       areaServed: "MA",
       availableLanguage: ["French", "Arabic"],
-    },
+    })),
   };
 }
 
@@ -1885,9 +1887,9 @@ export default function HomeClient({
                         {
                           icon: Truck,
                           title: "Livraison Rapide",
-                          desc: "Sous 24/48h au Maroc",
+                          desc: "Express partout au Maroc",
                         },
-                        { icon: ShieldCheck, title: "Garantie", desc: "2 ans inclus" },
+                        { icon: ShieldCheck, title: "Garantie", desc: "Selon produit et conditions" },
                         {
                           icon: Sparkles,
                           title: "Qualité",
@@ -1953,9 +1955,8 @@ export default function HomeClient({
                 <span className="text-yellow-500">IRONZ</span>&nbsp;?
               </h2>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-                Nous ne vendons pas seulement du matériel, nous vous offrons
-                l'assurance d'atteindre vos objectifs avec des équipements
-                professionnels.
+                IRONZ vous accompagne dans le choix du matériel et la préparation
+                de votre projet sportif, selon vos besoins.
               </p>
               <p className="mt-5 text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                 Un doute sur le matériel à choisir ?{" "}
@@ -1973,28 +1974,28 @@ export default function HomeClient({
               {[
                 {
                   icon: CheckCircle,
-                  title: "Qualité Professionnelle Garantie",
-                  text: "Chaque produit est rigoureusement sélectionné pour sa durabilité et sa performance.",
+                  title: "Garanties disponibles",
+                  text: "Des garanties sont disponibles selon les produits et les conditions applicables. Faites préciser la couverture du produit concerné.",
                 },
                 {
                   icon: Truck,
-                  title: "Livraison Rapide & Sécurisée",
-                  text: "Expédition express sous 24/48h partout au Maroc avec suivi en temps réel.",
+                  title: "Livraison express au Maroc",
+                  text: "IRONZ propose la livraison express partout au Maroc. Les délais et les conditions de votre commande restent à préciser.",
                 },
                 {
                   icon: TrendingUp,
-                  title: "Expertise & Conseils Gratuits",
-                  text: "Notre équipe d'experts vous guide pour choisir l'équipement adapté à vos objectifs.",
+                  title: "Études et installation",
+                  text: "IRONZ propose des études de projet et l’installation d’équipements. Le périmètre et les conditions sont précisés selon le projet et le devis.",
                 },
                 {
                   icon: Award,
-                  title: "Meilleur Rapport Qualité/Prix",
-                  text: "Prix compétitifs négociés directement avec les fabricants.",
+                  title: "Devis selon votre projet",
+                  text: "Décrivez les équipements, les usages et les prestations souhaités pour définir les postes et conditions du devis.",
                 },
                 {
                   icon: ShieldCheck,
-                  title: "Service Après-Vente Réactif",
-                  text: "SAV basé au Maroc disponible 7j/7 pour vous apporter une solution immédiate.",
+                  title: "Maintenance des équipements",
+                  text: "IRONZ propose des services de maintenance. Précisez la référence et votre besoin pour définir le périmètre, les conditions et le calendrier.",
                 },
                
               ].map((item, i) => (

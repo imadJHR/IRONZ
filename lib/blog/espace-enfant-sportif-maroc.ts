@@ -11,63 +11,63 @@ export const article: BlogArticle = {
   date: '2026-10-11',
   readTime: '7 min',
   intro: [
-    'Un espace sportif pour enfants ne s’improvise pas : les mêmes modules ne conviennent pas à 3 ans et à 10 ans, et un sol dur sous une structure d’escalade transforme chaque chute en accident. Au Maroc, ces espaces se développent dans les crèches, écoles, salles de sport et hôtels — avec des exigences différentes à chaque fois.',
+    "Un espace sportif pour enfants se prépare selon le public accueilli, les activités et le lieu. Les conditions d’utilisation des équipements et les caractéristiques du sol doivent être vérifiées pour la configuration envisagée.",
     'Ce guide donne la méthode : définir les âges et les usages, choisir les modules et le sol amortissant, prévoir l’encadrement. Sans promesse de sécurité absolue : un espace enfant se pense, se surveille et s’entretient.',
   ],
   sections: [
     {
       h2: 'Définir les âges et les usages avant tout',
       paragraphs: [
-        'La première question n’est pas le matériel, c’est qui va l’utiliser : les 2-5 ans ont besoin de motricité basse (tapis, tunnels, petites structures), les 6-12 ans de grimpe, d’équilibre et de jeux collectifs. Mélanger les tranches sans séparation crée les situations dangereuses.',
+        "La première question n’est pas le matériel, c’est qui va l’utiliser. Précisez les tranches d’âge attendues et les activités envisagées, puis faites vérifier l’adéquation des références, leurs conditions d’usage et l’organisation des groupes.",
         'Le contexte compte aussi : une crèche avec encadrement permanent n’a pas les mêmes besoins qu’un coin enfant dans une salle de sport où les parents s’entraînent à côté. Listez les usages réels avant de choisir le moindre module.',
       ],
       list: [
-        '<strong>2-5 ans</strong> — motricité basse, tapis épais, petites structures, tout au sol.',
-        '<strong>6-12 ans</strong> — grimpe, équilibre, jeux collectifs, structures plus hautes.',
+        "<strong>Public attendu</strong> — indiquez les tranches d’âge et les besoins à prendre en compte.",
+        "<strong>Activités envisagées</strong> — décrivez les mouvements et les usages avant de sélectionner les modules.",
         '<strong>Contexte d’usage</strong> — crèche, école, salle ou hôtel : encadrement et fréquentation différents.',
       ],
     },
     {
       h2: 'Modules : choisir simple et robuste',
       paragraphs: [
-        'Les bons modules pour enfants sont simples, robustes et sans petites pièces : structures de grimpe basses, toboggans, tapis de parcours, mini-trampolines encadrés, ballons et cerceaux. Évitez les mécanismes complexes et les structures hautes sans encadrement permanent.',
-        'Privilégiez les matériaux faciles à nettoyer et résistants : les espaces enfants s’usent vite et se salissent vite. Les coins arrondis et les fixations inaccessibles aux petites mains sont des critères de choix, pas des options.',
+        "Pour chaque module envisagé, relevez la référence, les dimensions et les conditions d’utilisation documentées. Des tapis, parcours ou structures de jeu ne se choisissent pas sur leur seule apparence ; faites confirmer leur adéquation au public et aux activités prévus.",
+        "Consultez les notices pour les conditions de nettoyage, les fixations, les pièces accessibles et les limites d’usage. Faites préciser les informations manquantes avant de retenir une référence pour votre structure.",
       ],
       list: [
-        '<strong>Structures basses</strong> — grimpe et toboggans adaptés à la tranche d’âge.',
+        "<strong>Structures envisagées</strong> — vérifier les indications d’âge, d’usage et les dégagements propres à la référence.",
         '<strong>Parcours de motricité</strong> — tapis, tunnels, plots : le cœur de l’activité.',
         '<strong>Matériaux lavables</strong> — nettoyage fréquent oblige, prévoyez-le dès l’achat.',
-        '<strong>Pas de petites pièces</strong> — rien de détachable à portée des plus petits.',
+        "<strong>Pièces et fixations</strong> — vérifier les indications d’usage et les points de contrôle de la référence.",
       ],
     },
     {
       h2: 'Le sol amortissant : le poste vital',
       paragraphs: [
-        'Sous toute structure surélevée, le sol doit amortir les chutes : dalles de mousse haute densité épaisses ou dalles caoutchouc selon la hauteur de chute possible. Plus la structure est haute, plus le sol doit être épais — c’est une règle sans exception.',
-        'Le sol se prolonge au-delà de l’aplomb des modules : un enfant qui glisse d’un toboggan atterrit rarement pile en dessous. Prévoyez une marge de sécurité tout autour de chaque structure.',
+        "La protection contre les chutes ne se déduit ni du nom du matériau ni de sa seule épaisseur. Faites vérifier les performances documentées de la solution, les conditions de pose et les exigences applicables aux équipements et au lieu concernés.",
+        "Les zones à prévoir autour des équipements se déterminent pour les références et les usages retenus. Relevez les dimensions disponibles et les obstacles, puis faites confirmer les dégagements et les caractéristiques du sol nécessaires à cette configuration.",
       ],
       list: [
-        '<strong>Épaisseur selon la hauteur</strong> — plus la structure est haute, plus le sol est épais.',
-        '<strong>Marge autour des modules</strong> — les chutes débordent de l’aplomb, élargissez la zone.',
+        "<strong>Performances documentées</strong> — faire vérifier la solution pour les équipements et la configuration retenus.",
+        "<strong>Zones autour des modules</strong> — confirmer les dégagements selon les indications documentées des références.",
         '<strong>Surface antidérapante</strong> — surtout si l’espace est nettoyé à l’eau.',
       ],
     },
     {
       h2: 'Encadrement et règles d’usage',
       paragraphs: [
-        'Aucun équipement ne remplace la surveillance : définissez qui surveille, avec quel ratio enfants par adulte, et affichez les règles simplement (âges autorisés, nombre max par module, chaussures). Dans les lieux publics au Maroc, la responsabilité de l’exploitant est engagée.',
-        'Formez le personnel aux gestes de base : aider sans porter, intervenir sur les bousculades, vérifier quotidiennement les fixations et l’état des tapis. Cinq minutes de contrôle chaque matin évitent la plupart des incidents.',
+        "Définissez l’organisation de surveillance de votre structure et faites préciser les conditions d’encadrement applicables. Affichez les règles retenues pour les utilisateurs, les effectifs et les équipements ; une recommandation générale ne remplace pas l’examen des exigences du lieu.",
+        "Prévoyez les vérifications et l’entretien selon les notices des équipements et les exigences applicables. Identifiez qui contrôle l’état du matériel et comment signaler une anomalie ; une durée de contrôle ne garantit pas la prévention des incidents.",
       ],
       list: [
         '<strong>Ratio de surveillance</strong> — défini à l’avance, affiché, respecté.',
         '<strong>Règles affichées simplement</strong> — âges, effectifs, consignes en images si besoin.',
-        '<strong>Contrôle quotidien</strong> — fixations, tapis et propreté vérifiés chaque matin.',
+        "<strong>Vérifications et entretien</strong> — organiser les contrôles selon les références et consignes applicables.",
       ],
     },
     {
       h2: 'Budget et méthode de chiffrage',
       paragraphs: [
-        'Un coin enfant simple (tapis, parcours de motricité, petits modules) se chiffre à quelques milliers de dirhams. Un espace structuré avec structures de grimpe et sol amortissant complet représente un investissement supérieur, qui dépend de la surface et du nombre de modules.',
+        "Le budget dépend du matériel retenu, des surfaces, de l’état du lieu et des prestations demandées. Distinguez les équipements, le sol, les protections éventuelles et les autres besoins, puis faites confirmer les postes compris dans le devis.",
         'Chiffrez par poste : modules, sol amortissant, protections et signalétique. Les références évoluent, demandez un devis avec vos dimensions et vos tranches d’âge.',
       ],
       list: [
@@ -78,33 +78,33 @@ export const article: BlogArticle = {
     {
       h2: 'Les erreurs à éviter',
       paragraphs: [
-        'Les espaces enfants ratés cumulent souvent les mêmes fautes : modules pour grands sous surveillance légère, sol dur sous structure haute, tranches d’âge mélangées sans séparation.',
+        "Avant de retenir une solution, vérifiez les indications d’usage des références, les contraintes du lieu et l’organisation prévue pour les groupes. Les caractéristiques du sol et les conditions de surveillance sont à examiner pour ce projet.",
       ],
       list: [
-        '<strong>Sol dur sous structure haute</strong> — la faute la plus grave, sans exception possible.',
-        '<strong>Mélange des âges</strong> — séparez les zones 2-5 ans et 6-12 ans.',
+        "<strong>Sol choisi sur son apparence</strong> — faire vérifier ses caractéristiques pour les équipements et les usages prévus.",
+        "<strong>Groupes non définis</strong> — préciser les publics et l’organisation avant de choisir le matériel.",
         '<strong>Surveillance improvisée</strong> — ratio et règles définis avant l’ouverture.',
         '<strong>Matériel fragile</strong> — un espace enfant s’use vite, prévoyez robuste et lavable.',
-        '<strong>Pas d’entretien quotidien</strong> — cinq minutes de contrôle chaque matin.',
+        "<strong>Entretien non organisé</strong> — prévoir les contrôles, les consignes et le suivi des anomalies.",
       ],
     },
   ],
   faq: [
     {
       q: 'Quel sol sous une structure de jeux ?',
-      a: 'Un sol amortissant — dalles de mousse épaisses ou caoutchouc — dimensionné selon la hauteur de chute, avec une marge tout autour des modules. Jamais de carrelage nu.',
+      a: "Faites préciser les caractéristiques nécessaires pour le module, son usage et le lieu. Le matériau ou l’épaisseur ne suffit pas à établir une protection contre les chutes : les performances documentées, la pose et les zones autour du module sont à vérifier.",
     },
     {
       q: 'Faut-il séparer les tranches d’âge ?',
-      a: 'Oui : les besoins et les risques des 2-5 ans et des 6-12 ans sont différents. Des zones distinctes évitent la plupart des incidents.',
+      a: "Décrivez les tranches d’âge attendues et les activités. L’organisation des groupes et des zones doit tenir compte des conditions d’utilisation des équipements et des exigences applicables à votre structure, sans déduire une compatibilité d’une tranche d’âge générale.",
     },
     {
       q: 'Quel budget pour un coin enfant ?',
-      a: 'Quelques milliers de dirhams pour un coin simple, davantage pour un espace structuré avec grimpe et sol complet. Le devis se fait sur vos dimensions.',
+      a: "Le coût dépend des équipements, des surfaces et des prestations retenues. Préparez les dimensions du lieu et vos priorités, puis demandez un devis qui précise ce qui est compris.",
     },
     {
       q: 'Qui doit surveiller l’espace ?',
-      a: 'Un adulte désigné avec un ratio défini, jamais de libre-accès sans surveillance pour les petits. Les règles doivent être affichées.',
+      a: "Précisez l’organisation de surveillance de votre établissement et faites confirmer les conditions d’encadrement applicables au lieu et aux équipements. Les rôles, consignes et effectifs doivent être définis pour cette configuration.",
     },
     {
       q: 'Comment chiffrer mon projet chez IRONZ ?',

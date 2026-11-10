@@ -5,7 +5,7 @@ import ProductsPage from "../../app/produit/page-client";
 import type { Product as CatalogProduct } from "../../app/produit/page-client";
 import { getAllProducts, productSlug } from "../../lib/products";
 import { OG_LOGO_IMAGES, TWITTER_LOGO_IMAGES } from "../../lib/og-image";
-import { SOCIAL_URLS } from "../../lib/site";
+import { SITE_ADDRESS, SITE_EMAIL, SITE_PHONES, SOCIAL_URLS } from "../../lib/site";
 
 type ProductsPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -147,17 +147,15 @@ function JsonLd({ products }: { products: CatalogProduct[] }) {
         name: "IRONZ",
         url: "https://www.ironz.ma",
         logo: "https://www.ironz.ma/logo-optimized.png",
-        contactPoint: {
+        email: SITE_EMAIL,
+        contactPoint: SITE_PHONES.map((telephone) => ({
           "@type": "ContactPoint",
+          telephone,
           contactType: "customer service",
           availableLanguage: ["French", "Arabic"],
           areaServed: "MA",
-        },
-        address: {
-          "@type": "PostalAddress",
-          addressCountry: "MA",
-          addressLocality: "Maroc",
-        },
+        })),
+        address: SITE_ADDRESS,
         sameAs: SOCIAL_URLS,
       },
     ],

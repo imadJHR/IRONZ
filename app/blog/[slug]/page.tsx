@@ -1,7 +1,9 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { OG_BLOG_IMAGES, TWITTER_BLOG_IMAGES, OG_BLOG_URL } from "../../../lib/og-image";
+import { EDITORIAL_AUTHOR, EDITORIAL_PUBLISHER, EditorialCredit } from "../../../components/seo/editorial-identity";
 import {
   articles,
   getArticleBySlug,
@@ -84,18 +86,12 @@ function buildStructuredData(article: BlogArticle) {
       url,
       inLanguage: "fr-MA",
       datePublished,
-      dateModified: datePublished,
+      // No independent editorial revision date is documented in the data model.
       keywords: article.keyword,
       articleSection: article.category,
       image: OG_BLOG_URL,
-      publisher: {
-        "@type": "Organization",
-        name: "IRONZ",
-        logo: {
-          "@type": "ImageObject",
-          url: OG_BLOG_URL,
-        },
-      },
+      author: EDITORIAL_AUTHOR,
+      publisher: EDITORIAL_PUBLISHER,
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
     },
     {
@@ -133,6 +129,38 @@ function renderRichText(source: string, key: number) {
       )}
     </span>
   );
+}
+
+/** Explicit annotations link existing text; paragraph strings remain escaped by React. */
+function renderParagraph(source: string, links: BlogArticle["contextualLinks"]) {
+  if (!links?.length) return source;
+
+  const matches = links.flatMap((link) => {
+    if (!link.anchor || !/^\/(?:blog|guides|services|produit)\/[a-z0-9]+(?:[/-][a-z0-9]+)*$/.test(link.href)) {
+      return [];
+    }
+    const start = source.indexOf(link.anchor);
+    return start < 0 ? [] : [{ start, link }];
+  }).sort((a, b) => a.start - b.start);
+
+  const parts: ReactNode[] = [];
+  let cursor = 0;
+  for (const { start, link } of matches) {
+    if (start < cursor) continue;
+    parts.push(source.slice(cursor, start));
+    parts.push(
+      <Link
+        key={`${start}-${link.href}`}
+        href={link.href}
+        className="underline decoration-yellow-500 underline-offset-4 hover:text-yellow-600 dark:hover:text-yellow-400"
+      >
+        {link.anchor}
+      </Link>,
+    );
+    cursor = start + link.anchor.length;
+  }
+  parts.push(source.slice(cursor));
+  return parts;
 }
 
 export default async function BlogArticlePage({
@@ -191,12 +219,13 @@ export default async function BlogArticlePage({
         <h1 className="mb-8 font-display text-4xl uppercase leading-tight tracking-wide sm:text-5xl">
           {article.title}
         </h1>
+        <EditorialCredit />
         {article.intro.map((paragraph, index) => (
           <p
             key={index}
             className="mb-6 text-lg leading-relaxed text-gray-700 dark:text-gray-300"
           >
-            {paragraph}
+            {renderParagraph(paragraph, article.contextualLinks)}
           </p>
         ))}
       </header>
@@ -212,7 +241,7 @@ export default async function BlogArticlePage({
               key={pIndex}
               className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300"
             >
-              {paragraph}
+              {renderParagraph(paragraph, article.contextualLinks)}
             </p>
           ))}
           {section.list && section.list.length > 0 && (

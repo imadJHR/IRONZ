@@ -49,13 +49,13 @@ const homepageServiceAssets = {
   "personnalisation-accessoires": {
     image: img2,
     icon: Palette,
-    features: ["Design adapté", "Impression HD", "Finitions selon le projet"],
+    features: ["Design adapté", "Options selon le produit", "Finitions selon le projet"],
     isWide: false,
   },
   "espace-enfance": {
     image: img3,
     icon: ToyBrick,
-    features: ["Sécurité adaptée", "Design ludique", "Pour écoles & centres"],
+    features: ["Usages à préciser", "Design ludique", "Pour écoles & centres"],
     isWide: false,
   },
   "revetement-sol-mur": {

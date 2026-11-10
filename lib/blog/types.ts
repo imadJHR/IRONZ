@@ -17,6 +17,11 @@ export interface BlogFaqItem {
   a: string;
 }
 
+export interface BlogContextualLink {
+  anchor: string;
+  href: `/${"blog" | "guides" | "services" | "produit"}/${string}`;
+}
+
 export interface BlogArticle {
   slug: string;
   category: BlogCategory;
@@ -28,6 +33,7 @@ export interface BlogArticle {
   date: string;
   readTime: string;
   intro: string[];
+  contextualLinks?: BlogContextualLink[];
   sections: BlogSection[];
   faq: BlogFaqItem[];
   cta: { label: string; href: string };

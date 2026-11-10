@@ -89,44 +89,55 @@ function ServiceHubIcon({ name }: { name: ServiceHubIconName }) {
 }
 
 export default function ServicesPage() {
-  const canonicalServiceCards = getCanonicalServiceCards();
+  const hubDescriptions: Record<string, string> = {
+    "/services/amenagement-salle": "Projet de salle : usages, zones, matériel et sol à préciser pour une demande de devis.",
+    "/services/amenagement-salle/home-gym": "Espace privé à domicile : pièce disponible, activités, rangement et contraintes du logement.",
+    "/services/amenagement-salle/salle-professionnelle": "Club, entreprise ou hôtel : utilisateurs, fréquentation et équipements pour un usage collectif.",
+    "/services/personnalisation-accessoires": "Accessoires à personnaliser : références, quantités, couleurs et identité visuelle à préciser.",
+    "/services/espace-enfance": "Espace d’activité physique pour enfants : usages, matériel et points à vérifier selon le lieu.",
+    "/services/revetement-sol-mur": "Sols et murs sportifs : support existant, zones concernées, activités et contraintes à décrire.",
+    "/services/amenagement-terrains-sport": "Terrain sportif : pratiques, dimensions, surface et équipements recherchés à préciser."
+};
+  const canonicalServiceCards = getCanonicalServiceCards().map((service) => ({
+    ...service, desc: hubDescriptions[service.href] ?? service.desc,
+  }));
 
   const supportServices: SupportService[] = [
     {
       id: 1,
-      title: "Installation d'équipement",
+      title: "Installation d’équipements",
       description:
-        "Accompagnement pour mettre en place vos équipements de fitness IRONZ dans de bonnes conditions d'usage.",
+        "IRONZ propose l’installation d’équipements. Décrivez le matériel, le lieu et les accès ; les prestations comprises, les conditions et le calendrier sont définis pour votre projet.",
       icon: <Tool className="h-10 w-10" />,
       features: [
-        "Préparation de l'espace",
-        "Montage et mise en place",
-        "Vérification d'usage",
-        "Conseils de prise en main",
+        "Dimensions du lieu",
+        "Portes, escaliers et ascenseur",
+        "Hauteur et obstacles fixes",
+        "Photos ou plan existant",
         "Orientation vers le bon interlocuteur IRONZ",
       ],
       price: "Sur devis",
       cta: "Demander un devis",
       color: "from-yellow-500 to-yellow-600",
-      highlights: ["Projet cadré", "Mise en place", "Conseils"],
+      highlights: ["Lieu", "Accès", "Dimensions"],
     },
     {
       id: 2,
-      title: "Maintenance et réparation",
+      title: "Maintenance des équipements",
       description:
-        "Demande d'assistance pour diagnostiquer un équipement et organiser la solution adaptée selon le cas.",
+        "IRONZ propose des services de maintenance. Indiquez les références et le besoin d’entretien ; le périmètre, les conditions et le calendrier sont à préciser selon l’équipement et la demande.",
       icon: <Tool className="h-10 w-10" />,
       features: [
-        "Analyse de la demande",
-        "Orientation technique",
-        "Pièces selon disponibilité",
-        "Intervention selon le projet",
-        "Suivi avec l'équipe IRONZ",
+        "Références connues",
+        "Dimensions du matériel",
+        "Emplacement actuel",
+        "État et questions d’utilisation",
+        "Besoin d’entretien à préciser",
       ],
       price: "Sur devis",
       cta: "Prendre contact",
       color: "from-gray-700 to-gray-950",
-      highlights: ["Diagnostic", "Assistance", "Suivi"],
+      highlights: ["Existant", "Références", "Besoins"],
     },
     {
       id: 3,
@@ -148,21 +159,21 @@ export default function ServicesPage() {
     },
     {
       id: 4,
-      title: "Livraison & montage",
+      title: "Livraison et montage à préciser",
       description:
-        "Organisation de la livraison et du montage selon la nature des produits, l'adresse et les contraintes d'accès.",
+        "Demandez quelles conditions de livraison ou de montage peuvent être proposées pour votre référence et votre lieu.",
       icon: <Truck className="h-10 w-10" />,
       features: [
-        "Coordination de la livraison",
-        "Montage selon produit",
-        "Gestion des contraintes d'accès",
-        "Informations de suivi",
-        "Support client IRONZ",
+        "Ville et lieu du projet",
+        "Référence et dimensions",
+        "Accès au lieu à décrire",
+        "Prestations à confirmer",
+        "Conditions et calendrier à confirmer",
       ],
       price: "Selon commande",
       cta: "Demander les détails",
       color: "from-gray-700 to-gray-950",
-      highlights: ["Livraison", "Montage", "Coordination"],
+      highlights: ["Lieu", "Conditions", "Confirmation"],
     },
     {
       id: 5,
@@ -184,21 +195,21 @@ export default function ServicesPage() {
     },
     {
       id: 6,
-      title: "Étude de projet fitness",
+      title: "Études de projet fitness",
       description:
-        "Cadrage d'un projet d'espace fitness avant devis : usage, surface, équipements et priorités du client.",
+        "IRONZ réalise des études pour les projets d’aménagement sportif. Précisez les usages, la surface et les équipements ; le contenu de l’étude et ses conditions sont définis selon le projet et le devis.",
       icon: <Award className="h-10 w-10" />,
       features: [
         "Cadrage du besoin",
-        "Analyse de l'espace",
+        "Description de l’espace",
         "Sélection d'équipements",
         "Priorisation du budget",
         "Préparation du devis",
       ],
       price: "Sur devis",
-      cta: "Demander une étude",
+      cta: "Préparer une demande",
       color: "from-gray-700 to-gray-950",
-      highlights: ["Étude", "Équipement", "Devis"],
+      highlights: ["Projet", "Équipement", "Devis"],
     },
   ];
 
@@ -206,7 +217,7 @@ export default function ServicesPage() {
     {
       number: "01",
       title: "Consultation du projet",
-      description: "Analyse approfondie de vos besoins avec nos experts IRONZ",
+      description: "Décrivez les utilisateurs, les activités, le lieu et les équipements recherchés",
       icon: <Target className="w-8 h-8" />,
     },
     {
@@ -217,40 +228,36 @@ export default function ServicesPage() {
     },
     {
       number: "03",
-      title: "Planification du projet",
-      description: "Organisation des étapes selon les contraintes et les priorités du projet",
+      title: "Précisions sur le projet",
+      description: "Ajoutez les accès, le matériel conservé et les priorités de votre demande",
       icon: <Calendar className="w-8 h-8" />,
     },
     {
       number: "04",
-      title: "Mise en œuvre du projet",
-      description: "Réalisation ou accompagnement selon le service validé avec IRONZ",
+      title: "Confirmation du périmètre",
+      description: "Vérifiez les prestations possibles, les conditions et le calendrier avec IRONZ",
       icon: <CheckCircle className="w-8 h-8" />,
     },
   ];
 
   const faqs: FAQ[] = [
     {
-      question: "Quels sont les délais d'intervention pour une installation ?",
-      answer:
-        "Le délai dépend du type de demande, de l'adresse et de la disponibilité des équipements ou pièces nécessaires. L'équipe IRONZ vous confirme les étapes après étude.",
+        "question": "Comment choisir le service adapté à mon projet ?",
+        "answer": "Partez de l’usage : Home Gym pour un espace privé, salle professionnelle pour un usage collectif, ou aménagement de salle pour un projet général. Les pages revêtement, terrains de sport, personnalisation et espace enfance permettent de préciser les autres besoins. Si plusieurs services sont concernés, décrivez-les dans votre demande."
     },
     {
-      question: "Les services sont-ils disponibles partout au Maroc ?",
-      answer:
-        "Les demandes sont étudiées selon la ville, le type de service et les contraintes du projet. IRONZ vous confirme la faisabilité avant devis.",
+        "question": "Que préparer avant de demander un devis ?",
+        "answer": "Indiquez la ville, le type de lieu, les utilisateurs, les activités prévues et les équipements recherchés ou à conserver. Ajoutez la surface estimée, les accès et l’état du sol si vous les connaissez. Budget indicatif et calendrier souhaité sont facultatifs ; photos ou plan existant peuvent être partagés ensuite sur WhatsApp."
     },
     {
-      question: "Comment se déroule une séance de coaching personnalisé ?",
-      answer:
-        "L'accompagnement commence par la compréhension de votre besoin, puis l'équipe vous oriente vers les équipements ou services adaptés.",
+        "question": "Les services sont-ils disponibles partout au Maroc ?",
+        "answer": "Précisez la ville et les contraintes d’accès dans votre demande. Les prestations possibles pour ce lieu, leurs conditions et leur calendrier restent à confirmer avec IRONZ selon le service et les équipements envisagés."
     },
     {
-      question: "Quelles conditions de suivi sont prévues ?",
-      answer:
-        "Les conditions de suivi dépendent du produit et de la demande. Contactez IRONZ avec la référence concernée pour une réponse adaptée.",
-    },
-  ];
+        "question": "Comment transmettre ma demande de devis à IRONZ ?",
+        "answer": "Les boutons « Demander un devis » ouvrent le formulaire dédié, où vous choisissez le service concerné. Le formulaire prépare un message pour WhatsApp : relisez-le puis validez son envoi dans WhatsApp pour transmettre votre demande. Vous pouvez aussi contacter IRONZ avant de choisir un service."
+    }
+];
 
   const stats: Stat[] = [
     { value: "Devis", label: "Personnalisé", icon: <Star className="w-5 h-5" /> },
@@ -284,6 +291,11 @@ export default function ServicesPage() {
 
   return (
     <main className="min-h-screen bg-white dark:bg-gray-950">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org", "@type": "FAQPage",
+        mainEntity: faqs.map((faq) => ({ "@type": "Question", name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer } })),
+      }) }} />
       {/* Hero Section */}
       <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-gray-900 via-gray-900 to-black overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-yellow-600/10" />
@@ -318,7 +330,7 @@ export default function ServicesPage() {
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl leading-relaxed">
-              Découvrez notre gamme de services adaptés pour vous accompagner dans vos projets fitness, de l&apos;installation à l&apos;aménagement.
+              Explorez les services IRONZ au Maroc pour votre salle de sport, votre espace privé ou votre projet sportif. Choisissez la page adaptée pour préciser vos besoins avant de demander un devis.
             </p>
 
             <motion.div
@@ -392,7 +404,7 @@ export default function ServicesPage() {
             </div>
 
             <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Nos <span className="text-yellow-500">Services</span>
+              Préparer votre <span className="text-yellow-500">demande</span>
             </h2>
           </motion.div>
 
@@ -478,7 +490,7 @@ export default function ServicesPage() {
               Chaque <span className="text-yellow-500">Service</span> en détail
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Explorez nos prestations spécifiques et trouvez la solution adaptée à vos besoins
+              Comparez les pages selon votre usage : salle privée, projet collectif, surfaces sportives ou accessoires à personnaliser. Pour un lieu à Casablanca, consultez la{" "}<Link href="/services/amenagement-salle/casablanca" className="text-yellow-600 underline underline-offset-4 dark:text-yellow-400">page de demande pour un projet de salle à Casablanca</Link>. Pour un projet à Agadir, consultez la{" "}<Link href="/services/amenagement-salle/agadir" className="text-yellow-600 underline underline-offset-4 dark:text-yellow-400">page du showroom et du service à Agadir</Link>.
             </p>
           </motion.div>
 
@@ -530,7 +542,7 @@ export default function ServicesPage() {
             </div>
 
             <h2 className="text-4xl md:text-5xl font-display uppercase tracking-wide mb-6 text-gray-900 dark:text-white">
-              Excellence en <span className="text-yellow-500">4 Étapes</span>
+              Votre demande en <span className="text-yellow-500">4 étapes</span>
             </h2>
           </motion.div>
 

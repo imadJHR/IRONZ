@@ -4,6 +4,7 @@ import { categories } from "../data/product";
 import { productSlug, productUpdatedAt, type ProductRecord } from "../lib/products";
 import { buildCategoryTaxonomy } from "../lib/category-taxonomy";
 import { getSitemapServices } from "../lib/services";
+import { getCityPages } from "../lib/cities";
 import { articles } from "../lib/blog";
 import { BLACK_FRIDAY_PACKS } from "../lib/black-friday";
 
@@ -163,13 +164,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // City-specific service pages extend a national service. They are unique
   // landing pages, listed once, and never canonicalized to their parent.
-  const cityServiceRoutes: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}/services/amenagement-salle/casablanca`,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-  ];
+  // The list is generated from the city registry so a new city page is never
+  // forgotten here.
+  const cityServiceRoutes: MetadataRoute.Sitemap = getCityPages().map((city) => ({
+    url: `${baseUrl}/services/amenagement-salle/${city.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
 
   let productRoutes: MetadataRoute.Sitemap = [];
   let subcategoryRoutes: MetadataRoute.Sitemap = [];

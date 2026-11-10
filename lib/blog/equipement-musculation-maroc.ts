@@ -14,12 +14,16 @@ export const article: BlogArticle = {
     'Quand on débute ou qu’on monte une salle, la question n’est pas quoi acheter, mais dans quel ordre. Tout l’équipement de musculation n’est pas utile en même temps : un kit d’haltères et un banc permettent déjà la majorité des exercices, tandis qu’une machine guidée n’a d’intérêt qu’une fois la base posée.',
     'Ce guide présente la liste de l’équipement de musculation disponible au Maroc, classée par ordre de priorité, pour un particulier comme pour une salle. Les références et les stocks évoluent, les informations données sont à confirmer sur la fiche produit au moment de l’achat. Pour aller plus loin sur les poids libres, consultez aussi notre guide des haltères, kettlebells et disques.',
   ],
+  contextualLinks: [
+    { anchor: "guide des haltères, kettlebells et disques", href: "/guides/choisir-halteres-kettlebells-disques-maroc" },
+    { anchor: "choisir une barre de traction", href: "/blog/barre-traction-maroc" },
+  ],
   sections: [
     {
       h2: 'La priorité numéro 1 : les poids libres',
       paragraphs: [
         'Haltères, barres et disques constituent la base de tout entraînement de musculation. C’est par là qu’il faut commencer, car ils couvrent la quasi-totalité des exercices : développés, tirages, flexions, fentes. Un kit d’haltères réglables et une barre avec des disques suffisent pour des mois d’entraînement.',
-        'Sur le marché marocain, un kit d’haltères de 20 kg démarre généralement autour de 800 à 1 500 DH selon la qualité et le revêtement. Pour les disques et les barres, le prix se calcule au kilo. Vérifiez toujours le poids maximal supporté par la barre et la qualité du revêtement des disques.',
+        'Sur le marché marocain, le prix d’un kit d’haltères dépend de la charge, du revêtement et de la marque ; pour les disques et les barres, il se calcule souvent au kilo. Comparez les références à partir de leurs caractéristiques documentées, et vérifiez le poids maximal supporté par la barre ainsi que la qualité du revêtement des disques.',
       ],
       list: [
         '<strong>Haltères réglables</strong> — la base, ils remplacent une série d’haltères fixes pour un budget contenu.',
@@ -47,7 +51,7 @@ export const article: BlogArticle = {
       h2: 'Le rack ou power rack : pour les charges lourdes',
       paragraphs: [
         'Le rack, ou power rack, permet de travailler en sécurité sur les mouvements lourds : squat, développé couché, presse. Les crêtes de sécurité rattrapent la barre en cas d’échec, ce qui évite de se coincer sous la charge. C’est l’investissement qui transforme un coin muscu en véritable salle.',
-        'Un rack demande de la hauteur et de la place au sol. Mesurez votre plafond avant d’acheter, surtout si vous ajoutez une barre de traction. Pour une salle commerciale, le rack est indispensable ; pour un domicile, il est prioritaire si vous voulez progresser sur les charges.',
+        'Un rack demande de la hauteur et de la place au sol. Mesurez votre plafond avant d’acheter, surtout si vous ajoutez une barre de traction. Pour une salle commerciale, le rack est indispensable ; pour un domicile, il est prioritaire si vous voulez progresser sur les charges. Pour comparer les fixations, consultez notre guide pour choisir une barre de traction.',
       ],
       list: [
         '<strong>Crêtes de sécurité</strong> — elles rattrapent la barre en cas d’échec, sécurité numéro un.',
@@ -61,27 +65,27 @@ export const article: BlogArticle = {
       h2: 'Les machines guidées et à poulie',
       paragraphs: [
         'Les machines guidées (Smith machine, machines à charge guidée) isolent les muscles et guident le mouvement, ce qui aide le débutant et permet le travail à l’échec sans assistance. Les machines à poulie (lat pulldown, tirage, extension) couvrent les mouvements que les poids libres ne permettent pas.',
-        'IRONZ référence des machines des marques Matrix, Life Fitness et Topgym. Pour une salle commerciale, ces machines sont attendues par les adhérents. Pour un domicile, elles viennent en complément des poids libres, pas en remplacement.',
+        'Matrix, Life Fitness et Topgym sont des exemples de marques du marché professionnel, cités pour comparer les gammes. Pour un projet IRONZ, les marques, modèles et conditions de fourniture sont à confirmer à partir du catalogue ou lors du devis. Pour un domicile, les machines viennent en complément des poids libres, pas en remplacement.',
       ],
       list: [
         '<strong>Smith machine</strong> — barre guidée verticalement, travail lourd sans sécurité humaine.',
         '<strong>Machines à charge guidée</strong> — un mouvement par machine, idéal pour l’isolation.',
         '<strong>Lat pulldown et tirage</strong> — pour le dos, complément indispensable des tractions.',
         '<strong>Poulie basse</strong> — pour les tirages, les extensions et le travail des jambes.',
-        '<strong>Marques</strong> — Matrix, Life Fitness, Topgym sont des marques professionnelles référencées.',
+        '<strong>Exemples de marques à comparer</strong> — Matrix, Life Fitness et Topgym ; références et disponibilité chez IRONZ à confirmer.',
       ],
     },
     {
       h2: 'Quel budget et quel espace prévoir ?',
       paragraphs: [
         'L’erreur est de tout acheter en même temps. Un débutant s’en sort avec un kit d’haltères, un banc et quelques disques pour un budget contenu. Une salle complète demande un investissement autrement plus important, machines comprises.',
-        'La bonne méthode est de définir un pallier : le premier pallier (haltères, banc, disques) couvre 80 % des besoins. Le deuxième pallier (rack, barre de traction) permet de progresser en sécurité. Le troisième pallier (machines) apporte la diversité. Les références et les prix évoluent, demandez un devis avant de valider un équipement.',
+        'La bonne méthode est de définir un pallier : le premier pallier (haltères, banc, disques) répond à la majorité des exercices de base. Le deuxième pallier (rack, barre de traction) permet de progresser en sécurité. Le troisième pallier (machines) apporte la diversité. Les références et les prix évoluent, demandez un devis avant de valider un équipement.',
       ],
       list: [
         '<strong>Pallier 1</strong> — haltères réglables, banc, disques : la base pour débuter.',
         '<strong>Pallier 2</strong> — rack, barre, poids supplémentaires : pour progresser en sécurité.',
         '<strong>Pallier 3</strong> — machines guidées et poulies : la diversité et le confort d’une salle.',
-        '<strong>Espace</strong> — 4 à 6 m² pour un coin muscu, 30 m² et plus pour une salle complète.',
+        '<strong>Espace</strong> — mesurez la surface disponible et l’emprise des appareils : un coin muscu demande peu de place, une salle complète davantage.',
         '<strong>Sol</strong> — prévoyez un revêtement adapté, surtout avec des poids libres.',
       ],
     },
@@ -110,7 +114,7 @@ export const article: BlogArticle = {
     },
     {
       q: 'Quel espace pour un coin musculation ?',
-      a: 'Comptez 4 à 6 m² pour un coin basique avec banc et haltères, avec une hauteur de plafond suffisante pour les mouvements debout. Pour un rack, prévoyez plus de hauteur et un espace dédié en permanence.',
+      a: 'Mesurez la surface disponible et l’emprise des appareils : un coin basique avec banc et haltères demande peu de place, un rack plus de hauteur et un espace dédié en permanence.',
     },
     {
       q: 'Haltères fixes ou réglables ?',
@@ -123,7 +127,7 @@ export const article: BlogArticle = {
   ],
   cta: {
     label: 'Voir le matériel de musculation disponible chez IRONZ',
-    href: '/categories/equipements/poids-libres',
+    href: '/produit',
   },
   related: ["whey-proteine-maroc", "personnalisation-accessoires-sport-maroc"],
 };

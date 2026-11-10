@@ -12,7 +12,10 @@ export const article: BlogArticle = {
   readTime: '7 min',
   intro: [
     'La kettlebell est l’outil le plus polyvalent du home gym : un seul poids suffit pour travailler jambes, dos, épaules et cardio avec le swing, le goblet squat et le développé. Au Maroc, on la trouve en fonte classique ou en modèles réglables, de 4 à plus de 20 kg.',
-    'Mais le mauvais poids décourage vite : trop lourd, le swing devient dangereux ; trop léger, il ne sert à rien. Ce guide donne les repères pour choisir et débuter proprement.',
+    'Mais le mauvais poids décourage vite : trop lourd, le swing devient dangereux ; trop léger, il ne sert à rien. Ce guide donne les repères pour choisir et débuter proprement. Pour choisir votre matériel, vous pouvez comparer kettlebells, haltères et disques.',
+  ],
+  contextualLinks: [
+    { anchor: "comparer kettlebells, haltères et disques", href: "/guides/choisir-halteres-kettlebells-disques-maroc" },
   ],
   sections: [
     {
@@ -112,7 +115,7 @@ export const article: BlogArticle = {
   ],
   cta: {
     label: 'Voir les kettlebells et poids libres IRONZ',
-    href: '/categories/equipements/poids-libres',
+    href: '/categories/accessoires/poids-libres',
   },
   related: ["equipement-musculation-maroc", "banc-musculation-maroc"],
 };

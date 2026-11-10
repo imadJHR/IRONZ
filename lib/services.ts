@@ -129,7 +129,7 @@ export const SERVICES: CanonicalService[] = [
     hubIcon: "activity",
     homepageTitle: "Espace Enfance",
     homepageDescription:
-      "Création de zones d'activités sportives ludiques, sécurisées et adaptées aux plus jeunes.",
+      "Espaces d'activité physique pour enfants : usages, organisation, équipements et surfaces à préciser selon le projet.",
     showInHomepage: true,
     showInHeader: true,
     showInDevis: true,

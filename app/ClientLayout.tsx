@@ -53,7 +53,7 @@ import {
   clerkLocalization,
   userButtonAppearance,
 } from "../lib/clerk-appearance";
-import { SITE_PHONE, SOCIAL_URLS } from "../lib/site";
+import { SITE_ADDRESS, SITE_CONTACTS, SITE_EMAIL, SITE_PHONES, SOCIAL_URLS } from "../lib/site";
 
 const SITE_URL = "https://www.ironz.ma";
 
@@ -196,33 +196,17 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
               "@type": "SportingGoodsStore",
               name: "IRONZ",
               description:
-                "L'élite de l'équipement sportif marocain. Matériel de musculation, suppléments et accessoires de qualité professionnelle.",
+                "Équipement de fitness, musculation, accessoires et suppléments au Maroc. IRONZ propose aussi des services d'aménagement et d'équipement d'espaces sportifs.",
               url: SITE_URL,
               logo: `${SITE_URL}/logo-optimized.png`,
               image: `${SITE_URL}/og-image.jpg`,
-              telephone: SITE_PHONE,
-              email: "info@ironz.ma",
+              telephone: SITE_PHONES,
+              email: SITE_EMAIL,
               address: {
-                "@type": "PostalAddress",
+                ...SITE_ADDRESS,
                 streetAddress: "SAHARA MALL 1ÈRE ÉTAGE C169 & C120",
-                addressLocality: "Agadir",
-                addressCountry: "MA",
               },
               sameAs: SOCIAL_URLS,
-              openingHoursSpecification: {
-                "@type": "OpeningHoursSpecification",
-                dayOfWeek: [
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday",
-                  "Sunday",
-                ],
-                opens: "09:00",
-                closes: "18:00",
-              },
               priceRange: "$$",
               currenciesAccepted: "MAD",
               paymentAccepted: "Cash, Credit Card",
@@ -670,15 +654,14 @@ const Navbar = React.memo(function Navbar({
                   Contact
                 </NavLink>
 
-                <Link href="/demande-devis">
-                  <motion.button
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="ml-2 px-4 xl:px-5 py-2.5 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-black font-display uppercase tracking-widest transition-all shadow-lg shadow-yellow-500/30 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
+                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                  <Link
+                    href="/demande-devis"
+                    className="ml-2 rounded-xl bg-yellow-500 px-4 xl:px-5 py-2.5 text-center font-display text-sm uppercase tracking-widest text-black shadow-lg shadow-yellow-500/30 transition-all hover:bg-yellow-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
                   >
                     {language === "fr" ? "Demande devis" : "Request Quote"}
-                  </motion.button>
-                </Link>
+                  </Link>
+                </motion.div>
               </div>
 
               {/* ── Right Icons ── */}
@@ -829,13 +812,11 @@ const Navbar = React.memo(function Navbar({
                 <Link
                   href="/panier"
                   aria-label={`Panier (${itemCount} articles)`}
+                  className="relative p-2 sm:p-2.5 rounded-full bg-white/10 text-gray-300 hover:text-yellow-400 hover:bg-white/15 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
                 >
-                  <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="relative p-2 sm:p-2.5 rounded-full bg-white/10 text-gray-300 hover:text-yellow-400 hover:bg-white/15 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500"
-                  >
+                  <motion.span whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="block">
                     <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </motion.span>
                     {itemCount > 0 && (
                       <motion.span
                         initial={{ scale: 0 }}
@@ -846,7 +827,6 @@ const Navbar = React.memo(function Navbar({
                         {itemCount > 9 ? "9+" : itemCount}
                       </motion.span>
                     )}
-                  </motion.button>
                 </Link>
 
                 {/* Auth – Desktop */}
@@ -1009,7 +989,7 @@ const Navbar = React.memo(function Navbar({
                           ? "Rechercher un produit..."
                           : "Search a product..."
                       }
-                      className="flex-1 bg-transparent outline-none text-sm font-medium text-gray-900 dark:text-white placeholder:text-gray-400"
+                      className="min-w-0 flex-1 bg-transparent outline-none text-sm font-medium text-white placeholder:text-gray-400"
                       autoComplete="off"
                     />
                     <button
@@ -1389,18 +1369,24 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
     () => [
       {
         label: language === "fr" ? "Adresse" : "Address",
-        content: "SAHARA MALL 1ÈRE ÉTAGE C169 & C120",
+        content: "SAHARA MALL 1ÈRE ÉTAGE C169 & C120, Agadir",
       },
       {
         label: language === "fr" ? "Téléphone" : "Phone",
-        content: "+212 669 51 00 42",
-        href: "tel:+212669510042",
+        content: SITE_CONTACTS[0].label,
+        href: SITE_CONTACTS[0].href,
+        big: true,
+      },
+      {
+        label: language === "fr" ? "Téléphone" : "Phone",
+        content: SITE_CONTACTS[1].label,
+        href: SITE_CONTACTS[1].href,
         big: true,
       },
       {
         label: "Email",
-        content: "info@ironz.ma",
-        href: "mailto:info@ironz.ma",
+        content: SITE_EMAIL,
+        href: `mailto:${SITE_EMAIL}`,
         big: true,
       },
     ],
@@ -1438,7 +1424,7 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
         <div className="absolute top-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-yellow-500/10 rounded-full blur-[80px] sm:blur-[100px] -translate-y-1/2" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-8 sm:pb-12">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-20 sm:pb-12">
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-6 mb-12 sm:mb-16"
           variants={containerVariants}
@@ -1463,8 +1449,9 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
             </Link>
             <p className="text-gray-400 leading-relaxed text-sm max-w-xs">
               {language === "fr"
-                ? "L'élite de l'équipement sportif marocain. Forgez votre avenir avec notre matériel de qualité professionnelle."
-                : "Morocco's elite sports equipment. Forge your future with our professional-grade gear."}
+                ? "Équipement de fitness et de musculation au Maroc. IRONZ accompagne aussi vos projets d’aménagement d’espaces sportifs."
+                : "Fitness and strength equipment in Morocco. IRONZ also supports your sports facility fit-out projects."
+              }
             </p>
             {/* Social — text links, no icons */}
             <div className="flex items-center gap-5 pt-1">
@@ -1488,8 +1475,8 @@ const Footer = React.memo(function Footer({ language }: FooterProps) {
               {[
                 language === "fr" ? "Livraison rapide" : "Fast delivery",
                 language === "fr"
-                  ? "Qualité garantie"
-                  : "Quality guaranteed",
+                  ? "Garanties selon les produits et conditions applicables"
+                  : "Warranties subject to product and applicable terms",
               ].map((badge, i) => (
                 <span
                   key={i}

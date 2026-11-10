@@ -5,6 +5,9 @@
 
 @theme {
   --font-display: "Anton", "Arial Narrow", "Impact", sans-serif;
+  /* 'xs' was used across the site but never defined: without this line every
+     `xs:` utility was silently ignored by Tailwind. */
+  --breakpoint-xs: 24rem;
 }
 
 :root {

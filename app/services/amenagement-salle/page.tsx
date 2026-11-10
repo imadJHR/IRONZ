@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { MapPin } from "lucide-react";
 import ServiceContactForm from "../../../components/service-contact-form";
+import { CITIES, getCityHref } from "../../../lib/cities";
 
 const CANONICAL_URL = "https://www.ironz.ma/services/amenagement-salle";
 const DEVIS_URL = "/demande-devis?service=amenagement-salle";
@@ -65,7 +67,7 @@ const gymZones = [
     icon: "cardio" as const,
     title: "Zone cardio",
     description:
-      "Tapis, vélos ou elliptiques demandent une circulation claire, une bonne implantation et un choix adapté au public visé.",
+      "Prévoyez la place des appareils, leurs dégagements et les accès. Le choix du matériel cardio dépend ensuite des pratiques et des utilisateurs.",
   },
   {
     icon: "strength" as const,
@@ -131,17 +133,17 @@ const processSteps = [
     icon: "check" as const,
     title: "Préparer le devis",
     description:
-      "Transformer les informations utiles en proposition adaptée au périmètre validé, sans prix standard inventé.",
+      "Préciser les équipements, le revêtement et les priorités à chiffrer, en distinguant les besoins immédiats des ajouts envisagés plus tard.",
   },
 ];
 
 const quotePreparation = [
   "ville et type de lieu : maison, club, hôtel, entreprise ou local commercial",
-  "dimensions, photos, accès et contraintes visibles de l'espace",
+  "surface approximative, dimensions si connues, hauteur et accès au local",
   "public attendu et fréquence d'utilisation envisagée",
   "priorités d'entraînement : cardio, musculation, poids libres, mobilité",
   "matériel déjà disponible ou familles d'équipements souhaitées",
-  "revêtement existant, niveau de finition et budget indicatif si connu",
+  "état du sol, budget indicatif et délai souhaité, si vous les connaissez",
 ];
 
 const internalLinks = [
@@ -167,7 +169,7 @@ const internalLinks = [
     href: "/categories/equipements",
     title: "Équipements fitness",
     description:
-      "Pour explorer les familles de machines et accessoires pouvant entrer dans la composition du projet.",
+      "Pour comparer les équipements cardio et de musculation, leurs dimensions et leurs caractéristiques sur les fiches produits.",
   },
 ];
 
@@ -175,17 +177,17 @@ const faqItems = [
   {
     question: "Comment aménager une salle de sport ?",
     answer:
-      "Il faut d'abord définir l'usage, la surface, les utilisateurs et les objectifs. Les zones, les équipements, le revêtement et le budget se décident ensuite pour construire une salle cohérente.",
+      "Commencez par préciser qui utilisera la salle, pour quelles activités et dans quel espace. Relevez la surface disponible, les accès et le matériel déjà présent. Ces informations permettent de discuter avec IRONZ des zones, des équipements et du revêtement à prévoir dans la demande de devis.",
   },
   {
     question: "Quels équipements prévoir dans une salle de sport ?",
     answer:
-      "Le choix dépend du projet : cardio, machines guidées, poids libres, accessoires, rangement et zone de mobilité. Une petite salle privée n'a pas les mêmes priorités qu'une salle professionnelle.",
+      "Le choix dépend des exercices, du nombre d'utilisateurs et de l'espace disponible. Distinguez les besoins cardio, musculation, poids libres, mobilité et rangement. Consultez les dimensions et caractéristiques des références envisagées ; la présence d'un appareil dans le catalogue ne suffit pas à confirmer qu'il convient à votre local.",
   },
   {
-    question: "Comment organiser les zones d'entraînement ?",
+    question: "Faut-il connaître la surface exacte avant de demander un devis ?",
     answer:
-      "Les zones doivent être pensées selon le parcours utilisateur : échauffement, cardio, musculation, poids libres, étirements, circulation et accès aux équipements.",
+      "Vous pouvez commencer avec une surface approximative et préciser les dimensions pendant l'échange. Dans le formulaire de demande de devis, la surface est facultative. Des photos ou un plan existant peuvent être partagés ensuite sur WhatsApp pour expliquer les accès, les passages et les contraintes du local.",
   },
   {
     question: "Quelle différence entre Home Gym et salle professionnelle ?",
@@ -193,14 +195,24 @@ const faqItems = [
       "Un Home Gym privilégie un usage privé, une sélection compacte et des objectifs personnels. Une salle professionnelle doit prévoir plusieurs profils d'utilisateurs, plus de circulation et un mix d'équipements plus large.",
   },
   {
-    question: "Pourquoi prévoir le revêtement dès le début ?",
+    question: "Peut-on intégrer du matériel déjà présent dans la salle ?",
     answer:
-      "Le sol influence le confort, le bruit, l'entretien et la protection de l'espace, surtout avec charges, machines, bancs ou mouvements répétés.",
+      "Indiquez le matériel que vous souhaitez conserver, avec ses dimensions et son emplacement actuel si vous les connaissez. Il pourra ainsi être pris en compte dans la discussion sur les zones, les dégagements et le sol, avant de définir les équipements complémentaires à envisager.",
   },
   {
     question: "Que préparer avant de demander un devis ?",
     answer:
-      "Préparez la ville, les dimensions, photos, type de projet, utilisateurs, objectifs, équipements souhaités, état du sol et budget indicatif si vous en avez un.",
+      "Indiquez la ville au Maroc, le type de lieu, la surface estimée, les utilisateurs et vos priorités d'entraînement. Ajoutez le matériel existant ou souhaité, l'état du sol et les contraintes d'accès. Le budget indicatif et le délai souhaité peuvent être précisés si vous les connaissez ; les photos et plans se partagent ensuite sur WhatsApp.",
+  },
+  {
+    question: "Puis-je demander un devis sans budget défini ?",
+    answer:
+      "Oui. Le budget est facultatif dans le formulaire de demande de devis. Décrivez d'abord les usages et les équipements prioritaires. Si vous avez une enveloppe indicative, elle aide à distinguer les besoins à traiter maintenant des ajouts envisagés plus tard. Le chiffrage dépend du périmètre discuté pour votre projet.",
+  },
+  {
+    question: "Comment transmettre ma demande à IRONZ ?",
+    answer:
+      "Les boutons « Demander un devis » ouvrent le formulaire avec le service Aménagement de salle présélectionné. Ce formulaire et le formulaire de cette page préparent un message pour WhatsApp. Relisez-le puis validez son envoi dans WhatsApp pour transmettre la demande à IRONZ. Vous pouvez ensuite y partager des photos ou un plan existant.",
   },
 ];
 
@@ -354,7 +366,7 @@ function ServiceIcon({ name, className = "h-6 w-6" }: { name: IconName; classNam
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-yellow-500/30 bg-yellow-500/10 px-4 py-2 text-xs font-display uppercase tracking-[0.25em] text-yellow-600 dark:text-yellow-400">
+    <span className="inline-flex items-center rounded-full border border-yellow-500/30 bg-yellow-500/10 px-4 py-2 text-xs font-display uppercase tracking-[0.25em] text-yellow-800 dark:text-yellow-400">
       {children}
     </span>
   );
@@ -378,7 +390,7 @@ export default function AmenagementSallePage() {
 
       <div className="border-b border-gray-100 bg-gray-50/70 dark:border-gray-800 dark:bg-gray-900/40">
         <div className="container mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <nav aria-label="Fil d'Ariane" className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <nav aria-label="Fil d'Ariane" className="flex flex-wrap items-center gap-2 text-sm text-gray-700 dark:text-gray-400">
             <Link href="/" className="hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">Accueil</Link>
             <span aria-hidden>/</span>
             <Link href="/services" className="hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">Services</Link>
@@ -409,13 +421,12 @@ export default function AmenagementSallePage() {
               réel du projet.
             </p>
             <p className="max-w-2xl text-gray-400 leading-relaxed mb-8">
-              Cette page couvre l&apos;intention parent : concevoir une salle cohérente
-              avant de choisir les machines. Pour un projet privé, consultez le{" "}
+              Vous aménagez une pièce chez vous ? Consultez le{" "}
               <Link href="/services/amenagement-salle/home-gym" className="text-yellow-400 underline underline-offset-4 hover:text-yellow-300">service Home Gym</Link>.
-              Pour un espace collectif ou commercial, consultez la{" "}
+              Pour un club, un hôtel ou un espace d&apos;entreprise, consultez la{" "}
               <Link href="/services/amenagement-salle/salle-professionnelle" className="text-yellow-400 underline underline-offset-4 hover:text-yellow-300">salle professionnelle</Link>.
               Pour un projet à Casablanca, consultez la{" "}
-              <Link href="/services/amenagement-salle/casablanca" className="text-yellow-400 underline underline-offset-4 hover:text-yellow-300">page dédiée à Casablanca</Link>.
+              <Link href="/services/amenagement-salle/casablanca" className="text-yellow-400 underline underline-offset-4 hover:text-yellow-300">page consacrée à l’aménagement de salle de sport à Casablanca</Link>.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
@@ -445,21 +456,21 @@ export default function AmenagementSallePage() {
             <div>
               <SectionLabel>Projet fitness structuré</SectionLabel>
               <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-6">
-                Une salle réussie ne commence pas par une liste de{" "}
-                <span className="text-yellow-500">machines</span>
+                Définir les besoins et les contraintes de{" "}
+                <span className="text-yellow-700">votre espace</span>
               </h2>
               <div className="space-y-5 text-gray-600 dark:text-gray-400 leading-relaxed">
                 <p>
-                  Un projet d&apos;aménagement de salle de sport doit d&apos;abord répondre
-                  à une question simple : comment les utilisateurs vont-ils
-                  s&apos;entraîner dans cet espace, circuler entre les zones et faire
-                  évoluer la salle dans le temps ?
+                  Décrivez les activités prévues et le nombre de personnes qui
+                  pourraient s&apos;entraîner en même temps. Une pièce réservée à
+                  quelques séances personnelles et un espace partagé ne demandent
+                  pas la même organisation.
                 </p>
                 <p>
-                  Le choix des machines arrive après cette lecture. Surface,
-                  profils d&apos;utilisateurs, objectifs d&apos;entraînement, intensité
-                  d&apos;usage, revêtement et budget influencent directement la
-                  composition du projet.
+                  Relevez la surface utile, les portes, les passages et la hauteur
+                  disponible. Signalez les obstacles, le matériel à conserver et
+                  les contraintes de bruit : ces éléments orientent l&apos;implantation
+                  et le choix du sol.
                 </p>
                 <p>
                   IRONZ aide à transformer une idée générale en demande claire :
@@ -476,7 +487,7 @@ export default function AmenagementSallePage() {
                 {introChecklist.map((item) => (
                   <li key={item} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mt-0.5">
-                      <ServiceIcon name="check" className="h-3.5 w-3.5 text-yellow-600 dark:text-yellow-400" />
+                      <ServiceIcon name="check" className="h-3.5 w-3.5 text-yellow-700 dark:text-yellow-400" />
                     </span>
                     <span className="leading-relaxed">{item}</span>
                   </li>
@@ -493,10 +504,10 @@ export default function AmenagementSallePage() {
             <SectionLabel>Types de projets</SectionLabel>
             <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-5">
               Adapter l&apos;aménagement au{" "}
-              <span className="text-yellow-500">contexte du projet</span>
+              <span className="text-yellow-700">contexte du projet</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Le même mot “salle de sport” peut couvrir des réalités très différentes. La page parent sert à cadrer le projet global, puis à orienter vers un service plus précis si nécessaire.
+              Précisez si la salle est destinée à un usage personnel, aux adhérents d&apos;un club ou aux utilisateurs d&apos;un établissement. Le nombre de personnes présentes et la fréquence d&apos;utilisation orientent les besoins en matériel et en circulation.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -508,7 +519,7 @@ export default function AmenagementSallePage() {
                 <h3 className="text-lg sm:text-xl font-bold mb-3 text-gray-900 dark:text-white">{type.title}</h3>
                 <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">{type.description}</p>
                 {type.href && type.linkLabel ? (
-                  <Link href={type.href} className="inline-flex text-sm font-semibold text-yellow-600 dark:text-yellow-400 underline underline-offset-4 hover:text-yellow-500">
+                  <Link href={type.href} className="inline-flex text-sm font-semibold text-yellow-700 dark:text-yellow-400 underline underline-offset-4 hover:text-yellow-500">
                     {type.linkLabel}
                   </Link>
                 ) : null}
@@ -526,7 +537,7 @@ export default function AmenagementSallePage() {
               Organiser les zones avant de remplir la salle
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Le zoning évite les espaces confus : il relie les pratiques, les déplacements, les équipements et la sécurité d&apos;usage. Une salle peut être bien équipée mais difficile à utiliser si les zones ne sont pas pensées ensemble.
+              Répartissez les activités en conservant des passages entre les appareils et une place pour le rangement. Vérifiez les dégagements nécessaires à l&apos;utilisation de chaque équipement : la surface occupée au sol ne décrit pas tout l&apos;espace nécessaire à l&apos;entraînement.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -549,7 +560,7 @@ export default function AmenagementSallePage() {
             <div>
               <SectionLabel>Équipements fitness</SectionLabel>
               <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-6">
-                Choisir le matériel selon l&apos;usage, pas seulement selon la liste produit
+                Choisir les équipements selon vos activités et la surface
               </h2>
               <div className="space-y-5 text-gray-600 dark:text-gray-400 leading-relaxed">
                 <p>
@@ -557,6 +568,13 @@ export default function AmenagementSallePage() {
                 </p>
                 <p>
                   IRONZ relie la sélection du matériel à l&apos;implantation : un appareil pertinent sur catalogue peut devenir peu pratique si les dégagements, le passage ou le sol ne suivent pas.
+                </p>
+                <p>
+                  Pour préparer votre sélection, consultez le{" "}
+                  <Link href="/guides/choisir-machine-cardio-tapis-velo-rameur-maroc" className="text-yellow-700 dark:text-yellow-400 underline underline-offset-4">guide pour comparer tapis, vélo et rameur</Link>.
+                  Pour les charges et le petit matériel, explorez les{" "}
+                  <Link href="/categories/accessoires/poids-libres" className="text-yellow-700 dark:text-yellow-400 underline underline-offset-4">poids libres</Link>.
+                  Notez les références qui vous intéressent pour en discuter dans votre demande.
                 </p>
               </div>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -588,7 +606,7 @@ export default function AmenagementSallePage() {
               Prévoir le sol dès la conception de la salle
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-              Le revêtement sportif ne doit pas être traité comme une finition de dernière minute. Charges, machines, bruit, entretien, confort et zones de passage influencent le choix de surface. La page dédiée au <Link href="/services/revetement-sol-mur" className="text-yellow-600 dark:text-yellow-400 underline underline-offset-4">revêtement sol et mur</Link> permet d&apos;approfondir ce sujet sans remplacer le cadrage global de la salle.
+              Décrivez le sol existant et les activités prévues dans chaque zone : appareils cardio, machines, charges ou exercices au sol. Pour préparer les questions sur la protection du support, le confort et l&apos;entretien, consultez le service de <Link href="/services/revetement-sol-mur" className="text-yellow-700 dark:text-yellow-400 underline underline-offset-4">revêtement sol et mur</Link>.
             </p>
             <div className="rounded-3xl bg-gray-950 text-white p-6 sm:p-8">
               <h3 className="text-xl font-display uppercase tracking-wide text-yellow-500 mb-4">Pourquoi l&apos;intégrer tôt ?</h3>
@@ -603,12 +621,12 @@ export default function AmenagementSallePage() {
       <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-12">
-            <SectionLabel>Choisir la bonne page</SectionLabel>
+            <SectionLabel>Usage privé ou collectif</SectionLabel>
             <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-5">
               Home Gym ou salle professionnelle ?
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Cette page explique l&apos;aménagement de salle au sens large. Les pages enfants détaillent deux intentions plus précises pour éviter de mélanger les besoins privés et professionnels.
+              Pour un espace personnel, commencez par vos habitudes d&apos;entraînement et les contraintes du logement. Pour un espace collectif, précisez aussi les profils d&apos;utilisateurs, les périodes d&apos;affluence et les besoins de circulation.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
@@ -637,12 +655,52 @@ export default function AmenagementSallePage() {
       <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-12">
-            <SectionLabel>Process projet</SectionLabel>
+            <SectionLabel>Villes d&apos;intervention</SectionLabel>
+            <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-5">
+              IRONZ intervient dans les <span className="text-yellow-700">principales villes</span> du Maroc
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+              L&apos;aménagement d&apos;une salle de sport répond aux mêmes questions partout au Maroc : surface, usages, équipements et revêtement. La ville change surtout les contraintes d&apos;accès, d&apos;approvisionnement et de déplacement. Précisez votre lieu dans la demande pour adapter l&apos;étude au projet.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            {CITIES.map((city) => (
+              <article key={city.id} className="flex flex-col rounded-2xl border border-gray-100 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-900/60">
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-500 text-black">
+                  <MapPin className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-gray-900 dark:text-white">{city.name}</h3>
+                <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{city.coverage}</p>
+                {city.id === "casablanca" ? (
+                  <span className="mt-4 inline-flex text-sm font-semibold text-gray-500 dark:text-gray-400">
+                    Page dédiée dans l&apos;introduction
+                  </span>
+                ) : (
+                  <Link
+                    href={getCityHref(city)}
+                    className="mt-4 inline-flex text-sm font-semibold text-yellow-700 dark:text-yellow-400 underline underline-offset-4 hover:text-yellow-500"
+                  >
+                    {city.hasPage ? `Voir la page ${city.name}` : `Devis à ${city.name}`}
+                  </Link>
+                )}
+              </article>
+            ))}
+          </div>
+          <p className="mt-8 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+            IRONZ n&apos;a pas de bureau local dans chaque ville : les projets sont cadrés à distance, et les déplacements sont confirmés selon le périmètre retenu.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <SectionLabel>Du besoin au devis</SectionLabel>
             <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-5">
               Comment se déroule un projet de salle ?
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Le processus reste progressif : comprendre, lire l&apos;espace, organiser, sélectionner, chiffrer puis avancer selon le périmètre validé.
+              Les points ci-dessous servent à préciser la demande : usages, espace, équipements et revêtement. Le périmètre à chiffrer se définit à partir de ces informations et des priorités discutées avec IRONZ.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -668,7 +726,10 @@ export default function AmenagementSallePage() {
                 Que préparer avant de demander un devis ?
               </h2>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-                Une demande claire évite les échanges inutiles et permet de cadrer plus vite la bonne proposition. Les informations suivantes suffisent souvent pour lancer la discussion.
+                Commencez avec les informations disponibles. La surface peut être approximative ; le budget et le délai souhaité sont facultatifs dans le formulaire. Distinguez ce que vous souhaitez conserver, acheter maintenant ou envisager plus tard.
+              </p>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
+                Le formulaire prépare un message à relire et à envoyer dans WhatsApp. Vous pourrez ensuite y partager des photos ou un plan existant pour préciser les contraintes du local.
               </p>
               <Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 rounded-xl bg-yellow-500 px-7 py-4 font-display uppercase tracking-wide text-black hover:bg-yellow-600 transition-colors shadow-lg">
                 <ServiceIcon name="quote" />
@@ -692,17 +753,17 @@ export default function AmenagementSallePage() {
           <div className="max-w-3xl mb-12">
             <SectionLabel>Liens utiles</SectionLabel>
             <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-5">
-              Continuer vers la bonne ressource
+              Approfondir le matériel et les services utiles
             </h2>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-              Ces liens servent à préciser le projet sans disperser la page parent ni remplacer les services spécialisés.
+              Retrouvez les conseils adaptés à votre usage et les caractéristiques du matériel avant de préciser votre demande de devis.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {internalLinks.map((link) => (
               <Link key={link.href} href={link.href} className="group block rounded-2xl border border-gray-100 p-6 hover:border-yellow-500/40 hover:shadow-xl transition-all dark:border-gray-800">
                 <h3 className="text-lg font-bold mb-3 text-gray-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">{link.title}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{link.description}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">{link.description}</p>
               </Link>
             ))}
           </div>
@@ -713,12 +774,12 @@ export default function AmenagementSallePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 max-w-7xl mx-auto items-start">
             <div>
-              <SectionLabel>Conversion</SectionLabel>
+              <SectionLabel>Échanger avec IRONZ</SectionLabel>
               <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-display uppercase tracking-wide text-gray-900 dark:text-white mb-6">
                 Parlez-nous de votre salle de sport
               </h2>
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8">
-                Le formulaire prépare votre message pour WhatsApp avec le contexte du service “Aménagement de salle de sport”. Vous pouvez aussi écrire directement avec les premières informations du projet.
+                Décrivez votre ville, votre espace et vos priorités dans le message. Ce formulaire prépare une demande pour le service « Aménagement de salle de sport » ; validez ensuite son envoi dans WhatsApp pour la transmettre à IRONZ.
               </p>
               <div className="space-y-4">
                 <a href="tel:+212674114446" className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-5 dark:border-gray-800 dark:bg-gray-950 hover:border-yellow-500/40 transition-colors">
@@ -784,7 +845,7 @@ export default function AmenagementSallePage() {
             Un projet de salle à structurer ?
           </h2>
           <p className="text-black/80 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-            Envoyez les dimensions, photos, objectifs et priorités. IRONZ vous aide à cadrer l&apos;aménagement, les équipements et le revêtement selon votre projet.
+            Indiquez votre ville, la surface estimée et vos priorités. Préparez votre demande de devis, puis envoyez-la dans WhatsApp. Les photos et plans existants pourront compléter l&apos;échange.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href={DEVIS_URL} className="inline-flex items-center justify-center gap-2 px-8 py-5 bg-black text-white font-display uppercase tracking-wide rounded-xl hover:bg-gray-900 transition-colors shadow-2xl">
