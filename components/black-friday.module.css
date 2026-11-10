@@ -1,0 +1,167 @@
+.header {
+  position: relative;
+  display: grid;
+  align-items: end;
+  gap: 24px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #ffffff24;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(44px, 8.5vw, 112px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+.offer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.ticket {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 23px;
+  background: #ffcc00;
+  color: #111;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
+.ticketLabel {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ticketPrice {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1;
+}
+
+.ticketPrice small { font-size: 18px; }
+
+.delivery {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 150px;
+  min-width: 0;
+  color: #d4d4d8;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.rail {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #565656 transparent;
+  margin-block: 12px 24px;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filter {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 48px;
+  border: 0;
+  padding: 12px 14px;
+  background: transparent;
+  color: #a1a1aa;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 160ms ease;
+}
+
+.filter:first-child { padding-left: 0; }
+.filter:disabled { cursor: wait; opacity: 0.6; }
+.filter span { font-size: 10px; font-variant-numeric: tabular-nums; opacity: 0.7; }
+.filter[aria-pressed="true"] { color: #ffcc00; }
+.filter::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 14px;
+  right: 14px;
+  height: 3px;
+  background: #ffcc00;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.filter:first-child::after { left: 0; }
+.filter[aria-pressed="true"]::after { transform: scaleX(1); }
+.filter:focus-visible { outline: 2px solid #ffcc00; outline-offset: -2px; }
+.filter:focus-visible::after { transition: none; }
+
+.card {
+  position: relative;
+  transition: border-color 160ms ease;
+}
+.card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 4px;
+  background: #ffcc00;
+  transform: skewX(-28deg);
+  transform-origin: right;
+  pointer-events: none;
+}
+.photo { transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1); }
+.button {
+  transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.button:active { transform: scale(0.98); }
+.button:focus-visible:active { transform: none; }
+.button:disabled { cursor: wait; opacity: 0.6; }
+
+@media (min-width: 640px) {
+  .header { padding-bottom: 32px; }
+  .filter { font-size: 13px; padding-inline: 18px; }
+  .rail { margin-block: 16px 28px; gap: 12px; }
+  .ticketPrice { font-size: 42px; }
+  .delivery { font-size: 12px; }
+}
+
+@media (min-width: 1024px) {
+  .header { grid-template-columns: minmax(0, 1fr) auto; gap: 32px; }
+  .offer { padding-bottom: 4px; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .filter:hover { color: #fff; }
+  .filter[aria-pressed="true"]:hover { color: #ffcc00; }
+  .card:hover .photo { transform: scale(1.025); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter::after { transition: none; }
+  .photo { transition: none; }
+  .card:hover .photo { transform: none; }
+  .button { transition: background-color 160ms ease; }
+  .button:active { transform: none; }
+}

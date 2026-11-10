@@ -5,6 +5,7 @@ import { productSlug, productUpdatedAt, type ProductRecord } from "../lib/produc
 import { buildCategoryTaxonomy } from "../lib/category-taxonomy";
 import { getSitemapServices } from "../lib/services";
 import { articles } from "../lib/blog";
+import { BLACK_FRIDAY_PACKS } from "../lib/black-friday";
 
 const baseUrl = "https://www.ironz.ma";
 const API_URL =
@@ -113,6 +114,8 @@ function uniqueRoutes(routes: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes: MetadataRoute.Sitemap = [
     { url: baseUrl, changeFrequency: "daily", priority: 1 },
+    { url: `${baseUrl}/black-friday`, changeFrequency: "weekly", priority: 0.8 },
+    ...BLACK_FRIDAY_PACKS.map((pack) => ({ url: `${baseUrl}/produit/${pack.slug}`, changeFrequency: "weekly" as const, priority: 0.7 })),
     { url: `${baseUrl}/produit`, changeFrequency: "daily", priority: 0.9 },
     { url: `${baseUrl}/contact`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/a-propos`, changeFrequency: "monthly", priority: 0.6 },

@@ -495,11 +495,11 @@ const Navbar = React.memo(function Navbar({
         aria-label="Promotion"
         className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-xs sm:text-sm font-display uppercase tracking-widest py-2 px-4 text-center"
       >
-        <p className="container mx-auto">
+        <Link href="/black-friday" className="container mx-auto block underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-black">
           {language === "fr"
-            ? "LIVRAISON EXPRESS PARTOUT AU MAROC"
-            : "EXPRESS DELIVERY ACROSS MOROCCO"}
-        </p>
+            ? "BLACK FRIDAY — 6 PACKS EXCLUSIFS · LIVRAISON GRATUITE"
+            : "BLACK FRIDAY — 6 EXCLUSIVE PACKS · FREE DELIVERY"}
+        </Link>
       </div>
       <div className="premium-divider" aria-hidden="true" />
 

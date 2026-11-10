@@ -56,6 +56,7 @@ import { AnimatePresence, motion } from "framer-motion";
 // Components
 import ReferencesSection from "../components/references-section";
 import ServicesSection from "../components/ServicesSection";
+import BlackFridaySection from "../components/black-friday-section";
 
 // Context & Data
 import { useCart } from "../context/cart-context";
@@ -1431,6 +1432,8 @@ export default function HomeClient({
 
           <div className="absolute bottom-0 left-0 h-1 bg-yellow-500 z-20" aria-hidden />
         </section>
+
+        <BlackFridaySection />
 
         {/* ═══ 2. FLASH DEALS ═══════════════════════════════════════════════ */}
         {discountedProducts.length > 0 && (

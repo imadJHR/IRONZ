@@ -16,6 +16,8 @@ import { productBrandSchema } from "../../../lib/product-brand";
 import { productAggregateRatingSchema } from "../../../lib/product-review-summary";
 import { productOfferSchema } from "../../../lib/product-offer";
 import { productIdentifierSchema } from "../../../lib/product-identifiers";
+import { getBlackFridayPack } from "../../../lib/black-friday";
+import BlackFridayProduct from "../../../components/black-friday-product";
 
 const SITE_URL = "https://www.ironz.ma";
 export const revalidate = 600;
@@ -89,6 +91,25 @@ function selectRelatedProducts(product: Product, products: Product[]): Product[]
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
+  const pack = getBlackFridayPack(slug);
+  if (pack) {
+    const url = `/produit/${pack.slug}`;
+    return {
+      title: pack.seoTitle,
+      description: pack.seoDescription,
+      alternates: { canonical: url },
+      openGraph: {
+        title: pack.seoTitle,
+        description: pack.seoDescription,
+        url,
+        type: "website",
+        locale: "fr_MA",
+        images: [{ url: pack.image, width: 1254, height: 1254, alt: pack.imageAlt }],
+      },
+      twitter: { card: "summary_large_image", title: pack.seoTitle, description: pack.seoDescription, images: [pack.image] },
+      robots: { index: true, follow: true },
+    };
+  }
   if (!isValidProductSlug(slug)) {
     return {
       title: "Produit introuvable",
@@ -151,6 +172,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
   if (!isValidProductSlug(slug)) notFound();
+  const pack = getBlackFridayPack(slug);
+  if (pack) return <BlackFridayProduct pack={pack} />;
 
   const product = (await getProductForRequest(slug)) as unknown as Product | null;
   if (!product) notFound();
