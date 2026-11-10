@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { PackIcon } from "./black-friday-icons";
-import { BLACK_FRIDAY_PACKS } from "../lib/black-friday";
+import { BLACK_FRIDAY_PACKS, getBlackFridaySavings } from "../lib/black-friday";
 import BlackFridayCartButton from "./black-friday-cart-button";
 import styles from "./black-friday.module.css";
 import { useCart } from "../context/cart-context";
@@ -47,6 +47,7 @@ export default function BlackFridaySection({ standalone = false }: { standalone?
         <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 lg:gap-6">
           {packs.map((pack, index) => {
             const href = `/produit/${pack.slug}`;
+            const savings = getBlackFridaySavings(pack);
             return (
               <article key={pack.id} className={`${styles.card} group flex min-w-0 flex-col overflow-hidden rounded-lg border border-white/10 bg-[#1b1b1b] hover:border-yellow-400/50`}>
                 <Link href={href} aria-label={`Découvrir ${pack.name}`} className="block overflow-hidden bg-white focus-visible:outline-2 focus-visible:outline-yellow-400 focus-visible:-outline-offset-4">
@@ -61,7 +62,7 @@ export default function BlackFridaySection({ standalone = false }: { standalone?
                   </details>
                   <div className="mt-auto border-t border-white/10 pb-4 pt-4">
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1"><span className="font-display text-2xl tracking-wide text-white sm:text-3xl">{price(pack.price)}</span><del className="text-[10px] text-zinc-400 sm:text-sm">{price(pack.oldPrice)}</del></div>
-                    <p className="mt-1.5 text-[10px] text-yellow-400 sm:text-xs">{price(pack.oldPrice - pack.price)} d’économie</p>
+                    <p className="mt-1.5 text-[10px] text-yellow-400 sm:text-xs">−{savings.percentageLabel} % · {price(savings.amount)} d’économie</p>
                   </div>
                   <BlackFridayCartButton pack={pack} compact />
                 </div>

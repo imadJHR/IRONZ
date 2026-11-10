@@ -130,6 +130,17 @@ export const BLACK_FRIDAY_PACKS = [
 
 export type BlackFridayPack = (typeof BLACK_FRIDAY_PACKS)[number];
 
+const discountFormatter = new Intl.NumberFormat("fr-FR", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+export function getBlackFridaySavings(pack: Pick<BlackFridayPack, "price" | "oldPrice">) {
+  const amount = Math.max(0, pack.oldPrice - pack.price);
+  const percentage = pack.oldPrice > 0 ? (amount / pack.oldPrice) * 100 : 0;
+  return { amount, percentageLabel: discountFormatter.format(percentage) };
+}
+
 export function getBlackFridayPack(slug: string) {
   return BLACK_FRIDAY_PACKS.find((pack) => pack.slug === slug);
 }

@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PackIcon } from "./black-friday-icons";
-import { BLACK_FRIDAY_PACKS, type BlackFridayPack } from "../lib/black-friday";
+import { BLACK_FRIDAY_PACKS, getBlackFridaySavings, type BlackFridayPack } from "../lib/black-friday";
 import { blackFridayBreadcrumbs, blackFridayProductSchema } from "../lib/black-friday-seo";
 import BlackFridayCartButton from "./black-friday-cart-button";
 
 const price = (value: number) => `${new Intl.NumberFormat("fr-MA").format(value)} DH`;
 
 export default function BlackFridayProduct({ pack }: { pack: BlackFridayPack }) {
+  const savings = getBlackFridaySavings(pack);
   const related = BLACK_FRIDAY_PACKS.filter((item) => item.id !== pack.id)
     .sort((a, b) => b.filters.filter((tag) => pack.filters.includes(tag)).length - a.filters.filter((tag) => pack.filters.includes(tag)).length)
     .slice(0, 4);
@@ -32,7 +33,7 @@ export default function BlackFridayProduct({ pack }: { pack: BlackFridayPack }) 
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-zinc-300">{pack.description}</p>
             <div className="my-6 border-y border-white/15 py-5">
               <p className="flex flex-wrap items-baseline gap-4"><span className="font-display text-5xl">{price(pack.price)}</span><del className="text-lg text-zinc-500">{price(pack.oldPrice)}</del></p>
-              <p className="mt-2 text-sm text-yellow-400">{price(pack.oldPrice - pack.price)} d’économie sur ce pack</p>
+              <p className="mt-2 text-sm text-yellow-400">−{savings.percentageLabel} % · {price(savings.amount)} d’économie sur ce pack</p>
             </div>
             <BlackFridayCartButton pack={pack} withQuantity />
             <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/10 pt-5 text-xs text-zinc-300">
@@ -49,10 +50,6 @@ export default function BlackFridayProduct({ pack }: { pack: BlackFridayPack }) 
             <h2 id="pack-details" className="font-display text-2xl uppercase sm:text-3xl">Le pack en détail</h2>
             <p className="mt-5 text-sm leading-7 text-zinc-300">{pack.longDescription}</p>
             <Link href="/categories/supplement" className="mt-5 inline-flex min-h-11 items-center text-sm text-yellow-400 underline underline-offset-4">Toute la nutrition sportive</Link>
-            <details className="mt-5 rounded-lg border border-white/15 p-4 text-sm">
-              <summary className="cursor-pointer text-zinc-200">Voir l’affiche originale de cette offre</summary>
-              <Image src={pack.poster} alt={`Affiche originale IRONZ du ${pack.name}`} width={pack.posterWidth} height={pack.posterHeight} quality={60} sizes="(max-width: 1023px) 100vw, 600px" className="mt-4 h-auto w-full rounded-md" />
-            </details>
           </section>
         </div>
         <section aria-labelledby="other-packs" className="mt-12 border-t border-white/15 pt-8 sm:mt-16">

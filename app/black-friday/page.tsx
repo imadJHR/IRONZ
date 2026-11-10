@@ -29,7 +29,7 @@ export default function BlackFridayPage() {
         <div className="space-y-1">
           <details className="border-b border-white/15 py-5"><summary className="cursor-pointer font-semibold text-white">La livraison des packs est-elle gratuite ?</summary><p className="mt-3 text-sm leading-7">Oui, les six offres Black Friday présentées ici comprennent la livraison gratuite partout au Maroc. Le prix affiché correspond au pack complet.</p></details>
           <details className="border-b border-white/15 py-5"><summary className="cursor-pointer font-semibold text-white">Le scanner InBody 270 est-il inclus ?</summary><p className="mt-3 text-sm leading-7">Le Pack Premium Wellness comprend une consultation InBody 270 et le Fitness File. Le scanner représenté sur l’affiche et le dossier n’est pas un appareil vendu dans le pack.</p></details>
-          <details className="border-b border-white/15 py-5"><summary className="cursor-pointer font-semibold text-white">Comment comparer les réductions ?</summary><p className="mt-3 text-sm leading-7">Chaque fiche indique le prix du pack, son prix de référence et la différence en dirhams. Vous pouvez ainsi comparer l’économie et le contenu précis des six offres.</p></details>
+          <details className="border-b border-white/15 py-5"><summary className="cursor-pointer font-semibold text-white">Comment comparer les réductions ?</summary><p className="mt-3 text-sm leading-7">Chaque fiche indique le prix du pack, son prix de référence et l’économie en dirhams. Le pourcentage est calculé à partir de ces prix et arrondi à deux décimales. Vous pouvez ainsi comparer les réductions et le contenu précis des six offres.</p></details>
         </div>
       </div>
     </section>
