@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import BlackFridayImage from "./black-friday-image";
+import BlackFridayCountdown from "./black-friday-countdown";
 import Link from "next/link";
 import { PackIcon } from "./black-friday-icons";
 import { BLACK_FRIDAY_PACKS, getBlackFridaySavings } from "../lib/black-friday";
@@ -37,6 +38,7 @@ export default function BlackFridaySection({ standalone = false }: { standalone?
             <p className={styles.delivery}><PackIcon name="delivery" className="h-5 w-5 shrink-0 text-yellow-400" /><span>Livraison offerte<br />partout au Maroc</span></p>
           </div>
         </div>
+        <BlackFridayCountdown />
         <div role="group" aria-label="Filtrer les packs par produit" className={styles.rail}>
           {filters.map((item) => {
             const count = BLACK_FRIDAY_PACKS.filter((pack) => item.id === "all" || pack.filters.includes(item.id)).length;
