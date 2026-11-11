@@ -66,11 +66,14 @@
   gap: 4px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scrollbar-width: thin;
-  scrollbar-color: #565656 transparent;
+  scrollbar-width: none;
   margin-block: 12px 24px;
   padding-bottom: 4px;
   -webkit-overflow-scrolling: touch;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
 }
 
 .filter {
